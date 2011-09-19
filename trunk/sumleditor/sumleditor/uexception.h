@@ -36,3 +36,19 @@ public:
 	}
 
 };
+
+/**
+@function writeErrors
+Функция записывает сообщение ошибки в файл (errors.txt), для последующей отладки и сопровождения продукта.
+@param message - строка, содержащая текст ошибки.
+*/
+void writeErrors (string message)
+{
+	FILE* file = fopen("errors.txt", "at");
+
+	fprintf(file,"\n");
+	fprintf(file,__DATE__); // Запись текущей даты
+	fprintf(file,"\n%s", message.c_str());
+
+	fclose(file);
+};
