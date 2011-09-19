@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "sumleditor.h"
+#include "uexception.h"
 #include <QtGui/QApplication>
 
 int main(int argc, char *argv[])
