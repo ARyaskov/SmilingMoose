@@ -3,6 +3,7 @@
 
 #include <QtGui/QMainWindow>
 #include "ui_sumleditor.h"
+#include "graphwidget.h"
 
 class sumleditor : public QMainWindow
 {
@@ -14,6 +15,9 @@ public:
 
 private:
 	Ui::sumleditorClass ui;
+
+	/** Графический виджет сцены. */
+	GraphWidget* diagram;
 };
 
 #endif // SUMLEDITOR_H
