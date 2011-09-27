@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>725</width>
-    <height>500</height>
+    <height>532</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -47,7 +47,7 @@
   <widget class="QToolBar" name="mainToolBar">
    <property name="minimumSize">
     <size>
-     <width>10</width>
+     <width>30</width>
      <height>30</height>
     </size>
    </property>
@@ -60,11 +60,17 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actLifeLine"/>
-   <addaction name="separator"/>
+   <addaction name="actSelect"/>
+   <addaction name="actLifeline"/>
+   <addaction name="actMessage"/>
+   <addaction name="actReturn"/>
+   <addaction name="actCreate"/>
+   <addaction name="actDestroy"/>
+   <addaction name="actStop"/>
+   <addaction name="actComment"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <widget class="QDockWidget" name="testUpperDock">
+  <widget class="QDockWidget" name="upperDock">
    <property name="minimumSize">
     <size>
      <width>200</width>
@@ -72,10 +78,10 @@
     </size>
    </property>
    <property name="statusTip">
-    <string>Test upper dock status</string>
+    <string>Список элементов</string>
    </property>
    <property name="windowTitle">
-    <string>Test upper Dock</string>
+    <string>Список элементов</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -83,15 +89,35 @@
    <widget class="QWidget" name="dockWidgetContents">
     <layout class="QGridLayout" name="gridLayout_5">
      <item row="0" column="0">
-      <widget class="QListWidget" name="testListWidget">
+      <widget class="QListWidget" name="objectsList">
+       <property name="midLineWidth">
+        <number>5</number>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <property name="alternatingRowColors">
+        <bool>true</bool>
+       </property>
+       <property name="selectionRectVisible">
+        <bool>true</bool>
+       </property>
+       <property name="currentRow">
+        <number>0</number>
+       </property>
        <item>
         <property name="text">
-         <string>TestElement 1</string>
+         <string>Объект 1</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>TestElement 2</string>
+         <string>Сообщение 1</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Объект 2</string>
         </property>
        </item>
       </widget>
@@ -99,70 +125,95 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="testLowerDock">
+  <widget class="QDockWidget" name="lowerDock">
    <property name="statusTip">
-    <string>Test lower dock</string>
+    <string>Свойства объекта</string>
    </property>
    <property name="windowTitle">
-    <string>Test lower Dock</string>
+    <string>Свойства объекта</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_2">
-    <layout class="QGridLayout" name="gridLayout_4">
+    <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
-      <widget class="QGroupBox" name="testGroup1">
-       <property name="title">
-        <string>CheckBoxGroup</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0">
-         <widget class="QCheckBox" name="checkBox">
-          <property name="text">
-           <string>CheckBox</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QCheckBox" name="checkBox_2">
-          <property name="text">
-           <string>CheckBox</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QCheckBox" name="checkBox_3">
-          <property name="text">
-           <string>CheckBox</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QLabel" name="nameLabel">
+         <property name="text">
+          <string>Имя:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="nameEdit"/>
+       </item>
+      </layout>
      </item>
      <item row="1" column="0">
-      <widget class="QGroupBox" name="testGroup2">
-       <property name="title">
-        <string>ButtonsGroup</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0">
-         <widget class="QPushButton" name="pushButton">
-          <property name="text">
-           <string>PushButton 1</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QPushButton" name="pushButton_2">
-          <property name="text">
-           <string>PushButton 2</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="descrLabel">
+         <property name="text">
+          <string>Описание:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextEdit" name="descrEdit"/>
+       </item>
+      </layout>
+     </item>
+     <item row="2" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="paramLabel">
+         <property name="text">
+          <string>Параметр:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="paramEdit"/>
+       </item>
+      </layout>
+     </item>
+     <item row="3" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="sourceLabel">
+         <property name="text">
+          <string>Отправитель:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="sourceEdit">
+         <property name="text">
+          <string>Объект 1</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="4" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="targetLabel">
+         <property name="text">
+          <string>Получатель:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="targetEdit">
+         <property name="text">
+          <string>Объект 2</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>
@@ -185,6 +236,46 @@
   <action name="actLifeLine">
    <property name="text">
     <string>Линия жизни</string>
+   </property>
+  </action>
+  <action name="actSelect">
+   <property name="text">
+    <string>Выбрать</string>
+   </property>
+  </action>
+  <action name="actLifeline">
+   <property name="text">
+    <string>Объект</string>
+   </property>
+  </action>
+  <action name="actMessage">
+   <property name="text">
+    <string>Сообщение</string>
+   </property>
+  </action>
+  <action name="actReturn">
+   <property name="text">
+    <string>Ответ</string>
+   </property>
+  </action>
+  <action name="actCreate">
+   <property name="text">
+    <string>Создание</string>
+   </property>
+  </action>
+  <action name="actDestroy">
+   <property name="text">
+    <string>Удаление</string>
+   </property>
+  </action>
+  <action name="actStop">
+   <property name="text">
+    <string>Стоп</string>
+   </property>
+  </action>
+  <action name="actComment">
+   <property name="text">
+    <string>Комментарий</string>
    </property>
   </action>
  </widget>
