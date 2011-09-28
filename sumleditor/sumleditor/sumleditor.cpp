@@ -9,6 +9,8 @@ sumleditor::sumleditor(QWidget *parent, Qt::WFlags flags)
 
 	diagram = new GraphWidget(this);		// Создание сцены 
 	ui.gridLayout->addWidget(diagram);		// Помещение его на grid layout в главном окне 
+
+	connect(ui.actLifeline,SIGNAL(toggled(bool)),diagram,SLOT(addObject(bool)));
 }
 
 sumleditor::~sumleditor()
