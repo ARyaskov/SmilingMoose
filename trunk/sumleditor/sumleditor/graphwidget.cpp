@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "graphwidget.h"
+#include <QGraphicsSceneMouseEvent>
 
 /** Класс, реализующий виджет сцены для отрисовки диаграммы в главном окне. */
 GraphWidget::GraphWidget(QWidget *parent)
@@ -11,7 +12,7 @@ GraphWidget::GraphWidget(QWidget *parent)
 	setOptimizationFlags(QGraphicsView::DontSavePainterState);
 	
 	scene->setSceneRect(0,0,600,600);					// Задание стандартных размеров сцене
-	scene->setBackgroundBrush(QColor(140,255,140));
+	//scene->setBackgroundBrush(QColor(140,255,140));	// Задание цвета фона
 
 	setScene(scene);									// Задание текущей сцены на виджете
 
@@ -24,14 +25,36 @@ GraphWidget::GraphWidget(QWidget *parent)
 	setTransformationAnchor(AnchorUnderMouse);
 
 	centerOn(0,0);										// Задать позицию обзора сцены 
-
-	scene->addLine(20,20,80,80);
-	scene->addLine(80,20,20,80);
-
 }
 
-/** Конструктор по умолчанию. */
+/** Деструктор по умолчанию. */
 GraphWidget::~GraphWidget()
 {
 	delete scene;
+}
+
+/** Событие прокрутки колесика мыши. */
+void GraphWidget::wheelEvent(QWheelEvent *event)
+{
+	scaleView(pow((double)2, -event->delta() / 480.0));
+}
+
+/** Функция масштабирования сцены. */
+void GraphWidget::scaleView(qreal scaleFactor)
+{
+	qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
+	if (factor < 0.1 || factor > 50)
+		return;
+
+	scale(scaleFactor, scaleFactor);
+}
+
+/** ТЕСТОВЫЙ слот добавления объекта на сцену. */
+void GraphWidget::addObject(bool isChecked)
+{
+	if (isChecked) // Если "утопили" кнопку.
+	{
+		LifeLine *testLine = new LifeLine(this);
+		scene->addItem(testLine);
+	}
 }
