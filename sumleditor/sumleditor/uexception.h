@@ -52,3 +52,17 @@ void writeErrors (string message)
 
 	fclose(file);
 };
+
+/**
+* @function writeLogMessage
+* Функция ведет лог программы.
+* @param message - строка, содержащая текст лога - сообщения.
+*/
+void writeLogMessage (string message)
+{
+	FILE* file = fopen("log.txt", "at");
+
+	fprintf(file, "--- %s ---\n", message.c_str());
+
+	fclose(file);
+}

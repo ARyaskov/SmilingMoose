@@ -5,8 +5,21 @@
 
 int main(int argc, char *argv[])
 {
-	QApplication a(argc, argv);
-	sumleditor w;
-	w.show();
-	return a.exec();
+	try
+	{
+		QApplication a(argc, argv);
+		sumleditor w;
+		w.show();
+		return a.exec();
+	}
+	catch(SUMLEditorException ex)
+	{
+		writeErrors(ex.message());
+		return 1;
+	}
+	catch(...)
+	{
+		writeErrors((new SUMLEditorException())->message());
+		return 1;
+	}
 }
