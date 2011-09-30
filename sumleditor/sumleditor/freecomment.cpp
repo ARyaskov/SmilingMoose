@@ -46,7 +46,7 @@ void  FreeComment::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	painter->setPen(QPen(Qt::black, 2));
 	painter->drawRect(0,0,100,50);
 	
-	QRectF textRect(0,0,100,50);								// Прямоугольник с текстом
+	QRectF textRect(5,5,90,40);								// Прямоугольник с текстом
 
 	// Задать шрифт
 	QFont font = painter->font();
@@ -54,17 +54,17 @@ void  FreeComment::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	font.setPointSize(8);
 
 	painter->setFont(font);
-	painter->setPen(Qt::black);
+	painter->setPen(Qt::darkRed);
 
 	// Задать свойства тексту
 	QTextOption opt;
 	opt.setAlignment(Qt::AlignCenter);
 
-	painter->drawText(textRect.translated(2, 2),QString("Text"),opt); // Create shadow of the name
+	painter->drawText(textRect.translated(2, 2),text,opt); // Create shadow of the name
 	
 	// Нарисовать текст
 	painter->setPen(Qt::white);
-	painter->drawText(textRect, QString("Text"), opt);
+	painter->drawText(textRect,text, opt);
 }
 
 /** Событие клика пользователем на фигуру. */

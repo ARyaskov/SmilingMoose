@@ -15,6 +15,9 @@ class GraphWidget;
 class FreeComment : public QGraphicsItem
 {
 public:
+	/** Текст комментария. */
+	QString text;
+
 	/**
 	 * Конструктор по умолчанию.
 	 * @param graphWidget Указатель на виджет, на котором будем рисовать.
@@ -71,10 +74,6 @@ private:
 
 	/** Имя объекта. */
 	QString name;
-
-	/** Текст комментария. */
-	QString text;
-
 };
 
 #endif // FREECOMMENT_H

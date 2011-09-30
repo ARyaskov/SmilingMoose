@@ -18,6 +18,18 @@ private:
 
 	/** Графический виджет сцены. */
 	GraphWidget* diagram;
+
+private slots:
+	/** 
+	 * Слот для добавления комментария на сцену. 
+	 * @param isChecked Нажата ли кнопка.
+	 */
+	void addComment(bool isChecked);
+
+	/** 
+	 * Слот для задания текста комментарию.
+	 */
+	void setComment();
 };
 
 #endif // SUMLEDITOR_H
