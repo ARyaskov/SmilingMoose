@@ -59,12 +59,12 @@ void GraphWidget::addObject(bool isChecked)
 	}
 }
 
-	/** Слот добавления комментария на сцену. */
-void GraphWidget::addComment(bool isChecked)
+/** Слот добавления комментария на сцену. */
+void GraphWidget::addComment()
 {
-	if (isChecked) // Если "утопили" кнопку.
-	{
-		FreeComment *testLine = new FreeComment(this);
-		scene->addItem(testLine);
-	}
+	FreeComment *testCom = new FreeComment(this);	// СОздаем объект комментария
+
+	scene->addItem(testCom);						// Добавляем его на сцену
+
+	lastItem = (FreeComment*)testCom;				// Сохраняем последний созданный объект
 }

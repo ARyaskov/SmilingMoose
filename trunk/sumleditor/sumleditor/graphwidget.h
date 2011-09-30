@@ -27,6 +27,15 @@ public:
 	 */
 	~GraphWidget();
 
+	/**
+	 * Слот добавления комментария на сцену.
+	 * @param isChecked Нажата ли кнопка.
+	 */
+	void addComment();
+
+	/** Последний созданный объект. */
+	QGraphicsItem *lastItem;
+
 private:
 	/** Указатель на динамический объект сцены. */
 	QGraphicsScene* scene;
@@ -50,12 +59,6 @@ private slots:
 	 * @param isChecked Нажата ли кнопка.
 	 */
 	void addObject(bool isChecked);
-
-	/**
-	 * Слот добавления комментария на сцену.
-	 * @param isChecked Нажата ли кнопка.
-	 */
-	void addComment(bool isChecked);
 };
 
 #endif // GRAPHWIDGET_H
