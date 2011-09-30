@@ -63,7 +63,7 @@
    <addaction name="actSelect"/>
    <addaction name="actLifeline"/>
    <addaction name="actMessage"/>
-   <addaction name="actReturn"/>
+   <addaction name="actReply"/>
    <addaction name="actCreate"/>
    <addaction name="actDestroy"/>
    <addaction name="actStop"/>
@@ -245,8 +245,12 @@
    <property name="checked">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="sumleditor.qrc">
+     <normaloff>:/sumleditor/resources/Select.png</normaloff>:/sumleditor/resources/Select.png</iconset>
+   </property>
    <property name="text">
-    <string>Выбрать</string>
+    <string>Select</string>
    </property>
   </action>
   <action name="actLifeline">
@@ -254,7 +258,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Объект</string>
+    <string>Lifeline</string>
    </property>
   </action>
   <action name="actMessage">
@@ -262,15 +266,15 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Сообщение</string>
+    <string>Message</string>
    </property>
   </action>
-  <action name="actReturn">
+  <action name="actReply">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Ответ</string>
+    <string>Reply Message</string>
    </property>
   </action>
   <action name="actCreate">
@@ -278,7 +282,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Создание</string>
+    <string>Create Message</string>
    </property>
   </action>
   <action name="actDestroy">
@@ -286,7 +290,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Удаление</string>
+    <string>Destroy Message</string>
    </property>
   </action>
   <action name="actStop">
@@ -294,15 +298,19 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Стоп</string>
+    <string>Stop</string>
    </property>
   </action>
   <action name="actComment">
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="sumleditor.qrc">
+     <normaloff>:/sumleditor/resources/Comment.png</normaloff>:/sumleditor/resources/Comment.png</iconset>
+   </property>
    <property name="text">
-    <string>Комментарий</string>
+    <string>Comment</string>
    </property>
   </action>
  </widget>

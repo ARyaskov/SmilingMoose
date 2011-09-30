@@ -6,6 +6,7 @@ LifeLine::LifeLine(GraphWidget *graphWidget)
 {
 	// Задаем параметры фигуре
 	setFlag(ItemIsSelectable);
+	setFlag(ItemIsMovable);
 	setFlag(ItemSendsGeometryChanges);
 	setCacheMode(DeviceCoordinateCache);
 	setZValue(-1);

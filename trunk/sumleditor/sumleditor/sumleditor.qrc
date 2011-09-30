@@ -1,4 +1,6 @@
 <RCC>
-    <qresource prefix="sumleditor">
-    </qresource>
+  <qresource prefix="sumleditor">
+    <file>resources/Comment.png</file>
+    <file>resources/Select.png</file>
+  </qresource>
 </RCC>
