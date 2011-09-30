@@ -3,7 +3,10 @@
 
 #include <QGraphicsView>
 #include "lifeline.h"
+#include "freecomment.h"
+
 class LifeLine;
+class FreeComment;
 
 /**
  * Класс, реализующий виджет сцены для отрисовки диаграммы в главном окне.
@@ -47,6 +50,12 @@ private slots:
 	 * @param isChecked Нажата ли кнопка.
 	 */
 	void addObject(bool isChecked);
+
+	/**
+	 * Слот добавления комментария на сцену.
+	 * @param isChecked Нажата ли кнопка.
+	 */
+	void addComment(bool isChecked);
 };
 
 #endif // GRAPHWIDGET_H
