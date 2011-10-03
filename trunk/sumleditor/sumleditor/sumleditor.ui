@@ -269,6 +269,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>message.bmp</normaloff>message.bmp</iconset>
+   </property>
    <property name="text">
     <string>Message</string>
    </property>
