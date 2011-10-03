@@ -1,6 +1,12 @@
 <RCC>
   <qresource prefix="sumleditor">
-    <file>resources/Comment.png</file>
-    <file>resources/Select.png</file>
+    <file>resources/comment.bmp</file>
+    <file>resources/createmessage.bmp</file>
+    <file>resources/destroymessage.bmp</file>
+    <file>resources/lifeline.bmp</file>
+    <file>resources/message.bmp</file>
+    <file>resources/replymessage.bmp</file>
+    <file>resources/select.bmp</file>
+    <file>resources/stop.bmp</file>
   </qresource>
 </RCC>
