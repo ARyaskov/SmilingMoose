@@ -246,8 +246,8 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="sumleditor.qrc">
-     <normaloff>:/sumleditor/resources/Select.png</normaloff>:/sumleditor/resources/Select.png</iconset>
+    <iconset>
+     <normaloff>select.bmp</normaloff>select.bmp</iconset>
    </property>
    <property name="text">
     <string>Select</string>
