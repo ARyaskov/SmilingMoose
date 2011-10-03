@@ -4,6 +4,7 @@
 #include <QtGui/QMainWindow>
 #include "ui_sumleditor.h"
 #include "graphwidget.h"
+#include "freecomment.h"
 
 class sumleditor : public QMainWindow
 {
