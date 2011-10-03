@@ -330,8 +330,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="sumleditor.qrc">
-     <normaloff>:/sumleditor/resources/Comment.png</normaloff>:/sumleditor/resources/Comment.png</iconset>
+    <iconset>
+     <normaloff>comment.bmp</normaloff>comment.bmp</iconset>
    </property>
    <property name="text">
     <string>Comment</string>
