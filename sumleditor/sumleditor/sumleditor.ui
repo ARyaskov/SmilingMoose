@@ -289,6 +289,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>createmessage.bmp</normaloff>createmessage.bmp</iconset>
+   </property>
    <property name="text">
     <string>Create Message</string>
    </property>
