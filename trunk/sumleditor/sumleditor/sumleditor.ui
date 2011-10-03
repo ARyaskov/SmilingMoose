@@ -26,7 +26,7 @@
      <x>0</x>
      <y>0</y>
      <width>725</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -246,8 +246,8 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>select.bmp</normaloff>select.bmp</iconset>
+    <iconset resource="sumleditor.qrc">
+     <normaloff>:/sumleditor/resources/select.bmp</normaloff>:/sumleditor/resources/select.bmp</iconset>
    </property>
    <property name="text">
     <string>Select</string>
@@ -258,8 +258,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>lifeline.bmp</normaloff>lifeline.bmp</iconset>
+    <iconset resource="sumleditor.qrc">
+     <normaloff>:/sumleditor/resources/lifeline.bmp</normaloff>:/sumleditor/resources/lifeline.bmp</iconset>
    </property>
    <property name="text">
     <string>Lifeline</string>
@@ -270,8 +270,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>message.bmp</normaloff>message.bmp</iconset>
+    <iconset resource="sumleditor.qrc">
+     <normaloff>:/sumleditor/resources/message.bmp</normaloff>:/sumleditor/resources/message.bmp</iconset>
    </property>
    <property name="text">
     <string>Message</string>
@@ -282,8 +282,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>replymessage.bmp</normaloff>replymessage.bmp</iconset>
+    <iconset resource="sumleditor.qrc">
+     <normaloff>:/sumleditor/resources/replymessage.bmp</normaloff>:/sumleditor/resources/replymessage.bmp</iconset>
    </property>
    <property name="text">
     <string>Reply Message</string>
@@ -294,8 +294,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>createmessage.bmp</normaloff>createmessage.bmp</iconset>
+    <iconset resource="sumleditor.qrc">
+     <normaloff>:/sumleditor/resources/createmessage.bmp</normaloff>:/sumleditor/resources/createmessage.bmp</iconset>
    </property>
    <property name="text">
     <string>Create Message</string>
@@ -306,8 +306,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>destroymessage.bmp</normaloff>destroymessage.bmp</iconset>
+    <iconset resource="sumleditor.qrc">
+     <normaloff>:/sumleditor/resources/destroymessage.bmp</normaloff>:/sumleditor/resources/destroymessage.bmp</iconset>
    </property>
    <property name="text">
     <string>Destroy Message</string>
@@ -318,8 +318,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>stop.bmp</normaloff>stop.bmp</iconset>
+    <iconset resource="sumleditor.qrc">
+     <normaloff>:/sumleditor/resources/stop.bmp</normaloff>:/sumleditor/resources/stop.bmp</iconset>
    </property>
    <property name="text">
     <string>Stop</string>
@@ -330,8 +330,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>comment.bmp</normaloff>comment.bmp</iconset>
+    <iconset resource="sumleditor.qrc">
+     <normaloff>:/sumleditor/resources/comment.bmp</normaloff>:/sumleditor/resources/comment.bmp</iconset>
    </property>
    <property name="text">
     <string>Comment</string>
