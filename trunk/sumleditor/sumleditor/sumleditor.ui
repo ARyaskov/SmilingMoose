@@ -26,7 +26,7 @@
      <x>0</x>
      <y>0</y>
      <width>725</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -256,6 +256,10 @@
   <action name="actLifeline">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>lifeline.bmp</normaloff>lifeline.bmp</iconset>
    </property>
    <property name="text">
     <string>Lifeline</string>
