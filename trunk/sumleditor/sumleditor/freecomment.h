@@ -60,6 +60,19 @@ public:
 	 */
     inline int type() const { return Type; }
 
+	/**
+	 * Задать полям координат текущие значения координат объекта на сцене.
+	 */
+	void getCurrentCoords();
+
+	/**
+	 * Задать объекту координаты на сцене.
+	 * @param newX Координата по X.
+	 * @param newY Координата по Y.
+	 * @param newZ Координата по Z.
+	 */
+	void setCoords(double newX, double newY, double newZ);
+
 protected:
 
 	/** 
@@ -74,6 +87,12 @@ private:
 
 	/** Имя объекта. */
 	QString name;
+	
+	double x; /** Координата по оси Х. */
+
+	double y; /** Координата по оси y. */
+
+	double z; /** Координата по оси Z. */
 };
 
 #endif // FREECOMMENT_H

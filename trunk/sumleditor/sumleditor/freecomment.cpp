@@ -74,3 +74,23 @@ void  FreeComment::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	update();
 	QGraphicsItem::mousePressEvent(event);
 }
+
+/** Задать полям координат текущие значения координат объекта на сцене. */
+void FreeComment::getCurrentCoords()
+{
+	x = this->pos().x();
+	y = this->pos().y();
+	z = this->zValue();
+	
+}
+
+/** Задать объекту координаты на сцене. */
+void FreeComment::setCoords(double newX, double newY, double newZ)
+{
+	x = newX;
+	y = newY;
+	z = newZ;
+	this->setX(x);
+	this->setY(y);
+	this->setZValue(z);
+}
