@@ -1,9 +1,13 @@
+#include <QtTest>
+#include "freecommentfortest.h"
 
-#include <QtCore/QCoreApplication>
-
-int main(int argc, char *argv[])
+class Test_SUMLEditorProject : public QObject
 {
-	QCoreApplication a(argc, argv);
+	Q_OBJECT
 
-	return a.exec();
-}
+private slots:
+
+};
+
+QTEST_MAIN(Test_SUMLEditorProject)
+#include "main.moc"
