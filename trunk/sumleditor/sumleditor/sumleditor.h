@@ -6,31 +6,90 @@
 #include "graphwidget.h"
 #include "freecomment.h"
 
-class sumleditor : public QMainWindow
+class Sumleditor : public QMainWindow
 {
 	Q_OBJECT
 
 public:
-	sumleditor(QWidget *parent = 0, Qt::WFlags flags = 0);
-	~sumleditor();
+	Sumleditor(QWidget *parent = 0, Qt::WFlags flags = 0);
+	~Sumleditor();
 
 private:
-	Ui::sumleditorClass ui;
-
-	/** Графический виджет сцены. */
-	GraphWidget* diagram;
+	Ui::SumleditorClass ui;
+	
+	GraphWidget* diagram;	/** Графический виджет сцены. */
 
 private slots:
-	/** 
-	 * Слот для добавления комментария на сцену. 
-	 * @param isChecked Нажата ли кнопка.
+	/**
+	 * Слот, срабатывающий при нажатии кнопки выбора объекта.
 	 */
-	void addComment(bool isChecked);
+	void selection();
 
-	/** 
-	 * Слот для задания текста комментарию.
+	/**
+	 * Слот, срабатывающий при нажатии кнопки добавления линии жизни.
 	 */
-	void setComment();
+	void setLifelineAdding();
+
+	/**
+	 * Слот, срабатывающий при нажатии кнопки добавления сообщения.
+	 */
+	void setMessageAdding();
+
+	/**
+	 * Слот, срабатывающий при нажатии кнопки добавления сообщения создания линии жизни.
+	 */
+	void setCreateAdding();
+
+	/**
+	 * Слот, срабатывающий при нажатии кнопки добавления сообщения удаления линии жизни.
+	 */
+	void setDeleteAdding();
+
+	/**
+	 * Слот, срабатывающий при нажатии кнопки добавления возвратного сообщения.
+	 */
+	void setReplyAdding();
+
+	/**
+	 * Слот, срабатывающий при нажатии кнопки выбора объекта.
+	 */
+	void setStopAdding();
+
+	/**
+	 * Слот, срабатывающий при нажатии кнопки выбора объекта.
+	 */
+	void setCommentAdding();
 };
 
 #endif // SUMLEDITOR_H
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	///** 
+	// * Слот для добавления комментария на сцену. 
+	// * @param isChecked Нажата ли кнопка.
+	// */
+	//void addComment(bool isChecked);
+
+	///** 
+	// * Слот для задания текста комментарию.
+	// */
+	//void setComment();

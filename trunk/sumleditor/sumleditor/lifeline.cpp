@@ -8,6 +8,7 @@ LifeLine::LifeLine(GraphWidget *graphWidget)
 	setFlag(ItemIsSelectable);
 	setFlag(ItemIsMovable);
 	setFlag(ItemSendsGeometryChanges);
+	this->setCursor(Qt::SizeAllCursor);
 	setCacheMode(DeviceCoordinateCache);
 	setZValue(-1);
 }
@@ -21,14 +22,14 @@ LifeLine::~LifeLine()
 /** Вернуть прямоугольник границ фигуры. */
 QRectF LifeLine::boundingRect() const
 {
-	return QRectF(0,0,90,90);
+	return QRectF(0,0,90,30);
 }
 
 /** Вернуть форму фигуры. */
 QPainterPath  LifeLine::shape() const
 {
 	QPainterPath path;
-	path.addRect(0,0,90,90);
+	path.addRect(0,0,90,30);
 
 	return path;
 }

@@ -5,8 +5,31 @@
 #include "lifeline.h"
 #include "freecomment.h"
 
+class Sumleditor;
 class LifeLine;
 class FreeComment;
+
+/**
+ * Перечисление состояний программы.
+ */
+enum Action
+{	
+	SELECT,		/** Выбор объекта на сцене.			  */
+	
+	LIFELINE,	/** Добавление линии жизни.			  */
+	
+	MESSAGE,	/** Добавление сообщения.			  */
+	
+	CREATE,		/** Добавление сообщения создания.	  */
+	
+	DELETE,		/** Добавление сообщения удаления.	  */
+	
+	REPLY,		/** Добавление возвратного сообшения. */
+	
+	STOP,		/** Остановка линии жизни.			  */
+
+	COMMENT		/** Добавление комментария.			  */
+};
 
 /**
  * Класс, реализующий виджет сцены для отрисовки диаграммы в главном окне.
@@ -27,18 +50,12 @@ public:
 	 */
 	~GraphWidget();
 
-	/**
-	 * Слот добавления комментария на сцену.
-	 * @param isChecked Нажата ли кнопка.
-	 */
-	void addComment();
-
-	/** Последний созданный объект. */
-	QGraphicsItem *lastItem;
-
 private:
-	/** Указатель на динамический объект сцены. */
-	QGraphicsScene* scene;
+	QGraphicsScene* scene;  /** Указатель на динамический объект сцены. */
+
+	Action currentAct;		/** Текущее действие. */
+
+	Sumleditor *mainWnd;	/** Указатель на главное окно. */
 
 protected:
 	/** 
@@ -54,11 +71,32 @@ protected:
 	void scaleView(qreal scaleFactor);
 
 private slots:
+
+};
+
+#endif // GRAPHWIDGET_H
+
+
+
+
+
+
+
+
+
+	///** Последний созданный объект. */
+	//QGraphicsItem *lastItem;
+
 	/** 
 	 * ТЕСТОВЫЙ слот добавления объекта на сцену.
 	 * @param isChecked Нажата ли кнопка.
 	 */
-	void addObject(bool isChecked);
-};
+	//void addObject(bool isChecked);
 
-#endif // GRAPHWIDGET_H
+
+
+	/**
+	 * Слот добавления комментария на сцену.
+	 * @param isChecked Нажата ли кнопка.
+	 */
+	//void addComment();

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>sumleditorClass</class>
- <widget class="QMainWindow" name="sumleditorClass">
+ <class>SumleditorClass</class>
+ <widget class="QMainWindow" name="SumleditorClass">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -103,23 +103,8 @@
         <bool>true</bool>
        </property>
        <property name="currentRow">
-        <number>0</number>
+        <number>-1</number>
        </property>
-       <item>
-        <property name="text">
-         <string>Объект 1</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Сообщение 1</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Объект 2</string>
-        </property>
-       </item>
       </widget>
      </item>
     </layout>
