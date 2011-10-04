@@ -23,42 +23,42 @@ private slots:
 	/**
 	 * Слот, срабатывающий при нажатии кнопки выбора объекта.
 	 */
-	void selection();
+	void selection(bool checked);
 
 	/**
 	 * Слот, срабатывающий при нажатии кнопки добавления линии жизни.
 	 */
-	void setLifelineAdding();
+	void addLifeline(bool checked);
 
 	/**
 	 * Слот, срабатывающий при нажатии кнопки добавления сообщения.
 	 */
-	void setMessageAdding();
+	void addMessage(bool checked);
 
 	/**
 	 * Слот, срабатывающий при нажатии кнопки добавления сообщения создания линии жизни.
 	 */
-	void setCreateAdding();
+	void addCreate(bool checked);
 
 	/**
 	 * Слот, срабатывающий при нажатии кнопки добавления сообщения удаления линии жизни.
 	 */
-	void setDeleteAdding();
+	void addDelete(bool checked);
 
 	/**
 	 * Слот, срабатывающий при нажатии кнопки добавления возвратного сообщения.
 	 */
-	void setReplyAdding();
+	void addReply(bool checked);
 
 	/**
 	 * Слот, срабатывающий при нажатии кнопки выбора объекта.
 	 */
-	void setStopAdding();
+	void addStop(bool checked);
 
 	/**
 	 * Слот, срабатывающий при нажатии кнопки выбора объекта.
 	 */
-	void setCommentAdding();
+	void addComment(bool checked);
 };
 
 #endif // SUMLEDITOR_H
@@ -92,4 +92,4 @@ private slots:
 	///** 
 	// * Слот для задания текста комментарию.
 	// */
-	//void setComment();
+	//void addComment();

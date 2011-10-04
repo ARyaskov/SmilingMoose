@@ -16,6 +16,15 @@ Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 
 	diagram = new GraphWidget(this);		// Создание сцены 
 	ui.gridLayout->addWidget(diagram);		// Помещение его на grid layout в главном окне
+
+	connect(ui.actComment,	SIGNAL(toggled(bool)),	this,	SLOT(addComment(bool)));
+	connect(ui.actCreate,	SIGNAL(toggled(bool)),	this,	SLOT(addCreate(bool)));
+	connect(ui.actDestroy,	SIGNAL(toggled(bool)),	this,	SLOT(addDelete(bool)));
+	connect(ui.actLifeline,	SIGNAL(toggled(bool)),	this,	SLOT(addLifeline(bool)));
+	connect(ui.actMessage,	SIGNAL(toggled(bool)),	this,	SLOT(addMessage(bool)));
+	connect(ui.actReply,	SIGNAL(toggled(bool)),	this,	SLOT(addReply(bool)));
+	connect(ui.actSelect,	SIGNAL(toggled(bool)),	this,	SLOT(selection(bool)));
+	connect(ui.actStop,		SIGNAL(toggled(bool)),	this,	SLOT(addStop(bool)));
 }
 
 Sumleditor::~Sumleditor()
@@ -26,65 +35,68 @@ Sumleditor::~Sumleditor()
 /**
  * Слот, срабатывающий при нажатии кнопки выбора объекта.
  */
-void Sumleditor::selection()
+void Sumleditor::selection(bool checked)
 {
-	qDebug("selection");
+	if (checked)
+		qDebug("selection ON");
+	else
+		qDebug("selection OFF");
 }
 
 /**
  * Слот, срабатывающий при нажатии кнопки добавления линии жизни.
  */
-void Sumleditor::setLifelineAdding()
+void Sumleditor::addLifeline(bool checked)
 {
-	qDebug("setLifelineAdding");
+	qDebug("addLifeline");
 }
 
 /**
  * Слот, срабатывающий при нажатии кнопки добавления сообщения.
  */
-void Sumleditor::setMessageAdding()
+void Sumleditor::addMessage(bool checked)
 {
-	qDebug("setMessageAdding");
+	qDebug("addMessage");
 }
 
 /**
  * Слот, срабатывающий при нажатии кнопки добавления сообщения создания линии жизни.
  */
-void Sumleditor::setCreateAdding()
+void Sumleditor::addCreate(bool checked)
 {
-	qDebug("setCreateAdding");
+	qDebug("addCreate");
 }
 
 /**
  * Слот, срабатывающий при нажатии кнопки добавления сообщения удаления линии жизни.
  */
-void Sumleditor::setDeleteAdding()
+void Sumleditor::addDelete(bool checked)
 {
-	qDebug("setDeleteAdding");
+	qDebug("addDelete");
 }
 
 /**
  * Слот, срабатывающий при нажатии кнопки добавления возвратного сообщения.
  */
-void Sumleditor::setReplyAdding()
+void Sumleditor::addReply(bool checked)
 {
-	qDebug("setReplyAdding");
+	qDebug("addReply");
 }
 
 /**
  * Слот, срабатывающий при нажатии кнопки выбора объекта.
  */
-void Sumleditor::setStopAdding()
+void Sumleditor::addStop(bool checked)
 {
-	qDebug("setStopAdding");
+	qDebug("addStop");
 }
 
 /**
  * Слот, срабатывающий при нажатии кнопки выбора объекта.
  */
-void Sumleditor::setCommentAdding()
+void Sumleditor::addComment(bool checked)
 {
-	qDebug("setCommentAdding");
+	qDebug("addComment");
 }
 
 
@@ -117,7 +129,7 @@ void Sumleditor::setCommentAdding()
 
 //connect(ui.actLifeline,SIGNAL(toggled(bool)),diagram,SLOT(addObject(bool)));
 //connect(ui.actComment,SIGNAL(toggled(bool)),this,SLOT(addComment(bool)));
-//connect(ui.descrEdit,SIGNAL(textChanged()),this,SLOT(setComment()));
+//connect(ui.descrEdit,SIGNAL(textChanged()),this,SLOT(addComment()));
 
 ///** Слот для добавления комментария на сцену. */
 //void sumleditor::addComment(bool isChecked)
