@@ -28,7 +28,7 @@ Sumleditor::~Sumleditor()
  */
 void Sumleditor::selection()
 {
-
+	qDebug("selection");
 }
 
 /**
@@ -36,7 +36,7 @@ void Sumleditor::selection()
  */
 void Sumleditor::setLifelineAdding()
 {
-
+	qDebug("setLifelineAdding");
 }
 
 /**
@@ -44,7 +44,7 @@ void Sumleditor::setLifelineAdding()
  */
 void Sumleditor::setMessageAdding()
 {
-
+	qDebug("setMessageAdding");
 }
 
 /**
@@ -52,7 +52,7 @@ void Sumleditor::setMessageAdding()
  */
 void Sumleditor::setCreateAdding()
 {
-
+	qDebug("setCreateAdding");
 }
 
 /**
@@ -60,7 +60,7 @@ void Sumleditor::setCreateAdding()
  */
 void Sumleditor::setDeleteAdding()
 {
-
+	qDebug("setDeleteAdding");
 }
 
 /**
@@ -68,7 +68,7 @@ void Sumleditor::setDeleteAdding()
  */
 void Sumleditor::setReplyAdding()
 {
-
+	qDebug("setReplyAdding");
 }
 
 /**
@@ -76,7 +76,7 @@ void Sumleditor::setReplyAdding()
  */
 void Sumleditor::setStopAdding()
 {
-
+	qDebug("setStopAdding");
 }
 
 /**
@@ -84,7 +84,7 @@ void Sumleditor::setStopAdding()
  */
 void Sumleditor::setCommentAdding()
 {
-
+	qDebug("setCommentAdding");
 }
 
 
