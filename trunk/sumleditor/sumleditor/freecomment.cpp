@@ -80,8 +80,7 @@ void FreeComment::getCurrentCoords()
 {
 	x = this->pos().x();
 	y = this->pos().y();
-	z = this->zValue();
-	
+	z = this->zValue();	
 }
 
 /** Задать объекту координаты на сцене. */
