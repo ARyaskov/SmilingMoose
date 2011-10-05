@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project name ="Test project">
+  
+  <properties>
+    <create_date> 01.01.2010  </create_date>
+    <author>      Test author </author>
+    <isDraft>     true        </isDraft>
+  </properties>
+
+  <diagram total_count ="5">
+    
+    <lifelines count ="2">
+      <lifeline id="0" name="LL1" x="5" y="4" z="2" description ="bl bl bl" is_end="true" />
+      <lifeline id="1" name="LL2" x="4" y="3" z="2" description ="qwe re asd" is_end="false" />
+    </lifelines>
+
+    <messages count ="2">
+      <!-- type="simple, input, output, reply, create, destroy-->
+      <message name="M1" type="simple " start_id="0" end_id="1" x="2" y="2" z="1" description="qwe" />
+      <message name="M2" type="simple" start__id="0" end_id="1" x="2" y="2" z="2" description="qwe" />
+    </messages>
+
+    <comments count ="1">
+      <comment name="yty" x="5" y="5" z="3">
+        commentcommentcomment comment commentcomment
+      </comment>
+    </comments>
+    
+  </diagram>
+  
+</project>
