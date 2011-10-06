@@ -3,14 +3,8 @@
 
 #include <QGraphicsItem>
 #include <QRectF>
-
 #include <QPainterPath>
-#include "graphwidget.h"
-#include "sumleditor.h"
-
-class GraphWidget;
-class LifeLine;
-
+#include "comfunctions.h"
 
 
 /**

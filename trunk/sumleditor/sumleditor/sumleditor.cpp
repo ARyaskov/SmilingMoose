@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "sumleditor.h"
-
 #include <QTextCodec>
 
 Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)

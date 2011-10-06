@@ -3,14 +3,12 @@
 #include <QtGui>
 #include <QtTest>
 
-/** Цвет состояния "Предупреждение" */
-QColor warning_color;
 
-/** Цвет состояния "Ошибка" */
-QColor error_color;
 
-/** Цвет состояния "Внимание" */
-QColor attention_color;
+class FreeComment;
+class GraphWidget;
+class Sumleditor;
+class LifeLine;
 
 /** 
 * Функция меняет цвет выбранного виджета.
@@ -27,5 +25,10 @@ void fadeInto(QWidget* widget, QColor& color);
 * @param times Количество раз
 */
 void blink(QWidget* widget, QColor& color1, QColor& color2, int times);
+
+#include "graphwidget.h"
+#include "lifeline.h"
+#include "freecomment.h"
+#include "sumleditor.h"
 
 #endif

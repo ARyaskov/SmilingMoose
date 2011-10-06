@@ -5,8 +5,7 @@
 #include "validators.h"
 #include "comfunctions.h"
 #include "ui_sumleditor.h"
-#include "graphwidget.h"
-#include "freecomment.h"
+
 
 /**
  * Перечисление Типы сообщений.

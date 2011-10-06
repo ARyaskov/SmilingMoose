@@ -4,10 +4,9 @@
 #include <QGraphicsItem>
 #include <QRectF>
 #include <QPainterPath>
+#include "comfunctions.h"
 
 
-class FreeComment;
-class GraphWidget;
 
 /**
  * Класс описывающий свободный комментарий на сцене.
