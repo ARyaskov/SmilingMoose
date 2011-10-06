@@ -8,6 +8,24 @@
 #include "graphwidget.h"
 #include "freecomment.h"
 
+/**
+ * Перечисление Типы сообщений.
+ */
+enum MessageType
+{	
+	MSIMPLE,		    /** Простое сообщение.          	  */
+	
+	MCREATE,	        /** Сообщение создания.	        	  */
+	
+	MDELETE,	        /** Сообщение удаления.			      */
+	 
+	MRETURN,		    /** Сообщение с возвратом.	          */
+	
+	MFROM_SPACE,		/** Сообщение "Из космоса".       	  */
+	
+	MTO_SPACE		    /** Сообщение "В космос".             */
+};
+
 class Sumleditor : public QMainWindow
 {
 	Q_OBJECT
