@@ -20,6 +20,9 @@ public:
 	/* Метод сохранения комментария в xml файл. */
 	QDomElement save (QDomDocument & domDoc) const;
 
+	/* Перегрузка оператора сравнения */
+	bool operator== (const FreeCommentForTest & other) const;
+
 private:
 
 	/* Поля в данном классе только необходимые для тестирования. */

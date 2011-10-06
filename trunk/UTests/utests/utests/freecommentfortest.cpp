@@ -49,3 +49,13 @@ QDomElement FreeCommentForTest::save(QDomDocument &domDoc) const
 
 	return element;
 }
+bool FreeCommentForTest::operator ==(const FreeCommentForTest &other) const
+{
+	bool flag = false;
+
+	if (text == other.text && name == other.name &&
+		x == other.x && y == other.y && z == other.z)
+		flag = true;
+
+	return flag;
+}
