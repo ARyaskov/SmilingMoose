@@ -3,12 +3,17 @@
 
 #include <QGraphicsView>
 #include "comfunctions.h"
-#include "lifeline.h"
-#include "freecomment.h"
-
-class Sumleditor;
 
 
+
+/** Цвет состояния "Предупреждение" */
+static QColor warning_color;
+
+/** Цвет состояния "Ошибка" */
+static QColor error_color;
+
+/** Цвет состояния "Внимание" */
+static QColor attention_color;
 
 /**
  * Перечисление состояний программы.

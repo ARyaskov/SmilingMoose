@@ -7,6 +7,10 @@
 GraphWidget::GraphWidget(QWidget *parent)
 : QGraphicsView(parent)
 {
+    error_color = QColor(247,115,115);
+	warning_color = QColor(243,193,127);
+    attention_color = QColor(250,232,139);
+
 	scene = new QGraphicsScene(this);					// Создание сцены
 
 	scene->setItemIndexMethod(QGraphicsScene::NoIndex);	// Задание метода индексирования сцены
