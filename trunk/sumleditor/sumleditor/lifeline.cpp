@@ -4,6 +4,7 @@
 /** Конструктор по умолчанию. */
 LifeLine::LifeLine(GraphWidget *graphWidget)
 {
+	graph = graphWidget;
 	// Задаем параметры фигуре
 	setFlag(ItemIsSelectable);
 	setFlag(ItemIsMovable);
@@ -37,40 +38,43 @@ QPainterPath  LifeLine::shape() const
 /** Нарисовать фигуру. */
 void  LifeLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	QLinearGradient gradient(0,0,90,30);					// Задать градиент фигуре
 
-	gradient.setColorAt(0, QColor(Qt::cyan).light(100));	// Цвета градиента
-	gradient.setColorAt(1, QColor(Qt::darkCyan));
+		QLinearGradient gradient(0,0,90,30);					// Задать градиент фигуре
 
-	// Нарисовать прямоугольник объекта
-	painter->setBrush(gradient);
-	painter->setPen(QPen(Qt::black, 2));
-	painter->drawRect(0,0,90,30);
-	
-	QRectF textRect(0,0,90,30);								// Прямоугольник с текстом
+		gradient.setColorAt(0, QColor(Qt::cyan).light(100));	// Цвета градиента
+		gradient.setColorAt(1, QColor(Qt::darkCyan));
 
-	// Задать шрифт
-	QFont font = painter->font();
-	font.setBold(true);
-	font.setPointSize(8);
 
-	painter->setFont(font);
-	painter->setPen(Qt::black);
+		// Нарисовать прямоугольник объекта
+		painter->setBrush(gradient);
+		painter->setPen(QPen(Qt::black, 2));
+		painter->drawRect(0,0,90,30);
 
-	// Задать свойства тексту
-	QTextOption opt;
-	opt.setAlignment(Qt::AlignCenter);
+		QRectF textRect(0,0,90,30);								// Прямоугольник с текстом
 
-	painter->drawText(textRect.translated(2, 2),QString("LifeLine 1"),opt); // Create shadow of the name
-	
-	// Нарисовать текст
-	painter->setPen(Qt::white);
-	painter->drawText(textRect, QString("LifeLine 1"), opt);
+		// Задать шрифт
+		QFont font = painter->font();
+		font.setBold(true);
+		font.setPointSize(8);
 
-	// Нарисовать линию
-	QPen test(Qt::black,1,Qt::DashLine);
-	painter->setPen(test);
-	painter->drawLine(45,30,45,90);
+		painter->setFont(font);
+		painter->setPen(Qt::black);
+
+		// Задать свойства тексту
+		QTextOption opt;
+		opt.setAlignment(Qt::AlignCenter);
+
+		painter->drawText(textRect.translated(2, 2),graph->getParentWindow()->getUI()->nameEdit->text(),opt); // Create shadow of the name
+
+		// Нарисовать текст
+		painter->setPen(Qt::white);
+		painter->drawText(textRect, graph->getParentWindow()->getUI()->nameEdit->text(), opt);
+
+		// Нарисовать линию
+		QPen test(Qt::black,1,Qt::DashLine);
+		painter->setPen(test);
+		painter->drawLine(45,30,45,90);
+
 }
 
 /** Событие клика пользователем на фигуру. */

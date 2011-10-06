@@ -5,13 +5,13 @@
 
 /** Класс, реализующий виджет сцены для отрисовки диаграммы в главном окне. */
 GraphWidget::GraphWidget(QWidget *parent)
-	: QGraphicsView(parent)
+: QGraphicsView(parent)
 {
 	scene = new QGraphicsScene(this);					// Создание сцены
 
 	scene->setItemIndexMethod(QGraphicsScene::NoIndex);	// Задание метода индексирования сцены
 	setOptimizationFlags(QGraphicsView::DontSavePainterState);
-	
+
 	scene->setSceneRect(-300,-300,600,600);				// Задание стандартных размеров сцене
 	scene->setBackgroundBrush(QColor(200,240,240));		// Задание цвета фона
 	setScene(scene);									// Задание текущей сцены на виджете
@@ -51,12 +51,51 @@ void GraphWidget::scaleView(qreal scaleFactor)
 	scale(scaleFactor, scaleFactor);
 }
 
+/** Слот для события перемещения указателя мыши. */
+void GraphWidget::mouseMoveEvent(QMouseEvent * event)
+{
+	if (!getParentWindow()->getUI()->mainToolBar->isEnabled())
+		this->viewport()->setCursor(Qt::CrossCursor);
+
+}
+/** Слот для события нажатия на кнопку мыши. */
+void GraphWidget::mousePressEvent(QMouseEvent * event)
+{
+
+	if (getParentWindow()->getUI()->nameEdit->text().length())
+	{
+		if (!getParentWindow()->getUI()->mainToolBar->isEnabled()){
+			if (existDublicate())
+			{
+				QMessageBox::information(this, "Attention!", "This lifeline already exist on scene!");
+			}
+			else
+			{
+				LifeLine* lifeline1 = new LifeLine(this);
+				lifeline1->setPos(mapToScene(event->x(), event->y()) );
+				scene->addItem(lifeline1);
+				getParentWindow()->getUI()->mainToolBar->setEnabled(true);
+				getParentWindow()->getUI()->actCancel->setEnabled(false);
+				fadeInto(getParentWindow()->getUI()->nameEdit, QColor(255,255,255));
+			}
+		}else
+		{
+			blink(getParentWindow()->getUI()->mainToolBar,QColor(255,255,255), attention_color, 1);
+		}
+	}
+	else
+	{
+		blink(getParentWindow()->getUI()->nameEdit,QColor(255,255,255), error_color,2);
+	}
+
+}
 
 
-
-
-
-
+bool GraphWidget::existDublicate()
+{
+	// Implement this later
+	return false;
+}
 
 
 

@@ -6,8 +6,12 @@
 
 #include <QPainterPath>
 #include "graphwidget.h"
+#include "sumleditor.h"
 
 class GraphWidget;
+class LifeLine;
+
+
 
 /**
  * Класс, описывающий объект и его линию жизни.
@@ -44,7 +48,7 @@ public:
 	 * @param option Свойства отрисовки.
 	 * @param widget Виджет, на котором рисуем.
 	 */
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
 	/**
 	 * Перечисление идентификатор типа объекта.

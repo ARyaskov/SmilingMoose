@@ -2,6 +2,8 @@
 #define SUMLEDITOR_H
 
 #include <QtGui/QMainWindow>
+#include "validators.h"
+#include "comfunctions.h"
 #include "ui_sumleditor.h"
 #include "graphwidget.h"
 #include "freecomment.h"
@@ -14,10 +16,13 @@ public:
 	Sumleditor(QWidget *parent = 0, Qt::WFlags flags = 0);
 	~Sumleditor();
 
+	Ui::SumleditorClass* getUI() {return &ui;};
 private:
 	Ui::SumleditorClass ui;
 	
 	GraphWidget* diagram;	/** Графический виджет сцены. */
+
+	QValidator * nameLE_val;/** Валидатор поля ввода имени. */
 
 private slots:
 	/**
@@ -28,37 +33,48 @@ private slots:
 	/**
 	 * Слот, срабатывающий при нажатии кнопки добавления линии жизни.
 	 */
-	void addLifeline(bool checked);
+	void addLifeline();
 
 	/**
 	 * Слот, срабатывающий при нажатии кнопки добавления сообщения.
 	 */
-	void addMessage(bool checked);
+	void addMessage();
 
 	/**
 	 * Слот, срабатывающий при нажатии кнопки добавления сообщения создания линии жизни.
 	 */
-	void addCreate(bool checked);
+	void addCreate();
 
 	/**
 	 * Слот, срабатывающий при нажатии кнопки добавления сообщения удаления линии жизни.
 	 */
-	void addDelete(bool checked);
+	void addDelete();
 
 	/**
 	 * Слот, срабатывающий при нажатии кнопки добавления возвратного сообщения.
 	 */
-	void addReply(bool checked);
+	void addReply();
 
 	/**
 	 * Слот, срабатывающий при нажатии кнопки выбора объекта.
 	 */
-	void addStop(bool checked);
+	void addStop();
 
 	/**
 	 * Слот, срабатывающий при нажатии кнопки выбора объекта.
 	 */
-	void addComment(bool checked);
+	void addComment();
+	
+	/**
+	 * Слот, срабатывающий при изменении текста в поле ввода.
+	 */
+	void nameLEChanged(const QString & text);
+	
+    /**
+	 * Слот, обрабатывающий нажатие на Cancel, либо на  Esc
+	 */
+	void cancel();
+
 };
 
 #endif // SUMLEDITOR_H
