@@ -5,8 +5,8 @@
 #include <QRectF>
 #include <QPainterPath>
 
-#include "graphwidget.h"
 
+class FreeComment;
 class GraphWidget;
 
 /**

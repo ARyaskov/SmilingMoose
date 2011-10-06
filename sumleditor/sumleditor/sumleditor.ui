@@ -68,6 +68,7 @@
    <addaction name="actDestroy"/>
    <addaction name="actStop"/>
    <addaction name="actComment"/>
+   <addaction name="actCancel"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="upperDock">
@@ -240,7 +241,7 @@
   </action>
   <action name="actLifeline">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="icon">
     <iconset resource="sumleditor.qrc">
@@ -252,7 +253,7 @@
   </action>
   <action name="actMessage">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="icon">
     <iconset resource="sumleditor.qrc">
@@ -264,7 +265,7 @@
   </action>
   <action name="actReply">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="icon">
     <iconset resource="sumleditor.qrc">
@@ -276,7 +277,7 @@
   </action>
   <action name="actCreate">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="icon">
     <iconset resource="sumleditor.qrc">
@@ -288,7 +289,7 @@
   </action>
   <action name="actDestroy">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="icon">
     <iconset resource="sumleditor.qrc">
@@ -300,7 +301,7 @@
   </action>
   <action name="actStop">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="icon">
     <iconset resource="sumleditor.qrc">
@@ -312,7 +313,7 @@
   </action>
   <action name="actComment">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="icon">
     <iconset resource="sumleditor.qrc">
@@ -320,6 +321,21 @@
    </property>
    <property name="text">
     <string>Comment</string>
+   </property>
+  </action>
+  <action name="actCancel">
+   <property name="icon">
+    <iconset resource="sumleditor.qrc">
+     <normaloff>:/sumleditor/Resources/cancel.bmp</normaloff>:/sumleditor/Resources/cancel.bmp</iconset>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="toolTip">
+    <string>Cancel action</string>
+   </property>
+   <property name="shortcut">
+    <string>Esc</string>
    </property>
   </action>
  </widget>

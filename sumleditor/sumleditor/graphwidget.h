@@ -2,12 +2,13 @@
 #define GRAPHWIDGET_H
 
 #include <QGraphicsView>
+#include "comfunctions.h"
 #include "lifeline.h"
 #include "freecomment.h"
 
 class Sumleditor;
-class LifeLine;
-class FreeComment;
+
+
 
 /**
  * Перечисление состояний программы.
@@ -50,6 +51,15 @@ public:
 	 */
 	~GraphWidget();
 
+    /** 
+	 * Функция возвращает указатель на объект пользовательского интерфейса
+	 */
+    Sumleditor* getParentWindow()const { return mainWnd; }
+
+	/** 
+	 * Функция проверяет есть ли на сцене линия жизни с таким же именем
+	 */
+	bool existDublicate();
 private:
 	QGraphicsScene* scene;  /** Указатель на динамический объект сцены. */
 
@@ -69,6 +79,19 @@ protected:
 	 * @param scaleFactor Величина прокрутки.
 	 */
 	void scaleView(qreal scaleFactor);
+
+	
+	/** 
+	 * Событие перемещения указателя мыши
+	 * @param event Указатель на событие.
+	 */
+    void mouseMoveEvent ( QMouseEvent * event );
+
+	/** 
+	 * Событие нажатия на кнопку мыши
+	 * @param event Указатель на событие.
+	 */
+    void mousePressEvent(QMouseEvent * event);
 
 private slots:
 

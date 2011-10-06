@@ -7,6 +7,7 @@
     <file>resources/message.bmp</file>
     <file>resources/replymessage.bmp</file>
     <file>resources/select.bmp</file>
+    <file>Resources/cancel.bmp</file>
     <file>resources/stop.bmp</file>
   </qresource>
 </RCC>
