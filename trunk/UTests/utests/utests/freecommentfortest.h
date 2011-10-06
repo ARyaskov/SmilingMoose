@@ -19,6 +19,9 @@ public:
 
 	/* Метод сохранения комментария в xml файл. */
 	QDomElement save (QDomDocument & domDoc) const;
+	
+	/* Метод считывания комментария из xml файла. */
+	void load (const QDomElement & element);
 
 	/* Перегрузка оператора сравнения */
 	bool operator== (const FreeCommentForTest & other) const;
