@@ -43,6 +43,40 @@ private:
 		}
 	}
 
+	/* Чтение свободного комментария из xml файла. */
+	FreeCommentForTest load (QString filename)
+	{
+		FreeCommentForTest fcft;
+		QDomDocument domDoc;
+		QFile file(filename);
+
+		if (file.open(QIODevice::ReadOnly))
+		{
+			if (domDoc.setContent(&file))
+			{
+				QDomNode node = domDoc.documentElement().firstChild();
+
+				while (!node.isNull())
+				{
+					if (node.isElement())
+					{
+						QDomElement domElement = node.toElement();
+						if (!domElement.isNull())
+						{
+							if (domElement.tagName() == "freecomment")
+							{
+								fcft.load(domElement);
+							}
+						}
+					}
+					node = node.nextSibling();
+				}
+			}
+		}
+
+		return fcft;
+	}
+
 	/* Функция проверки существования файла. */
 	bool isFileExist (QString filename)
 	{
@@ -60,6 +94,10 @@ private slots:
 	/* Тестирование сохранения в файл. */
 	void createXml_data();
 	void createXml();
+
+	/* Тестирование считывания из файла. */
+	void readXml_data();
+	void readXml();
 
 };
 
@@ -92,6 +130,31 @@ void Test_SUMLEditorProject::createXml()
 
 	QCOMPARE(xmlStr, result);
 	QCOMPARE(isFileExist(filename),true);
+}
+
+void Test_SUMLEditorProject::readXml_data()
+{
+	QTest::addColumn<FreeCommentForTest>("comment");
+	QTest::addColumn<QString>("filename");
+
+	FreeCommentForTest f1 = FreeCommentForTest();
+	QString s2 = "XML_Test_1.xml";
+
+	QTest::newRow("Test_1") << f1 << s2;
+
+	FreeCommentForTest f12 = FreeCommentForTest("My text", "My name", 10, 11, 12);
+	QString s22 = "XML_Test_2.xml";
+
+	QTest::newRow("Test_2") << f12 << s22;
+}
+void Test_SUMLEditorProject::readXml()
+{
+	QFETCH(FreeCommentForTest,comment);
+	QFETCH(QString,filename);
+
+	FreeCommentForTest result = load(filename);
+
+	QCOMPARE(comment.operator ==(result), true);
 }
 
 QTEST_MAIN(Test_SUMLEditorProject)

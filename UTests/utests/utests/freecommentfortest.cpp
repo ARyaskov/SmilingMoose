@@ -49,6 +49,16 @@ QDomElement FreeCommentForTest::save(QDomDocument &domDoc) const
 
 	return element;
 }
+
+void FreeCommentForTest::load (const QDomElement & element)
+{
+	text = element.attribute("text", "text");
+	name = element.attribute("name", "name");
+	x    = element.attribute("x", "-1").toInt();
+	y    = element.attribute("y", "-1").toInt();
+	z    = element.attribute("z", "-1").toInt();
+}
+
 bool FreeCommentForTest::operator ==(const FreeCommentForTest &other) const
 {
 	bool flag = false;

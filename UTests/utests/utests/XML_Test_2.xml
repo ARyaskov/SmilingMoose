@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE test_comment>
+<comments>
+  <freecomment x ="10" y ="11" z ="12" name ="My name" text ="My text" />
+</comments>
