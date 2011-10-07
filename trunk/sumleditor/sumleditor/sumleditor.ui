@@ -326,7 +326,7 @@
   <action name="actCancel">
    <property name="icon">
     <iconset resource="sumleditor.qrc">
-     <normaloff>:/sumleditor/Resources/cancel.bmp</normaloff>:/sumleditor/Resources/cancel.bmp</iconset>
+     <normaloff>:/sumleditor/resources/cancel.bmp</normaloff>:/sumleditor/resources/cancel.bmp</iconset>
    </property>
    <property name="text">
     <string/>
