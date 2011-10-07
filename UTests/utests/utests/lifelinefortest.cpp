@@ -71,3 +71,18 @@ bool LifelineForTest::operator ==(const LifelineForTest &other) const
 
 	return flag;
 }
+
+int LifelineForTest::load(const QDomElement &element)
+{
+	int id = 0;
+
+	description  = element.attribute("description", "text");
+	name         = element.attribute("name", "name");
+	x            = element.attribute("x", "-1").toInt();
+	y            = element.attribute("y", "-1").toInt();
+	z            = element.attribute("z", "-1").toInt();
+	id           = element.attribute("id", "0").toInt();
+	isEnd        = element.attribute("is_end", "0").toInt();
+
+	return id;
+}
