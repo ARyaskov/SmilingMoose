@@ -109,6 +109,40 @@ private:
 		return flag;
 	}
 
+	/* Чтение свободного комментария из xml файла. */
+	LifelineForTest loadLL (QString filename, int* u)
+	{
+		LifelineForTest fcft;
+		QDomDocument domDoc;
+		QFile file(filename);
+
+		if (file.open(QIODevice::ReadOnly))
+		{
+			if (domDoc.setContent(&file))
+			{
+				QDomNode node = domDoc.documentElement().firstChild();
+
+				while (!node.isNull())
+				{
+					if (node.isElement())
+					{
+						QDomElement domElement = node.toElement();
+						if (!domElement.isNull())
+						{
+							if (domElement.tagName() == "lifeline")
+							{
+								*u = fcft.load(domElement);
+							}
+						}
+					}
+					node = node.nextSibling();
+				}
+			}
+		}
+
+		return fcft;
+	}
+
 private slots:
 
 	/* Тестирование сохранения в файл. */
@@ -122,6 +156,10 @@ private slots:
 	/* Тестирование сохранения линии жизни в файл. */
 	void writeLLtoXml_data();
 	void writeLLtoXml();
+
+	/* Тестирование считывания линии жизни из файла. */
+	void readLLFromXml_data();
+	void readLLFromXml();
 
 };
 
@@ -214,6 +252,35 @@ void Test_SUMLEditorProject::writeLLtoXml()
 
 	QCOMPARE(xmlStr, result);
 	QCOMPARE(isFileExist(filename),true);
+}
+
+void Test_SUMLEditorProject::readLLFromXml_data()
+{
+	QTest::addColumn<LifelineForTest>("lifeline");
+	QTest::addColumn<QString>("filename");
+	QTest::addColumn<int>("_id");
+
+	LifelineForTest f1 = LifelineForTest();
+	QString s2 = "XML_Test_LL_1.xml";
+
+	QTest::newRow("Test_1") << f1 << s2 << 100;
+
+	LifelineForTest l2 = LifelineForTest("www", "fff", false, 90, 78, 34);
+	QString s22 = "XML_Test_LL_2.xml";
+
+	QTest::newRow("Test_2") << l2 << s22 << 0;
+}
+void Test_SUMLEditorProject::readLLFromXml()
+{
+	QFETCH(LifelineForTest,lifeline);
+	QFETCH(QString,filename);
+	QFETCH(int, _id);
+
+	int y = -99;
+	LifelineForTest result = loadLL(filename, &y);
+
+	QCOMPARE(lifeline.operator ==(result), true);
+	QCOMPARE(y, _id);
 }
 
 QTEST_MAIN(Test_SUMLEditorProject)

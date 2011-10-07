@@ -23,6 +23,9 @@ public:
 	/* Перегрузка оператора сравнения. */
 	bool operator== (const LifelineForTest & other) const;
 
+	/* Метод считывания линий жизни из xml файла. */
+	int load (const QDomElement & element);
+
 private:
 	
 	/* Поля класса */
