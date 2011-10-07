@@ -1,7 +1,9 @@
 #include <QtTest>
 #include "freecommentfortest.h"
+#include "lifelinefortest.h"
 
 Q_DECLARE_METATYPE(FreeCommentForTest)
+Q_DECLARE_METATYPE(LifelineForTest)
 
 class Test_SUMLEditorProject : public QObject
 {
@@ -33,6 +35,24 @@ private:
 		doc.appendChild(domElement);
 
 		QDomElement dom = fcft.save(doc);
+		domElement.appendChild(dom);
+
+		QFile file(filename);
+		if (file.open(QIODevice::WriteOnly))
+		{
+			QTextStream(&file) << doc.toString();
+			file.close();
+		}
+	}
+
+	/* Сохранения свободного комментария в xml файла. */
+	void save (QString filename, LifelineForTest llft)
+	{
+		QDomDocument doc("test_lifelines");
+		QDomElement domElement = doc.createElement("lifelines");
+		doc.appendChild(domElement);
+
+		QDomElement dom = llft.save(doc, 0);
 		domElement.appendChild(dom);
 
 		QFile file(filename);
@@ -99,6 +119,10 @@ private slots:
 	void readXml_data();
 	void readXml();
 
+	/* Тестирование сохранения линии жизни в файл. */
+	void writeLLtoXml_data();
+	void writeLLtoXml();
+
 };
 
 void Test_SUMLEditorProject::createXml_data()
@@ -155,6 +179,41 @@ void Test_SUMLEditorProject::readXml()
 	FreeCommentForTest result = load(filename);
 
 	QCOMPARE(comment.operator ==(result), true);
+}
+
+void Test_SUMLEditorProject::writeLLtoXml_data()
+{
+	QTest::addColumn<LifelineForTest>("ll");
+	QTest::addColumn<QString>("xmlStr");
+	QTest::addColumn<QString>("filename");
+
+	LifelineForTest l1 = LifelineForTest();
+	QString s2 = "firstllTest.xml";
+	QString s1 = QString("<!DOCTYPE test_lifelines>\n<lifelines>\n <lifeline x=\"-1\" y=\"-1\" z=\"-1\" description=\"description\" is_end=\"0\" id=\"0\" name=\"name\"/>\n</lifelines>\n");
+
+	QTest::newRow("Test_1") << l1 << s1 << s2;
+
+	LifelineForTest l2 = LifelineForTest("qqq", "ddd", true, 10, 20, 30);
+	QString s12 = QString("<!DOCTYPE test_lifelines>\n<lifelines>\n <lifeline x=\"10\" y=\"20\" z=\"30\" description=\"ddd\" is_end=\"1\" id=\"0\" name=\"qqq\"/>\n</lifelines>\n");
+
+	QTest::newRow("Test_2") << l2 << s12 << s2;
+
+	LifelineForTest l3 = LifelineForTest("www", "fff", false, 90, 78, 34);
+	QString s3 = QString("<!DOCTYPE test_lifelines>\n<lifelines>\n <lifeline x=\"90\" y=\"78\" z=\"34\" description=\"fff\" is_end=\"0\" id=\"0\" name=\"www\"/>\n</lifelines>\n");
+
+	QTest::newRow("Test_3") << l3 << s3 << s2;
+}
+void Test_SUMLEditorProject::writeLLtoXml()
+{
+	QFETCH(LifelineForTest,ll);
+	QFETCH(QString,xmlStr);
+	QFETCH(QString,filename);
+
+	save(filename,ll);
+	QString result = readXmlFile(filename);
+
+	QCOMPARE(xmlStr, result);
+	QCOMPARE(isFileExist(filename),true);
 }
 
 QTEST_MAIN(Test_SUMLEditorProject)
