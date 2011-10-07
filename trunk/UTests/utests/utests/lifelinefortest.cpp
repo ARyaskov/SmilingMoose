@@ -60,3 +60,14 @@ QDomElement LifelineForTest::save(QDomDocument &domDoc, int id) const
 
 	return element;
 }
+
+bool LifelineForTest::operator ==(const LifelineForTest &other) const
+{
+	bool flag = false;
+
+	if (name == other.name && description == other.description &&
+		isEnd == other.isEnd && x == other.x && y == other.y && z == other.z)
+		flag = true;
+
+	return flag;
+}

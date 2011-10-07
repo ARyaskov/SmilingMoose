@@ -20,6 +20,9 @@ public:
 	/* Метод сохранения линии жизни в xml файл. */
 	QDomElement save(QDomDocument & domDoc, int id) const;
 
+	/* Перегрузка оператора сравнения. */
+	bool operator== (const LifelineForTest & other) const;
+
 private:
 	
 	/* Поля класса */
