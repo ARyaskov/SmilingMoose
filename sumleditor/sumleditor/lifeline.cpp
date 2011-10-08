@@ -1,104 +1,12 @@
 #include "StdAfx.h"
 #include "lifeline.h"
 
-/** Конструктор по умолчанию. */
-LifeLine::LifeLine(GraphWidget *graphWidget)
-{
-	graph = graphWidget;
-	// Задаем параметры фигуре
-	setFlag(ItemIsSelectable);
-	setFlag(ItemIsMovable);
-	setFlag(ItemSendsGeometryChanges);
-	this->setCursor(Qt::SizeAllCursor);
-	setCacheMode(DeviceCoordinateCache);
-	setZValue(-1);
-}
-
-/** Деструктор по умолчанию. */
-LifeLine::~LifeLine()
+Lifeline::Lifeline(GraphWidget *graphWidget)
 {
 
 }
 
-/** Вернуть прямоугольник границ фигуры. */
-QRectF LifeLine::boundingRect() const
-{
-	return QRectF(0,0,90,30);
-}
-
-/** Вернуть форму фигуры. */
-QPainterPath  LifeLine::shape() const
-{
-	QPainterPath path;
-	path.addRect(0,0,90,30);
-
-	return path;
-}
-
-/** Нарисовать фигуру. */
-void  LifeLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+Lifeline::~Lifeline()
 {
 
-		QLinearGradient gradient(0,0,90,30);					// Задать градиент фигуре
-
-		gradient.setColorAt(0, QColor(Qt::cyan).light(100));	// Цвета градиента
-		gradient.setColorAt(1, QColor(Qt::darkCyan));
-
-
-		// Нарисовать прямоугольник объекта
-		painter->setBrush(gradient);
-		painter->setPen(QPen(Qt::black, 2));
-		painter->drawRect(0,0,90,30);
-
-		QRectF textRect(0,0,90,30);								// Прямоугольник с текстом
-
-		// Задать шрифт
-		QFont font = painter->font();
-		font.setBold(true);
-		font.setPointSize(8);
-
-		painter->setFont(font);
-		painter->setPen(Qt::black);
-
-		// Задать свойства тексту
-		QTextOption opt;
-		opt.setAlignment(Qt::AlignCenter);
-
-		painter->drawText(textRect.translated(2, 2),graph->getParentWindow()->getUI()->nameEdit->text(),opt); // Create shadow of the name
-
-		// Нарисовать текст
-		painter->setPen(Qt::white);
-		painter->drawText(textRect, graph->getParentWindow()->getUI()->nameEdit->text(), opt);
-
-		// Нарисовать линию
-		QPen test(Qt::black,1,Qt::DashLine);
-		painter->setPen(test);
-		painter->drawLine(45,30,45,90);
-
-}
-
-/** Событие клика пользователем на фигуру. */
-void  LifeLine::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-	update();
-	QGraphicsItem::mousePressEvent(event);
-}
-
-/** Задать полям координат текущие значения координат объекта на сцене. */
-void LifeLine::getCurrentCoords()
-{
-	x = this->pos().x();
-	y = this->pos().y();
-	z = this->zValue();	
-}
-
-/** Задать объекту координаты на сцене. */
-void LifeLine::setCoords(double newX, double newY, double newZ)
-{
-	x = newX;
-	y = newY;
-	z = newZ;
-	this->setX(x);
-	this->setY(y);
-	this->setZValue(z);
 }

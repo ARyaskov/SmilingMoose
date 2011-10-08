@@ -20,7 +20,7 @@ GraphWidget::GraphWidget(QWidget *parent)
 	scene->setBackgroundBrush(QColor(200,240,240));		// Задание цвета фона
 	setScene(scene);									// Задание текущей сцены на виджете
 
-	setDragMode(QGraphicsView::ScrollHandDrag);			// Задать перемещение по сцене "рукой"
+	//setDragMode(QGraphicsView::ScrollHandDrag);			// Задать перемещение по сцене "рукой"
 
 	// Задать параметры сцене
 	setCacheMode(CacheBackground);								
@@ -65,19 +65,25 @@ void GraphWidget::mouseMoveEvent(QMouseEvent * event)
 /** Слот для события нажатия на кнопку мыши. */
 void GraphWidget::mousePressEvent(QMouseEvent * event)
 {
+	QList<QGraphicsItem *>lifelineList;
+	QGraphicsItemGroup *lifelineGroup;
 
 	if (getParentWindow()->getUI()->nameEdit->text().length())
 	{
 		if (!getParentWindow()->getUI()->mainToolBar->isEnabled()){
 			if (existDublicate())
 			{
-				QMessageBox::information(this, "Attention!", "This lifeline already exist on scene!");
+				QMessageBox::information(this, "Attention!", "This Header already exist on scene!");
 			}
 			else
 			{
-				LifeLine* lifeline1 = new LifeLine(this);
+				Header* lifeline1 = new Header(this);
 				lifeline1->setPos(mapToScene(event->x(), event->y()) );
+
 				scene->addItem(lifeline1);
+
+				lifelineList.append(lifeline1);
+
 				getParentWindow()->getUI()->mainToolBar->setEnabled(true);
 				getParentWindow()->getUI()->actCancel->setEnabled(false);
 				fadeInto(getParentWindow()->getUI()->nameEdit, QColor(255,255,255));
@@ -127,7 +133,7 @@ bool GraphWidget::existDublicate()
 //{
 //	if (isChecked) // Если "утопили" кнопку.
 //	{
-//		//LifeLine *testLine = new LifeL8-w58-ybw75yine(this);
+//		//Header *testLine = new LifeL8-w58-ybw75yine(this);
 //		//FreeComment *testCom = new FreeComment(this);	// СОздаем объект комментария
 //	
 //		//QList<QGraphicsItem *>list;

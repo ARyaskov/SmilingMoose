@@ -8,7 +8,8 @@
 class FreeComment;
 class GraphWidget;
 class Sumleditor;
-class LifeLine;
+class Header;
+class Lifeline;
 
 /** 
 * Функция меняет цвет выбранного виджета.
@@ -27,8 +28,9 @@ void fadeInto(QWidget* widget, QColor& color);
 void blink(QWidget* widget, QColor& color1, QColor& color2, int times);
 
 #include "graphwidget.h"
-#include "lifeline.h"
+#include "header.h"
 #include "freecomment.h"
 #include "sumleditor.h"
+#include "lifeline.h"
 
 #endif
