@@ -34,12 +34,11 @@ Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 
 	nameLE_val=new validatorNameLE(this);
 
-
 	ui.nameEdit->setValidator(nameLE_val);
 
-	ui.actCancel->setEnabled(false);
+	ui.actCancel->setEnabled(false);	// Декативируем кнопку отмены
 
-	
+	ui.actSelect->setChecked(true);		// Режим выбора объектов
 }
 
 void Sumleditor::cancel()
@@ -64,10 +63,10 @@ Sumleditor::~Sumleditor()
 */
 void Sumleditor::selection(bool checked)
 {
-	if (checked)
-		qDebug("selection ON");
-	else
-		qDebug("selection OFF");
+	ui.actSelect->setChecked(true);					// Нажимаем текущую кнопку
+	ui.mainToolBar->setEnabled(true);				// Активируем тулбар
+	ui.actCancel->setEnabled(false);				// Декативируем кнопку отменуы
+	fadeInto(ui.nameEdit, QColor(255,255,255));		// Отключаем раскраску поля ввода имени
 }
 
 /**
@@ -75,14 +74,14 @@ void Sumleditor::selection(bool checked)
 */
 void Sumleditor::addLifeline()
 {
-	qDebug("addLifeline");
-	ui.mainToolBar->setEnabled(false);
-	//ui.actCancel->setEnabled(true);
-	ui.nameEdit->clear();
-
-	blink(ui.nameEdit, QColor(255,255,255),  attention_color, 2);
-	fadeInto(ui.nameEdit,  attention_color);
-	
+	ui.mainToolBar->setEnabled(false);			// Отключаем тулбар
+	//ui.actCancel->setEnabled(true);				// Активировать кнопку отмены
+	ui.nameEdit->clear();						// Очистить поле ввода имени заогловка
+	ui.nameEdit->setFocus();					// Задать фокус на поле ввода заголовка
+	this->diagram->setCursor(Qt::CrossCursor);	// Задаем курсор
+	this->diagram->setCurrentAct(LIFELINE);		// Действие - добавляем линию жизни
+	blink(ui.nameEdit, QColor(255,255,255),  attention_color, 2);	// Помигать
+	fadeInto(ui.nameEdit,  attention_color);	// Задаем цвет полю ввода
 }
 
 /**
@@ -130,7 +129,9 @@ void Sumleditor::addStop()
 */
 void Sumleditor::addComment()
 {
-	qDebug("addComment");
+	ui.mainToolBar->setEnabled(false);
+	ui.descrEdit->clear();					// Очистить поле ввода имени заогловка
+	ui.nameEdit->setFocus();				// Задать фокус на поле ввода заголовка
 }
 
 

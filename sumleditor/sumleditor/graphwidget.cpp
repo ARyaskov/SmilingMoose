@@ -2,6 +2,7 @@
 #include "graphwidget.h"
 #include <QGraphicsSceneMouseEvent>
 #include <QPainterPath>
+#include <QGraphicsScene>
 
 /** Класс, реализующий виджет сцены для отрисовки диаграммы в главном окне. */
 GraphWidget::GraphWidget(QWidget *parent)
@@ -58,48 +59,47 @@ void GraphWidget::scaleView(qreal scaleFactor)
 /** Слот для события перемещения указателя мыши. */
 void GraphWidget::mouseMoveEvent(QMouseEvent * event)
 {
-	if (!getParentWindow()->getUI()->mainToolBar->isEnabled())
-		this->viewport()->setCursor(Qt::CrossCursor);
 
 }
+
 /** Слот для события нажатия на кнопку мыши. */
 void GraphWidget::mousePressEvent(QMouseEvent * event)
 {
-	QList<QGraphicsItem *>lifelineList;
-	QGraphicsItemGroup *lifelineGroup;
-
-	if (getParentWindow()->getUI()->nameEdit->text().length())
+	// Если действие - выбор объекта
+	if (currentAct == SELECT)			
 	{
-		if (!getParentWindow()->getUI()->mainToolBar->isEnabled()){
-			if (existDublicate())
-			{
-				QMessageBox::information(this, "Attention!", "This Header already exist on scene!");
-			}
-			else
-			{
-				Header* lifeline1 = new Header(this);
-				lifeline1->setPos(mapToScene(event->x(), event->y()) );
-
-				scene->addItem(lifeline1);
-
-				lifelineList.append(lifeline1);
-
-				getParentWindow()->getUI()->mainToolBar->setEnabled(true);
-				getParentWindow()->getUI()->actCancel->setEnabled(false);
-				fadeInto(getParentWindow()->getUI()->nameEdit, QColor(255,255,255));
-			}
-		}else
-		{
-			blink(getParentWindow()->getUI()->mainToolBar,QColor(255,255,255), attention_color, 1);
-		}
+		// Пока ничего не делаем
+	}
+	// Если действие - добавить ЛЖ, строка с текстом не пуста 
+	else if (currentAct == LIFELINE && getParentWindow()->getUI()->nameEdit->text().length())
+	{
+		if (existDublicate())	// Если нет дубликата
+			QMessageBox::information(this, "Attention!", "This lifeline already exist on scene!");
+		else
+			addLifeline(mapToScene(event->x(), event->y()));	// Добавляем объект на сцену
 	}
 	else
 	{
-		blink(getParentWindow()->getUI()->nameEdit,QColor(255,255,255), error_color,2);
+		blink(getParentWindow()->getUI()->nameEdit,QColor(255,255,255), error_color,2);		// Мигаем красным
+		getParentWindow()->getUI()->nameEdit->setFocus();									// Фокусируемся на строке имени
 	}
-
 }
 
+/** Функция добавления линии жизни на сцену. */
+void GraphWidget::addLifeline(QPointF point)
+{
+	Header* lifeline1 = new Header(this);		// Создаем объект
+	lifeline1->setPos(point);					// Задаем координаты
+
+	scene->addItem(lifeline1);					// Добавляем на сцену
+
+	this->currentAct = SELECT;					// Задаем текущее действие
+	this->setCursor(Qt::ArrowCursor);			// Задаем ноовый курсор
+
+	emit getParentWindow()->selection(true);	// Вызываем слот выбора объекта
+
+
+}
 
 bool GraphWidget::existDublicate()
 {
@@ -123,9 +123,45 @@ bool GraphWidget::existDublicate()
 
 
 
+//	if (this->currentAct!=SELECT)
+	//if (!getParentWindow()->getUI()->mainToolBar->isEnabled())
+	//	this->viewport()->setCursor(Qt::CrossCursor);
+	//else	
+	//	this->viewport()->setCursor(Qt::ArrowCursor);
 
 
+	//QList<QGraphicsItem *>lifelineList;
+	//QGraphicsItemGroup *lifelineGroup;
 
+	//if (getParentWindow()->getUI()->nameEdit->text().length())
+	//{
+	//	if (!getParentWindow()->getUI()->mainToolBar->isEnabled()){
+	//		if (existDublicate())
+	//		{
+	//			QMessageBox::information(this, "Attention!", "This Header already exist on scene!");
+	//		}
+	//		else
+	//		{
+	//			Header* lifeline1 = new Header(this);
+	//			lifeline1->setPos(mapToScene(event->x(), event->y()) );
+
+	//			scene->addItem(lifeline1);
+
+	//			lifelineList.append(lifeline1);
+
+	//			getParentWindow()->getUI()->mainToolBar->setEnabled(true);
+	//			getParentWindow()->getUI()->actCancel->setEnabled(false);
+	//			fadeInto(getParentWindow()->getUI()->nameEdit, QColor(255,255,255));
+	//		}
+	//	}else
+	//	{
+	//		blink(getParentWindow()->getUI()->mainToolBar,QColor(255,255,255), attention_color, 1);
+	//	}
+	//}
+	//else
+	//{
+	//	blink(getParentWindow()->getUI()->nameEdit,QColor(255,255,255), error_color,2);
+	//}
 
 
 ///** ТЕСТОВЫЙ слот добавления объекта на сцену. */

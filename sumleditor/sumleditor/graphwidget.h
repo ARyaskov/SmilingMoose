@@ -65,6 +65,25 @@ public:
 	 * Функция проверяет есть ли на сцене линия жизни с таким же именем
 	 */
 	bool existDublicate();
+
+	/** 
+	 * Вернуть текущее действие.
+	 * @return Текущее действие.
+	 */
+	Action getCurrentAct(){ return this->currentAct; }
+
+	/** 
+	 * Функция проверяет есть ли на сцене линия жизни с таким же именем
+	 * @param newAct Новое действие.
+	 */
+	void setCurrentAct(Action newAct) { this->currentAct = newAct; }
+
+	/** 
+	 * Добавление на сцену линии жизни
+	 * @param point Точка, в которую поместится объект
+	 */
+	void addLifeline(QPointF point);
+
 private:
 	QGraphicsScene* scene;  /** Указатель на динамический объект сцены. */
 
