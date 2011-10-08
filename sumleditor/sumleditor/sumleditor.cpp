@@ -41,11 +41,6 @@ Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 	ui.actSelect->setChecked(true);		// Режим выбора объектов
 }
 
-void Sumleditor::cancel()
-{
-    ui.mainToolBar->setEnabled(true);
-}
-
 void Sumleditor::nameLEChanged(const QString & text)
 {
 	if (!ui.nameEdit->hasAcceptableInput())
@@ -72,7 +67,15 @@ void Sumleditor::setToolbarDefault()
 	ui.actMessage->setEnabled(true);			
 	ui.actSelect->setEnabled(true);				
 	ui.actReply->setEnabled(true);				
-	ui.actStop->setEnabled(true);				
+	ui.actStop->setEnabled(true);
+
+	ui.actComment->setChecked(false);			
+	ui.actCreate->setChecked(false);				
+	ui.actDestroy->setChecked(false);			
+	ui.actLifeline->setChecked(false);			
+	ui.actMessage->setEnabled(false);						
+	ui.actReply->setChecked(false);				
+	ui.actStop->setChecked(false);	
 }
 
 /** Задание параметров тулбара для процесса добавления. */
@@ -98,6 +101,19 @@ void Sumleditor::selection(bool checked)
 {
 	setToolbarDefault();
 	fadeInto(ui.nameEdit, QColor(255,255,255));		// Отключаем раскраску поля ввода имени
+}
+
+
+/**
+* Слот, срабатывающий при нажатии на Cancel, либо на  Esc
+*/
+void Sumleditor::cancel()
+{
+    setToolbarDefault();							// Стандартные свойства тулбара
+	fadeInto(ui.nameEdit, QColor(255,255,255));		// Отключаем раскраску поля ввода имени
+	this->diagram->setCursor(Qt::ArrowCursor);		// Задаем курсор
+	this->diagram->setCurrentAct(SELECT);			// Задать текущее состояние
+	ui.nameEdit->clear();							// Очистить поле ввода имени заогловка
 }
 
 /**
