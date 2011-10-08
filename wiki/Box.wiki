@@ -1,6 +1,6 @@
 #summary One-sentence summary of this page.
 
-= Introduction =
+
 
 Функциональный блок (Activity Box)
 
@@ -13,7 +13,7 @@
             Свойства
 
 
-= Details =
+
 
 Что это такое
 
