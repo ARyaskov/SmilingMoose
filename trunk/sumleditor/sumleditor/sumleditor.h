@@ -41,11 +41,13 @@ private:
 
 	QValidator * nameLE_val;/** Валидатор поля ввода имени. */
 
-private slots:
+public slots:
 	/**
 	 * Слот, срабатывающий при нажатии кнопки выбора объекта.
 	 */
 	void selection(bool checked);
+private slots:
+
 
 	/**
 	 * Слот, срабатывающий при нажатии кнопки добавления линии жизни.
