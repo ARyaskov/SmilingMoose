@@ -58,14 +58,45 @@ Sumleditor::~Sumleditor()
 	delete diagram;
 }
 
+/** Задание стандартных параметров тулбара. */
+void Sumleditor::setToolbarDefault()
+{
+	ui.actSelect->setChecked(true);					// Нажимаем текущую кнопку
+
+	ui.actCancel->setEnabled(false);				// Декативируем кнопку отмены
+
+	ui.actComment->setEnabled(true);			
+	ui.actCreate->setEnabled(true);				
+	ui.actDestroy->setEnabled(true);			
+	ui.actLifeline->setEnabled(true);			
+	ui.actMessage->setEnabled(true);			
+	ui.actSelect->setEnabled(true);				
+	ui.actReply->setEnabled(true);				
+	ui.actStop->setEnabled(true);				
+}
+
+/** Задание параметров тулбара для процесса добавления. */
+void Sumleditor::setToolbarAdding()
+{
+	ui.actSelect->setChecked(false);			// Нажимаем текущую кнопку
+	ui.actCancel->setEnabled(true);				// Декативируем кнопку отмены
+
+	ui.actComment->setEnabled(false);			
+	ui.actCreate->setEnabled(false);				
+	ui.actDestroy->setEnabled(false);			
+	ui.actLifeline->setEnabled(false);			
+	ui.actMessage->setEnabled(false);			
+	ui.actSelect->setEnabled(false);				
+	ui.actReply->setEnabled(false);				
+	ui.actStop->setEnabled(false);		
+}
+
 /**
 * Слот, срабатывающий при нажатии кнопки выбора объекта.
 */
 void Sumleditor::selection(bool checked)
 {
-	ui.actSelect->setChecked(true);					// Нажимаем текущую кнопку
-	ui.mainToolBar->setEnabled(true);				// Активируем тулбар
-	ui.actCancel->setEnabled(false);				// Декативируем кнопку отменуы
+	setToolbarDefault();
 	fadeInto(ui.nameEdit, QColor(255,255,255));		// Отключаем раскраску поля ввода имени
 }
 
@@ -74,8 +105,7 @@ void Sumleditor::selection(bool checked)
 */
 void Sumleditor::addLifeline()
 {
-	ui.mainToolBar->setEnabled(false);			// Отключаем тулбар
-	//ui.actCancel->setEnabled(true);				// Активировать кнопку отмены
+	setToolbarAdding();
 	ui.nameEdit->clear();						// Очистить поле ввода имени заогловка
 	ui.nameEdit->setFocus();					// Задать фокус на поле ввода заголовка
 	this->diagram->setCursor(Qt::CrossCursor);	// Задаем курсор

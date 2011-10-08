@@ -18,6 +18,7 @@ GraphWidget::GraphWidget(QWidget *parent)
 	setOptimizationFlags(QGraphicsView::DontSavePainterState);
 
 	scene->setSceneRect(-300,-300,600,600);				// Задание стандартных размеров сцене
+	scene->addLine(-600,-150,600,-150);
 	scene->setBackgroundBrush(QColor(200,240,240));		// Задание цвета фона
 	setScene(scene);									// Задание текущей сцены на виджете
 
@@ -76,7 +77,7 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 		if (existDublicate())	// Если нет дубликата
 			QMessageBox::information(this, "Attention!", "This lifeline already exist on scene!");
 		else
-			addLifeline(mapToScene(event->x(), event->y()));	// Добавляем объект на сцену
+			addLifeline(mapToScene(event->x(), 30));	// Добавляем объект на сцену, задаем стандартный Y
 	}
 	else
 	{
@@ -89,6 +90,7 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 void GraphWidget::addLifeline(QPointF point)
 {
 	Header* lifeline1 = new Header(this);		// Создаем объект
+	point.setY(-180);
 	lifeline1->setPos(point);					// Задаем координаты
 
 	scene->addItem(lifeline1);					// Добавляем на сцену

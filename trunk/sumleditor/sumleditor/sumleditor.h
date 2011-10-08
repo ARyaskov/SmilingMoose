@@ -34,6 +34,17 @@ public:
 	~Sumleditor();
 
 	Ui::SumleditorClass* getUI() {return &ui;};
+
+	/**
+	 * Задание стандартных параметров тулбара
+	 */
+	void setToolbarDefault();
+
+	/**
+	 * Задание параметров тулбара для процесса добавления.
+	 */
+	void setToolbarAdding();
+
 private:
 	Ui::SumleditorClass ui;
 	
