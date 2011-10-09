@@ -73,7 +73,7 @@ void Sumleditor::setToolbarDefault()
 	ui.actCreate->setChecked(false);				
 	ui.actDestroy->setChecked(false);			
 	ui.actLifeline->setChecked(false);			
-	ui.actMessage->setEnabled(false);						
+	ui.actMessage->setChecked(false);						
 	ui.actReply->setChecked(false);				
 	ui.actStop->setChecked(false);	
 }
@@ -110,9 +110,12 @@ void Sumleditor::selection(bool checked)
 void Sumleditor::cancel()
 {
     setToolbarDefault();							// Стандартные свойства тулбара
-	fadeInto(ui.nameEdit, QColor(255,255,255));		// Отключаем раскраску поля ввода имени
+
 	this->diagram->setCursor(Qt::ArrowCursor);		// Задаем курсор
 	this->diagram->setCurrentAct(SELECT);			// Задать текущее состояние
+
+	fadeInto(ui.nameEdit, QColor(255,255,255));		// Отключаем раскраску поля ввода имени
+
 	ui.nameEdit->clear();							// Очистить поле ввода имени заогловка
 }
 
@@ -122,12 +125,17 @@ void Sumleditor::cancel()
 void Sumleditor::addLifeline()
 {
 	setToolbarAdding();
+
 	ui.nameEdit->clear();						// Очистить поле ввода имени заогловка
 	ui.nameEdit->setFocus();					// Задать фокус на поле ввода заголовка
+
 	this->diagram->setCursor(Qt::CrossCursor);	// Задаем курсор
 	this->diagram->setCurrentAct(LIFELINE);		// Действие - добавляем линию жизни
+
 	blink(ui.nameEdit, QColor(255,255,255),  attention_color, 2);	// Помигать
 	fadeInto(ui.nameEdit,  attention_color);	// Задаем цвет полю ввода
+
+	ui.statusBar->showMessage(QString("Добавление линии жизни. Введите имя и кликните на нажное место на сцене."));
 }
 
 /**
@@ -175,9 +183,19 @@ void Sumleditor::addStop()
 */
 void Sumleditor::addComment()
 {
-	ui.mainToolBar->setEnabled(false);
-	ui.descrEdit->clear();					// Очистить поле ввода имени заогловка
 	ui.nameEdit->setFocus();				// Задать фокус на поле ввода заголовка
+	ui.nameEdit->clear();						// Очистить поле ввода имени заогловка
+	ui.descrEdit->clear();					// Очистить поле ввода имени заогловка
+	
+	setToolbarAdding();
+	
+	this->diagram->setCursor(Qt::CrossCursor);	// Задаем курсор
+	this->diagram->setCurrentAct(COMMENT);		// Действие - добавляем линию жизни
+
+	blink(ui.nameEdit, QColor(255,255,255),  attention_color, 2);	// Помигать
+	fadeInto(ui.nameEdit,  attention_color);	// Задаем цвет полю ввода
+
+	ui.statusBar->showMessage(QString("Добавление комментария. Введите имя и кликните на нажное место на сцене."));
 }
 
 
