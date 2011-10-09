@@ -55,16 +55,16 @@ void  FreeComment::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	font.setPointSize(8);
 
 	painter->setFont(font);
-	painter->setPen(Qt::darkRed);
+	painter->setPen(Qt::black);
 
 	// Задать свойства тексту
 	QTextOption opt;
 	opt.setAlignment(Qt::AlignCenter);
 
-	painter->drawText(textRect.translated(2, 2),text,opt); // Create shadow of the name
+	//painter->drawText(textRect.translated(2, 2),text,opt); // Create shadow of the name
 	
 	// Нарисовать текст
-	painter->setPen(Qt::white);
+	painter->setPen(Qt::black);
 	painter->drawText(textRect,text, opt);
 }
 
