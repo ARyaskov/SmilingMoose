@@ -84,6 +84,12 @@ public:
 	 */
 	void addLifeline(QPointF point);
 
+	/** 
+	 * Добавление на сцену комментария
+	 * @param point Точка, в которую поместится объект
+	 */
+	void addComment(QPointF point);
+
 private:
 	QGraphicsScene* scene;  /** Указатель на динамический объект сцены. */
 

@@ -79,6 +79,13 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 		else
 			addLifeline(mapToScene(event->x(), 30));	// Добавляем объект на сцену, задаем стандартный Y
 	}
+	else if (currentAct == COMMENT && getParentWindow()->getUI()->nameEdit->text().length())
+	{
+		if (existDublicate())	// Если нет дубликата
+			QMessageBox::information(this, "Attention!", "This lifeline already exist on scene!");
+		else
+			addComment(mapToScene(event->x(), event->y()));	// Добавляем объект на сцену, задаем стандартный Y
+	}
 	else
 	{
 		blink(getParentWindow()->getUI()->nameEdit,QColor(255,255,255), error_color,2);		// Мигаем красным
@@ -89,11 +96,11 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 /** Функция добавления линии жизни на сцену. */
 void GraphWidget::addLifeline(QPointF point)
 {
-	Header* lifeline1 = new Header(this);		// Создаем объект
+	Header* lifeline = new Header(this);		// Создаем объект
 	point.setY(-180);
-	lifeline1->setPos(point);					// Задаем координаты
-
-	scene->addItem(lifeline1);					// Добавляем на сцену
+	lifeline->setPos(point);					// Задаем координаты
+	
+	scene->addItem(lifeline);					// Добавляем на сцену
 
 	this->currentAct = SELECT;					// Задаем текущее действие
 	this->setCursor(Qt::ArrowCursor);			// Задаем ноовый курсор
@@ -101,6 +108,21 @@ void GraphWidget::addLifeline(QPointF point)
 	emit getParentWindow()->selection(true);	// Вызываем слот выбора объекта
 
 
+}
+
+/** Добавление на сцену комментария. */
+void GraphWidget::addComment(QPointF point)
+{
+	FreeComment* comment = new FreeComment(this);		// Создаем объект
+	comment->setPos(point);								// Задаем координаты
+	comment->text = getParentWindow()->getUI()->descrEdit->toPlainText();	// Задаем комментарию текст
+
+	scene->addItem(comment);					// Добавляем на сцену
+
+	this->currentAct = SELECT;					// Задаем текущее действие
+	this->setCursor(Qt::ArrowCursor);			// Задаем ноовый курсор
+
+	emit getParentWindow()->selection(true);	// Вызываем слот выбора объекта
 }
 
 bool GraphWidget::existDublicate()
