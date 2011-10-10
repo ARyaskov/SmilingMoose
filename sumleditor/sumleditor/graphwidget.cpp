@@ -99,7 +99,9 @@ void GraphWidget::addLifeline(QPointF point)
 	Header* lifeline = new Header(this);		// Создаем объект
 	point.setY(-180);
 	lifeline->setPos(point);					// Задаем координаты
-	
+
+	lifeline->name = getParentWindow()->getUI()->nameEdit->text();
+
 	scene->addItem(lifeline);					// Добавляем на сцену
 
 	this->currentAct = SELECT;					// Задаем текущее действие
@@ -107,7 +109,7 @@ void GraphWidget::addLifeline(QPointF point)
 
 	emit getParentWindow()->selection(true);	// Вызываем слот выбора объекта
 
-
+	
 }
 
 /** Добавление на сцену комментария. */

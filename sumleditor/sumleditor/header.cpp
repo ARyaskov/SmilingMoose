@@ -62,11 +62,10 @@ void  Header::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 	QTextOption opt;
 	opt.setAlignment(Qt::AlignCenter);
 
-	painter->drawText(textRect.translated(2, 2),graph->getParentWindow()->getUI()->nameEdit->text(),opt); // Create shadow of the name
-
+	painter->drawText(textRect.translated(2, 2),name,opt); 
 	// Нарисовать текст
 	painter->setPen(Qt::white);
-	painter->drawText(textRect, graph->getParentWindow()->getUI()->nameEdit->text(), opt);
+	painter->drawText(textRect, name, opt);
 }
 
 /** Событие клика пользователем на фигуру. */

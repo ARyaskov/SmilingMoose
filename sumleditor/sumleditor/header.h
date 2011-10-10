@@ -13,6 +13,9 @@
 class Header : public QGraphicsItem
 {
 public:
+
+	QString name;	/** Имя заголовка. */
+
 	/**
 	 * Конструктор по умолчанию. 
 	 * @param graphWidget Указатель на виджет, на котором будем рисовать.
