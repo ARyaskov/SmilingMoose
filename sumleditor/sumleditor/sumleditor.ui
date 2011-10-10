@@ -33,12 +33,17 @@
     <property name="title">
      <string>Файл</string>
     </property>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSaveAs"/>
+    <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Справка</string>
     </property>
+    <addaction name="actionAboutUs"/>
     <addaction name="actionAboutQt"/>
    </widget>
    <addaction name="menuFile"/>
@@ -61,7 +66,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="actSelect"/>
    <addaction name="actLifeline"/>
@@ -339,6 +344,26 @@
    </property>
    <property name="shortcut">
     <string>Esc</string>
+   </property>
+  </action>
+  <action name="actionSaveAs">
+   <property name="text">
+    <string>Сохранить как...</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Сохранить</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Открыть...</string>
+   </property>
+  </action>
+  <action name="actionAboutUs">
+   <property name="text">
+    <string>Разработчики</string>
    </property>
   </action>
  </widget>
