@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "sumleditor.h"
 #include <QTextCodec>
+#include <QMessageBox>
 
 Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 : QMainWindow(parent, flags)
@@ -20,6 +21,7 @@ Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 	diagram = new GraphWidget(this);		// Создание сцены 
 	ui.gridLayout->addWidget(diagram);		// Помещение его на grid layout в главном окне
 
+	// Коннекты тулбара
 	connect(ui.actComment,	SIGNAL(triggered()),	this,	SLOT(addComment()));
 	connect(ui.actCreate,	SIGNAL(triggered()),	this,	SLOT(addCreate()));
 	connect(ui.actDestroy,	SIGNAL(triggered()),	this,	SLOT(addDelete()));
@@ -29,6 +31,14 @@ Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 	connect(ui.actSelect,	SIGNAL(toggled(bool)),	this,	SLOT(selection(bool)));
 	connect(ui.actStop,		SIGNAL(triggered()),	this,	SLOT(addStop()));
     connect(ui.actCancel,	SIGNAL(triggered()),	this,	SLOT(cancel()));
+
+	// Коннекты главного меню
+	connect(ui.actionQuit,	SIGNAL(triggered()),	this,	SLOT(slotExit()));
+	connect(ui.actionSave,	SIGNAL(triggered()),	this,	SLOT(slotSave()));
+	connect(ui.actionSaveAs,SIGNAL(triggered()),	this,	SLOT(slotSaveAs()));
+	connect(ui.actionOpen,	SIGNAL(triggered()),	this,	SLOT(slotOpen()));
+	connect(ui.actionAboutUs,SIGNAL(triggered()),	this,	SLOT(slotAboutUs()));
+	connect(ui.actionAboutQt,SIGNAL(triggered()),	this,	SLOT(slotAboutQt()));
 
 	connect(ui.nameEdit,	SIGNAL(textEdited(const QString &)),this,SLOT(nameLEChanged(const QString &)));
 
@@ -198,10 +208,43 @@ void Sumleditor::addComment()
 	ui.statusBar->showMessage(QString("Добавление комментария. Введите имя и кликните на нажное место на сцене."));
 }
 
+/** Слот срабатывающий при нажатии кнопки "Выход" в главном меню. */
+void Sumleditor::slotExit()
+{
+	if (QMessageBox::Yes == QMessageBox::question(this,QString("Закрытие программы"),
+			QString("Закрыть программу?"),QMessageBox::Yes | QMessageBox::No,QMessageBox::No) )
+		exit(0);
+}
 
+/** Слот срабатывающий при нажатии кнопки "О Qt" в главном меню. */
+void Sumleditor::slotAboutQt()
+{
+	QMessageBox::aboutQt(this,"О Qt");
+}
 
+/** Слот, срабатывающий при нажатии кнопки "Открыть" в главном меню. */
+void Sumleditor::slotOpen()
+{
+	qDebug("slotOpen");
+}
 
+/** Слот, срабатывающий при нажатии кнопки "Сохранить" в главном меню. */
+void Sumleditor::slotSave()
+{
+	qDebug("slotSave");
+}
 
+/** Слот, срабатывающий при нажатии кнопки "Сохранить как..." в главном меню. */
+void Sumleditor::slotSaveAs()
+{
+	qDebug("slotSaveAs");
+}
+
+/** Слот, срабатывающий при нажатии кнопки "Разработчики" в главном меню. */
+void Sumleditor::slotAboutUs()
+{
+	qDebug("slotAboutUs");
+}
 
 
 
