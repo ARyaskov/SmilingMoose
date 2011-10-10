@@ -5,6 +5,8 @@
 #include "comfunctions.h"
 
 
+static QList<QTreeWidgetItem* > listItems;
+
 
 /** Цвет состояния "Предупреждение" */
 static QColor warning_color;
@@ -14,6 +16,9 @@ static QColor error_color;
 
 /** Цвет состояния "Внимание" */
 static QColor attention_color;
+
+/** Цвет состояния "Стандартное" */
+static QColor normal_color;
 
 /**
  * Перечисление состояний программы.
@@ -37,6 +42,16 @@ enum Action
 	COMMENT		/** Добавление комментария.			  */
 };
 
+
+struct ElementMetaInfo
+{
+  Action action;
+  QString name;
+  QString id;
+  QGraphicsItem* graphicsItem;
+};
+
+ Q_DECLARE_METATYPE(ElementMetaInfo)
 /**
  * Класс, реализующий виджет сцены для отрисовки диаграммы в главном окне.
  */
@@ -62,15 +77,10 @@ public:
     Sumleditor* getParentWindow()const { return mainWnd; }
 
 	/** 
-	 * Функция проверяет есть ли на сцене линия жизни с таким же именем
-	 */
-	bool existDublicate();
-
-	/** 
 	 * Вернуть текущее действие.
 	 * @return Текущее действие.
 	 */
-	Action getCurrentAct(){ return this->currentAct; }
+	Action getCurrentAct()const { return this->currentAct; }
 
 	/** 
 	 * Функция проверяет есть ли на сцене линия жизни с таким же именем
