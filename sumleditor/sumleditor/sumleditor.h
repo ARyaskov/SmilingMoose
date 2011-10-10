@@ -4,6 +4,7 @@
 #include <QtGui/QMainWindow>
 #include "validators.h"
 #include "comfunctions.h"
+#include "objlist.h"
 #include "ui_sumleditor.h"
 
 

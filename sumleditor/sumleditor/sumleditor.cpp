@@ -11,6 +11,7 @@ Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
     error_color = QColor(247,115,115);
 	warning_color = QColor(243,193,127);
     attention_color = QColor(250,232,139);
+    normal_color = QColor(255,255,255);
 
  	// Подключение русского языка
 	QTextCodec *codec = QTextCodec::codecForName/*("UTF-8");*/("CP1251");
@@ -53,9 +54,20 @@ Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 
 void Sumleditor::nameLEChanged(const QString & text)
 {
+	qDebug("nameLEChanged");
 	if (!ui.nameEdit->hasAcceptableInput())
 		blink(ui.nameEdit, QColor(255,255,255), error_color, 1);
-}
+
+	QPalette palette = ui.nameEdit->palette();
+    
+ 
+	if (ui.nameEdit->palette().color(QPalette::Base) == attention_color)
+	{
+		QPalette palette = ui.nameEdit->palette();
+        palette.setColor( QPalette::Base, normal_color );
+		ui.nameEdit->setPalette(palette);
+	}
+ }
 
 Sumleditor::~Sumleditor()
 {
@@ -124,7 +136,7 @@ void Sumleditor::cancel()
 	this->diagram->setCursor(Qt::ArrowCursor);		// Задаем курсор
 	this->diagram->setCurrentAct(SELECT);			// Задать текущее состояние
 
-	fadeInto(ui.nameEdit, QColor(255,255,255));		// Отключаем раскраску поля ввода имени
+	fadeInto(ui.nameEdit, normal_color);		// Отключаем раскраску поля ввода имени
 
 	ui.nameEdit->clear();							// Очистить поле ввода имени заогловка
 }
@@ -142,9 +154,9 @@ void Sumleditor::addLifeline()
 	this->diagram->setCursor(Qt::CrossCursor);	// Задаем курсор
 	this->diagram->setCurrentAct(LIFELINE);		// Действие - добавляем линию жизни
 
-	blink(ui.nameEdit, QColor(255,255,255),  attention_color, 2);	// Помигать
+	blink(ui.nameEdit, normal_color,  attention_color, 2);	// Помигать
 	fadeInto(ui.nameEdit,  attention_color);	// Задаем цвет полю ввода
-
+    
 	ui.statusBar->showMessage(QString("Добавление линии жизни. Введите имя и кликните на нажное место на сцене."));
 }
 
@@ -205,7 +217,7 @@ void Sumleditor::addComment()
 	blink(ui.nameEdit, QColor(255,255,255),  attention_color, 2);	// Помигать
 	fadeInto(ui.nameEdit,  attention_color);	// Задаем цвет полю ввода
 
-	ui.statusBar->showMessage(QString("Добавление комментария. Введите имя и кликните на нажное место на сцене."));
+	ui.statusBar->showMessage(QString("Добавление комментария. Введите имя и кликните на нужное место на сцене."));
 }
 
 /** Слот срабатывающий при нажатии кнопки "Выход" в главном меню. */

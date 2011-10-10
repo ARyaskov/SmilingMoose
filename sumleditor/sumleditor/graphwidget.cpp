@@ -8,9 +8,10 @@
 GraphWidget::GraphWidget(QWidget *parent)
 : QGraphicsView(parent)
 {
-    error_color = QColor(247,115,115);
+	error_color = QColor(247,115,115);
 	warning_color = QColor(243,193,127);
-    attention_color = QColor(250,232,139);
+	attention_color = QColor(250,232,139);
+	normal_color = QColor(255,255,255);
 
 	scene = new QGraphicsScene(this);					// Создание сцены
 
@@ -66,30 +67,48 @@ void GraphWidget::mouseMoveEvent(QMouseEvent * event)
 /** Слот для события нажатия на кнопку мыши. */
 void GraphWidget::mousePressEvent(QMouseEvent * event)
 {
+	Ui::SumleditorClass* localUI = getParentWindow()->getUI();
+	ElementMetaInfo meta;
+	QVariant var;
+	localUI->nameEdit->setToolTip("");
 	// Если действие - выбор объекта
 	if (currentAct == SELECT)			
 	{
 		// Пока ничего не делаем
 	}
 	// Если действие - добавить ЛЖ, строка с текстом не пуста 
-	else if (currentAct == LIFELINE && getParentWindow()->getUI()->nameEdit->text().length())
+	else if (currentAct == LIFELINE && localUI->nameEdit->text().length())
 	{
-		if (existDublicate())	// Если нет дубликата
-			QMessageBox::information(this, "Attention!", "This lifeline already exist on scene!");
+		meta.action = LIFELINE;
+		meta.name = localUI->nameEdit->text();
+		meta.id = QString("LifeLine-"+localUI->nameEdit->text());
+		var.setValue(meta);
+		if (existDublicate(localUI->objectsList, var ))
+		{	// Если нет дубликата, то добавляем
+			localUI->nameEdit->setToolTip("This name already exists!");
+			fadeInto(localUI->nameEdit, error_color);		// Отключаем раскраску поля ввода имени
+		}
 		else
+		{
 			addLifeline(mapToScene(event->x(), 30));	// Добавляем объект на сцену, задаем стандартный Y
+			addToObjList(localUI->objectsList,LIFELINE,QVariant(localUI->nameEdit->text()));
+		}
 	}
-	else if (currentAct == COMMENT && getParentWindow()->getUI()->nameEdit->text().length())
+	else if (currentAct == COMMENT && localUI->nameEdit->text().length())
 	{
-		if (existDublicate())	// Если нет дубликата
+		meta.action = COMMENT;
+		meta.name = localUI->nameEdit->text();
+		meta.id = QString("Comment-"+localUI->nameEdit->text());
+		var.setValue(meta);
+		if (existDublicate(localUI->objectsList, var ))	// Если нет дубликата
 			QMessageBox::information(this, "Attention!", "This lifeline already exist on scene!");
 		else
 			addComment(mapToScene(event->x(), event->y()));	// Добавляем объект на сцену, задаем стандартный Y
 	}
 	else
 	{
-		blink(getParentWindow()->getUI()->nameEdit,QColor(255,255,255), error_color,2);		// Мигаем красным
-		getParentWindow()->getUI()->nameEdit->setFocus();									// Фокусируемся на строке имени
+		blink(localUI->nameEdit,normal_color, error_color,2);		// Мигаем красным
+		localUI->nameEdit->setFocus();									// Фокусируемся на строке имени
 	}
 }
 
@@ -109,7 +128,7 @@ void GraphWidget::addLifeline(QPointF point)
 
 	emit getParentWindow()->selection(true);	// Вызываем слот выбора объекта
 
-	
+
 }
 
 /** Добавление на сцену комментария. */
@@ -127,11 +146,6 @@ void GraphWidget::addComment(QPointF point)
 	emit getParentWindow()->selection(true);	// Вызываем слот выбора объекта
 }
 
-bool GraphWidget::existDublicate()
-{
-	// Implement this later
-	return false;
-}
 
 
 
@@ -150,44 +164,44 @@ bool GraphWidget::existDublicate()
 
 
 //	if (this->currentAct!=SELECT)
-	//if (!getParentWindow()->getUI()->mainToolBar->isEnabled())
-	//	this->viewport()->setCursor(Qt::CrossCursor);
-	//else	
-	//	this->viewport()->setCursor(Qt::ArrowCursor);
+//if (!getParentWindow()->getUI()->mainToolBar->isEnabled())
+//	this->viewport()->setCursor(Qt::CrossCursor);
+//else	
+//	this->viewport()->setCursor(Qt::ArrowCursor);
 
 
-	//QList<QGraphicsItem *>lifelineList;
-	//QGraphicsItemGroup *lifelineGroup;
+//QList<QGraphicsItem *>lifelineList;
+//QGraphicsItemGroup *lifelineGroup;
 
-	//if (getParentWindow()->getUI()->nameEdit->text().length())
-	//{
-	//	if (!getParentWindow()->getUI()->mainToolBar->isEnabled()){
-	//		if (existDublicate())
-	//		{
-	//			QMessageBox::information(this, "Attention!", "This Header already exist on scene!");
-	//		}
-	//		else
-	//		{
-	//			Header* lifeline1 = new Header(this);
-	//			lifeline1->setPos(mapToScene(event->x(), event->y()) );
+//if (getParentWindow()->getUI()->nameEdit->text().length())
+//{
+//	if (!getParentWindow()->getUI()->mainToolBar->isEnabled()){
+//		if (existDublicate())
+//		{
+//			QMessageBox::information(this, "Attention!", "This Header already exist on scene!");
+//		}
+//		else
+//		{
+//			Header* lifeline1 = new Header(this);
+//			lifeline1->setPos(mapToScene(event->x(), event->y()) );
 
-	//			scene->addItem(lifeline1);
+//			scene->addItem(lifeline1);
 
-	//			lifelineList.append(lifeline1);
+//			lifelineList.append(lifeline1);
 
-	//			getParentWindow()->getUI()->mainToolBar->setEnabled(true);
-	//			getParentWindow()->getUI()->actCancel->setEnabled(false);
-	//			fadeInto(getParentWindow()->getUI()->nameEdit, QColor(255,255,255));
-	//		}
-	//	}else
-	//	{
-	//		blink(getParentWindow()->getUI()->mainToolBar,QColor(255,255,255), attention_color, 1);
-	//	}
-	//}
-	//else
-	//{
-	//	blink(getParentWindow()->getUI()->nameEdit,QColor(255,255,255), error_color,2);
-	//}
+//			getParentWindow()->getUI()->mainToolBar->setEnabled(true);
+//			getParentWindow()->getUI()->actCancel->setEnabled(false);
+//			fadeInto(getParentWindow()->getUI()->nameEdit, QColor(255,255,255));
+//		}
+//	}else
+//	{
+//		blink(getParentWindow()->getUI()->mainToolBar,QColor(255,255,255), attention_color, 1);
+//	}
+//}
+//else
+//{
+//	blink(getParentWindow()->getUI()->nameEdit,QColor(255,255,255), error_color,2);
+//}
 
 
 ///** ТЕСТОВЫЙ слот добавления объекта на сцену. */

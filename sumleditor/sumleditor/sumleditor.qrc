@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="sumleditor">
+    <file>resources/L.bmp</file>
+    <file>resources/m.bmp</file>
     <file>resources/cancel.bmp</file>
     <file>resources/comment.bmp</file>
     <file>resources/createmessage.bmp</file>

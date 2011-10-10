@@ -98,7 +98,7 @@
    <widget class="QWidget" name="dockWidgetContents">
     <layout class="QGridLayout" name="gridLayout_5">
      <item row="0" column="0">
-      <widget class="QListWidget" name="objectsList">
+      <widget class="QTreeWidget" name="objectsList">
        <property name="midLineWidth">
         <number>5</number>
        </property>
@@ -108,12 +108,14 @@
        <property name="alternatingRowColors">
         <bool>true</bool>
        </property>
-       <property name="selectionRectVisible">
-        <bool>true</bool>
-       </property>
-       <property name="currentRow">
-        <number>-1</number>
-       </property>
+       <attribute name="headerVisible">
+        <bool>false</bool>
+       </attribute>
+       <column>
+        <property name="text">
+         <string notr="true">1</string>
+        </property>
+       </column>
       </widget>
      </item>
     </layout>
