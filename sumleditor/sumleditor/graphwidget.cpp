@@ -19,8 +19,8 @@ GraphWidget::GraphWidget(QWidget *parent)
 	setOptimizationFlags(QGraphicsView::DontSavePainterState);
 
 	scene->setSceneRect(-300,-300,600,600);				// Задание стандартных размеров сцене
-	scene->addLine(-600,-150,600,-150);
-	scene->setBackgroundBrush(QColor(200,240,240));		// Задание цвета фона
+	//scene->addLine(-600,-150,600,-150);
+	//scene->setBackgroundBrush(QColor(200,240,240));		// Задание цвета фона
 	setScene(scene);									// Задание текущей сцены на виджете
 
 	//setDragMode(QGraphicsView::ScrollHandDrag);			// Задать перемещение по сцене "рукой"
@@ -115,20 +115,34 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 /** Функция добавления линии жизни на сцену. */
 void GraphWidget::addLifeline(QPointF point)
 {
-	Header* lifeline = new Header(this);		// Создаем объект
-	point.setY(-180);
-	lifeline->setPos(point);					// Задаем координаты
+	Header* header = new Header(this);			// Создаем заголовок
+	Lifeline * lifeline = new Lifeline(this);	// Задаем линию жизни
 
-	lifeline->name = getParentWindow()->getUI()->nameEdit->text();
+	point.setY(-180);							// Задаем стандартную коорлинату по У
+	header->setPos(point);						// Задаем координаты
+	header->name = getParentWindow()->getUI()->nameEdit->text();		// Задаем текст
 
-	scene->addItem(lifeline);					// Добавляем на сцену
+	//scene->addItem(header);						// Добавляем на сцену зкголовок
 
+	// Задаем координаты линии
+	point.setX(point.x()+45);					
+	point.setY(point.y()+32);
+	lifeline->setPos(point);
+
+	//scene->addItem(lifeline);					// Добавляем линию на сцену
+	
 	this->currentAct = SELECT;					// Задаем текущее действие
 	this->setCursor(Qt::ArrowCursor);			// Задаем ноовый курсор
 
 	emit getParentWindow()->selection(true);	// Вызываем слот выбора объекта
+	
+	// Группируем объекты
+	QList<QGraphicsItem *>lifelineList;			// Контейнер объктов
 
-
+	lifelineList.append(header);
+	lifelineList.append(lifeline);
+	
+	scene->createItemGroup(lifelineList);
 }
 
 /** Добавление на сцену комментария. */

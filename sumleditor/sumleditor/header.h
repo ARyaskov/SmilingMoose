@@ -1,5 +1,5 @@
-#ifndef LIFELINE_H
-#define LIFELINE_H
+#ifndef HEADER_H
+#define HEADER_H
 
 #include <QGraphicsItem>
 #include <QRectF>
@@ -90,4 +90,4 @@ private:
 	double z; /** Координата по оси Z. */
 };
 
-#endif // LIFELINE_H
+#endif // HEADER_H
