@@ -60,6 +60,7 @@ class GraphWidget : public QGraphicsView
 	Q_OBJECT
 
 public:
+	inline QGraphicsScene *getScene() { return scene; }
 	/**
 	 * Конструктор по умолчанию.
 	 * @param parent Указатель на окно, в отором создается виджет.

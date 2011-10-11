@@ -2,6 +2,7 @@
 #include "sumleditor.h"
 #include <QTextCodec>
 #include <QMessageBox>
+#include <QFileDialog>
 
 Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 : QMainWindow(parent, flags)
@@ -40,6 +41,8 @@ Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 	connect(ui.actionOpen,	SIGNAL(triggered()),	this,	SLOT(slotOpen()));
 	connect(ui.actionAboutUs,SIGNAL(triggered()),	this,	SLOT(slotAboutUs()));
 	connect(ui.actionAboutQt,SIGNAL(triggered()),	this,	SLOT(slotAboutQt()));
+	connect(ui.actionPicture,SIGNAL(triggered()),	this,	SLOT(saveAsPicture()));
+	
 
 	connect(ui.nameEdit,	SIGNAL(textEdited(const QString &)),this,SLOT(nameLEChanged(const QString &)));
 
@@ -256,6 +259,22 @@ void Sumleditor::slotSaveAs()
 void Sumleditor::slotAboutUs()
 {
 	qDebug("slotAboutUs");
+}
+
+/** Слот, срабатывающий при нажатии кнопки "Сохранить как изображение" в главном меню. */
+void Sumleditor::saveAsPicture()
+{
+	QString filename = QFileDialog::getSaveFileName(this,QString("Сохранить изображение сцены"),"","*.png");
+
+	QRect rect;
+
+	rect.setCoords(0,0,600,600);
+	//this->diagram->getScene()->
+	QImage image(600,600, QImage::Format_ARGB32_Premultiplied);
+	image.fill(NULL);
+	QPainter painter(&image);
+	this->diagram->getScene()->render(&painter,rect,rect,Qt::KeepAspectRatioByExpanding);
+	image.save(filename);
 }
 
 

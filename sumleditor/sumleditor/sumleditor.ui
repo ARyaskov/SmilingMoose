@@ -36,6 +36,7 @@
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
+    <addaction name="actionPicture"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -366,6 +367,11 @@
   <action name="actionAboutUs">
    <property name="text">
     <string>Разработчики</string>
+   </property>
+  </action>
+  <action name="actionPicture">
+   <property name="text">
+    <string>Сохранить как изображение...</string>
    </property>
   </action>
  </widget>
