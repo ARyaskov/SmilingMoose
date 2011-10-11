@@ -9,7 +9,6 @@ class FreeComment;
 class GraphWidget;
 class Sumleditor;
 class Header;
-class Lifeline;
 
 /** 
 * Функция меняет цвет выбранного виджета.
@@ -31,6 +30,5 @@ void blink(QWidget* widget, QColor& color1, QColor& color2, int times);
 #include "header.h"
 #include "freecomment.h"
 #include "sumleditor.h"
-#include "lifeline.h"
 
 #endif
