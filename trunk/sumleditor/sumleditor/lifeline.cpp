@@ -1,8 +1,8 @@
 #include "StdAfx.h"
-#include "Header.h"
+#include "Lifeline.h"
 
 /** Конструктор по умолчанию. */
-Header::Header(GraphWidget *graphWidget)
+Lifeline::Lifeline(GraphWidget *graphWidget)
 {
 	graph = graphWidget;
 	// Задаем параметры фигуре
@@ -15,28 +15,28 @@ Header::Header(GraphWidget *graphWidget)
 }
 
 /** Деструктор по умолчанию. */
-Header::~Header()
+Lifeline::~Lifeline()
 {
 
 }
 
 /** Вернуть прямоугольник границ фигуры. */
-QRectF Header::boundingRect() const
+QRectF Lifeline::boundingRect() const
 {
-	return QRectF(0,0,90,30);
+	return QRectF(0,0,90,300);
 }
 
 /** Вернуть форму фигуры. */
-QPainterPath  Header::shape() const
+QPainterPath  Lifeline::shape() const
 {
 	QPainterPath path;
-	path.addRect(0,0,90,30);
+	path.addRect(0,0,90,300);
 
 	return path;
 }
 
 /** Нарисовать фигуру. */
-void  Header::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void  Lifeline::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	QLinearGradient gradient(0,0,90,30);					// Задать градиент фигуре
 
@@ -66,17 +66,24 @@ void  Header::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 	// Нарисовать текст
 	painter->setPen(Qt::white);
 	painter->drawText(textRect, name, opt);
+
+	QLine line (45,30,45,300);
+	QPen pen = QPen(Qt::DashLine);
+	pen.setWidth(2);
+	pen.setDashOffset(3);
+	painter->setPen(pen);
+	painter->drawLine(line);
 }
 
 /** Событие клика пользователем на фигуру. */
-void  Header::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void  Lifeline::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	update();
 	QGraphicsItem::mousePressEvent(event);
 }
 
 /** Задать полям координат текущие значения координат объекта на сцене. */
-void Header::getCurrentCoords()
+void Lifeline::getCurrentCoords()
 {
 	x = this->pos().x();
 	y = this->pos().y();
@@ -84,7 +91,7 @@ void Header::getCurrentCoords()
 }
 
 /** Задать объекту координаты на сцене. */
-void Header::setCoords(double newX, double newY, double newZ)
+void Lifeline::setCoords(double newX, double newY, double newZ)
 {
 	x = newX;
 	y = newY;

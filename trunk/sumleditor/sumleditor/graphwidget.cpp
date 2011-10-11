@@ -115,34 +115,18 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 /** Функция добавления линии жизни на сцену. */
 void GraphWidget::addLifeline(QPointF point)
 {
-	Header* header = new Header(this);			// Создаем заголовок
-//	Lifeline * lifeline = new Lifeline(this);	// Задаем линию жизни
+	Lifeline* header = new Lifeline(this);			// Создаем заголовок
 
 	point.setY(30);							// Задаем стандартную коорлинату по У
 	header->setPos(point);						// Задаем координаты
 	header->name = getParentWindow()->getUI()->nameEdit->text();		// Задаем текст
 
-	//scene->addItem(header);						// Добавляем на сцену зкголовок
+	scene->addItem(header);						// Добавляем на сцену зкголовок
 
-	// Задаем координаты линии
-	point.setX(point.x()+45);					
-	point.setY(point.y()+32);
-	//lifeline->setPos(point);
-
-	//scene->addItem(lifeline);					// Добавляем линию на сцену
-	
 	this->currentAct = SELECT;					// Задаем текущее действие
 	this->setCursor(Qt::ArrowCursor);			// Задаем ноовый курсор
 
 	emit getParentWindow()->selection(true);	// Вызываем слот выбора объекта
-	
-	// Группируем объекты
-	QList<QGraphicsItem *>lifelineList;			// Контейнер объктов
-
-	lifelineList.append(header);
-//	lifelineList.append(lifeline);
-	
-	scene->createItemGroup(lifelineList);
 }
 
 /** Добавление на сцену комментария. */
