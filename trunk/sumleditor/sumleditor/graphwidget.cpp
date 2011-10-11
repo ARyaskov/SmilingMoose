@@ -116,7 +116,7 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 void GraphWidget::addLifeline(QPointF point)
 {
 	Header* header = new Header(this);			// Создаем заголовок
-	Lifeline * lifeline = new Lifeline(this);	// Задаем линию жизни
+//	Lifeline * lifeline = new Lifeline(this);	// Задаем линию жизни
 
 	point.setY(30);							// Задаем стандартную коорлинату по У
 	header->setPos(point);						// Задаем координаты
@@ -127,7 +127,7 @@ void GraphWidget::addLifeline(QPointF point)
 	// Задаем координаты линии
 	point.setX(point.x()+45);					
 	point.setY(point.y()+32);
-	lifeline->setPos(point);
+	//lifeline->setPos(point);
 
 	//scene->addItem(lifeline);					// Добавляем линию на сцену
 	
@@ -140,7 +140,7 @@ void GraphWidget::addLifeline(QPointF point)
 	QList<QGraphicsItem *>lifelineList;			// Контейнер объктов
 
 	lifelineList.append(header);
-	lifelineList.append(lifeline);
+//	lifelineList.append(lifeline);
 	
 	scene->createItemGroup(lifelineList);
 }
