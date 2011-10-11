@@ -259,7 +259,7 @@
      <normaloff>:/sumleditor/resources/lifeline.bmp</normaloff>:/sumleditor/resources/lifeline.bmp</iconset>
    </property>
    <property name="text">
-    <string>Header</string>
+    <string>Lifeline</string>
    </property>
   </action>
   <action name="actMessage">

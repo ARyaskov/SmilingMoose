@@ -1,5 +1,5 @@
-#ifndef HEADER_H
-#define HEADER_H
+#ifndef LIFELINE_H
+#define LIFELINE_H
 
 #include <QGraphicsItem>
 #include <QRectF>
@@ -10,7 +10,7 @@
 /**
  * Класс, описывающий объект и его линию жизни.
  */
-class Header : public QGraphicsItem
+class Lifeline : public QGraphicsItem
 {
 public:
 
@@ -20,12 +20,12 @@ public:
 	 * Конструктор по умолчанию. 
 	 * @param graphWidget Указатель на виджет, на котором будем рисовать.
 	 */
-	Header(GraphWidget *graphWidget);
+	Lifeline(GraphWidget *graphWidget);
 
 	/**
 	 * Деструктор.
 	 */
-	~Header();
+	~Lifeline();
 
 	/** 
 	 * Вернуть прямоугольник границ фигуры.
@@ -90,4 +90,4 @@ private:
 	double z; /** Координата по оси Z. */
 };
 
-#endif // HEADER_H
+#endif // LIFELINE_H
