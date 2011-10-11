@@ -99,7 +99,7 @@
    <widget class="QWidget" name="dockWidgetContents">
     <layout class="QGridLayout" name="gridLayout_5">
      <item row="0" column="0">
-      <widget class="QTreeWidget" name="objectsList">
+      <widget class="QListWidget" name="objectsList">
        <property name="midLineWidth">
         <number>5</number>
        </property>
@@ -109,14 +109,6 @@
        <property name="alternatingRowColors">
         <bool>true</bool>
        </property>
-       <attribute name="headerVisible">
-        <bool>false</bool>
-       </attribute>
-       <column>
-        <property name="text">
-         <string notr="true">1</string>
-        </property>
-       </column>
       </widget>
      </item>
     </layout>
@@ -259,7 +251,7 @@
      <normaloff>:/sumleditor/resources/lifeline.bmp</normaloff>:/sumleditor/resources/lifeline.bmp</iconset>
    </property>
    <property name="text">
-    <string>Lifeline</string>
+    <string>Header</string>
    </property>
   </action>
   <action name="actMessage">
@@ -371,7 +363,7 @@
   </action>
   <action name="actionPicture">
    <property name="text">
-    <string>Сохранить как изображение...</string>
+    <string>Сохранить изображение...</string>
    </property>
   </action>
  </widget>

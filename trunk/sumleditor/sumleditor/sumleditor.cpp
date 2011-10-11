@@ -9,12 +9,12 @@ Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 {
 	ui.setupUi(this);
 
-    error_color = QColor(247,115,115);
+	error_color = QColor(247,115,115);
 	warning_color = QColor(243,193,127);
-    attention_color = QColor(250,232,139);
-    normal_color = QColor(255,255,255);
+	attention_color = QColor(250,232,139);
+	normal_color = QColor(255,255,255);
 
- 	// Подключение русского языка
+	// Подключение русского языка
 	QTextCodec *codec = QTextCodec::codecForName/*("UTF-8");*/("CP1251");
 	QTextCodec::setCodecForCStrings(codec);
 	QTextCodec::setCodecForTr(codec);
@@ -32,7 +32,7 @@ Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 	connect(ui.actReply,	SIGNAL(triggered()),	this,	SLOT(addReply()));
 	connect(ui.actSelect,	SIGNAL(toggled(bool)),	this,	SLOT(selection(bool)));
 	connect(ui.actStop,		SIGNAL(triggered()),	this,	SLOT(addStop()));
-    connect(ui.actCancel,	SIGNAL(triggered()),	this,	SLOT(cancel()));
+	connect(ui.actCancel,	SIGNAL(triggered()),	this,	SLOT(cancel()));
 
 	// Коннекты главного меню
 	connect(ui.actionQuit,	SIGNAL(triggered()),	this,	SLOT(slotExit()));
@@ -42,9 +42,10 @@ Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 	connect(ui.actionAboutUs,SIGNAL(triggered()),	this,	SLOT(slotAboutUs()));
 	connect(ui.actionAboutQt,SIGNAL(triggered()),	this,	SLOT(slotAboutQt()));
 	connect(ui.actionPicture,SIGNAL(triggered()),	this,	SLOT(saveAsPicture()));
-	
+
 
 	connect(ui.nameEdit,	SIGNAL(textEdited(const QString &)),this,SLOT(nameLEChanged(const QString &)));
+	connect(ui.descrEdit,	SIGNAL(textChanged(const QString &)),this,SLOT(descrChanged(const QString &)));
 
 	nameLE_val=new validatorNameLE(this);
 
@@ -59,18 +60,32 @@ void Sumleditor::nameLEChanged(const QString & text)
 {
 	qDebug("nameLEChanged");
 	if (!ui.nameEdit->hasAcceptableInput())
-		blink(ui.nameEdit, QColor(255,255,255), error_color, 1);
+		blink(ui.nameEdit, normal_color, error_color, 1);
 
 	QPalette palette = ui.nameEdit->palette();
-    
- 
+
+
 	if (ui.nameEdit->palette().color(QPalette::Base) == attention_color)
 	{
 		QPalette palette = ui.nameEdit->palette();
-        palette.setColor( QPalette::Base, normal_color );
+		palette.setColor( QPalette::Base, normal_color );
 		ui.nameEdit->setPalette(palette);
 	}
- }
+}
+
+void Sumleditor::descrChanged(const QString & text)
+{
+	qDebug("descrLEChanged");
+
+	QPalette palette = ui.nameEdit->palette();
+
+	if (ui.descrEdit->palette().color(QPalette::Base) == attention_color)
+	{
+		QPalette palette = ui.descrEdit->palette();
+		palette.setColor( QPalette::Base, normal_color );
+		ui.descrEdit->setPalette(palette);
+	}
+}
 
 Sumleditor::~Sumleditor()
 {
@@ -134,7 +149,7 @@ void Sumleditor::selection(bool checked)
 */
 void Sumleditor::cancel()
 {
-    setToolbarDefault();							// Стандартные свойства тулбара
+	setToolbarDefault();							// Стандартные свойства тулбара
 
 	this->diagram->setCursor(Qt::ArrowCursor);		// Задаем курсор
 	this->diagram->setCurrentAct(SELECT);			// Задать текущее состояние
@@ -151,15 +166,17 @@ void Sumleditor::addLifeline()
 {
 	setToolbarAdding();
 
-	ui.nameEdit->clear();						// Очистить поле ввода имени заогловка
+	ui.nameEdit->clear();						// Очистить поле ввода имени заголовка
 	ui.nameEdit->setFocus();					// Задать фокус на поле ввода заголовка
+
+	ui.descrEdit->clear();					    // Очистить поле ввода описания
 
 	this->diagram->setCursor(Qt::CrossCursor);	// Задаем курсор
 	this->diagram->setCurrentAct(LIFELINE);		// Действие - добавляем линию жизни
 
 	blink(ui.nameEdit, normal_color,  attention_color, 2);	// Помигать
 	fadeInto(ui.nameEdit,  attention_color);	// Задаем цвет полю ввода
-    
+
 	ui.statusBar->showMessage(QString("Добавление линии жизни. Введите имя и кликните на нажное место на сцене."));
 }
 
@@ -208,17 +225,17 @@ void Sumleditor::addStop()
 */
 void Sumleditor::addComment()
 {
-	ui.nameEdit->setFocus();				// Задать фокус на поле ввода заголовка
+	ui.descrEdit->setFocus();			     	// Задать фокус на поле ввода описания
 	ui.nameEdit->clear();						// Очистить поле ввода имени заогловка
-	ui.descrEdit->clear();					// Очистить поле ввода имени заогловка
-	
+	ui.descrEdit->clear();				    	// Очистить поле ввода описания
+
 	setToolbarAdding();
-	
+
 	this->diagram->setCursor(Qt::CrossCursor);	// Задаем курсор
 	this->diagram->setCurrentAct(COMMENT);		// Действие - добавляем линию жизни
 
-	blink(ui.nameEdit, QColor(255,255,255),  attention_color, 2);	// Помигать
-	fadeInto(ui.nameEdit,  attention_color);	// Задаем цвет полю ввода
+	blink(ui.descrEdit, normal_color,  attention_color, 2);	// Помигать
+	fadeInto(ui.descrEdit,  attention_color);	// Задаем цвет полю ввода
 
 	ui.statusBar->showMessage(QString("Добавление комментария. Введите имя и кликните на нужное место на сцене."));
 }
@@ -227,7 +244,7 @@ void Sumleditor::addComment()
 void Sumleditor::slotExit()
 {
 	if (QMessageBox::Yes == QMessageBox::question(this,QString("Закрытие программы"),
-			QString("Закрыть программу?"),QMessageBox::Yes | QMessageBox::No,QMessageBox::No) )
+		QString("Закрыть программу?"),QMessageBox::Yes | QMessageBox::No,QMessageBox::No) )
 		exit(0);
 }
 
@@ -264,7 +281,7 @@ void Sumleditor::slotAboutUs()
 /** Слот, срабатывающий при нажатии кнопки "Сохранить как изображение" в главном меню. */
 void Sumleditor::saveAsPicture()
 {
-	QString filename = QFileDialog::getSaveFileName(this,QString("Сохранить изображение сцены"),"","*.png");
+	QString filename = QFileDialog::getSaveFileName(this,QString("Сохранить изображение сцены"),"seq_001","*.png");
 
 	QRect rect;
 
@@ -277,53 +294,3 @@ void Sumleditor::saveAsPicture()
 	image.save(filename);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//connect(ui.actLifeline,SIGNAL(toggled(bool)),diagram,SLOT(addObject(bool)));
-//connect(ui.actComment,SIGNAL(toggled(bool)),this,SLOT(addComment(bool)));
-//connect(ui.descrEdit,SIGNAL(textChanged()),this,SLOT(addComment()));
-
-///** Слот для добавления комментария на сцену. */
-//void sumleditor::addComment(bool isChecked)
-//{
-//	diagram->setCursor(Qt::ArrowCursor);
-//
-//	diagram->addComment();		// Добавляем объект на сцену
-//
-//	ui.descrEdit->setFocus();	// Фокусируемся на текстовом поле
-//
-//	// Добавляем подсказку в статусбар.
-//	ui.statusBar->showMessage(QString("Вводите текст комментария."));
-//}
-//
-///** Слот для задания текста комментарию. */
-//void sumleditor::setComment()
-//{
-//	// Берем пока последний созданный элемент, сейчас это комментарий
-//	FreeComment * com = (FreeComment*)diagram->lastItem;	
-//
-//	com->text = ui.descrEdit->toPlainText();	// Задаем ему текст
-//	
-//	com->update();								// Перерисовываем его
-//}
