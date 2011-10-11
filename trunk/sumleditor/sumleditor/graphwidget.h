@@ -119,7 +119,6 @@ protected:
 	 * @param scaleFactor Величина прокрутки.
 	 */
 	void scaleView(qreal scaleFactor);
-
 	
 	/** 
 	 * Событие перемещения указателя мыши
