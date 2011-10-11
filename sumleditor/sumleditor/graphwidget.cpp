@@ -34,6 +34,8 @@ GraphWidget::GraphWidget(QWidget *parent)
 
 	this->currentAct = SELECT;							// Текущее действие - выбор объкта на сцене
 	this->mainWnd = (Sumleditor*)parent;				// Получаем указатель на главное окно
+
+	connect(scene, SIGNAL(changed()), this, SLOT(sceneChanged()));
 }
 
 /** Деструктор по умолчанию. */
@@ -41,6 +43,14 @@ GraphWidget::~GraphWidget()
 {
 	delete scene;
 }
+
+void GraphWidget::sceneChanged()
+{
+	qDebug("sceneChanged");
+
+}
+
+
 
 /** Событие прокрутки колесика мыши. */
 void GraphWidget::wheelEvent(QWheelEvent *event)
@@ -70,45 +80,56 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 	Ui::SumleditorClass* localUI = getParentWindow()->getUI();
 	ElementMetaInfo meta;
 	QVariant var;
-	localUI->nameEdit->setToolTip("");
 	// Если действие - выбор объекта
 	if (currentAct == SELECT)			
 	{
 		// Пока ничего не делаем
 	}
 	// Если действие - добавить ЛЖ, строка с текстом не пуста 
-	else if (currentAct == LIFELINE && localUI->nameEdit->text().length())
+	else if (currentAct == LIFELINE)
 	{
-		meta.action = LIFELINE;
-		meta.name = localUI->nameEdit->text();
-		meta.id = QString("LifeLine-"+localUI->nameEdit->text());
-		var.setValue(meta);
-		if (existDublicate(localUI->objectsList, var ))
-		{	// Если нет дубликата, то добавляем
-			localUI->nameEdit->setToolTip("This name already exists!");
-			fadeInto(localUI->nameEdit, error_color);		// Отключаем раскраску поля ввода имени
+		if (localUI->nameEdit->text().length())
+		{
+			meta.action = LIFELINE;
+			meta.name = localUI->nameEdit->text();
+			meta.id = QString("LifeLine-"+localUI->nameEdit->text());
+			var.setValue(meta);
+			if (existDublicate(localUI->objectsList, var ))
+			{	// Если нет дубликата, то добавляем
+				QMessageBox::information(this, "Attention!", "This name already exists!");
+				fadeInto(localUI->nameEdit, error_color);		// Отключаем раскраску поля ввода имени
+			}
+			else
+			{
+				addLifeline(mapToScene(event->x(), 30));	// Добавляем объект на сцену, задаем стандартный Y
+				addToObjList(localUI->objectsList,LIFELINE, var);
+			}
+		}else
+		{
+			blink(localUI->nameEdit,normal_color, error_color,2);		    // Мигаем красным
+			localUI->nameEdit->setFocus();									// Фокусируемся на строке имени
+		}
+	}
+	else if (currentAct == COMMENT)
+	{
+		if (localUI->descrEdit->toPlainText().length())
+		{
+			meta.action = COMMENT;
+			meta.name = localUI->nameEdit->text();
+			meta.desc = localUI->descrEdit->toPlainText();
+			meta.id = QString("Comment-"+localUI->nameEdit->text());
+			var.setValue(meta);
+			if (existDublicate(localUI->objectsList, var ))	// Если нет дубликата
+				QMessageBox::information(this, "Attention!", "This comment already exist on scene!");
+			else
+				addComment(mapToScene(event->x(), event->y()));	// Добавляем объект на сцену, задаем стандартный Y
+			addToObjList(localUI->objectsList,COMMENT, var);
 		}
 		else
 		{
-			addLifeline(mapToScene(event->x(), 30));	// Добавляем объект на сцену, задаем стандартный Y
-			addToObjList(localUI->objectsList,LIFELINE,QVariant(localUI->nameEdit->text()));
+			blink(localUI->descrEdit,normal_color, error_color,2);		    // Мигаем красным
+			localUI->descrEdit->setFocus();									// Фокусируемся на строке описания
 		}
-	}
-	else if (currentAct == COMMENT && localUI->nameEdit->text().length())
-	{
-		meta.action = COMMENT;
-		meta.name = localUI->nameEdit->text();
-		meta.id = QString("Comment-"+localUI->nameEdit->text());
-		var.setValue(meta);
-		if (existDublicate(localUI->objectsList, var ))	// Если нет дубликата
-			QMessageBox::information(this, "Attention!", "This lifeline already exist on scene!");
-		else
-			addComment(mapToScene(event->x(), event->y()));	// Добавляем объект на сцену, задаем стандартный Y
-	}
-	else
-	{
-		blink(localUI->nameEdit,normal_color, error_color,2);		// Мигаем красным
-		localUI->nameEdit->setFocus();									// Фокусируемся на строке имени
 	}
 }
 
@@ -143,90 +164,3 @@ void GraphWidget::addComment(QPointF point)
 
 	emit getParentWindow()->selection(true);	// Вызываем слот выбора объекта
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//	if (this->currentAct!=SELECT)
-//if (!getParentWindow()->getUI()->mainToolBar->isEnabled())
-//	this->viewport()->setCursor(Qt::CrossCursor);
-//else	
-//	this->viewport()->setCursor(Qt::ArrowCursor);
-
-
-//QList<QGraphicsItem *>lifelineList;
-//QGraphicsItemGroup *lifelineGroup;
-
-//if (getParentWindow()->getUI()->nameEdit->text().length())
-//{
-//	if (!getParentWindow()->getUI()->mainToolBar->isEnabled()){
-//		if (existDublicate())
-//		{
-//			QMessageBox::information(this, "Attention!", "This Header already exist on scene!");
-//		}
-//		else
-//		{
-//			Header* lifeline1 = new Header(this);
-//			lifeline1->setPos(mapToScene(event->x(), event->y()) );
-
-//			scene->addItem(lifeline1);
-
-//			lifelineList.append(lifeline1);
-
-//			getParentWindow()->getUI()->mainToolBar->setEnabled(true);
-//			getParentWindow()->getUI()->actCancel->setEnabled(false);
-//			fadeInto(getParentWindow()->getUI()->nameEdit, QColor(255,255,255));
-//		}
-//	}else
-//	{
-//		blink(getParentWindow()->getUI()->mainToolBar,QColor(255,255,255), attention_color, 1);
-//	}
-//}
-//else
-//{
-//	blink(getParentWindow()->getUI()->nameEdit,QColor(255,255,255), error_color,2);
-//}
-
-
-///** ТЕСТОВЫЙ слот добавления объекта на сцену. */
-//void GraphWidget::addObject(bool isChecked)
-//{
-//	if (isChecked) // Если "утопили" кнопку.
-//	{
-//		//Header *testLine = new LifeL8-w58-ybw75yine(this);
-//		//FreeComment *testCom = new FreeComment(this);	// СОздаем объект комментария
-//	
-//		//QList<QGraphicsItem *>list;
-//		//list.append(testLine);
-//		//list.append(testCom);
-//		//
-//		//QGraphicsItemGroup * qwe = scene->createItemGroup(list);
-//		//qwe->setFlag(QGraphicsItem::GraphicsItemFlag::ItemIsMovable);
-//	//	scene->addItem(testLine);
-//	//	scene->addItem(testCom);
-//	}
-//}
-//
-///** Слот добавления комментария на сцену. */
-//void GraphWidget::addComment()
-//{
-//	FreeComment *testCom = new FreeComment(this);	// СОздаем объект комментария
-//
-//	scene->addItem(testCom);						// Добавляем его на сцену
-//
-//	lastItem = (FreeComment*)testCom;				// Сохраняем последний созданный объект
-//}

@@ -5,6 +5,8 @@
 #include "comfunctions.h"
 
 
+class SumleditorClass;
+
 static QList<QTreeWidgetItem* > listItems;
 
 
@@ -47,9 +49,12 @@ struct ElementMetaInfo
 {
   Action action;
   QString name;
+  QString desc;
   QString id;
-  QGraphicsItem* graphicsItem;
+  QHash<QString, QGraphicsItem*> array;
 };
+
+
 
  Q_DECLARE_METATYPE(ElementMetaInfo)
 /**
@@ -134,32 +139,11 @@ protected:
     void mousePressEvent(QMouseEvent * event);
 
 private slots:
+	/** 
+	 * Слот, реагирующий на изменения сцены
+	 */
+	void sceneChanged();
 
 };
 
 #endif // GRAPHWIDGET_H
-
-
-
-
-
-
-
-
-
-	///** Последний созданный объект. */
-	//QGraphicsItem *lastItem;
-
-	/** 
-	 * ТЕСТОВЫЙ слот добавления объекта на сцену.
-	 * @param isChecked Нажата ли кнопка.
-	 */
-	//void addObject(bool isChecked);
-
-
-
-	/**
-	 * Слот добавления комментария на сцену.
-	 * @param isChecked Нажата ли кнопка.
-	 */
-	//void addComment();

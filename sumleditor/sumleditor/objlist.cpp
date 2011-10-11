@@ -7,21 +7,37 @@
 * @param act Действие
 * @param metainf Информация о конкретном элементе (Имя, id, расположение и т.д.)
 */
-void addToObjList(QTreeWidget* list, enum Action act, const QVariant& metainf)
+void addToObjList(QListWidget* list, enum Action act, const QVariant& metainf)
 {
+	ElementMetaInfo meta = metainf.value<ElementMetaInfo>();
+	QString name = meta.name;
+	QString desc = meta.desc;
+	QListWidgetItem* item = new QListWidgetItem();
+	item->setData(Qt::UserRole, metainf);
+
 	switch (act)
 	{
 	case SELECT:{}break;
 	case LIFELINE:
 		{
-			QString name = metainf.toString();
-			QTreeWidgetItem* item = new QTreeWidgetItem(QStringList(name),0);
-			item->setData(0, Qt::UserRole, metainf);
-			item->setIcon(0,QIcon(":/sumleditor/resources/L.bmp"));
-			list->addTopLevelItem(item);
+			if (desc.length())
+				item->setText(name+" : "+desc);
+			else
+				item->setText(name);
+			item->setIcon(QIcon(":/sumleditor/resources/L.bmp"));	
 		}break;
 
+
+	case COMMENT:
+		{
+			if (name.length())
+				item->setText(name+" : "+desc);
+			else
+				item->setText(desc);
+			item->setIcon(QIcon(":/sumleditor/resources/c.bmp"));
+		}break;
 	}
+	list->addItem(item);
 }
 
 /**
@@ -31,9 +47,10 @@ void addToObjList(QTreeWidget* list, enum Action act, const QVariant& metainf)
 * @param metainf Информация об элементе для поиска
 * @return Наличие подобного объекта в списке
 */
-bool existDublicate(QTreeWidget* list, const QVariant& metainf)
+bool existDublicate(QListWidget* list, const QVariant& metainf)
 {
 	struct ElementMetaInfo meta = metainf.value<ElementMetaInfo>();
-	QList<QTreeWidgetItem *> dubItems =  list->findItems( meta.name, Qt::MatchFixedString | Qt::MatchCaseSensitive );
+	QList<QListWidgetItem *> dubItems =  list->findItems( meta.name, Qt::MatchFixedString | Qt::MatchCaseSensitive );
 	return !dubItems.isEmpty();
 }
+
