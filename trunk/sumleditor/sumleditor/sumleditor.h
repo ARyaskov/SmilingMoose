@@ -136,6 +136,11 @@ private slots:
 	 */
 	void slotAboutUs();
 
+	/**
+	 * Слот, срабатывающий при нажатии кнопки "Сохранить как изображение" в главном меню.
+	 */
+	void saveAsPicture();
+
 };
 
 #endif // SUMLEDITOR_H

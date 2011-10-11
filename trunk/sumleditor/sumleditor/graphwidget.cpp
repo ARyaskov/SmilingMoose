@@ -18,7 +18,7 @@ GraphWidget::GraphWidget(QWidget *parent)
 	scene->setItemIndexMethod(QGraphicsScene::NoIndex);	// Задание метода индексирования сцены
 	setOptimizationFlags(QGraphicsView::DontSavePainterState);
 
-	scene->setSceneRect(-300,-300,600,600);				// Задание стандартных размеров сцене
+	scene->setSceneRect(0,0,600,600);				// Задание стандартных размеров сцене
 	//scene->addLine(-600,-150,600,-150);
 	//scene->setBackgroundBrush(QColor(200,240,240));		// Задание цвета фона
 	setScene(scene);									// Задание текущей сцены на виджете
@@ -118,7 +118,7 @@ void GraphWidget::addLifeline(QPointF point)
 	Header* header = new Header(this);			// Создаем заголовок
 	Lifeline * lifeline = new Lifeline(this);	// Задаем линию жизни
 
-	point.setY(-180);							// Задаем стандартную коорлинату по У
+	point.setY(30);							// Задаем стандартную коорлинату по У
 	header->setPos(point);						// Задаем координаты
 	header->name = getParentWindow()->getUI()->nameEdit->text();		// Задаем текст
 
