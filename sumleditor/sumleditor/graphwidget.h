@@ -113,6 +113,8 @@ private:
 
 	Sumleditor *mainWnd;	/** ”казатель на главное окно. */
 
+	QGraphicsItem *currentItem;
+
 protected:
 	/** 
 	 * —обытие прокрутки колесика мыши.

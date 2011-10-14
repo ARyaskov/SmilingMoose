@@ -12,6 +12,7 @@ Lifeline::Lifeline(GraphWidget *graphWidget)
 	this->setCursor(Qt::SizeAllCursor);
 	setCacheMode(DeviceCoordinateCache);
 	setZValue(1);
+	isSelected = false;
 }
 
 /** Деструктор по умолчанию. */
@@ -40,12 +41,28 @@ void  Lifeline::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 {
 	QLinearGradient gradient(0,0,90,30);					// Задать градиент фигуре
 
-	gradient.setColorAt(0, QColor(Qt::yellow).dark(120));	// Цвета градиента
-	gradient.setColorAt(1, QColor(Qt::darkYellow).dark(100));
-
+	if (isSelected)
+	{
+		gradient.setColorAt(0, QColor(Qt::yellow));	// Цвета градиента
+		gradient.setColorAt(1, QColor(Qt::darkYellow));
+	}
+	else
+	{
+		gradient.setColorAt(0, QColor(Qt::yellow).dark(100));	// Цвета градиента
+		gradient.setColorAt(1, QColor(Qt::darkYellow).dark(100));
+	}
 	// Нарисовать прямоугольник объекта
 	painter->setBrush(gradient);
-	painter->setPen(QPen(Qt::black, 2));
+
+	QPen pen;
+	pen.setWidth(2);
+
+	if (isSelected)
+		pen.setColor(Qt::red);
+	else
+		pen.setColor(Qt::black);
+
+	painter->setPen(pen);
 	painter->drawRect(0,0,90,30);
 
 	QRectF textRect(5,5,80,20);								// Прямоугольник с текстом
@@ -68,8 +85,7 @@ void  Lifeline::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 	painter->drawText(textRect, name, opt);
 
 	QLine line (45,30,45,300);
-	QPen pen = QPen(Qt::DashLine);
-	pen.setWidth(2);
+	pen.setStyle(Qt::DashLine);
 	pen.setDashOffset(3);
 	painter->setPen(pen);
 	painter->drawLine(line);
