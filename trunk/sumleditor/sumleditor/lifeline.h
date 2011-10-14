@@ -79,6 +79,12 @@ protected:
 	 */
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
+	/** 
+	 * Событие движения мыши при зажатой кнопке мыши.
+	 * @param Событие мыши.
+	 */
+	virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+
 private:
 	/** Указатель на виджет, на котором рисуем. */
 	GraphWidget		*graph;

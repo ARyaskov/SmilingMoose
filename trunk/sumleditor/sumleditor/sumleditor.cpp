@@ -171,7 +171,6 @@ void Sumleditor::addLifeline()
 
 	ui.descrEdit->clear();					    // Очистить поле ввода описания
 
-	this->diagram->setCursor(Qt::CrossCursor);	// Задаем курсор
 	this->diagram->setCurrentAct(LIFELINE);		// Действие - добавляем линию жизни
 
 	blink(ui.nameEdit, normal_color,  attention_color, 2);	// Помигать
@@ -231,7 +230,6 @@ void Sumleditor::addComment()
 
 	setToolbarAdding();
 
-	this->diagram->setCursor(Qt::CrossCursor);	// Задаем курсор
 	this->diagram->setCurrentAct(COMMENT);		// Действие - добавляем линию жизни
 
 	blink(ui.descrEdit, normal_color,  attention_color, 2);	// Помигать
@@ -286,7 +284,6 @@ void Sumleditor::saveAsPicture()
 	QRect rect;
 
 	rect.setCoords(0,0,600,600);
-	//this->diagram->getScene()->
 	QImage image(600,600, QImage::Format_ARGB32_Premultiplied);
 	image.fill(NULL);
 	QPainter painter(&image);
