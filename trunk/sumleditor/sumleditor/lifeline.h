@@ -39,6 +39,8 @@ public:
 	 */
 	QPainterPath shape() const;
 
+	inline void setSelected(bool flag){ isSelected = flag; }
+
 	/**
 	 * Нарисовать фигуру.
 	 * @param painter Отрисовщик объектов.
@@ -71,6 +73,7 @@ public:
 	 */
 	void setCoords(double newX, double newY, double newZ);
 
+
 protected:
 
 	/** 
@@ -94,6 +97,8 @@ private:
 	double y; /** Координата по оси y. */
 
 	double z; /** Координата по оси Z. */
+
+	bool isSelected;	/** Флаг выделения данного объекта. */
 };
 
 #endif // LIFELINE_H

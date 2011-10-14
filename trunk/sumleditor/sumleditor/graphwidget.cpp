@@ -38,6 +38,8 @@ GraphWidget::GraphWidget(QWidget *parent)
 	this->mainWnd = (Sumleditor*)parent;				// Получаем указатель на главное окно
 
 	connect(scene, SIGNAL(changed()), this, SLOT(sceneChanged()));
+
+	currentItem = NULL;
 }
 
 /** Деструктор по умолчанию. */
@@ -79,10 +81,47 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 	Ui::SumleditorClass* localUI = getParentWindow()->getUI();
 	ElementMetaInfo meta;
 	QVariant var;
+
+	QGraphicsItem *item;
+	Lifeline * line;
+
 	// Если действие - выбор объекта
 	if (currentAct == SELECT)			
 	{
-		// Пока ничего не делаем
+		item = scene->itemAt(event->posF(),QTransform());
+
+		if (currentItem == NULL && item != NULL)
+		{
+			currentItem = item;
+
+			line = (Lifeline*)currentItem;
+			line->setSelected(true);
+			line->update();
+			line = NULL;
+		}
+		else if (item == NULL && currentItem != NULL)
+		{
+			line = (Lifeline*)currentItem;
+			line->setSelected(false);
+			line->update();
+			line = NULL;
+		}
+		else if (item != NULL && currentItem != NULL)
+		{
+			line = (Lifeline*)currentItem;
+			line->setSelected(false);
+			line->update();
+
+
+			currentItem = item;
+
+			line = (Lifeline*)currentItem;
+			line->setSelected(true);
+			line->update();
+			line = NULL;
+		}
+
+
 	}
 	// Если действие - добавить ЛЖ, строка с текстом не пуста 
 	else if (currentAct == LIFELINE)
