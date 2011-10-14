@@ -11,7 +11,7 @@ Lifeline::Lifeline(GraphWidget *graphWidget)
 	setFlag(ItemSendsGeometryChanges);
 	this->setCursor(Qt::SizeAllCursor);
 	setCacheMode(DeviceCoordinateCache);
-	setZValue(-1);
+	setZValue(1);
 }
 
 /** Деструктор по умолчанию. */
@@ -99,4 +99,11 @@ void Lifeline::setCoords(double newX, double newY, double newZ)
 	this->setX(x);
 	this->setY(y);
 	this->setZValue(z);
+}
+
+/** Событие движения мыши при зажатой кнопке мыши. */
+void Lifeline::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
+{
+	QGraphicsItem::mouseMoveEvent(event);
+	this->setY(30);							// Линия жизни остается на одной координате У
 }

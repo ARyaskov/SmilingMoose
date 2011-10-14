@@ -18,12 +18,14 @@ GraphWidget::GraphWidget(QWidget *parent)
 	scene->setItemIndexMethod(QGraphicsScene::NoIndex);	// Задание метода индексирования сцены
 	setOptimizationFlags(QGraphicsView::DontSavePainterState);
 
-	scene->setSceneRect(0,0,600,600);				// Задание стандартных размеров сцене
-	//scene->addLine(-600,-150,600,-150);
-	//scene->setBackgroundBrush(QColor(200,240,240));		// Задание цвета фона
+	scene->setSceneRect(0,0,600,600);					// Задание стандартных размеров сцене
+
+	QPen pen = QPen(Qt::DashLine);						// Добавляем линию на сцену
+	scene->addLine(0,45,600,45,pen);
+
 	setScene(scene);									// Задание текущей сцены на виджете
 
-	//setDragMode(QGraphicsView::ScrollHandDrag);			// Задать перемещение по сцене "рукой"
+	setDragMode(QGraphicsView::ScrollHandDrag);			// Задать перемещение по сцене "рукой"
 
 	// Задать параметры сцене
 	setCacheMode(CacheBackground);								
@@ -55,7 +57,8 @@ void GraphWidget::sceneChanged()
 /** Событие прокрутки колесика мыши. */
 void GraphWidget::wheelEvent(QWheelEvent *event)
 {
-	scaleView(pow((double)2, -event->delta() / 480.0));
+	if (event->modifiers() == Qt::ControlModifier)			// Если при этом нажата клавиша Ctrl
+		scaleView(pow((double)2, -event->delta() / 480.0));
 }
 
 /** Функция масштабирования сцены. */
@@ -68,15 +71,11 @@ void GraphWidget::scaleView(qreal scaleFactor)
 	scale(scaleFactor, scaleFactor);
 }
 
-/** Слот для события перемещения указателя мыши. */
-void GraphWidget::mouseMoveEvent(QMouseEvent * event)
-{
-
-}
-
 /** Слот для события нажатия на кнопку мыши. */
 void GraphWidget::mousePressEvent(QMouseEvent * event)
 {
+	QGraphicsView::mousePressEvent(event);				// Повторяем событие
+
 	Ui::SumleditorClass* localUI = getParentWindow()->getUI();
 	ElementMetaInfo meta;
 	QVariant var;
@@ -98,6 +97,8 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 			{	// Если нет дубликата, то добавляем
 				QMessageBox::information(this, "Attention!", "This name already exists!");
 				fadeInto(localUI->nameEdit, error_color);		// Отключаем раскраску поля ввода имени
+				localUI->nameEdit->setFocus();
+				QGraphicsView::mouseReleaseEvent(event);
 			}
 			else
 			{
@@ -131,6 +132,7 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 			localUI->descrEdit->setFocus();									// Фокусируемся на строке описания
 		}
 	}
+	
 }
 
 /** Функция добавления линии жизни на сцену. */

@@ -130,7 +130,7 @@ protected:
 	 * Событие перемещения указателя мыши
 	 * @param event Указатель на событие.
 	 */
-    void mouseMoveEvent ( QMouseEvent * event );
+    //void mouseMoveEvent ( QMouseEvent * event );
 
 	/** 
 	 * Событие нажатия на кнопку мыши
