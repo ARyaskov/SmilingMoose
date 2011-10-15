@@ -83,14 +83,10 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 	ElementMetaInfo meta;
 	QVariant var;
 
-
-
 	// Если действие - выбор объекта
 	if (currentAct == SELECT)			
 	{
 		selectItem(event);
-
-
 	}
 	// Если действие - добавить ЛЖ, строка с текстом не пуста 
 	else if (currentAct == LIFELINE)
@@ -179,6 +175,7 @@ void GraphWidget::selectItem(QMouseEvent * event)
 {
 	QGraphicsItem *item;
 	Lifeline * line;
+	FreeComment * com;
 
 	item = scene->itemAt(event->posF(),QTransform());
 
@@ -191,10 +188,18 @@ void GraphWidget::selectItem(QMouseEvent * event)
 			line = (Lifeline*)currentItem;
 			line->setSelected(false);
 			line->update();
-			line = NULL;
 		}
+		else if (currentItem->type() == 1)
+		{
+			com = (FreeComment*)currentItem;
+			com->setSelected(false);
+			com->update();
+		}
+
 	}
-	
+
+	line = NULL;
+
 	// Выделить новый объект, сделать его текущим
 	if (item != NULL)
 	{
@@ -206,9 +211,15 @@ void GraphWidget::selectItem(QMouseEvent * event)
 			line = (Lifeline*)currentItem;
 			line->setSelected(true);
 			line->update();
-			line = NULL;
+		}
+		else if (item->type() == 1)
+		{
+			com = (FreeComment*)currentItem;
+			com->setSelected(true);
+			com->update();
 		}
 	}
+	line = NULL;
 }
 
 

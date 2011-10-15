@@ -43,13 +43,13 @@ void  Lifeline::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
 	if (isSelected)
 	{
-		gradient.setColorAt(0, QColor(Qt::yellow).light(100));	// Цвета градиента
-		gradient.setColorAt(1, QColor(Qt::darkYellow).light(100));
+		gradient.setColorAt(0, QColor(Qt::blue).light(150));	// Цвета градиента
+		gradient.setColorAt(1, QColor(Qt::darkBlue).light(150));
 	}
 	else
 	{
-		gradient.setColorAt(0, QColor(Qt::yellow).dark(100));	// Цвета градиента
-		gradient.setColorAt(1, QColor(Qt::darkYellow).dark(100));
+		gradient.setColorAt(0, QColor(Qt::blue));	// Цвета градиента
+		gradient.setColorAt(1, QColor(Qt::darkBlue));
 	}
 	// Нарисовать прямоугольник объекта
 	painter->setBrush(gradient);
