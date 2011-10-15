@@ -68,12 +68,7 @@ void  FreeComment::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	//painter->drawRect(0,0,100,50);
 	QPainterPath path;
 	QPolygon pol;
-	pol<<QPoint(0,0);
-	pol<<QPoint(130,0);
-	pol<<QPoint(150,20);
-	pol<<QPoint(150,100);
-	pol<<QPoint(0,100);
-	pol<<QPoint(0,0);
+	pol<<QPoint(0,0)<<QPoint(130,0)<<QPoint(150,20)<<QPoint(150,100)<<QPoint(0,100)<<QPoint(0,0);
 
 	path.addPolygon(pol);
 	painter->drawPath(path);
