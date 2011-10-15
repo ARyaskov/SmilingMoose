@@ -106,6 +106,8 @@ public:
 	 */
 	void addComment(QPointF point);
 
+	void selectItem(QMouseEvent * event);
+
 private:
 	QGraphicsScene* scene;  /** ”казатель на динамический объект сцены. */
 

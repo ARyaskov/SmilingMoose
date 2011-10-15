@@ -10,7 +10,7 @@ FreeComment::FreeComment(GraphWidget *graphWidget)
 	setFlag(ItemSendsGeometryChanges);
 	setCacheMode(DeviceCoordinateCache);
 	setZValue(1);
-	this->setCursor(Qt::SizeAllCursor);
+	this->setCursor(Qt::PointingHandCursor);
 }
 
 /** Деструктор по умолчанию. */
