@@ -3,6 +3,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPainterPath>
 #include <QGraphicsScene>
+#include <QGraphicsItem>
 
 /** Класс, реализующий виджет сцены для отрисовки диаграммы в главном окне. */
 GraphWidget::GraphWidget(QWidget *parent)
@@ -82,44 +83,12 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 	ElementMetaInfo meta;
 	QVariant var;
 
-	QGraphicsItem *item;
-	Lifeline * line;
+
 
 	// Если действие - выбор объекта
 	if (currentAct == SELECT)			
 	{
-		item = scene->itemAt(event->posF(),QTransform());
-
-		if (currentItem == NULL && item != NULL)
-		{
-			currentItem = item;
-
-			line = (Lifeline*)currentItem;
-			line->setSelected(true);
-			line->update();
-			line = NULL;
-		}
-		else if (item == NULL && currentItem != NULL)
-		{
-			line = (Lifeline*)currentItem;
-			line->setSelected(false);
-			line->update();
-			line = NULL;
-		}
-		else if (item != NULL && currentItem != NULL)
-		{
-			line = (Lifeline*)currentItem;
-			line->setSelected(false);
-			line->update();
-
-
-			currentItem = item;
-
-			line = (Lifeline*)currentItem;
-			line->setSelected(true);
-			line->update();
-			line = NULL;
-		}
+		selectItem(event);
 
 
 	}
@@ -205,3 +174,97 @@ void GraphWidget::addComment(QPointF point)
 
 	emit getParentWindow()->selection(true);	// Вызываем слот выбора объекта
 }
+
+void GraphWidget::selectItem(QMouseEvent * event)
+{
+	QGraphicsItem *item;
+	Lifeline * line;
+
+	item = scene->itemAt(event->posF(),QTransform());
+
+	// Снять выделение с текущего объекта, если надо
+	if (currentItem != NULL && item != currentItem)
+	{
+		// Если это линия жезни
+		if (currentItem->type() == 0)
+		{
+			line = (Lifeline*)currentItem;
+			line->setSelected(false);
+			line->update();
+			line = NULL;
+		}
+	}
+	
+	// Выделить новый объект, сделать его текущим
+	if (item != NULL)
+	{
+		currentItem = item;
+
+		// Если это линия жезни
+		if (item->type() == 0)
+		{
+			line = (Lifeline*)currentItem;
+			line->setSelected(true);
+			line->update();
+			line = NULL;
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//if (currentItem == NULL && item != NULL)
+	//{
+	//	currentItem = item;
+
+	//	line = (Lifeline*)currentItem;
+	//	line->setSelected(true);
+	//	line->update();
+	//	line = NULL;
+	//}
+	//else if (item == NULL && currentItem != NULL)
+	//{
+	//	line = (Lifeline*)currentItem;
+	//	line->setSelected(false);
+	//	line->update();
+	//	line = NULL;
+	//}
+	//else if (item != NULL && currentItem != NULL)
+	//{
+	//	line = (Lifeline*)currentItem;
+	//	line->setSelected(false);
+	//	line->update();
+
+
+	//	currentItem = item;
+
+	//	line = (Lifeline*)currentItem;
+	//	line->setSelected(true);
+	//	line->update();
+	//	line = NULL;
+	//}

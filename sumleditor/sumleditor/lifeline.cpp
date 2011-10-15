@@ -9,7 +9,7 @@ Lifeline::Lifeline(GraphWidget *graphWidget)
 	setFlag(ItemIsSelectable);
 	setFlag(ItemIsMovable);
 	setFlag(ItemSendsGeometryChanges);
-	this->setCursor(Qt::SizeAllCursor);
+	this->setCursor(Qt::PointingHandCursor);
 	setCacheMode(DeviceCoordinateCache);
 	setZValue(1);
 	isSelected = false;
@@ -43,8 +43,8 @@ void  Lifeline::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
 	if (isSelected)
 	{
-		gradient.setColorAt(0, QColor(Qt::yellow));	// Цвета градиента
-		gradient.setColorAt(1, QColor(Qt::darkYellow));
+		gradient.setColorAt(0, QColor(Qt::yellow).light(100));	// Цвета градиента
+		gradient.setColorAt(1, QColor(Qt::darkYellow).light(100));
 	}
 	else
 	{
