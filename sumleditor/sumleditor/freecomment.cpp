@@ -9,7 +9,8 @@ FreeComment::FreeComment(GraphWidget *graphWidget)
 	setFlag(ItemIsMovable);
 	setFlag(ItemSendsGeometryChanges);
 	setCacheMode(DeviceCoordinateCache);
-	setZValue(1);
+	setZValue(2);
+	isSelected = false;
 	this->setCursor(Qt::PointingHandCursor);
 }
 
@@ -39,12 +40,29 @@ void  FreeComment::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 {
 	QLinearGradient gradient(0,0,100,50);					// Задать градиент фигуре
 
-	gradient.setColorAt(0, QColor(Qt::red).light(200));	// Цвета градиента
-	gradient.setColorAt(1, QColor(Qt::red).light(100));
+	if (isSelected)
+	{
+		gradient.setColorAt(0, QColor(Qt::yellow).light(150));	// Цвета градиента
+		gradient.setColorAt(1, QColor(Qt::darkYellow).light(150));
+	}
+	else
+	{
+		gradient.setColorAt(0, QColor(Qt::yellow));	// Цвета градиента
+		gradient.setColorAt(1, QColor(Qt::darkYellow));
+	}
+
+	QPen pen;
+	pen.setWidth(2);
 
 	// Нарисовать прямоугольник объекта
 	painter->setBrush(gradient);
-	painter->setPen(QPen(Qt::black, 2));
+
+	if (isSelected)
+		pen.setColor(Qt::red);
+	else
+		pen.setColor(Qt::black);
+
+	painter->setPen(pen);
 	painter->drawRect(0,0,100,50);
 	
 	QRectF textRect(5,5,90,40);								// Прямоугольник с текстом
@@ -55,7 +73,7 @@ void  FreeComment::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	font.setPointSize(8);
 
 	painter->setFont(font);
-	painter->setPen(Qt::black);
+	///painter->setPen(Qt::black);
 
 	// Задать свойства тексту
 	QTextOption opt;

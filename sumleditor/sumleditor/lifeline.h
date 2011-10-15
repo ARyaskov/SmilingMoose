@@ -39,6 +39,10 @@ public:
 	 */
 	QPainterPath shape() const;
 
+	/**
+	 * Выделен ли объект.
+	 * @param Флаг выделения.
+	 */
 	inline void setSelected(bool flag){ isSelected = flag; }
 
 	/**
