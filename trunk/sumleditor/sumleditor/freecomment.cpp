@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "freecomment.h"
+#include <QPainterPath>
 
 /** Конструктор по умолчанию. */
 FreeComment::FreeComment(GraphWidget *graphWidget)
@@ -23,14 +24,14 @@ FreeComment::~FreeComment()
 /** Вернуть прямоугольник границ фигуры. */
 QRectF FreeComment::boundingRect() const
 {
-	return QRectF(0,0,100,50);
+	return QRectF(0,0,150,100);
 }
 
 /** Вернуть форму фигуры. */
 QPainterPath  FreeComment::shape() const
 {
 	QPainterPath path;
-	path.addRect(0,0,100,50);
+	path.addRect(0,0,150,100);
 
 	return path;
 }
@@ -62,10 +63,24 @@ void  FreeComment::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	else
 		pen.setColor(Qt::black);
 
+	pen.setJoinStyle(Qt::RoundJoin);
 	painter->setPen(pen);
-	painter->drawRect(0,0,100,50);
-	
-	QRectF textRect(5,5,90,40);								// Прямоугольник с текстом
+	//painter->drawRect(0,0,100,50);
+	QPainterPath path;
+	QPolygon pol;
+	pol<<QPoint(0,0);
+	pol<<QPoint(130,0);
+	pol<<QPoint(150,20);
+	pol<<QPoint(150,100);
+	pol<<QPoint(0,100);
+	pol<<QPoint(0,0);
+
+	path.addPolygon(pol);
+	painter->drawPath(path);
+	painter->drawLine(130,0,130,20);
+	painter->drawLine(130,20,150,20);
+
+	QRectF textRect(5,5,140,90);								// Прямоугольник с текстом
 
 	// Задать шрифт
 	QFont font = painter->font();
@@ -73,7 +88,6 @@ void  FreeComment::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	font.setPointSize(8);
 
 	painter->setFont(font);
-	///painter->setPen(Qt::black);
 
 	// Задать свойства тексту
 	QTextOption opt;
