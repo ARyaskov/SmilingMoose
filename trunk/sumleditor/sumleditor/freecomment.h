@@ -4,6 +4,8 @@
 #include <QGraphicsItem>
 #include <QRectF>
 #include <QPainterPath>
+#include <QDomElement>
+#include <QDomDocument>
 #include "comfunctions.h"
 
 
@@ -77,6 +79,13 @@ public:
 	 * @param newZ Координата по Z.
 	 */
 	void setCoords(double newX, double newY, double newZ);
+
+	/**
+	 * Сохранение свободного комментария в файл.
+	 * @param domDoc Главный узел, документ, файла.
+	 * @return Текущий элемент узла в файле.
+	 */
+	QDomElement save (QDomDocument & domDoc) const;
 
 protected:
 

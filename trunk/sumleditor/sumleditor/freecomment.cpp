@@ -120,3 +120,31 @@ void FreeComment::setCoords(double newX, double newY, double newZ)
 	this->setY(y);
 	this->setZValue(z);
 }
+
+/** Сохранение свободного комментария в файл. */
+QDomElement FreeComment::save(QDomDocument & domDoc) const
+{
+	QDomElement element = domDoc.createElement("freecomment");
+
+	QDomAttr attr = domDoc.createAttribute("text");
+	attr.setValue(text.toUtf8());
+	element.setAttributeNode(attr);
+
+	attr = domDoc.createAttribute("name");
+	attr.setValue(name.toUtf8());
+	element.setAttributeNode(attr);
+
+	attr = domDoc.createAttribute("x");
+	attr.setValue(QString::number(x));
+	element.setAttributeNode(attr);
+
+	attr = domDoc.createAttribute("y");
+	attr.setValue(QString::number(y));
+	element.setAttributeNode(attr);
+
+	attr = domDoc.createAttribute("z");
+	attr.setValue(QString::number(z));
+	element.setAttributeNode(attr);
+
+	return element;
+}
