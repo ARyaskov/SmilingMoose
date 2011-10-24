@@ -293,6 +293,8 @@ void Sumleditor::slotSaveAs()
 /** Слот, срабатывающий при нажатии кнопки "Разработчики" в главном меню. */
 void Sumleditor::slotAboutUs()
 {
+	QMessageBox::about(this, "О SUMLEditor", "Программа работы с UML диаграммами последовательности.\nВыполнили студенты ИВТ-460:\nГригорьев В.\nНавроцкий М.\nРясков А.\nСоколов С.");
+
 	qDebug("slotAboutUs");
 }
 
