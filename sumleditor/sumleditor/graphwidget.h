@@ -106,7 +106,16 @@ public:
 	 */
 	void addComment(QPointF point);
 
+	/** 
+	 * Выбор объекта на сцене.
+	 */
 	void selectItem(QMouseEvent * event);
+
+	/** 
+	 * Удаление объекта со сцены.
+	 */
+	void removeCurrentItem();
+
 
 private:
 	QGraphicsScene* scene;  /** Указатель на динамический объект сцены. */
