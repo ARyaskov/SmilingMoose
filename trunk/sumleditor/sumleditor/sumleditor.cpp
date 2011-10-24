@@ -33,6 +33,7 @@ Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 	connect(ui.actSelect,	SIGNAL(toggled(bool)),	this,	SLOT(selection(bool)));
 	connect(ui.actStop,		SIGNAL(triggered()),	this,	SLOT(addStop()));
 	connect(ui.actCancel,	SIGNAL(triggered()),	this,	SLOT(cancel()));
+	connect(ui.actDelete,	SIGNAL(triggered()),	this,	SLOT(deleteObj()));
 
 	// Коннекты главного меню
 	connect(ui.actionQuit,	SIGNAL(triggered()),	this,	SLOT(slotExit()));
@@ -100,22 +101,23 @@ void Sumleditor::setToolbarDefault()
 
 	ui.actCancel->setEnabled(false);				// Декативируем кнопку отмены
 
-	ui.actComment->setEnabled(true);			
-	ui.actCreate->setEnabled(true);				
-	ui.actDestroy->setEnabled(true);			
-	ui.actLifeline->setEnabled(true);			
-	ui.actMessage->setEnabled(true);			
-	ui.actSelect->setEnabled(true);				
-	ui.actReply->setEnabled(true);				
+	ui.actComment->setEnabled(true);
+	ui.actCreate->setEnabled(true);
+	ui.actDestroy->setEnabled(true);
+	ui.actLifeline->setEnabled(true);
+	ui.actMessage->setEnabled(true);
+	ui.actSelect->setEnabled(true);
+	ui.actReply->setEnabled(true);
 	ui.actStop->setEnabled(true);
+	ui.actDelete->setEnabled(false);
 
-	ui.actComment->setChecked(false);			
-	ui.actCreate->setChecked(false);				
-	ui.actDestroy->setChecked(false);			
-	ui.actLifeline->setChecked(false);			
-	ui.actMessage->setChecked(false);						
-	ui.actReply->setChecked(false);				
-	ui.actStop->setChecked(false);	
+	ui.actComment->setChecked(false);
+	ui.actCreate->setChecked(false);
+	ui.actDestroy->setChecked(false);
+	ui.actLifeline->setChecked(false);
+	ui.actMessage->setChecked(false);
+	ui.actReply->setChecked(false);		
+	ui.actStop->setChecked(false);
 }
 
 /** Задание параметров тулбара для процесса добавления. */
@@ -124,14 +126,14 @@ void Sumleditor::setToolbarAdding()
 	ui.actSelect->setChecked(false);			// Нажимаем текущую кнопку
 	ui.actCancel->setEnabled(true);				// Декативируем кнопку отмены
 
-	ui.actComment->setEnabled(false);			
-	ui.actCreate->setEnabled(false);				
-	ui.actDestroy->setEnabled(false);			
-	ui.actLifeline->setEnabled(false);			
-	ui.actMessage->setEnabled(false);			
-	ui.actSelect->setEnabled(false);				
-	ui.actReply->setEnabled(false);				
-	ui.actStop->setEnabled(false);		
+	ui.actComment->setEnabled(false);
+	ui.actCreate->setEnabled(false);
+	ui.actDestroy->setEnabled(false);
+	ui.actLifeline->setEnabled(false);
+	ui.actMessage->setEnabled(false);	
+	ui.actSelect->setEnabled(false);		
+	ui.actReply->setEnabled(false);	
+	ui.actStop->setEnabled(false);
 }
 
 /**
@@ -291,3 +293,9 @@ void Sumleditor::saveAsPicture()
 	image.save(filename);
 }
 
+/** Слот, обрабатывающий нажатие удалить или Del */
+void Sumleditor::deleteObj()
+{
+	this->diagram->removeCurrentItem();
+	ui.actDelete->setEnabled(false);
+}

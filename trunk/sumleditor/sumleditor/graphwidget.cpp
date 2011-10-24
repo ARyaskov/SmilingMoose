@@ -171,6 +171,7 @@ void GraphWidget::addComment(QPointF point)
 	emit getParentWindow()->selection(true);	// Вызываем слот выбора объекта
 }
 
+/** Функция выбора объекта. */
 void GraphWidget::selectItem(QMouseEvent * event)
 {
 	QGraphicsItem *item;
@@ -178,6 +179,11 @@ void GraphWidget::selectItem(QMouseEvent * event)
 	FreeComment * com;
 
 	item = scene->itemAt(event->posF(),QTransform());
+
+	if (item!=NULL && item->type()!=6)
+		this->mainWnd->getUI()->actDelete->setEnabled(true);
+	else
+		this->mainWnd->getUI()->actDelete->setEnabled(false);
 
 	// Снять выделение с текущего объекта, если надо
 	if (currentItem != NULL && item != currentItem)
@@ -222,8 +228,11 @@ void GraphWidget::selectItem(QMouseEvent * event)
 	line = NULL;
 }
 
-
-
+/** Удаление объекта со сцены. */
+void GraphWidget::removeCurrentItem()
+{
+	scene->removeItem(currentItem);
+}
 
 
 

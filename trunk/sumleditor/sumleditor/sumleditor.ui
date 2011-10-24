@@ -67,7 +67,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="actSelect"/>
    <addaction name="actLifeline"/>
@@ -78,7 +78,7 @@
    <addaction name="actStop"/>
    <addaction name="actComment"/>
    <addaction name="actCancel"/>
-   <addaction name="actionDelete"/>
+   <addaction name="actDelete"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="upperDock">
@@ -367,13 +367,16 @@
     <string>Сохранить изображение...</string>
    </property>
   </action>
-  <action name="actionDelete">
+  <action name="actDelete">
    <property name="icon">
     <iconset resource="sumleditor.qrc">
      <normaloff>:/sumleditor/resources/delete.png</normaloff>:/sumleditor/resources/delete.png</iconset>
    </property>
    <property name="text">
     <string>Delete</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
    </property>
   </action>
  </widget>
