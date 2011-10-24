@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="sumleditor">
+    <file>resources/realise.jpg</file>
     <file>resources/delete.png</file>
     <file>resources/c.bmp</file>
     <file>resources/L.bmp</file>
