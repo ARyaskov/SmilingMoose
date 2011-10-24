@@ -234,57 +234,27 @@ void GraphWidget::removeCurrentItem()
 	scene->removeItem(currentItem);
 }
 
+/** Функция сохранения диаграммы в файл. */
+void GraphWidget::save(QDomDocument & domDoc)
+{
+	QList<QGraphicsItem*> list = scene->items();
+	int index = 0; // Идентификатор линии жизни.
+	// Цикл перебора элементов сцены.
+	for (int i = 0; i < list.size(); i++)
+	{	// Если сохраняем комментарий.
+		if (list[i]->data(127).toString() == "freecomment")
+		{
+			QGraphicsItem* item = list.at(i);
+			FreeComment* c = (FreeComment*)item;
+			c->save(domDoc);
+		}
+		else if (list[i]->data(127).toString() == "lifeline")
+		{	// Если сохраняем линию жизни.
+			QGraphicsItem* item = list.at(i);
+			Lifeline* ll = (Lifeline*)item;
+			ll->save(domDoc, index);
+			index++;
+		}
+	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	//if (currentItem == NULL && item != NULL)
-	//{
-	//	currentItem = item;
-
-	//	line = (Lifeline*)currentItem;
-	//	line->setSelected(true);
-	//	line->update();
-	//	line = NULL;
-	//}
-	//else if (item == NULL && currentItem != NULL)
-	//{
-	//	line = (Lifeline*)currentItem;
-	//	line->setSelected(false);
-	//	line->update();
-	//	line = NULL;
-	//}
-	//else if (item != NULL && currentItem != NULL)
-	//{
-	//	line = (Lifeline*)currentItem;
-	//	line->setSelected(false);
-	//	line->update();
-
-
-	//	currentItem = item;
-
-	//	line = (Lifeline*)currentItem;
-	//	line->setSelected(true);
-	//	line->update();
-	//	line = NULL;
-	//}
+}

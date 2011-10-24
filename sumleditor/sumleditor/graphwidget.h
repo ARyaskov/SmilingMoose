@@ -115,6 +115,13 @@ public:
 	 * Удаление объекта со сцены.
 	 */
 	void removeCurrentItem();
+	
+	/**
+	 * Функция сохранения диаграммы в файл.
+	 * @param domDoc Главный узел, документ, файла.
+	 * @return Текущий элемент узла в файле.
+	*/
+	void save(QDomDocument & domDoc)
 
 
 private:
