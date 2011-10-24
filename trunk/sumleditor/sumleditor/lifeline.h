@@ -4,6 +4,7 @@
 #include <QGraphicsItem>
 #include <QRectF>
 #include <QPainterPath>
+#include <QDomDocument>
 #include "comfunctions.h"
 
 
@@ -77,6 +78,8 @@ public:
 	 */
 	void setCoords(double newX, double newY, double newZ);
 
+	QDomElement save (QDomDocument & domDoc, int id) const;
+
 
 protected:
 
@@ -103,6 +106,8 @@ private:
 	double z; /** Координата по оси Z. */
 
 	bool isSelected;	/** Флаг выделения данного объекта. */
+
+	bool isEnd; /** Флаг, наличия конца линии жизни. */
 };
 
 #endif // LIFELINE_H
