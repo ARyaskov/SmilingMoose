@@ -257,6 +257,9 @@ void Sumleditor::slotAboutQt()
 /** Слот, срабатывающий при нажатии кнопки "Открыть" в главном меню. */
 void Sumleditor::slotOpen()
 {
+	filename = QFileDialog::getOpenFileName(this, "Открыть файл", "seq_001",
+		"Файл проекта SUMLEditor *.suef;;Черновая схема *.suefd;;XML файл *.xml");
+
 	qDebug("slotOpen");
 }
 
@@ -275,7 +278,7 @@ void Sumleditor::slotSave()
 /** Слот, срабатывающий при нажатии кнопки "Сохранить как..." в главном меню. */
 void Sumleditor::slotSaveAs()
 {
-	filename = QFileDialog::getSaveFileName(this, "Сохранить как...", "",
+	filename = QFileDialog::getSaveFileName(this, "Сохранить как...", "seq_001",
     "Файл проекта SUMLEditor *.suef;;Черновая схема *.suefd;;XML файл *.xml");
 	
 	// Если пользователь не выбрал файл.
