@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Student UML Editor</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="sumleditor.qrc">
+    <normaloff>:/sumleditor/resources/realise.jpg</normaloff>:/sumleditor/resources/realise.jpg</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_6">
     <item row="0" column="0">
@@ -26,7 +30,7 @@
      <x>0</x>
      <y>0</y>
      <width>725</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -252,7 +256,7 @@
      <normaloff>:/sumleditor/resources/lifeline.bmp</normaloff>:/sumleditor/resources/lifeline.bmp</iconset>
    </property>
    <property name="text">
-    <string>Header</string>
+    <string>Lifeline</string>
    </property>
   </action>
   <action name="actMessage">
