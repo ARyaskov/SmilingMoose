@@ -136,20 +136,38 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 			localUI->descrEdit->setFocus();									// Фокусируемся на строке описания
 		}
 	}
+	else if (currentAct == STOP)	// Если текущее действие - остановка
+	{
+		meta.action = STOP;
+		var.setValue(meta);
+
+		QGraphicsItem *item = scene->itemAt(event->posF(),QTransform());
+
+		if (item!=NULL && item->type() == 0)
+		{
+			Lifeline * line = (Lifeline*)item;
+			line->setEnded();
+			line->update();
+
+			currentAct = SELECT;					// Задаем текущее действие
+			setCursor(Qt::ArrowCursor);				// Задаем ноовый курсор
+			getParentWindow()->setToolbarDefault();
+		}
+	}
 	
 }
 
 /** Функция добавления линии жизни на сцену. */
 void GraphWidget::addLifeline(QPointF point)
 {
-	Lifeline* header = new Lifeline(this);			// Создаем заголовок
+	Lifeline* line = new Lifeline(this);			// Создаем заголовок
 
 	point.setY(30);							// Задаем стандартную коорлинату по У
-	header->setPos(point);						// Задаем координаты
-	header->name = getParentWindow()->getUI()->nameEdit->text();		// Задаем текст
-	header->setData(127,"lifeline");
+	line->setPos(point);						// Задаем координаты
+	line->name = getParentWindow()->getUI()->nameEdit->text();		// Задаем текст
+	line->setData(127,"lifeline");
 
-	scene->addItem(header);						// Добавляем на сцену зкголовок
+	scene->addItem(line);						// Добавляем на сцену зкголовок
 
 	this->currentAct = SELECT;					// Задаем текущее действие
 	this->setCursor(Qt::ArrowCursor);			// Задаем ноовый курсор

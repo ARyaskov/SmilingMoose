@@ -218,7 +218,9 @@ void Sumleditor::addReply()
 */
 void Sumleditor::addStop()
 {
-	qDebug("addStop");
+	setToolbarAdding();
+
+	diagram->setCurrentAct(STOP);		// Действие - добавляем линию жизни
 }
 
 /**

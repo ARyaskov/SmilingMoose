@@ -86,6 +86,10 @@ public:
 	************************************************************************/
 	QDomElement save (QDomDocument & domDoc, int id) const;
 
+	/**
+	 * Изменить текущее состояние завершенности Л.Ж.
+	 */
+	inline void setEnded() { isEnd = !isEnd; }
 
 protected:
 
