@@ -13,6 +13,7 @@ Lifeline::Lifeline(GraphWidget *graphWidget)
 	setCacheMode(DeviceCoordinateCache);
 	setZValue(1);
 	isSelected = false;
+	isEnd = false;
 }
 
 /** Деструктор по умолчанию. */
@@ -24,14 +25,14 @@ Lifeline::~Lifeline()
 /** Вернуть прямоугольник границ фигуры. */
 QRectF Lifeline::boundingRect() const
 {
-	return QRectF(0,0,90,300);
+	return QRectF(0,0,90,320);
 }
 
 /** Вернуть форму фигуры. */
 QPainterPath  Lifeline::shape() const
 {
 	QPainterPath path;
-	path.addRect(0,0,90,300);
+	path.addRect(0,0,90,320);
 
 	return path;
 }
@@ -89,6 +90,15 @@ void  Lifeline::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 	pen.setDashOffset(3);
 	painter->setPen(pen);
 	painter->drawLine(line);
+
+	if (isEnd)	// Если ЛЖ остановлена
+	{
+		// Рисуем на конце линии крестик
+		pen.setStyle(Qt::SolidLine);
+		painter->setPen(pen);
+		painter->drawLine(25,280,65,320);
+		painter->drawLine(25,320,65,280);
+	}
 }
 
 /** Событие клика пользователем на фигуру. */
