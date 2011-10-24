@@ -263,6 +263,12 @@ void Sumleditor::slotOpen()
 /** Слот, срабатывающий при нажатии кнопки "Сохранить" в главном меню. */
 void Sumleditor::slotSave()
 {
+	// Если проект не привязан к файлу.
+	if (filename == "" || filename == NULL)
+	{
+		slotSaveAs();
+	}
+
 	qDebug("slotSave");
 }
 
