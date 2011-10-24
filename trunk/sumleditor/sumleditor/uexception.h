@@ -44,7 +44,8 @@ public:
 */
 void writeErrors (string message)
 {
-	FILE* file = fopen("errors.txt", "at");
+	FILE* file = NULL;
+	fopen_s(&file, "errors.txt", "at");
 
 	fprintf(file,"\n");
 	fprintf(file,"\n%s\n",__DATE__); // Запись текущей даты
@@ -60,7 +61,8 @@ void writeErrors (string message)
 */
 void writeLogMessage (string message)
 {
-	FILE* file = fopen("log.txt", "at");
+	FILE* file = NULL;
+	fopen_s(&file, "log.txt", "at");
 
 	fprintf(file, "--- %s ---\n", message.c_str());
 
