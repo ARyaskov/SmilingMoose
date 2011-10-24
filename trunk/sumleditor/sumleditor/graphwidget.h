@@ -2,6 +2,7 @@
 #define GRAPHWIDGET_H
 
 #include <QGraphicsView>
+#include <QDomDocument>
 #include "comfunctions.h"
 
 
@@ -121,7 +122,7 @@ public:
 	 * @param domDoc Главный узел, документ, файла.
 	 * @return Текущий элемент узла в файле.
 	*/
-	void save(QDomDocument & domDoc)
+	void save(QDomDocument & domDoc);
 
 
 private:
