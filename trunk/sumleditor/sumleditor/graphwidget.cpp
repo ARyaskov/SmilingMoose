@@ -147,6 +147,7 @@ void GraphWidget::addLifeline(QPointF point)
 	point.setY(30);							// Задаем стандартную коорлинату по У
 	header->setPos(point);						// Задаем координаты
 	header->name = getParentWindow()->getUI()->nameEdit->text();		// Задаем текст
+	header->setData(127,"lifeline");
 
 	scene->addItem(header);						// Добавляем на сцену зкголовок
 
@@ -162,6 +163,7 @@ void GraphWidget::addComment(QPointF point)
 	FreeComment* comment = new FreeComment(this);		// Создаем объект
 	comment->setPos(point);								// Задаем координаты
 	comment->text = getParentWindow()->getUI()->descrEdit->toPlainText();	// Задаем комментарию текст
+	comment->setData(127,"freecomment");
 
 	scene->addItem(comment);					// Добавляем на сцену
 
