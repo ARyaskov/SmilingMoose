@@ -253,6 +253,7 @@ QDomElement GraphWidget::save(QDomDocument & domDoc)
 		{
 			QGraphicsItem* item = list[i];
 			Lifeline* lifeline = (Lifeline*)item;
+			lifeline->id = index;
 			lifelines.appendChild(lifeline->save(domDoc, index));
 			index++;
 		}
