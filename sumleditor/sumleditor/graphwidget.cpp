@@ -86,75 +86,25 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 	// Если действие - выбор объекта
 	if (currentAct == SELECT)			
 	{
-		selectItem(event);
+		selectItem(mapToScene(event->pos()));
 	}
 	// Если действие - добавить ЛЖ, строка с текстом не пуста 
 	else if (currentAct == LIFELINE)
 	{
-		if (localUI->nameEdit->text().length())
-		{
-			meta.action = LIFELINE;
-			meta.name = localUI->nameEdit->text();
-			meta.id = QString("LifeLine-"+localUI->nameEdit->text());
-			var.setValue(meta);
-			if (existDublicate(localUI->objectsList, var ))
-			{	// Если нет дубликата, то добавляем
-				QMessageBox::information(this, "Attention!", "This name already exists!");
-				fadeInto(localUI->nameEdit, error_color);		// Отключаем раскраску поля ввода имени
-				localUI->nameEdit->setFocus();
-				QGraphicsView::mouseReleaseEvent(event);
-			}
-			else
-			{
-				addLifeline(mapToScene(event->x(), 30));	// Добавляем объект на сцену, задаем стандартный Y
-				addToObjList(localUI->objectsList,LIFELINE, var);
-			}
-		}else
-		{
-			blink(localUI->nameEdit,normal_color, error_color,2);		    // Мигаем красным
-			localUI->nameEdit->setFocus();									// Фокусируемся на строке имени
-		}
+		initNewLifeline(event);
 	}
 	else if (currentAct == COMMENT)
 	{
-		if (localUI->descrEdit->toPlainText().length())
-		{
-			meta.action = COMMENT;
-			meta.name = localUI->nameEdit->text();
-			meta.desc = localUI->descrEdit->toPlainText();
-			meta.id = QString("Comment-"+localUI->nameEdit->text());
-			var.setValue(meta);
-			if (existDublicate(localUI->objectsList, var ))	// Если нет дубликата
-				QMessageBox::information(this, "Attention!", "This comment already exist on scene!");
-			else
-				addComment(mapToScene(event->x(), event->y()));	// Добавляем объект на сцену, задаем стандартный Y
-			addToObjList(localUI->objectsList,COMMENT, var);
-		}
-		else
-		{
-			blink(localUI->descrEdit,normal_color, error_color,2);		    // Мигаем красным
-			localUI->descrEdit->setFocus();									// Фокусируемся на строке описания
-		}
+		initNewComment(mapToScene(event->pos()));
 	}
 	else if (currentAct == STOP)	// Если текущее действие - остановка
 	{
-		meta.action = STOP;
-		var.setValue(meta);
-
-		QGraphicsItem *item = scene->itemAt(event->posF(),QTransform());
-
-		if (item!=NULL && item->type() == 0)
-		{
-			Lifeline * line = (Lifeline*)item;
-			line->setEnded();
-			line->update();
-
-			currentAct = SELECT;					// Задаем текущее действие
-			setCursor(Qt::ArrowCursor);				// Задаем ноовый курсор
-			getParentWindow()->setToolbarDefault();
-		}
+		addStop(mapToScene(event->pos()));
 	}
-	
+	else if (currentAct == MESSAGE)
+	{
+		initNewMessage(event);
+	}
 }
 
 /** Функция добавления линии жизни на сцену. */
@@ -192,13 +142,13 @@ void GraphWidget::addComment(QPointF point)
 }
 
 /** Функция выбора объекта. */
-void GraphWidget::selectItem(QMouseEvent * event)
+void GraphWidget::selectItem(QPointF point)
 {
 	QGraphicsItem *item;
 	Lifeline * line;
 	FreeComment * com;
 
-	item = scene->itemAt(event->posF(),QTransform());
+	item = scene->itemAt(point/*event->posF()*/,QTransform());
 
 	if (item!=NULL && item->type()!=6)
 		this->mainWnd->getUI()->actDelete->setEnabled(true);
@@ -276,5 +226,118 @@ void GraphWidget::save(QDomDocument & domDoc)
 			index++;
 		}
 	}
+}
 
+/** Добавление сообщения между линиями жизни. */ 
+void GraphWidget::addStop(QPointF point)
+{
+	QGraphicsItem *item = scene->itemAt(point,QTransform());
+
+	if (item!=NULL && item->type() == 0)
+	{
+		Lifeline * line = (Lifeline*)item;
+		line->setEnded();
+		line->update();
+
+		currentAct = SELECT;					// Задаем текущее действие
+		setCursor(Qt::ArrowCursor);				// Задаем ноовый курсор
+		getParentWindow()->setToolbarDefault();
+	}
+}
+
+void GraphWidget::initNewLifeline(QMouseEvent * event)
+{
+	Ui::SumleditorClass* localUI = getParentWindow()->getUI();
+	ElementMetaInfo meta;
+	QVariant var;
+
+	if (localUI->nameEdit->text().length())
+	{
+		meta.action = LIFELINE;
+		meta.name = localUI->nameEdit->text();
+		meta.id = QString("LifeLine-"+localUI->nameEdit->text());
+		var.setValue(meta);
+		if (existDublicate(localUI->objectsList, var ))
+		{	// Если нет дубликата, то добавляем
+			QMessageBox::information(this, "Attention!", "This name already exists!");
+			fadeInto(localUI->nameEdit, error_color);		// Отключаем раскраску поля ввода имени
+			localUI->nameEdit->setFocus();
+			QGraphicsView::mouseReleaseEvent(event);
+		}
+		else
+		{
+			addLifeline(mapToScene(event->pos()));	// Добавляем объект на сцену, задаем стандартный Y
+			addToObjList(localUI->objectsList,LIFELINE, var);
+		}
+	}else
+	{
+		blink(localUI->nameEdit,normal_color, error_color,2);		    // Мигаем красным
+		localUI->nameEdit->setFocus();									// Фокусируемся на строке имени
+	}
+}
+
+void GraphWidget::initNewComment(QPointF point)
+{
+	Ui::SumleditorClass* localUI = getParentWindow()->getUI();
+	ElementMetaInfo meta;
+	QVariant var;
+
+	if (localUI->descrEdit->toPlainText().length())
+	{
+		meta.action = COMMENT;
+		meta.name = localUI->nameEdit->text();
+		meta.desc = localUI->descrEdit->toPlainText();
+		meta.id = QString("Comment-"+localUI->nameEdit->text());
+		var.setValue(meta);
+		
+		//if (existDublicate(localUI->objectsList, var ))	// Если нет дубликата
+		//	QMessageBox::information(this, "Attention!", "This comment already exist on scene!");
+		//else
+		
+		addComment(point);	// Добавляем объект на сцену, задаем стандартный Y
+		addToObjList(localUI->objectsList,COMMENT, var);
+	}
+	else
+	{
+		blink(localUI->descrEdit,normal_color, error_color,2);		    // Мигаем красным
+		localUI->descrEdit->setFocus();									// Фокусируемся на строке описания
+	}
+}
+
+void GraphWidget::initNewMessage(QMouseEvent * event)
+{
+	Ui::SumleditorClass* localUI = getParentWindow()->getUI();
+	ElementMetaInfo meta;
+	QVariant var;
+
+	if (localUI->nameEdit->text().length())
+	{
+		meta.action = MESSAGE;
+		meta.name = localUI->nameEdit->text();
+		meta.id = QString("Message-"+localUI->nameEdit->text());
+		var.setValue(meta);
+		if (existDublicate(localUI->objectsList, var ))
+		{	// Если нет дубликата, то добавляем
+			QMessageBox::information(this, "Attention!", "This name already exists!");
+			fadeInto(localUI->nameEdit, error_color);		// Отключаем раскраску поля ввода имени
+			localUI->nameEdit->setFocus();
+			QGraphicsView::mouseReleaseEvent(event);
+		}
+		else
+		{
+			addMessage(mapToScene(event->pos()));
+			addToObjList(localUI->objectsList, MESSAGE, var);
+		}
+	}
+	else
+	{
+		blink(localUI->nameEdit,normal_color, error_color,2);		    // Мигаем красным
+		localUI->nameEdit->setFocus();									// Фокусируемся на строке имени
+	}
+}
+
+/** Добавление сообщения между линиями жизни. */
+void GraphWidget::addMessage(QPointF point)
+{
+	
 }

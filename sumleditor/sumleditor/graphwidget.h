@@ -33,6 +33,8 @@ enum Action
 	LIFELINE,	/** Добавление линии жизни.			  */
 	
 	MESSAGE,	/** Добавление сообщения.			  */
+
+	RECEIVER,	/** Добавление получателя сообщения.  */
 	
 	CREATE,		/** Добавление сообщения создания.	  */
 	
@@ -101,16 +103,35 @@ public:
 	 */
 	void addLifeline(QPointF point);
 
+	void initNewLifeline(QMouseEvent * event);
+
+	void initNewComment(QPointF point);
+
+	void initNewMessage(QMouseEvent * event);
+
 	/** 
 	 * Добавление на сцену комментария
 	 * @param point Точка, в которую поместится объект
 	 */
 	void addComment(QPointF point);
 
+	/**
+	 * Добавление сообщения между линиями жизни.
+	 * @param point Точка, в которую поместится объект
+	 */ 
+	void addMessage(QPointF point);
+
+	/**
+	 * Остановка линии жизни.
+	 * @param point Точка, в которую поместится объект
+	 */ 
+	void addStop(QPointF point);
+
+
 	/** 
 	 * Выбор объекта на сцене.
 	 */
-	void selectItem(QMouseEvent * event);
+	void selectItem(QPointF point);
 
 	/** 
 	 * Удаление объекта со сцены.
