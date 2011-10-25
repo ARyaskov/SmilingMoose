@@ -226,23 +226,40 @@ QDomElement GraphWidget::save(QDomDocument & domDoc)
 	diagram.setAttributeNode(attr);
 	element.appendChild(saveProperties(domDoc));
 	int index = 0; // Идентификатор линии жизни.
-	// Цикл перебора элементов сцены.
+
+	QDomElement comments = domDoc.createElement("comments");
+	attr = domDoc.createAttribute("count");
+	// Шаг первый: сохранение комментариев.
 	for (int i = 0; i < list.size(); i++)
-	{	// Если сохраняем комментарий.
-		if (list[i]->data(127).toString() == "freecomment")
+	{
+		if (list.at(i)->data(127).toString() == "freecomment")
 		{
-			QGraphicsItem* item = list.at(i);
-			FreeComment* c = (FreeComment*)item;
-			diagram.appendChild(c->save(domDoc));
-		}
-		else if (list[i]->data(127).toString() == "lifeline")
-		{	// Если сохраняем линию жизни.
-			QGraphicsItem* item = list.at(i);
-			Lifeline* ll = (Lifeline*)item;
-			diagram.appendChild(ll->save(domDoc, index));
+			QGraphicsItem* item = list[i];
+			FreeComment* comment = (FreeComment*)item;
+			comments.appendChild(comment->save(domDoc));
 			index++;
 		}
 	}
+	attr.setValue(QString::number(index));
+	comments.setAttributeNode(attr);
+	diagram.appendChild(comments);
+
+	index = 0;
+	QDomElement lifelines = domDoc.createElement("lifelines");
+	// Шаг второй: сохранение линий жизни.
+	for (int i = 0; i < list.size(); i++)
+	{
+		if (list.at(i)->data(127).toString() == "lifeline")
+		{
+			QGraphicsItem* item = list[i];
+			Lifeline* lifeline = (Lifeline*)item;
+			lifelines.appendChild(lifeline->save(domDoc, index));
+			index++;
+		}
+	}
+	attr.setValue(QString::number(index));
+	lifelines.setAttributeNode(attr);
+	diagram.appendChild(lifelines);
 
 	element.appendChild(diagram);
 	return element;
