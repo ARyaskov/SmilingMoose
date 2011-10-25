@@ -155,7 +155,7 @@ public:
 	 * @param domDoc Главный узел, документ, файла.
 	 * @return Текущий элемент узла в файле.
 	 */
-	void save(QDomDocument & domDoc);
+	QDomElement save(QDomDocument & domDoc);
 
 	/** 
 	 * Получить текущий элемент сцены.

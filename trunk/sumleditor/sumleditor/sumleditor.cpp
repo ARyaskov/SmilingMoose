@@ -306,6 +306,8 @@ void Sumleditor::slotSaveAs()
 		return;
 	}
 
+	saveToFile();
+
 	qDebug("slotSaveAs");
 }
 
@@ -337,4 +339,22 @@ void Sumleditor::deleteObj()
 {
 	this->diagram->removeCurrentItem();
 	ui.actDelete->setEnabled(false);
+}
+
+/** Функция записи диаграммы в файл xml структуры. */
+void Sumleditor::saveToFile()
+{
+	QDomDocument doc("project");
+
+	QDomElement element = diagram->save(doc);
+
+	doc.appendChild(element);
+
+	QFile file(filename);
+
+	if (file.open(QIODevice::WriteOnly))
+	{	// Если произошло успешное открытие файла.
+		QTextStream(&file) << doc.toString();
+		file.close();
+	}
 }
