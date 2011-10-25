@@ -5,6 +5,7 @@
 #include "validators.h"
 #include "comfunctions.h"
 #include "objlist.h"
+//#include "uexception.h"
 #include "ui_sumleditor.h"
 
 
@@ -45,6 +46,11 @@ public:
 	 * Задание параметров тулбара для процесса добавления чего-либо.
 	 */
 	void setToolbarAdding();
+
+	/**
+	 * Функция записи диаграммы в файл xml структуры.
+	 */
+	void saveToFile ();
 
 private:
 	Ui::SumleditorClass ui;

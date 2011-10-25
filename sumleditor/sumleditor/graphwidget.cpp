@@ -213,9 +213,10 @@ void GraphWidget::removeCurrentItem()
 }
 
 /** Функция сохранения диаграммы в файл. */
-void GraphWidget::save(QDomDocument & domDoc)
+QDomElement GraphWidget::save(QDomDocument & domDoc)
 {
 	QList<QGraphicsItem*> list = scene->items();
+	QDomElement element = domDoc.createElement("r");
 	int index = 0; // Идентификатор линии жизни.
 	// Цикл перебора элементов сцены.
 	for (int i = 0; i < list.size(); i++)
@@ -224,16 +225,18 @@ void GraphWidget::save(QDomDocument & domDoc)
 		{
 			QGraphicsItem* item = list.at(i);
 			FreeComment* c = (FreeComment*)item;
-			c->save(domDoc);
+			element.appendChild(c->save(domDoc));
 		}
 		else if (list[i]->data(127).toString() == "lifeline")
 		{	// Если сохраняем линию жизни.
 			QGraphicsItem* item = list.at(i);
 			Lifeline* ll = (Lifeline*)item;
-			ll->save(domDoc, index);
+			element.appendChild(ll->save(domDoc, index));
 			index++;
 		}
 	}
+
+	return element;
 }
 
 /** Добавление сообщения между линиями жизни. */ 
