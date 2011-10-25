@@ -14,6 +14,7 @@ Lifeline::Lifeline(GraphWidget *graphWidget)
 	setZValue(1);
 	isSelected = false;
 	isEnd = false;
+	isSelectedByMessage = false;
 }
 
 /** Деструктор по умолчанию. */
@@ -42,7 +43,7 @@ void  Lifeline::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 {
 	QLinearGradient gradient(0,0,90,30);					// Задать градиент фигуре
 
-	if (isSelected)
+	if (isSelected || isSelectedByMessage)
 	{
 		gradient.setColorAt(0, QColor(Qt::blue).light(150));	// Цвета градиента
 		gradient.setColorAt(1, QColor(Qt::darkBlue).light(150));
@@ -62,6 +63,9 @@ void  Lifeline::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 		pen.setColor(Qt::red);
 	else
 		pen.setColor(Qt::black);
+
+	if (isSelectedByMessage)
+		pen.setColor(QColor(255,200,15));
 
 	painter->setPen(pen);
 	painter->drawRect(0,0,90,30);

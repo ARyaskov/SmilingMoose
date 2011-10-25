@@ -91,6 +91,8 @@ public:
 	 */
 	inline void setEnded() { isEnd = !isEnd; }
 
+	inline void setSelectedByMessage(bool flag) { isSelectedByMessage = flag; }
+
 protected:
 
 	/** 
@@ -116,6 +118,8 @@ private:
 	double z; /** Координата по оси Z. */
 
 	bool isSelected;	/** Флаг выделения данного объекта. */
+
+	bool isSelectedByMessage;
 
 	bool isEnd; /** Флаг, наличия конца линии жизни. */
 };
