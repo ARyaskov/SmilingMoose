@@ -151,3 +151,13 @@ QDomElement FreeComment::save(QDomDocument & domDoc) const
 
 	return element;
 }
+
+/** —читывание свободного комментари€ из файла. */
+void FreeComment::load(const QDomElement & element)
+{
+	text = element.attribute("text", "text");
+	name = element.attribute("name", "name");
+	x    = element.attribute("x", "0").toDouble();
+	y    = element.attribute("y", "0").toDouble();
+	z    = element.attribute("z", "0").toDouble();
+}
