@@ -103,10 +103,22 @@ public:
 	 */
 	void addLifeline(QPointF point);
 
+	/** 
+	 * Подготовка добавления новой ЛЖ
+	 * @param event указатель на текущее событие нажатия мыши
+	 */
 	void initNewLifeline(QMouseEvent * event);
 
+	/** 
+	 * Подготовка добавления нового комментария
+	 * @param point Точка, в которую поместится объект
+	 */
 	void initNewComment(QPointF point);
 
+	/** 
+	 * Подготовка добавления нового сообщения
+	 * @param event указатель на текущее событие нажатия мыши
+	 */
 	void initNewMessage(QMouseEvent * event);
 
 	/** 
