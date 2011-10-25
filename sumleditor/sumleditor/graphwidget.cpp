@@ -84,26 +84,30 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 	QVariant var;
 
 	// Если действие - выбор объекта
-	if (currentAct == SELECT)			
+	switch (currentAct)
 	{
-		selectItem(mapToScene(event->pos()));
-	}
-	// Если действие - добавить ЛЖ, строка с текстом не пуста 
-	else if (currentAct == LIFELINE)
-	{
-		initNewLifeline(event);
-	}
-	else if (currentAct == COMMENT)
-	{
-		initNewComment(mapToScene(event->pos()));
-	}
-	else if (currentAct == STOP)	// Если текущее действие - остановка
-	{
-		addStop(mapToScene(event->pos()));
-	}
-	else if (currentAct == MESSAGE)
-	{
-		initNewMessage(event);
+		case SELECT:		
+			selectItem(mapToScene(event->pos()));
+			break;
+
+		case LIFELINE:				 
+			initNewLifeline(event);
+			break;
+
+		case COMMENT:
+			initNewComment(mapToScene(event->pos()));
+			break;
+
+		case STOP:
+			addStop(mapToScene(event->pos()));
+			break;
+
+		case MESSAGE:
+			initNewMessage(event);
+			break;
+
+		default:
+			;
 	}
 }
 
@@ -245,6 +249,7 @@ void GraphWidget::addStop(QPointF point)
 	}
 }
 
+/** Подготовка добавления новой ЛЖ. */
 void GraphWidget::initNewLifeline(QMouseEvent * event)
 {
 	Ui::SumleditorClass* localUI = getParentWindow()->getUI();
@@ -276,6 +281,7 @@ void GraphWidget::initNewLifeline(QMouseEvent * event)
 	}
 }
 
+/** Подготовка добавления нового комментария. */
 void GraphWidget::initNewComment(QPointF point)
 {
 	Ui::SumleditorClass* localUI = getParentWindow()->getUI();
@@ -304,6 +310,7 @@ void GraphWidget::initNewComment(QPointF point)
 	}
 }
 
+/** Подготовка добавления нового сообщения. */
 void GraphWidget::initNewMessage(QMouseEvent * event)
 {
 	Ui::SumleditorClass* localUI = getParentWindow()->getUI();
