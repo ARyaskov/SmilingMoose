@@ -87,6 +87,12 @@ public:
 	 */
 	QDomElement save (QDomDocument & domDoc) const;
 
+	/**
+	 * Считывание свободного комментария из файла.
+	 * @param element Текущий узел файла.
+	 */
+	void load (const QDomElement & element);
+
 protected:
 
 	/** 
