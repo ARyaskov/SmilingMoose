@@ -93,6 +93,18 @@ public:
 	 */
 	void load (const QDomElement & element);
 
+	/**
+	 * Функция получения координаты x.
+	 * @return Координата x.
+	 */
+	inline double getX () { return x; }
+
+	/**
+	 * Функция получения координаты y.
+	 * @return Координата y.
+	 */
+	inline double getY () { return y; }
+
 protected:
 
 	/** 
