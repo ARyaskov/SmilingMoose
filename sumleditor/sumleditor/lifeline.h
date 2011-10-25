@@ -91,6 +91,12 @@ public:
 	 */
 	inline void setEnded() { isEnd = !isEnd; }
 
+	/**
+	 * Идентификатор линии жизни,
+	 * используется при сохранении/считывани файла.
+	 */
+	int id;
+
 	inline void setSelectedByMessage(bool flag) { isSelectedByMessage = flag; }
 
 protected:
