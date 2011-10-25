@@ -106,6 +106,10 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 			initNewMessage(event);
 			break;
 
+		case RECEIVER:
+			addMessage(mapToScene(event->pos()),currentAct);
+			break;
+
 		default:
 			;
 	}
@@ -332,8 +336,9 @@ void GraphWidget::initNewMessage(QMouseEvent * event)
 		}
 		else
 		{
-			addMessage(mapToScene(event->pos()));
-			addToObjList(localUI->objectsList, MESSAGE, var);
+			addMessage(mapToScene(event->pos()),currentAct);  // +=+=+=+=+ addToObjList - поместить внутрь этой функции
+															  // Только еще надо туда передавать var		  +=+=+=+=+
+			//addToObjList(localUI->objectsList, MESSAGE, var);
 		}
 	}
 	else
@@ -344,7 +349,35 @@ void GraphWidget::initNewMessage(QMouseEvent * event)
 }
 
 /** Добавление сообщения между линиями жизни. */
-void GraphWidget::addMessage(QPointF point)
+void GraphWidget::addMessage(QPointF point, Action& act)
 {
-	
+	QGraphicsItem *item = scene->itemAt(point,QTransform());
+	Lifeline * line;
+
+	if (act == MESSAGE)
+	{	
+		if (item!=NULL && item->type() == 0)
+		{
+			currentItem = item;
+			line = (Lifeline*)item;
+			line->setSelectedByMessage(true);
+			line->update();
+			act = RECEIVER;
+
+		}
+	}
+	else if (act = RECEIVER)
+	{
+		if (item!=NULL && item->type() == 0)
+		{
+			// ДЕЙСТВИЕ
+			line = (Lifeline*)currentItem;
+			line->setSelectedByMessage(false);
+			line->update();
+			act = SELECT;
+
+			setCursor(Qt::ArrowCursor);				// Задаем ноовый курсор
+			getParentWindow()->setToolbarDefault();
+		}
+	}
 }

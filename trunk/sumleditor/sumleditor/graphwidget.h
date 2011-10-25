@@ -131,7 +131,7 @@ public:
 	 * Добавление сообщения между линиями жизни.
 	 * @param point Точка, в которую поместится объект
 	 */ 
-	void addMessage(QPointF point);
+	void addMessage(QPointF point, Action& act);
 
 	/**
 	 * Остановка линии жизни.
@@ -154,9 +154,13 @@ public:
 	 * Функция сохранения диаграммы в файл.
 	 * @param domDoc Главный узел, документ, файла.
 	 * @return Текущий элемент узла в файле.
-	*/
+	 */
 	void save(QDomDocument & domDoc);
 
+	/** 
+	 * Получить текущий элемент сцены.
+	 */
+	inline QGraphicsItem *getCurrentItem() { return currentItem; };
 
 private:
 	QGraphicsScene* scene;  /** Указатель на динамический объект сцены. */

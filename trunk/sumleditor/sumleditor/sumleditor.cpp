@@ -159,6 +159,13 @@ void Sumleditor::cancel()
 	fadeInto(ui.nameEdit, normal_color);		// Отключаем раскраску поля ввода имени
 
 	ui.nameEdit->clear();							// Очистить поле ввода имени заогловка
+
+	if (diagram->getCurrentItem()->type() == 0)
+	{
+		Lifeline* line = (Lifeline*)diagram->getCurrentItem();
+		line->setSelectedByMessage(false);
+		line->update();
+	}
 }
 
 /**
