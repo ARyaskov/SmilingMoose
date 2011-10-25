@@ -157,6 +157,13 @@ public:
 	 */
 	QDomElement save(QDomDocument & domDoc);
 
+	/**
+	 * Функция сохранения свойств диаграммы в файл.
+	 * @param domDoc Главный узел, документ файла.
+	 * @return Текущий элемент узла в файле.
+	 */
+	QDomElement saveProperties (QDomDocument & domDoc);
+
 	/** 
 	 * Получить текущий элемент сцены.
 	 */
