@@ -216,7 +216,15 @@ void GraphWidget::removeCurrentItem()
 QDomElement GraphWidget::save(QDomDocument & domDoc)
 {
 	QList<QGraphicsItem*> list = scene->items();
-	QDomElement element = domDoc.createElement("r");
+	QDomElement element = domDoc.createElement("project");
+	QDomAttr attr = domDoc.createAttribute("name");
+	attr.setValue("Project");
+	element.setAttributeNode(attr);
+	QDomElement diagram = domDoc.createElement("diagram");
+	attr = domDoc.createAttribute("total_count");
+	attr.setValue(QString::number(list.size()-1));
+	diagram.setAttributeNode(attr);
+	element.appendChild(saveProperties(domDoc));
 	int index = 0; // Идентификатор линии жизни.
 	// Цикл перебора элементов сцены.
 	for (int i = 0; i < list.size(); i++)
@@ -225,17 +233,18 @@ QDomElement GraphWidget::save(QDomDocument & domDoc)
 		{
 			QGraphicsItem* item = list.at(i);
 			FreeComment* c = (FreeComment*)item;
-			element.appendChild(c->save(domDoc));
+			diagram.appendChild(c->save(domDoc));
 		}
 		else if (list[i]->data(127).toString() == "lifeline")
 		{	// Если сохраняем линию жизни.
 			QGraphicsItem* item = list.at(i);
 			Lifeline* ll = (Lifeline*)item;
-			element.appendChild(ll->save(domDoc, index));
+			diagram.appendChild(ll->save(domDoc, index));
 			index++;
 		}
 	}
 
+	element.appendChild(diagram);
 	return element;
 }
 
@@ -383,4 +392,19 @@ void GraphWidget::addMessage(QPointF point, Action& act)
 			getParentWindow()->setToolbarDefault();
 		}
 	}
+}
+
+QDomElement GraphWidget::saveProperties(QDomDocument & domDoc)
+{
+	QDomElement prop = domDoc.createElement("properties");
+	QDomElement cdateNode = domDoc.createElement("create_date");
+	QDomText cdate = domDoc.createTextNode(QDate::currentDate().toString("dd.MM.yyyy"));
+	QDomElement authorNode = domDoc.createElement("author");
+	QDomText author = domDoc.createTextNode("Author");
+	authorNode.appendChild(author);
+	cdateNode.appendChild(cdate);
+	prop.appendChild(cdateNode);
+	prop.appendChild(authorNode);
+
+	return prop;
 }
