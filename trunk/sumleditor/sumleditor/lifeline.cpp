@@ -14,6 +14,9 @@ Lifeline::Lifeline(GraphWidget *graphWidget)
 	setZValue(1);
 	isSelected = false;
 	isEnd = false;
+	this->x = NULL;
+	this->y = NULL;
+	this->z = NULL;
 	isSelectedByMessage = false;
 }
 
