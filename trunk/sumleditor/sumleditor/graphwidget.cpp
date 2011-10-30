@@ -149,6 +149,20 @@ void GraphWidget::addComment(QPointF point)
 	emit getParentWindow()->selection(true);	// Вызываем слот выбора объекта
 }
 
+/** Добавление на сцену комментария. */
+void GraphWidget::addComment(FreeComment *commet)
+{
+    commet->setPos(commet->getX(),commet->getY());
+    commet->setData(Qt::UserRole,"freecomment");
+
+    scene->addItem(commet);
+
+    this->currentAct = SELECT;
+    this->setCursor(Qt::ArrowCursor);
+
+    emit getParentWindow()->selection(true);
+}
+
 /** Функция выбора объекта. */
 void GraphWidget::selectItem(QPointF point)
 {
@@ -396,7 +410,7 @@ void GraphWidget::addMessage(QPointF point, Action& act)
 
 		}
 	}
-	else if (act = RECEIVER)
+        else if (act == RECEIVER)
 	{
 		if (item!=NULL && item->type() == 0)
 		{
