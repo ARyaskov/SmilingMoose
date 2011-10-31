@@ -1,15 +1,15 @@
 #ifndef GRAPHWIDGET_H
 #define GRAPHWIDGET_H
 
+#include "sumleditor.h"
+#include <QDomElement>
+#include "freecomment.h"
+#include <QTreeWidgetItem>
 #include <QGraphicsView>
-#include <QDomDocument>
-#include "comfunctions.h"
-
 
 class SumleditorClass;
 
 static QList<QTreeWidgetItem* > listItems;
-
 
 /** Цвет состояния "Предупреждение" */
 static QColor warning_color;
@@ -83,7 +83,7 @@ public:
     /** 
 	 * Функция возвращает указатель на объект пользовательского интерфейса
 	 */
-    Sumleditor* getParentWindow()const { return mainWnd; }
+    class Sumleditor* getParentWindow()const { return mainWnd; }
 
 	/** 
 	 * Вернуть текущее действие.
@@ -126,6 +126,12 @@ public:
 	 * @param point Точка, в которую поместится объект
 	 */
 	void addComment(QPointF point);
+
+        /**
+         * Добавление на сцену комментария
+         * @param commet Указатель на добовляемый комментарий
+         */
+        void addComment(FreeComment *commet);
 
 	/**
 	 * Добавление сообщения между линиями жизни.

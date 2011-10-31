@@ -1,14 +1,8 @@
 #ifndef FREECOMMENT_H
 #define FREECOMMENT_H
 
+#include "graphwidget.h"
 #include <QGraphicsItem>
-#include <QRectF>
-#include <QPainterPath>
-#include <QDomElement>
-#include <QDomDocument>
-#include "comfunctions.h"
-
-
 
 /**
  * Класс описывающий свободный комментарий на сцене.
@@ -23,7 +17,7 @@ public:
 	 * Конструктор по умолчанию.
 	 * @param graphWidget Указатель на виджет, на котором будем рисовать.
 	 */
-	FreeComment(GraphWidget *graphWidget);
+        FreeComment(class GraphWidget *graphWidget);
 
 	/**
 	 * Деструктор.
@@ -115,7 +109,7 @@ protected:
 
 private:
 	/** Указатель на виджет, на котором рисуем. */
-	GraphWidget		*graph;
+        class GraphWidget		*graph;
 
 	/** Имя объекта. */
 	QString name;

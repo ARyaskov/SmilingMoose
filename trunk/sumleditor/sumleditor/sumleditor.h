@@ -2,11 +2,11 @@
 #define SUMLEDITOR_H
 
 #include <QtGui/QMainWindow>
+#include "ui_sumleditor.h"
+#include "graphwidget.h"
 #include "validators.h"
 #include "comfunctions.h"
-#include "objlist.h"
-//#include "uexception.h"
-#include "ui_sumleditor.h"
+#include "lifeline.h"
 
 
 /**
@@ -35,7 +35,7 @@ public:
 	Sumleditor(QWidget *parent = 0, Qt::WFlags flags = 0);
 	~Sumleditor();
 
-	Ui::SumleditorClass* getUI() {return &ui;};
+        Ui::SumleditorClass* getUI() {return &ui;}
 
 	/**
 	 * Задание стандартных параметров тулбара
