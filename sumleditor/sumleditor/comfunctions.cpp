@@ -1,12 +1,13 @@
 #include "stdafx.h"
 #include "comfunctions.h"
+#include <QtTest/QTest>
 
 /** 
 * Функция меняет цвет выбранного виджета.
 * @param widget Указатель на виджет
 * @param color Ссылка на нужный цвет
 */
-void fadeInto(QWidget* widget, QColor& color)
+void fadeInto(QWidget* widget, QColor color)
 {
 
 	QPalette palette( widget->palette() );

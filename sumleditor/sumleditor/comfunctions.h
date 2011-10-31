@@ -1,9 +1,5 @@
 #ifndef COMFUNCTIONS_H
 #define COMFUNCTIONS_H
-#include <QtGui>
-#include <QtTest>
-
-
 
 class FreeComment;
 class GraphWidget;
@@ -15,7 +11,7 @@ class Lifeline;
 * @param widget Указатель на виджет
 * @param color Ссылка на нужный цвет
 */
-void fadeInto(QWidget* widget, QColor& color);
+void fadeInto(QWidget* widget, QColor color);
 
 /** 
 * Функция заставляет виджет мигать заданным цветом.
@@ -25,10 +21,5 @@ void fadeInto(QWidget* widget, QColor& color);
 * @param times Количество раз
 */
 void blink(QWidget* widget, QColor& color1, QColor& color2, int times);
-
-#include "graphwidget.h"
-#include "lifeline.h"
-#include "freecomment.h"
-#include "sumleditor.h"
 
 #endif

@@ -1,12 +1,10 @@
 #ifndef LIFELINE_H
 #define LIFELINE_H
 
+#include <QDomElement>
+#include <QGraphicsSceneMouseEvent>
 #include <QGraphicsItem>
-#include <QRectF>
-#include <QPainterPath>
-#include <QDomDocument>
-#include "comfunctions.h"
-
+#include "graphwidget.h"
 
 /**
  * Класс, описывающий объект и его линию жизни.

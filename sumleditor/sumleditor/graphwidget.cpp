@@ -4,6 +4,7 @@
 #include <QPainterPath>
 #include <QGraphicsScene>
 #include <QGraphicsItem>
+#include "objlist.h"
 
 /** Класс, реализующий виджет сцены для отрисовки диаграммы в главном окне. */
 GraphWidget::GraphWidget(QWidget *parent)
