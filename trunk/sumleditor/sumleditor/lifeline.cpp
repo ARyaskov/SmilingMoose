@@ -145,6 +145,8 @@ QDomElement Lifeline::save(QDomDocument & domDoc, int id) const
 {
 	QDomElement element = domDoc.createElement("lifeline");
 
+        this->getCurrentCoords();
+
 	QDomAttr attr = domDoc.createAttribute("name");
 	attr.setValue(name.toUtf8());
 	element.setAttributeNode(attr);
