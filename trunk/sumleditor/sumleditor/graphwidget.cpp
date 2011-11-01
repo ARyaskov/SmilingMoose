@@ -312,6 +312,12 @@ void GraphWidget::load(const QDomNode & node)
                 comment->load(domElement);
                 addComment(comment);
             }
+            else if (domElement.tagName() == "lifeline")
+            {
+                Lifeline* line = new Lifeline(this);
+                line->load(domElement);
+                addLifeline(line);
+            }
         }
 
         load(domNode);
