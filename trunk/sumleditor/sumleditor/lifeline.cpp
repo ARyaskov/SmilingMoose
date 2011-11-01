@@ -141,11 +141,11 @@ void Lifeline::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	this->setY(30);							// Линия жизни остается на одной координате У
 }
 
-QDomElement Lifeline::save(QDomDocument & domDoc, int id) const
+QDomElement Lifeline::save(QDomDocument & domDoc, int id)
 {
 	QDomElement element = domDoc.createElement("lifeline");
 
-        this->getCurrentCoords();
+        getCurrentCoords();
 
 	QDomAttr attr = domDoc.createAttribute("name");
 	attr.setValue(name.toUtf8());
@@ -172,4 +172,15 @@ QDomElement Lifeline::save(QDomDocument & domDoc, int id) const
 	element.setAttributeNode(attr);
 
 	return element;
+}
+
+/** Функция считывания линии жизни из файла. */
+void Lifeline::load(const QDomElement &element)
+{
+    this->x     = element.attribute("x", "0").toDouble();
+    this->y     = element.attribute("y", "0").toDouble();
+    this->z     = element.attribute("z", "0").toDouble();
+    this->isEnd = element.attribute("is_end", "0").toInt();
+    this->id    = element.attribute("id", "0").toInt();
+    this->name  = element.attribute("name", "name");
 }

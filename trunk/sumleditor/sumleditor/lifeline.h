@@ -84,6 +84,12 @@ public:
         */
         QDomElement save (QDomDocument & domDoc, int id);
 
+        /**
+         * Функция считывания линии жизни из файла.
+         * @param element Узел дерева в файле.
+         */
+        void load (const QDomElement & element);
+
 	/**
 	 * Изменить текущее состояние завершенности Л.Ж.
 	 */
