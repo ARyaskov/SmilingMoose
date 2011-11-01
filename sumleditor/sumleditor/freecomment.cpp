@@ -125,8 +125,10 @@ void FreeComment::setCoords(double newX, double newY, double newZ)
 }
 
 /** Сохранение свободного комментария в файл. */
-QDomElement FreeComment::save(QDomDocument & domDoc) const
+QDomElement FreeComment::save(QDomDocument & domDoc)
 {
+    getCurrentCoords();
+
 	QDomElement element = domDoc.createElement("freecomment");
 
 	QDomAttr attr = domDoc.createAttribute("text");

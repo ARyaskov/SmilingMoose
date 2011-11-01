@@ -79,7 +79,7 @@ public:
 	 * @param domDoc Главный узел, документ, файла.
 	 * @return Текущий элемент узла в файле.
 	 */
-	QDomElement save (QDomDocument & domDoc) const;
+        QDomElement save (QDomDocument & domDoc);
 
 	/**
 	 * Считывание свободного комментария из файла.

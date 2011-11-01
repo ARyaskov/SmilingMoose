@@ -52,6 +52,11 @@ public:
 	 */
 	void saveToFile ();
 
+        /**
+         * Функция считывания диаграммы из xml файла.
+         */
+        void readFromFile ();
+
 private:
 	Ui::SumleditorClass ui;
 	
