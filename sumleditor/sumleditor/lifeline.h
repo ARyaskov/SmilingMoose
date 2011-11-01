@@ -76,13 +76,13 @@ public:
 	 */
 	void setCoords(double newX, double newY, double newZ);
 
-	/************************************************************************
+        /**
 	* Функция сохранения линии жизни в файл.
 	* @param domDoc Главный узел, документ, файла.
 	* @param id Идентификатор линий жизни, для организации хранения сообщений.
 	* @return Текущий элемент узла в файле.
-	************************************************************************/
-	QDomElement save (QDomDocument & domDoc, int id) const;
+        */
+        QDomElement save (QDomDocument & domDoc, int id);
 
 	/**
 	 * Изменить текущее состояние завершенности Л.Ж.
@@ -96,6 +96,24 @@ public:
 	int id;
 
 	inline void setSelectedByMessage(bool flag) { isSelectedByMessage = flag; }
+
+        /**
+         * Получение координаты x.
+         * @return Значение координаты x.
+         */
+        inline double getX() { return x; }
+
+        /**
+         * Получение координаты y.
+         * @return Значение координаты y.
+         */
+        inline double getY() { return y; }
+
+        /**
+         * Получение координаты z.
+         * @return Значение координаты z.
+         */
+        inline double getZ() { return z; }
 
 protected:
 
