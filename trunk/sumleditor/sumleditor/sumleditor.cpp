@@ -280,6 +280,9 @@ void Sumleditor::slotOpen()
 		"Файл проекта SUMLEditor *.suef;;Черновая схема *.suefd;;XML файл *.xml");
 
 	qDebug("slotOpen");
+
+        QDomDocument x;
+        readFromFile();
 }
 
 /** Слот, срабатывающий при нажатии кнопки "Сохранить" в главном меню. */
@@ -357,4 +360,20 @@ void Sumleditor::saveToFile()
 		QTextStream(&file) << doc.toString();
 		file.close();
 	}
+}
+
+/** Функция считывания диаграммы из xml файла. */
+void Sumleditor::readFromFile()
+{
+    QDomDocument domDoc;
+    QFile        file(filename);
+
+    if (file.open(QIODevice::ReadOnly))
+    {
+        if (domDoc.setContent(&file))
+        {
+            QDomElement domElement = domDoc.documentElement();
+            diagram->load(domElement);
+        }
+    }
 }

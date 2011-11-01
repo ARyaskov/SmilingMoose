@@ -251,7 +251,8 @@ QDomElement GraphWidget::save(QDomDocument & domDoc)
 		{
 			QGraphicsItem* item = list[i];
 			FreeComment* comment = (FreeComment*)item;
-			comments.appendChild(comment->save(domDoc));
+                        QDomElement el = comment->save(domDoc);
+                        comments.appendChild(el);
 			index++;
 		}
 	}
@@ -279,6 +280,28 @@ QDomElement GraphWidget::save(QDomDocument & domDoc)
 
 	element.appendChild(diagram);
 	return element;
+}
+
+void GraphWidget::load(const QDomNode & node)
+{
+    QDomNode domNode = node.firstChild();
+    while(!domNode.isNull())
+    {
+        QDomElement domElement = domNode.toElement();
+
+        if (!domElement.isNull())
+        {
+            if (domElement.tagName() == "freecomment")
+            {
+                FreeComment* comment = new FreeComment(this);
+                comment->load(domElement);
+                addComment(comment);
+            }
+        }
+
+        load(domNode);
+        domNode = domNode.nextSibling();
+    }
 }
 
 /** ƒобавление сообщени€ между лини€ми жизни. */ 

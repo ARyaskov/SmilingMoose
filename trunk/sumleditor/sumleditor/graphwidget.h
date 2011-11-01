@@ -163,6 +163,8 @@ public:
 	 */
 	QDomElement save(QDomDocument & domDoc);
 
+        void load(const QDomNode & node);
+
 	/**
 	 * Функция сохранения свойств диаграммы в файл.
 	 * @param domDoc Главный узел, документ файла.
@@ -173,7 +175,7 @@ public:
 	/** 
 	 * Получить текущий элемент сцены.
 	 */
-	inline QGraphicsItem *getCurrentItem() { return currentItem; };
+        inline QGraphicsItem *getCurrentItem() { return currentItem; }
 
 private:
 	QGraphicsScene* scene;  /** Указатель на динамический объект сцены. */
