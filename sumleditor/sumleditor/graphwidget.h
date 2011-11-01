@@ -103,6 +103,12 @@ public:
 	 */
 	void addLifeline(QPointF point);
 
+        /**
+         * Добавление на сцену линии жизни
+         * @param lifeline Указатель на добовляемую линию жизни.
+         */
+        void addLifeline(Lifeline* lifeline);
+
 	/** 
 	 * Подготовка добавления новой ЛЖ
 	 * @param event указатель на текущее событие нажатия мыши
@@ -163,6 +169,10 @@ public:
 	 */
 	QDomElement save(QDomDocument & domDoc);
 
+        /**
+         * Функция считывания диаграммы из файла.
+         * @param node Узел дерева из файла.
+         */
         void load(const QDomNode & node);
 
 	/**

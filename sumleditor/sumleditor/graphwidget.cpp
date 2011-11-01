@@ -134,6 +134,20 @@ void GraphWidget::addLifeline(QPointF point)
 	emit getParentWindow()->selection(true);	// Вызываем слот выбора объекта
 }
 
+/** Добавление на сцену линии жизни. */
+void GraphWidget::addLifeline(Lifeline *lifeline)
+{
+    lifeline->setPos(lifeline->getX(),lifeline->getY());
+    lifeline->setData(Qt::UserRole,"lifeline");
+
+    scene->addItem(lifeline);
+
+    currentAct = SELECT;
+    setCursor(Qt::ArrowCursor);
+
+    emit getParentWindow()->selection(true);
+}
+
 /** Добавление на сцену комментария. */
 void GraphWidget::addComment(QPointF point)
 {
@@ -282,6 +296,7 @@ QDomElement GraphWidget::save(QDomDocument & domDoc)
 	return element;
 }
 
+/** Функция считывания диаграммы из файла. */
 void GraphWidget::load(const QDomNode & node)
 {
     QDomNode domNode = node.firstChild();
