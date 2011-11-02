@@ -186,6 +186,11 @@ public:
 	 */
         inline QGraphicsItem *getCurrentItem() { return currentItem; }
 
+	/**
+	 * Добавить на сцену ось на заданном уровне.
+	 */
+	void addAxis(int level);
+
 private:
 	QGraphicsScene* scene;  /** Указатель на динамический объект сцены. */
 
