@@ -65,7 +65,6 @@ void GraphWidget::addAxis(int level)
 	}
 }
 
-
 /** Событие прокрутки колесика мыши. */
 void GraphWidget::wheelEvent(QWheelEvent *event)
 {
@@ -112,7 +111,7 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 			break;
 
 		case RECEIVER:
-			addMessage(mapToScene(event->pos()),currentAct);
+			addMessage(mapToScene(event->pos()));
 			break;
 
 		default:
@@ -429,7 +428,7 @@ void GraphWidget::initNewMessage(QMouseEvent * event)
 		}
 		else
 		{
-			addMessage(mapToScene(event->pos()),currentAct);  // +=+=+=+=+ addToObjList - поместить внутрь этой функции
+			addMessage(mapToScene(event->pos()));  // +=+=+=+=+ addToObjList - поместить внутрь этой функции
 															  // Только еще надо туда передавать var		  +=+=+=+=+
 			//addToObjList(localUI->objectsList, MESSAGE, var);
 		}
@@ -442,12 +441,12 @@ void GraphWidget::initNewMessage(QMouseEvent * event)
 }
 
 /** Добавление сообщения между линиями жизни. */
-void GraphWidget::addMessage(QPointF point, Action& act)
+void GraphWidget::addMessage(QPointF point)
 {
 	QGraphicsItem *item = scene->itemAt(point,QTransform());
 	Lifeline * line;
 
-	if (act == MESSAGE)
+	if (currentAct == MESSAGE)
 	{	
 		if (item!=NULL && item->type() == 0)
 		{
@@ -455,19 +454,30 @@ void GraphWidget::addMessage(QPointF point, Action& act)
 			line = (Lifeline*)item;
 			line->setSelectedByMessage(true);
 			line->update();
-			act = RECEIVER;
-
+			currentAct = RECEIVER;
+			sender = line;
 		}
 	}
-        else if (act == RECEIVER)
+    else if (currentAct == RECEIVER)
 	{
 		if (item!=NULL && item->type() == 0)
-		{
-			// ДЕЙСТВИЕ
+		{	
 			line = (Lifeline*)currentItem;
 			line->setSelectedByMessage(false);
+			receiver = (Lifeline*)item;
+
+			Message * msg = new Message(this,sender,receiver);	// Создаем объект сообщения
+			
+			// Задаем координаты
+			if (sender->pos().x()+45 < receiver->pos().x()+45)	// Если отправитель слева от получателя
+				msg->setPos(sender->pos().x()+45, point.y());
+			else
+				msg->setPos(receiver->pos().x()+45, point.y());
+
+			scene->addItem(msg);
+
 			line->update();
-			act = SELECT;
+			currentAct = SELECT;
 
 			setCursor(Qt::ArrowCursor);				// Задаем ноовый курсор
 			getParentWindow()->setToolbarDefault();
