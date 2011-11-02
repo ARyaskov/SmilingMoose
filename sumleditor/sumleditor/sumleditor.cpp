@@ -370,6 +370,9 @@ void Sumleditor::readFromFile()
 
     if (file.open(QIODevice::ReadOnly))
     {
+		diagram->getScene()->clear();
+		diagram->addAxis(1);
+
         if (domDoc.setContent(&file))
         {
             QDomElement domElement = domDoc.documentElement();

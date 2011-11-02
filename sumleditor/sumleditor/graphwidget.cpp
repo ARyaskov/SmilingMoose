@@ -21,10 +21,6 @@ GraphWidget::GraphWidget(QWidget *parent)
 	setOptimizationFlags(QGraphicsView::DontSavePainterState);
 
 	scene->setSceneRect(0,0,600,600);					// Задание стандартных размеров сцене
-
-	QPen pen = QPen(Qt::DashLine);						// Добавляем линию на сцену
-	scene->addLine(0,45,600,45,pen);
-
 	setScene(scene);									// Задание текущей сцены на виджете
 
 	setDragMode(QGraphicsView::ScrollHandDrag);			// Задать перемещение по сцене "рукой"
@@ -42,6 +38,8 @@ GraphWidget::GraphWidget(QWidget *parent)
 	connect(scene, SIGNAL(changed()), this, SLOT(sceneChanged()));
 
 	currentItem = NULL;
+
+	addAxis(1);	// Добавляем ось
 }
 
 /** Деструктор по умолчанию. */
@@ -56,6 +54,16 @@ void GraphWidget::sceneChanged()
 
 }
 
+/** Добавить на сцену ось на заданном уровне. */
+void GraphWidget::addAxis(int level)
+{
+	if (level>0 && level < 10)
+	{
+		QPen pen = QPen(Qt::DashLine);
+		QLine line(0,45*level,600,45*level);
+		scene->addLine(line,pen);
+	}
+}
 
 
 /** Событие прокрутки колесика мыши. */
