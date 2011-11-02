@@ -107,7 +107,7 @@ public:
          * Добавление на сцену линии жизни
          * @param lifeline Указатель на добовляемую линию жизни.
          */
-        void addLifeline(Lifeline* lifeline);
+        void addLifeline(class Lifeline* lifeline);
 
 	/** 
 	 * Подготовка добавления новой ЛЖ
@@ -150,7 +150,6 @@ public:
 	 * @param point Точка, в которую поместится объект
 	 */ 
 	void addStop(QPointF point);
-
 
 	/** 
 	 * Выбор объекта на сцене.
