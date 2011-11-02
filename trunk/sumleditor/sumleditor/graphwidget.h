@@ -4,6 +4,7 @@
 #include "sumleditor.h"
 #include <QDomElement>
 #include "freecomment.h"
+#include "message.h"
 #include <QTreeWidgetItem>
 #include <QGraphicsView>
 
@@ -143,7 +144,7 @@ public:
 	 * Добавление сообщения между линиями жизни.
 	 * @param point Точка, в которую поместится объект
 	 */ 
-	void addMessage(QPointF point, Action& act);
+	void addMessage(QPointF point);
 
 	/**
 	 * Остановка линии жизни.
@@ -199,6 +200,10 @@ private:
 	Sumleditor *mainWnd;	/** Указатель на главное окно. */
 
 	QGraphicsItem *currentItem;
+
+	Lifeline * sender;
+
+	Lifeline * receiver;
 
 protected:
 	/** 

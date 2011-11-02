@@ -160,7 +160,7 @@ void Sumleditor::cancel()
 
 	ui.nameEdit->clear();							// Очистить поле ввода имени заогловка
 
-	if (diagram->getCurrentItem()->type() == 0)
+	if (diagram->getCurrentItem()!= NULL && diagram->getCurrentItem()->type() == 0)
 	{
 		Lifeline* line = (Lifeline*)diagram->getCurrentItem();
 		line->setSelectedByMessage(false);
