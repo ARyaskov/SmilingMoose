@@ -80,10 +80,6 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 {
 	QGraphicsView::mousePressEvent(event);				// Повторяем событие
 
-	Ui::SumleditorClass* localUI = getParentWindow()->getUI();
-	ElementMetaInfo meta;
-	QVariant var;
-
 	// Если действие - выбор объекта
 	switch (currentAct)
 	{
