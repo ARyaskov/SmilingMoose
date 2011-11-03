@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "graphwidget.h"
 #include <QGraphicsSceneMouseEvent>
 #include <QPainterPath>
