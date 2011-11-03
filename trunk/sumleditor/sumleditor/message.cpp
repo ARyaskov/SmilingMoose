@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "message.h"
 
 /** Конструктор по умолчанию. */
@@ -66,6 +66,8 @@ void  Message::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	int startX = receiver->pos().x()+45;
 	int endX = sender->pos().x()+45;
 
+        length = abs(startX-endX);
+
 	if (endX < startX)
 	{
 		painter->drawLine(length-10,0,length,5);
@@ -125,4 +127,30 @@ void Message::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 
 	this->setX(startX);
 	setLine(QLineF(startX,pos().y(),endX,pos().y()));
+}
+
+/** Вычислить координату, из которой будет исходить сообщение. */
+void Message::calcMessCoords(QPointF snd, QPointF rcv, QPointF click)
+{
+        int retX, retY;
+        // Вычисляем координату Y
+
+        retY = click.y();
+
+        // Задаем диапазон координате
+        if (retY>300)
+                retY = 300;
+
+        if (retY<60)
+                retY = 100;
+
+        // Определяем стартовую координту по Х
+        retX = snd.x()+45;
+
+        int endX = rcv.x()+45;
+
+        if (retX > endX)
+                retX = rcv.x()+45;
+
+        this->setPos(retX,retY);
 }

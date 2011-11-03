@@ -490,7 +490,7 @@ void GraphWidget::addMessage(QPointF point)
 			{
 				Message * msg = new Message(this,sendLine,recLine);	// Создаем новое сообщение
 
-				msg->setPos(calcMessCoords(sendLine->pos(),recLine->pos(),point));
+                                msg->calcMessCoords(sendLine->pos(),recLine->pos(),point);
 
 				// Связь данных ЛЖ сообщением
 				sendLine->messages.append(msg);
@@ -524,30 +524,4 @@ QDomElement GraphWidget::saveProperties(QDomDocument & domDoc)
 	prop.appendChild(authorNode);
 
 	return prop;
-}
-
-/** Вычислить координату, из которой будет исходить сообщение. */
-QPoint GraphWidget::calcMessCoords(QPointF snd, QPointF rcv, QPointF click)
-{
-	int retX, retY;
-	// Вычисляем координату Y
-
-	retY = click.y();
-
-	// Задаем диапазон координате
-	if (retY>300)
-		retY = 300;
-
-	if (retY<60)
-		retY = 100;
-
-	// Определяем стартовую координту по Х
-	retX = snd.x()+45;
-
-	int endX = rcv.x()+45;
-
-	if (retX > endX)
-		retX = rcv.x()+45;
-
-	return QPoint(retX,retY);
 }

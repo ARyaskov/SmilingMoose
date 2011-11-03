@@ -327,7 +327,10 @@ void Sumleditor::saveAsPicture()
 {
 	QString filename = QFileDialog::getSaveFileName(this,QString("Сохранить изображение сцены"),"seq_001","*.png");
 
-	QRect rect;
+        qDebug("filename:");
+        qDebug(filename.toAscii().data());
+
+        QRect rect;
 
 	rect.setCoords(0,0,600,600);
 	QImage image(600,600, QImage::Format_ARGB32_Premultiplied);
