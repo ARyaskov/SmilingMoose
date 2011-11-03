@@ -5,6 +5,8 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsItem>
 #include "graphwidget.h"
+#include "message.h"
+#include <QListIterator>
 
 /**
  * Класс, описывающий объект и его линию жизни.
@@ -127,7 +129,7 @@ public:
          */
         inline double getZ() { return z; }
 
-		QList<Message*>messages;	/** Контейнер, сообщений данной ЛЖ. */
+        QList<class Message*>messages;	/** Контейнер, сообщений данной ЛЖ. */
 
 protected:
 

@@ -1,5 +1,5 @@
-#include "StdAfx.h"
-#include "Lifeline.h"
+#include "stdafx.h"
+#include "lifeline.h"
 
 /** Конструктор по умолчанию. */
 Lifeline::Lifeline(GraphWidget *graphWidget)
@@ -139,6 +139,16 @@ void Lifeline::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
 	QGraphicsItem::mouseMoveEvent(event);
 	this->setY(30);							// Линия жизни остается на одной координате У
+        QListIterator<Message*>i(messages);
+
+        Message *buf;
+
+        while(i.hasNext())
+        {
+            buf = i.next();
+            buf->update();
+            buf->calcMessCoords(buf->sender->pos(),buf->receiver->pos(),buf->pos());
+        }
 }
 
 QDomElement Lifeline::save(QDomDocument & domDoc, int id)

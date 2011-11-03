@@ -1,7 +1,7 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
-#include "Lifeline.h"
+#include "lifeline.h"
 
 
 class Message : public QGraphicsLineItem 
@@ -64,9 +64,14 @@ public:
 	 */
 	void setCoords(double newX, double newY, double newZ);
 
+
+        /** Вычислить координату, из которой будет исходить сообщение. */
+        void calcMessCoords(QPointF snd, QPointF rcv, QPointF click);
+
 	Lifeline * sender;		/** ЛЖ отправитель. */
 							
 	Lifeline * receiver;	/** ЛЖ получатель.  */
+
 
 protected:
 
@@ -81,6 +86,8 @@ protected:
 	 * @param Событие мыши.
 	 */
 	virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+
+
 
 private:
 

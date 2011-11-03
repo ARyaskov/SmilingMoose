@@ -192,8 +192,7 @@ public:
 	 */
 	void addAxis(int level);
 
-	/** Вычислить координату, из которой будет исходить сообщение. */
-	QPoint calcMessCoords(QPointF snd, QPointF rcv, QPointF click);
+
 
 private:
 	QGraphicsScene* scene;  /** Указатель на динамический объект сцены. */
