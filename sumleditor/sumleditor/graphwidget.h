@@ -192,6 +192,9 @@ public:
 	 */
 	void addAxis(int level);
 
+	/** Вычислить координату, из которой будет исходить сообщение. */
+	QPoint calcMessCoords(QPointF snd, QPointF rcv, QPointF click);
+
 private:
 	QGraphicsScene* scene;  /** Указатель на динамический объект сцены. */
 
@@ -201,9 +204,9 @@ private:
 
 	QGraphicsItem *currentItem;
 
-	Lifeline * sender;
+	Lifeline * sendLine;
 
-	Lifeline * receiver;
+	Lifeline * recLine;
 
 protected:
 	/** 

@@ -127,6 +127,8 @@ public:
          */
         inline double getZ() { return z; }
 
+		QList<Message*>messages;	/** Контейнер, сообщений данной ЛЖ. */
+
 protected:
 
 	/** 
