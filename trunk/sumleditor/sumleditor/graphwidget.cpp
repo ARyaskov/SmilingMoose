@@ -241,6 +241,28 @@ void GraphWidget::selectItem(QPointF point)
 /** Удаление объекта со сцены. */
 void GraphWidget::removeCurrentItem()
 {
+	// Удаляем все связанные с данной ЛЖ сообщения
+	if (currentItem!=NULL && currentItem->type()==0)
+	{
+		Lifeline* ln = (Lifeline*)currentItem;
+
+		Message* msg;
+
+		QListIterator<Message*>i(ln->messages);
+		
+		while(i.hasNext())
+		{
+			msg = i.next();
+
+			if(msg->sender != ln)
+				msg->sender->messages.removeOne(msg);
+			else
+				msg->receiver->messages.removeOne(msg);
+
+			scene->removeItem(msg);
+		}
+	}
+
 	scene->removeItem(currentItem);
 }
 
@@ -443,43 +465,47 @@ void GraphWidget::initNewMessage(QMouseEvent * event)
 /** Добавление сообщения между линиями жизни. */
 void GraphWidget::addMessage(QPointF point)
 {
-	QGraphicsItem *item = scene->itemAt(point,QTransform());
-	Lifeline * line;
+	QGraphicsItem *item = scene->itemAt(point,QTransform());	// Берем выделенный эдлемент сцены
 
-	if (currentAct == MESSAGE)
-	{	
-		if (item!=NULL && item->type() == 0)
+	if (currentAct == MESSAGE)					// Если действие создание сообщения
+	{		 
+		if (item!=NULL && item->type() == 0)		// Если это ЛЖ и элемент не пуст
 		{
-			currentItem = item;
-			line = (Lifeline*)item;
-			line->setSelectedByMessage(true);
-			line->update();
-			currentAct = RECEIVER;
-			sender = line;
+			sendLine = (Lifeline*)item;				// Преобразуем текущий элемент в ЛЖ
+
+			sendLine->setSelectedByMessage(true);	// Помечаем отправителя
+
+			sendLine->update();						// Обновляем отправителя
+
+			currentAct = RECEIVER;					// Текущее действие - задание получателя
 		}
 	}
-    else if (currentAct == RECEIVER)
+	else if (currentAct = RECEIVER)					// Если текущее действие - задание получателя
 	{
-		if (item!=NULL && item->type() == 0)
-		{	
-			line = (Lifeline*)currentItem;
-			line->setSelectedByMessage(false);
-			receiver = (Lifeline*)item;
+		if (item!=NULL && item->type() == 0)		// Если это ЛЖ и элемент не пуст
+		{
+			recLine = (Lifeline*)item;				// Задаем получателя
 
-			Message * msg = new Message(this,sender,receiver);	// Создаем объект сообщения
-			
-			// Задаем координаты
-			if (sender->pos().x()+45 < receiver->pos().x()+45)	// Если отправитель слева от получателя
-				msg->setPos(sender->pos().x()+45, point.y());
-			else
-				msg->setPos(receiver->pos().x()+45, point.y());
+			if (sendLine!=recLine)					// Если отправитель не совпадает с получателем
+			{
+				Message * msg = new Message(this,sendLine,recLine);	// Создаем новое сообщение
 
-			scene->addItem(msg);
+				msg->setPos(calcMessCoords(sendLine->pos(),recLine->pos(),point));
 
-			line->update();
+				// Связь данных ЛЖ сообщением
+				sendLine->messages.append(msg);
+				recLine->messages.append(msg);
+
+				scene->addItem(msg);				// Добавить сообщение на сцену
+			}
+
+			// Убираем подсветку отправителя
+			sendLine->setSelectedByMessage(false);
+			sendLine->update();
+
+			// Задаем стандартное событие
 			currentAct = SELECT;
-
-			setCursor(Qt::ArrowCursor);				// Задаем ноовый курсор
+			setCursor(Qt::ArrowCursor);	
 			getParentWindow()->setToolbarDefault();
 		}
 	}
@@ -498,4 +524,30 @@ QDomElement GraphWidget::saveProperties(QDomDocument & domDoc)
 	prop.appendChild(authorNode);
 
 	return prop;
+}
+
+/** Вычислить координату, из которой будет исходить сообщение. */
+QPoint GraphWidget::calcMessCoords(QPointF snd, QPointF rcv, QPointF click)
+{
+	int retX, retY;
+	// Вычисляем координату Y
+
+	retY = click.y();
+
+	// Задаем диапазон координате
+	if (retY>300)
+		retY = 300;
+
+	if (retY<60)
+		retY = 100;
+
+	// Определяем стартовую координту по Х
+	retX = snd.x()+45;
+
+	int endX = rcv.x()+45;
+
+	if (retX > endX)
+		retX = rcv.x()+45;
+
+	return QPoint(retX,retY);
 }
