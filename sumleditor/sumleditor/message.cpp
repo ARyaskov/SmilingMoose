@@ -41,14 +41,14 @@ Message::~Message()
 /** Вернуть прямоугольник границ фигуры. */
 QRectF Message::boundingRect() const
 {
-	return QRectF(0,0,length,10);
+        return QRectF(0,0,length,20);
 }
 
 /** Вернуть форму фигуры. */
 QPainterPath  Message::shape() const
 {
 	QPainterPath path;
-	path.addRect(QRectF(0,0,length,10));
+        path.addRect(QRectF(0,0,length,20));
 
 	return path;
 }
@@ -59,7 +59,7 @@ void  Message::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	QPen pen;
 	pen.setWidth(2);
 
-	QLine line (length,5,0,5);
+        QLine line (length,15,0,15);
 	painter->setPen(pen);
 	painter->drawLine(line);
 
@@ -70,15 +70,31 @@ void  Message::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 	if (endX < startX)
 	{
-		painter->drawLine(length-10,0,length,5);
-		painter->drawLine(length-10,10,length,5);
+                painter->drawLine(length-10,10,length,15);
+                painter->drawLine(length-10,20,length,15);
 	}
 	else
 	{
-		painter->drawLine(0,5,10,0);
-		painter->drawLine(0,5,10,10);
+                painter->drawLine(0,15,10,10);
+                painter->drawLine(0,15,10,20);
 	}
-	
+
+        // Добавить текстовое поле с именем сообщения над стрелкой
+        QRectF textRect(5,0,length-5,10);   // Прямоугольник с текстом
+
+        // Задать шрифт
+        QFont font = painter->font();
+        font.setBold(true);
+        font.setPointSize(10);
+
+        painter->setFont(font);
+        painter->setPen(Qt::black);
+
+        // Задать свойства тексту
+        QTextOption opt;
+        opt.setAlignment(Qt::AlignCenter);
+
+        painter->drawText(textRect,name,opt);
 }
 
 /** Событие клика пользователем на фигуру. */

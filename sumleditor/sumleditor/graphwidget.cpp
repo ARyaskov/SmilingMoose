@@ -489,7 +489,7 @@ void GraphWidget::addMessage(QPointF point)
 			if (sendLine!=recLine)					// Если отправитель не совпадает с получателем
 			{
 				Message * msg = new Message(this,sendLine,recLine);	// Создаем новое сообщение
-
+                                msg->name = getParentWindow()->getUI()->nameEdit->text();
                                 msg->calcMessCoords(sendLine->pos(),recLine->pos(),point);
 
 				// Связь данных ЛЖ сообщением
