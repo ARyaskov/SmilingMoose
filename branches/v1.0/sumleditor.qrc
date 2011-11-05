@@ -1,0 +1,18 @@
+<RCC>
+  <qresource prefix="sumleditor">
+    <file>resources/realise.jpg</file>
+    <file>resources/delete.png</file>
+    <file>resources/c.bmp</file>
+    <file>resources/L.bmp</file>
+    <file>resources/m.bmp</file>
+    <file>resources/cancel.bmp</file>
+    <file>resources/comment.bmp</file>
+    <file>resources/createmessage.bmp</file>
+    <file>resources/destroymessage.bmp</file>
+    <file>resources/message.bmp</file>
+    <file>resources/lifeline.bmp</file>
+    <file>resources/replymessage.bmp</file>
+    <file>resources/select.bmp</file>
+    <file>resources/stop.bmp</file>
+  </qresource>
+</RCC>
