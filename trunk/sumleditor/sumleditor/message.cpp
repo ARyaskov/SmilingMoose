@@ -58,45 +58,53 @@ QPainterPath  Message::shape() const
 /** Нарисовать фигуру. */
 void  Message::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	QPen pen;
-	pen.setWidth(2);
+	QPen pen;			// Задаем стиль рисования
+	pen.setWidth(2);	// Задаем в стиле толщину линии
 
-        QLine line (length,15,0,15);
-	painter->setPen(pen);
-	painter->drawLine(line);
+	// Область линии - прямоугольник размером length * 20
+    QLine line (length,15,0,15);	// Создаем линию заданной длины с координатой по У 15, 
+									// а в простренстве от 0 до 15 над ней будет текст
+	painter->setPen(pen);			// Задаем отрисовщику стиль
+	painter->drawLine(line);		// Рисуем линию
 
+	// Рассчитываем длину
+	// Стартовая пощзиция по Х: координата отправителя + половина от длины прямоугольника заголовка ЛЖ
 	int startX = receiver->pos().x()+45;
+
+	// Конечная пощзиция по Х: координата получателя + половина от длины прямоугольника заголовка ЛЖ
 	int endX = sender->pos().x()+45;
 
-        length = abs(startX-endX);
+    length = abs(startX-endX);	// Длина - это модуль разницы позиций
 
-	if (endX < startX)
+	if (endX < startX)	// Если координата конца левее координаты начала
 	{
-                painter->drawLine(length-10,10,length,15);
-                painter->drawLine(length-10,20,length,15);
+		// Рисуем линию с права на лево
+		painter->drawLine(length-10,10,length,15);
+		painter->drawLine(length-10,20,length,15);
 	}
-	else
+	else				// Если координата конца правее координаты начала
 	{
-                painter->drawLine(0,15,10,10);
-                painter->drawLine(0,15,10,20);
+		// Рисуем линию с лева на право
+		painter->drawLine(0,15,10,10);
+		painter->drawLine(0,15,10,20);
 	}
 
-        // Добавить текстовое поле с именем сообщения над стрелкой
-        QRectF textRect(5,0,length-5,10);   // Прямоугольник с текстом
+    // Добавить текстовое поле с именем сообщения над стрелкой
+    QRectF textRect(5,0,length-5,10);   // Прямоугольник с текстом в поле по У от 0 до 10, и по Х от 5 до длина-5
 
-        // Задать шрифт
-        QFont font = painter->font();
-        font.setBold(true);
-        font.setPointSize(10);
+    // Задать шрифт
+    QFont font = painter->font();
+    font.setBold(true);				// Стиль "жирный"
+    font.setPointSize(10);			// Размер шрифта
 
-        painter->setFont(font);
-        painter->setPen(Qt::black);
+    painter->setFont(font);			// Задаем шрифт
+    painter->setPen(Qt::black);		// Задаем  цвет
 
-        // Задать свойства тексту
-        QTextOption opt;
-        opt.setAlignment(Qt::AlignCenter);
+    // Задать свойства тексту
+    QTextOption opt;
+    opt.setAlignment(Qt::AlignCenter);		// Выравнивание по центру
 
-        painter->drawText(textRect,name,opt);
+    painter->drawText(textRect,name,opt);	// Рисуем текст
 }
 
 /** Событие клика пользователем на фигуру. */
