@@ -2,13 +2,13 @@
 #define MESSAGE_H
 
 #include "lifeline.h"
-
+#include "action.h"
 
 class Message : public QGraphicsLineItem 
 {
 public:
 
-	Message(GraphWidget *graphWidget, Lifeline * _sender, Lifeline * _receiver);
+        Message(GraphWidget *graphWidget, Lifeline * _sender, Lifeline * _receiver, enum Action messageType = MESSAGE);
 
 	/**
 	 * Деструктор.
@@ -91,19 +91,21 @@ protected:
 
 private:
 
-	QRectF bndRect;			/** Форма объекта.  */
+        QRectF bndRect;     /** Форма объекта.  */
 
-	GraphWidget* graph;		/** Указатель на виджет, на котором рисуем. */
+        GraphWidget* graph; /** Указатель на виджет, на котором рисуем. */
 
-	double x;				/** Координата по оси Х. */	
+        double x;           /** Координата по оси Х. */
 
-	double y;				/** Координата по оси y. */
+        double y;           /** Координата по оси y. */
 
-	double z;				/** Координата по оси Z. */
+        double z;           /** Координата по оси Z. */
 
-	bool isSelected;		/** Флаг выделения данного объекта. */
+        bool isSelected;    /** Флаг выделения данного объекта. */
 
-	int length;
+        int length;         /** Длина стрелки сообщения. */
+
+        enum Action messageType;        /** Тип сообщения. */
 
 public:
 	

@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "message.h"
 
+enum Action;
+
 /** Конструктор по умолчанию. */
-Message::Message(GraphWidget *graphWidget, Lifeline * _sender, Lifeline * _receiver)
+Message::Message(GraphWidget *graphWidget, Lifeline * _sender, Lifeline * _receiver, enum Action messageType)
 {
 	graph = graphWidget;
 	sender = _sender;
