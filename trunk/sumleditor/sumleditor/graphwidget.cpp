@@ -6,6 +6,8 @@
 #include <QGraphicsItem>
 #include "objlist.h"
 
+class Message;
+
 /** Класс, реализующий виджет сцены для отрисовки диаграммы в главном окне. */
 GraphWidget::GraphWidget(QWidget *parent)
 : QGraphicsView(parent)
@@ -488,7 +490,7 @@ void GraphWidget::addMessage(QPointF point)
 
 			if (sendLine!=recLine)					// Если отправитель не совпадает с получателем
 			{
-				Message * msg = new Message(this,sendLine,recLine);	// Создаем новое сообщение
+                                Message * msg = new Message(this,sendLine,recLine,MESSAGE);	// Создаем новое сообщение
                                 msg->name = getParentWindow()->getUI()->nameEdit->text();
                                 msg->calcMessCoords(sendLine->pos(),recLine->pos(),point);
 

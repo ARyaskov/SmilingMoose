@@ -4,7 +4,7 @@
 #include "sumleditor.h"
 #include <QDomElement>
 #include "freecomment.h"
-#include "message.h"
+#include "action.h"
 #include <QTreeWidgetItem>
 #include <QGraphicsView>
 
@@ -23,31 +23,6 @@ static QColor attention_color;
 
 /** Цвет состояния "Стандартное" */
 static QColor normal_color;
-
-/**
- * Перечисление состояний программы.
- */
-enum Action
-{	
-	SELECT,		/** Выбор объекта на сцене.			  */
-	
-	LIFELINE,	/** Добавление линии жизни.			  */
-	
-	MESSAGE,	/** Добавление сообщения.			  */
-
-	RECEIVER,	/** Добавление получателя сообщения.  */
-	
-	CREATE,		/** Добавление сообщения создания.	  */
-	
-	DELETE,		/** Добавление сообщения удаления.	  */
-	
-	REPLY,		/** Добавление возвратного сообшения. */
-	
-	STOP,		/** Остановка линии жизни.			  */
-
-	COMMENT		/** Добавление комментария.			  */
-};
-
 
 struct ElementMetaInfo
 {
