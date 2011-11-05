@@ -211,7 +211,17 @@ void Sumleditor::addMessage()
 */
 void Sumleditor::addCreate()
 {
-	qDebug("addCreate");
+	setToolbarAdding();
+
+	ui.nameEdit->clear();						// Очистить поле ввода имени заголовка
+	ui.nameEdit->setFocus();					// Задать фокус на поле ввода заголовка
+
+	ui.descrEdit->clear();					    // Очистить поле ввода описания
+	
+	this->diagram->setCurrentAct(CREATE);		// Действие - добавляем линию жизни
+
+	blink(ui.nameEdit, normal_color,  attention_color, 2);	// Помигать
+	fadeInto(ui.nameEdit,  attention_color);	// Задаем цвет полю ввода
 }
 
 /**
