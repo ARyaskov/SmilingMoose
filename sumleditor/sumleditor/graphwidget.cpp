@@ -507,9 +507,11 @@ void GraphWidget::addMessage(QPointF point)
 
 			if (sendLine!=recLine)					// Если отправитель не совпадает с получателем
 			{
-				if (currentAct = RECEIVER)
+				Message * msg;
+
+				if (currentAct == RECEIVER)
 				{
-					Message * msg = new Message(this,sendLine,recLine);	// Создаем новое сообщение
+					msg = new Message(this,sendLine,recLine);	// Создаем новое сообщение
 					msg->name = getParentWindow()->getUI()->nameEdit->text();
 					msg->calcMessCoords(sendLine->pos(),recLine->pos(),point);
 
@@ -518,6 +520,14 @@ void GraphWidget::addMessage(QPointF point)
 					recLine->messages.append(msg);
 
 					scene->addItem(msg);				// Добавить сообщение на сцену
+				}
+				else if (currentAct == REC_CREATE)
+				{
+
+				}
+				else
+				{
+
 				}
 
 				// Убираем подсветку отправителя
