@@ -116,6 +116,10 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 			addMessage(mapToScene(event->pos()));
 			break;
 
+		case CREATE:
+			initNewMessage(event);
+			break;
+
 		default:
 			;
 	}
@@ -439,9 +443,12 @@ void GraphWidget::initNewMessage(QMouseEvent * event)
 
 	if (localUI->nameEdit->text().length())
 	{
-		meta.action = MESSAGE;
+		meta.action = currentAct;
 		meta.name = localUI->nameEdit->text();
+
+		//============================================================ДОБАВИТЬ РАЗВИЛКУ ТИПА СООБЩЕНИЯ В QString==============
 		meta.id = QString("Message-"+localUI->nameEdit->text());
+
 		var.setValue(meta);
 		if (existDublicate(localUI->objectsList, var ))
 		{	// Если нет дубликата, то добавляем
@@ -469,9 +476,9 @@ void GraphWidget::addMessage(QPointF point)
 {
 	QGraphicsItem *item = scene->itemAt(point,QTransform());	// Берем выделенный эдлемент сцены
 
-	if (currentAct == MESSAGE)					// Если действие создание сообщения
-	{		 
-		if (item!=NULL && item->type() == 0)		// Если это ЛЖ и элемент не пуст
+	if (item!=NULL && item->type() == 0)		// Если это ЛЖ и элемент не пуст
+	{
+		if (currentAct < RECEIVER)				// Если выделяем отправителя
 		{
 			sendLine = (Lifeline*)item;				// Преобразуем текущий элемент в ЛЖ
 
@@ -479,36 +486,49 @@ void GraphWidget::addMessage(QPointF point)
 
 			sendLine->update();						// Обновляем отправителя
 
-			currentAct = RECEIVER;					// Текущее действие - задание получателя
+			if (currentAct == MESSAGE)		// Простое сообщение
+				currentAct = RECEIVER;
+
+			else if (currentAct == CREATE)	// Сообщение создания
+				currentAct = REC_CREATE;
+
+			else if (currentAct == DESTROY) // Сообщение удаления
+				currentAct = REC_DESTROY;
+
+			else
+			{
+				;							// Возвратное сообщение
+			}
+
 		}
-	}
-	else if (currentAct = RECEIVER)					// Если текущее действие - задание получателя
-	{
-		if (item!=NULL && item->type() == 0)		// Если это ЛЖ и элемент не пуст
+		else
 		{
-			recLine = (Lifeline*)item;				// Задаем получателя
+			recLine = (Lifeline*)item;			// Задаем получателя
 
 			if (sendLine!=recLine)					// Если отправитель не совпадает с получателем
 			{
-                                Message * msg = new Message(this,sendLine,recLine,MESSAGE);	// Создаем новое сообщение
-                                msg->name = getParentWindow()->getUI()->nameEdit->text();
-                                msg->calcMessCoords(sendLine->pos(),recLine->pos(),point);
+				if (currentAct = RECEIVER)
+				{
+					Message * msg = new Message(this,sendLine,recLine);	// Создаем новое сообщение
+					msg->name = getParentWindow()->getUI()->nameEdit->text();
+					msg->calcMessCoords(sendLine->pos(),recLine->pos(),point);
 
-				// Связь данных ЛЖ сообщением
-				sendLine->messages.append(msg);
-				recLine->messages.append(msg);
+					// Связь данных ЛЖ сообщением
+					sendLine->messages.append(msg);
+					recLine->messages.append(msg);
 
-				scene->addItem(msg);				// Добавить сообщение на сцену
+					scene->addItem(msg);				// Добавить сообщение на сцену
+				}
+
+				// Убираем подсветку отправителя
+				sendLine->setSelectedByMessage(false);
+				sendLine->update();
+
+				// Задаем стандартное событие
+				currentAct = SELECT;
+				setCursor(Qt::ArrowCursor);	
+				getParentWindow()->setToolbarDefault();
 			}
-
-			// Убираем подсветку отправителя
-			sendLine->setSelectedByMessage(false);
-			sendLine->update();
-
-			// Задаем стандартное событие
-			currentAct = SELECT;
-			setCursor(Qt::ArrowCursor);	
-			getParentWindow()->setToolbarDefault();
 		}
 	}
 }
