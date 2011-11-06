@@ -53,27 +53,27 @@ QPainterPath  Message::shape() const
 /** Нарисовать фигуру. */
 void  Message::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	QPen pen;			// Задаем стиль рисования
-	pen.setWidth(2);	// Задаем в стиле толщину линии
+    QPen pen;			// Задаем стиль рисования
+    pen.setWidth(2);	// Задаем в стиле толщину линии
 
-	// Область линии - прямоугольник размером length * 20
-        QLine line (length,15,0,15);	// Создаем линию заданной длины с координатой по У 15,
-									// а в простренстве от 0 до 15 над ней будет текст
-	painter->setPen(pen);			// Задаем отрисовщику стиль
-	painter->drawLine(line);		// Рисуем линию
+    // Область линии - прямоугольник размером length * 20
+    QLine line (length,15,0,15);	// Создаем линию заданной длины с координатой по У 15,
+                                                                    // а в простренстве от 0 до 15 над ней будет текст
+    painter->setPen(pen);			// Задаем отрисовщику стиль
+    painter->drawLine(line);		// Рисуем линию
 
-        if (startX < endX)	// Если координата конца левее координаты начала
-	{
-		// Рисуем линию с права на лево
-		painter->drawLine(length-10,10,length,15);
-		painter->drawLine(length-10,20,length,15);
-	}
-	else				// Если координата конца правее координаты начала
-	{
-		// Рисуем линию с лева на право
-		painter->drawLine(0,15,10,10);
-		painter->drawLine(0,15,10,20);
-	}
+    if (startX < endX)	// Если координата конца левее координаты начала
+    {
+            // Рисуем линию с права на лево
+            painter->drawLine(length-10,10,length,15);
+            painter->drawLine(length-10,20,length,15);
+    }
+    else				// Если координата конца правее координаты начала
+    {
+            // Рисуем линию с лева на право
+            painter->drawLine(0,15,10,10);
+            painter->drawLine(0,15,10,20);
+    }
 
     // Добавить текстовое поле с именем сообщения над стрелкой
     QRectF textRect(5,0,length-5,10);   // Прямоугольник с текстом в поле по У от 0 до 10, и по Х от 5 до длина-5
@@ -124,9 +124,6 @@ void Message::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
 	QGraphicsItem::mouseMoveEvent(event);
 
-
-
-
 	if (this->pos().y()>300)
 		this->setY(300);
 
@@ -138,7 +135,8 @@ void Message::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
         else
             this->setX(startX);
 
-        setLine(QLineF(startX,pos().y(),endX,pos().y()));
+        if (!(messageType == CREATE && abs(startX-endX)<45))
+            setLine(QLineF(startX,pos().y(),endX,pos().y()));
 }
 
 /** Вычислить координату, из которой будет исходить сообщение. */
@@ -152,24 +150,36 @@ void Message::calcCoordinates(QPointF click)
 
         // Конечная пощзиция по Х: координата получателя + половина от длины прямоугольника заголовка ЛЖ
         endX = receiver->pos().x()+45;
+
+        length = abs(startX-endX);  // Длина - это модуль разницы позиций
     }
     else if (messageType == CREATE)
     {
         // Рассчитываем длину
-        startX = sender->pos().x();
+        startX = sender->pos().x()+45;
         endX = receiver->pos().x();
 
-        if (startX<endX)
-            startX+=90;
-        else
-            endX+=90;
+        if (sender->pos().x()+45>=receiver->pos().x()+90)
+        {
+            startX = sender->pos().x()+45;
+            endX = receiver->pos().x()+90;
+        }
+
+        length = abs(startX-endX);  // Длина - это модуль разницы позиций
+
+        if (receiver->pos().x()<=sender->pos().x()+45 && receiver->pos().x()>=sender->pos().x()-45)
+            length=0;
+
+
+
+        receiver->setY(click.y());
     }
     else
     {
 
     }
 
-    length = abs(startX-endX);  // Длина - это модуль разницы позиций
+
 
     int endY = click.y();
 
