@@ -112,13 +112,17 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 			initNewMessage(event);
 			break;
 
-		case RECEIVER:
-			addMessage(mapToScene(event->pos()));
-			break;
-
 		case CREATE:
 			initNewMessage(event);
 			break;
+
+                case RECEIVER:
+                    addMessage(mapToScene(event->pos()));
+                    break;
+
+                case REC_CREATE:
+                    addMessage(mapToScene(event->pos()));
+                    break;
 
 		default:
 			;

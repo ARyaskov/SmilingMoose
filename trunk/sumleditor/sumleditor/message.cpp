@@ -62,7 +62,7 @@ void  Message::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	painter->setPen(pen);			// Задаем отрисовщику стиль
 	painter->drawLine(line);		// Рисуем линию
 
-	if (endX < startX)	// Если координата конца левее координаты начала
+        if (startX < endX)	// Если координата конца левее координаты начала
 	{
 		// Рисуем линию с права на лево
 		painter->drawLine(length-10,10,length,15);
@@ -124,8 +124,8 @@ void Message::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
 	QGraphicsItem::mouseMoveEvent(event);
 
-	if (startX > endX)
-		startX = endX;
+
+
 
 	if (this->pos().y()>300)
 		this->setY(300);
@@ -133,8 +133,12 @@ void Message::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	if (this->pos().y()<60)
 		this->setY(60);
 
-	this->setX(startX);
-	setLine(QLineF(startX,pos().y(),endX,pos().y()));
+        if (startX > endX)
+            this->setX(endX);
+        else
+            this->setX(startX);
+
+        setLine(QLineF(startX,pos().y(),endX,pos().y()));
 }
 
 /** Вычислить координату, из которой будет исходить сообщение. */
@@ -144,14 +148,21 @@ void Message::calcCoordinates(QPointF click)
     {
         // Рассчитываем длину
         // Стартовая пощзиция по Х: координата отправителя + половина от длины прямоугольника заголовка ЛЖ
-        startX = receiver->pos().x()+45;
+        startX = sender->pos().x()+45;
 
         // Конечная пощзиция по Х: координата получателя + половина от длины прямоугольника заголовка ЛЖ
-        endX = sender->pos().x()+45;
+        endX = receiver->pos().x()+45;
     }
     else if (messageType == CREATE)
     {
+        // Рассчитываем длину
+        startX = sender->pos().x();
+        endX = receiver->pos().x();
 
+        if (startX<endX)
+            startX+=90;
+        else
+            endX+=90;
     }
     else
     {
