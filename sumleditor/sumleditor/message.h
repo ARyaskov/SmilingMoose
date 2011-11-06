@@ -8,7 +8,7 @@ class Message : public QGraphicsLineItem
 {
 public:
 
-        Message(GraphWidget *graphWidget, Lifeline * _sender, Lifeline * _receiver, enum Action messageType = MESSAGE);
+        Message(GraphWidget *graphWidget, Lifeline * _sender, Lifeline * _receiver, QPointF click, enum Action messageType = MESSAGE);
 
 	/**
 	 * Деструктор.
@@ -64,14 +64,13 @@ public:
 	 */
 	void setCoords(double newX, double newY, double newZ);
 
-
-        /** Вычислить координату, из которой будет исходить сообщение. */
-        void calcMessCoords(QPointF snd, QPointF rcv, QPointF click);
-
 	Lifeline * sender;		/** ЛЖ отправитель. */
 							
 	Lifeline * receiver;	/** ЛЖ получатель.  */
 
+
+        /** Вычислить координату, из которой будет исходить сообщение. */
+        void calcCoordinates(QPointF click);
 
 protected:
 
@@ -91,8 +90,6 @@ protected:
 
 private:
 
-        QRectF bndRect;     /** Форма объекта.  */
-
         GraphWidget* graph; /** Указатель на виджет, на котором рисуем. */
 
         double x;           /** Координата по оси Х. */
@@ -104,6 +101,10 @@ private:
         bool isSelected;    /** Флаг выделения данного объекта. */
 
         int length;         /** Длина стрелки сообщения. */
+
+        int startX;
+
+        int endX;
 
         enum Action messageType;        /** Тип сообщения. */
 

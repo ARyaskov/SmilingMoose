@@ -14,9 +14,9 @@ Lifeline::Lifeline(GraphWidget *graphWidget)
 	setZValue(1);
 	isSelected = false;
 	isEnd = false;
-	this->x = NULL;
-	this->y = NULL;
-	this->z = NULL;
+        this->x = 0;
+        this->y = 0;
+        this->z = 0;
 	isSelectedByMessage = false;
 }
 
@@ -147,7 +147,7 @@ void Lifeline::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
         {
             buf = i.next();
             buf->update();
-            buf->calcMessCoords(buf->sender->pos(),buf->receiver->pos(),buf->pos());
+            buf->calcCoordinates(buf->pos());
         }
 }
 

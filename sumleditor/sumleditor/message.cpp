@@ -4,11 +4,12 @@
 enum Action;
 
 /** Конструктор по умолчанию. */
-Message::Message(GraphWidget *graphWidget, Lifeline * _sender, Lifeline * _receiver, enum Action messageType)
+Message::Message(GraphWidget *graphWidget, Lifeline * _sender, Lifeline * _receiver, QPointF click, enum Action messageType)
 {
 	graph = graphWidget;
 	sender = _sender;
 	receiver = _receiver;
+        this->messageType = messageType;
 
 	// Задаем параметры фигуре
 	setFlag(ItemIsSelectable);
@@ -21,17 +22,11 @@ Message::Message(GraphWidget *graphWidget, Lifeline * _sender, Lifeline * _recei
 
 	isSelected = false;
 
-	this->x = NULL;
-	this->y = NULL;
-	this->z = NULL;
+        this->x = 0;
+        this->y = 0;
+        this->z = 0;
 
-	int startX = receiver->pos().x()+45;
-	
-	int endX = sender->pos().x()+45;
-		
-	length = abs(startX-endX);
-
-	bndRect = QRectF(0,0,length,10);
+        calcCoordinates(click);
 }
 
 /** Деструктор по умолчанию. */
@@ -62,19 +57,10 @@ void  Message::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	pen.setWidth(2);	// Задаем в стиле толщину линии
 
 	// Область линии - прямоугольник размером length * 20
-    QLine line (length,15,0,15);	// Создаем линию заданной длины с координатой по У 15, 
+        QLine line (length,15,0,15);	// Создаем линию заданной длины с координатой по У 15,
 									// а в простренстве от 0 до 15 над ней будет текст
 	painter->setPen(pen);			// Задаем отрисовщику стиль
 	painter->drawLine(line);		// Рисуем линию
-
-	// Рассчитываем длину
-	// Стартовая пощзиция по Х: координата отправителя + половина от длины прямоугольника заголовка ЛЖ
-	int startX = receiver->pos().x()+45;
-
-	// Конечная пощзиция по Х: координата получателя + половина от длины прямоугольника заголовка ЛЖ
-	int endX = sender->pos().x()+45;
-
-    length = abs(startX-endX);	// Длина - это модуль разницы позиций
 
 	if (endX < startX)	// Если координата конца левее координаты начала
 	{
@@ -138,10 +124,6 @@ void Message::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
 	QGraphicsItem::mouseMoveEvent(event);
 
-	int startX = sender->pos().x()+45;
-
-	int endX = receiver->pos().x()+45;
-
 	if (startX > endX)
 		startX = endX;
 
@@ -156,27 +138,39 @@ void Message::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 }
 
 /** Вычислить координату, из которой будет исходить сообщение. */
-void Message::calcMessCoords(QPointF snd, QPointF rcv, QPointF click)
+void Message::calcCoordinates(QPointF click)
 {
-        int retX, retY;
-        // Вычисляем координату Y
+    if (messageType==MESSAGE)
+    {
+        // Рассчитываем длину
+        // Стартовая пощзиция по Х: координата отправителя + половина от длины прямоугольника заголовка ЛЖ
+        startX = receiver->pos().x()+45;
 
-        retY = click.y();
+        // Конечная пощзиция по Х: координата получателя + половина от длины прямоугольника заголовка ЛЖ
+        endX = sender->pos().x()+45;
+    }
+    else if (messageType == CREATE)
+    {
 
-        // Задаем диапазон координате
-        if (retY>300)
-                retY = 300;
+    }
+    else
+    {
 
-        if (retY<60)
-                retY = 100;
+    }
 
-        // Определяем стартовую координту по Х
-        retX = snd.x()+45;
+    length = abs(startX-endX);  // Длина - это модуль разницы позиций
 
-        int endX = rcv.x()+45;
+    int endY = click.y();
 
-        if (retX > endX)
-                retX = rcv.x()+45;
+    // Задаем диапазон координате
+    if (endY>300)
+            endY = 300;
 
-        this->setPos(retX,retY);
+    if (endY<60)
+            endY = 100;
+
+    if (startX < endX)
+        this->setPos(startX,endY);
+    else
+        this->setPos(endX,endY);
 }

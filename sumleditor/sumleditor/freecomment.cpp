@@ -13,9 +13,9 @@ FreeComment::FreeComment(GraphWidget *graphWidget)
 	setZValue(2);
 	isSelected = false;
 	this->setCursor(Qt::PointingHandCursor);
-	this->x = NULL;
-	this->y = NULL;
-	this->z = NULL;
+        this->x = 0;
+        this->y = 0;
+        this->z = 0;
 }
 
 /** Деструктор по умолчанию. */
