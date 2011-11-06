@@ -446,8 +446,14 @@ void GraphWidget::initNewMessage(QMouseEvent * event)
 		meta.action = currentAct;
 		meta.name = localUI->nameEdit->text();
 
-		//============================================================ДОБАВИТЬ РАЗВИЛКУ ТИПА СООБЩЕНИЯ В QString==============
-		meta.id = QString("Message-"+localUI->nameEdit->text());
+                if (currentAct == MESSAGE)
+                    meta.id = QString("Message-"+localUI->nameEdit->text());
+
+                else if (currentAct == CREATE)
+                    meta.id = QString("Create message-"+localUI->nameEdit->text());
+
+                else
+                    meta.id = QString("Destroy message-"+localUI->nameEdit->text());
 
 		var.setValue(meta);
 		if (existDublicate(localUI->objectsList, var ))
@@ -511,27 +517,27 @@ void GraphWidget::addMessage(QPointF point)
 
 				if (currentAct == RECEIVER)
 				{
-					msg = new Message(this,sendLine,recLine);	// Создаем новое сообщение
-					msg->name = getParentWindow()->getUI()->nameEdit->text();
-					msg->calcMessCoords(sendLine->pos(),recLine->pos(),point);
-
-					// Связь данных ЛЖ сообщением
-					sendLine->messages.append(msg);
-					recLine->messages.append(msg);
-
-					scene->addItem(msg);				// Добавить сообщение на сцену
+                                    msg = new Message(this,sendLine,recLine,point);	// Создаем новое сообщение
 				}
 				else if (currentAct == REC_CREATE)
 				{
-
+                                    msg = new Message(this,sendLine,recLine,point,CREATE);	// Создаем сообщение создания
 				}
 				else
 				{
-
+                                    msg = new Message(this,sendLine,recLine,point,DESTROY);	// Создаем сообщение удаления
 				}
 
+                                msg->name = getParentWindow()->getUI()->nameEdit->text();
+
+                                // Связь данных ЛЖ сообщением
+                                sendLine->messages.append(msg);
+                                recLine->messages.append(msg);
+
+                                scene->addItem(msg);				// Добавить сообщение на сцену
+
 				// Убираем подсветку отправителя
-				sendLine->setSelectedByMessage(false);
+                                sendLine->setSelectedByMessage(false);
 				sendLine->update();
 
 				// Задаем стандартное событие
