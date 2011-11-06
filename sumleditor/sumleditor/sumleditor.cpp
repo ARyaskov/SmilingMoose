@@ -44,6 +44,7 @@ Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 	connect(ui.actionAboutQt,SIGNAL(triggered()),	this,	SLOT(slotAboutQt()));
 	connect(ui.actionPicture,SIGNAL(triggered()),	this,	SLOT(saveAsPicture()));
 
+	connect(ui.objectsList, SIGNAL(currentRowChanged(int)), this, SLOT(objListCurRowChanged(int)));
 
 	connect(ui.nameEdit,	SIGNAL(textEdited(const QString &)),this,SLOT(nameLEChanged(const QString &)));
 	connect(ui.descrEdit,	SIGNAL(textChanged(const QString &)),this,SLOT(descrChanged(const QString &)));
@@ -55,6 +56,30 @@ Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 	ui.actCancel->setEnabled(false);	// Декативируем кнопку отмены
 
 	ui.actSelect->setChecked(true);		// Режим выбора объектов
+}
+
+void Sumleditor::objListCurRowChanged(int currentrow)
+{
+	if (currentrow >= 0)
+	{
+		QVariant var = ui.objectsList->item(currentrow)->data(Qt::UserRole);
+		ElementMetaInfo meta = var.value<ElementMetaInfo>();
+
+		QListIterator<QGraphicsItem*> it(this->diagram->getScene()->items());
+		QGraphicsItem* tmpCur;
+		QString tmpId;
+		while(it.hasNext())
+		{
+			tmpCur = it.next();
+			tmpId = tmpCur->data(64).toString();
+			if (meta.id == tmpId)
+			{
+				this->diagram->selectItem(QPointF(tmpCur->x(),tmpCur->y()));
+				break;
+			}
+		}
+	}
+
 }
 
 void Sumleditor::nameLEChanged(const QString & text)

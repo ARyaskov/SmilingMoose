@@ -164,6 +164,11 @@ private slots:
 	 */
 	void saveAsPicture();
 
+	/**
+	 * Слот, срабатывающий при смене выделенного элемента в списке объектов.
+	 */
+	void objListCurRowChanged(int currentrow);
+
 };
 
 #endif // SUMLEDITOR_H

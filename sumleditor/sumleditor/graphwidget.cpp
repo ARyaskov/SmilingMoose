@@ -92,40 +92,40 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 	// Если действие - выбор объекта
 	switch (currentAct)
 	{
-		case SELECT:		
-			selectItem(mapToScene(event->pos()));
-			break;
+	case SELECT:		
+		selectItem(mapToScene(event->pos()));
+		break;
 
-		case LIFELINE:				 
-			initNewLifeline(event);
-			break;
+	case LIFELINE:				 
+		initNewLifeline(event);
+		break;
 
-		case COMMENT:
-			initNewComment(mapToScene(event->pos()));
-			break;
+	case COMMENT:
+		initNewComment(mapToScene(event->pos()));
+		break;
 
-		case STOP:
-			addStop(mapToScene(event->pos()));
-			break;
+	case STOP:
+		addStop(mapToScene(event->pos()));
+		break;
 
-		case MESSAGE:
-			initNewMessage(event);
-			break;
+	case MESSAGE:
+		initNewMessage(event);
+		break;
 
-		case CREATE:
-			initNewMessage(event);
-			break;
+	case CREATE:
+		initNewMessage(event);
+		break;
 
-                case RECEIVER:
-                    addMessage(mapToScene(event->pos()));
-                    break;
+	case RECEIVER:
+		addMessage(mapToScene(event->pos()));
+		break;
 
-                case REC_CREATE:
-                    addMessage(mapToScene(event->pos()));
-                    break;
+	case REC_CREATE:
+		addMessage(mapToScene(event->pos()));
+		break;
 
-		default:
-			;
+	default:
+		;
 	}
 }
 
@@ -137,28 +137,34 @@ void GraphWidget::addLifeline(QPointF point)
 	point.setY(30);							// Задаем стандартную коорлинату по У
 	line->setPos(point);						// Задаем координаты
 	line->name = getParentWindow()->getUI()->nameEdit->text();		// Задаем текст
+	line->setData(64,QString("LifeLine-").append(line->name));      // Информация для удаления
 	line->setData(127,"lifeline");
-
-	scene->addItem(line);						// Добавляем на сцену зкголовок
+	
+	scene->addItem(line);						// Добавляем на сцену заголовок
 
 	this->currentAct = SELECT;					// Задаем текущее действие
 	this->setCursor(Qt::ArrowCursor);			// Задаем ноовый курсор
 
 	emit getParentWindow()->selection(true);	// Вызываем слот выбора объекта
+
+	getParentWindow()->getUI()->nameEdit->setText("");
+	fadeInto(getParentWindow()->getUI()->nameEdit,  normal_color);
+	selectItem(point);
 }
 
 /** Добавление на сцену линии жизни. */
 void GraphWidget::addLifeline(Lifeline *lifeline)
 {
-    lifeline->setPos(lifeline->getX(),lifeline->getY());
-    lifeline->setData(Qt::UserRole,"lifeline");
+	lifeline->setPos(lifeline->getX(),lifeline->getY());
+	lifeline->setData(Qt::UserRole,"lifeline");
 
-    scene->addItem(lifeline);
+	scene->addItem(lifeline);
 
-    currentAct = SELECT;
-    setCursor(Qt::ArrowCursor);
+	currentAct = SELECT;
+	setCursor(Qt::ArrowCursor);
 
-    emit getParentWindow()->selection(true);
+	emit getParentWindow()->selection(true);
+	fadeInto(getParentWindow()->getUI()->nameEdit,  normal_color);
 }
 
 /** Добавление на сцену комментария. */
@@ -167,6 +173,7 @@ void GraphWidget::addComment(QPointF point)
 	FreeComment* comment = new FreeComment(this);		// Создаем объект
 	comment->setPos(point);								// Задаем координаты
 	comment->text = getParentWindow()->getUI()->descrEdit->toPlainText();	// Задаем комментарию текст
+	comment->setData(64,QString("Comment-").append(comment->text));      // Информация для удаления
 	comment->setData(127,"freecomment");
 
 	scene->addItem(comment);					// Добавляем на сцену
@@ -175,20 +182,25 @@ void GraphWidget::addComment(QPointF point)
 	this->setCursor(Qt::ArrowCursor);			// Задаем ноовый курсор
 
 	emit getParentWindow()->selection(true);	// Вызываем слот выбора объекта
+
+	getParentWindow()->getUI()->descrEdit->setText("");
+	fadeInto(getParentWindow()->getUI()->descrEdit,  normal_color);
+
+    selectItem(point);
 }
 
 /** Добавление на сцену комментария. */
 void GraphWidget::addComment(FreeComment *commet)
 {
-    commet->setPos(commet->getX(),commet->getY());
-    commet->setData(Qt::UserRole,"freecomment");
+	commet->setPos(commet->getX(),commet->getY());
+	commet->setData(Qt::UserRole,"freecomment");
 
-    scene->addItem(commet);
+	scene->addItem(commet);
 
-    this->currentAct = SELECT;
-    this->setCursor(Qt::ArrowCursor);
+	this->currentAct = SELECT;
+	this->setCursor(Qt::ArrowCursor);
 
-    emit getParentWindow()->selection(true);
+	emit getParentWindow()->selection(true);
 }
 
 /** Функция выбора объекта. */
@@ -197,6 +209,7 @@ void GraphWidget::selectItem(QPointF point)
 	QGraphicsItem *item;
 	Lifeline * line;
 	FreeComment * com;
+	QVariant tempVar;
 
 	item = scene->itemAt(point/*event->posF()*/,QTransform());
 
@@ -205,10 +218,12 @@ void GraphWidget::selectItem(QPointF point)
 	else
 		this->mainWnd->getUI()->actDelete->setEnabled(false);
 
+
 	// Снять выделение с текущего объекта, если надо
 	if (currentItem != NULL && item != currentItem)
 	{
-		// Если это линия жезни
+
+		// Если это линия жизни
 		if (currentItem->type() == 0)
 		{
 			line = (Lifeline*)currentItem;
@@ -221,6 +236,8 @@ void GraphWidget::selectItem(QPointF point)
 			com->setSelected(false);
 			com->update();
 		}
+		this->mainWnd->getUI()->
+			objectsList->setCurrentRow(-1);
 
 	}
 
@@ -244,6 +261,9 @@ void GraphWidget::selectItem(QPointF point)
 			com->setSelected(true);
 			com->update();
 		}
+		tempVar = currentItem->data(64);
+		this->mainWnd->getUI()->
+			objectsList->setCurrentRow(rowById(this->mainWnd->getUI()->objectsList, tempVar.toString()));
 	}
 	line = NULL;
 }
@@ -251,6 +271,25 @@ void GraphWidget::selectItem(QPointF point)
 /** Удаление объекта со сцены. */
 void GraphWidget::removeCurrentItem()
 {
+	if ( getParentWindow()->getUI()->objectsList->currentRow() >= 0)
+	{
+		QVariant tmpVar = getParentWindow()->getUI()->objectsList->currentItem()->data(Qt::UserRole);
+		ElementMetaInfo meta = tmpVar.value<ElementMetaInfo>();
+		QListIterator<QGraphicsItem*> it(getScene()->items());
+		QGraphicsItem* tmpCur;
+		QString tmpId;
+		while(it.hasNext())
+		{
+			tmpCur = it.next();
+			tmpId = tmpCur->data(64).toString();
+			if (meta.id == tmpId)
+			{
+                currentItem = tmpCur;
+				selectItem(QPointF(currentItem->x(), currentItem->y()));
+				break;
+			}
+		}
+	}
 	// Удаляем все связанные с данной ЛЖ сообщения
 	if (currentItem!=NULL && currentItem->type()==0)
 	{
@@ -259,7 +298,7 @@ void GraphWidget::removeCurrentItem()
 		Message* msg;
 
 		QListIterator<Message*>i(ln->messages);
-		
+
 		while(i.hasNext())
 		{
 			msg = i.next();
@@ -271,9 +310,10 @@ void GraphWidget::removeCurrentItem()
 
 			scene->removeItem(msg);
 		}
-	}
 
+	}
 	scene->removeItem(currentItem);
+	delFromList(this->mainWnd->getUI()->objectsList, currentItem->data(64).toString());
 }
 
 /** Функция сохранения диаграммы в файл. */
@@ -300,8 +340,8 @@ QDomElement GraphWidget::save(QDomDocument & domDoc)
 		{
 			QGraphicsItem* item = list[i];
 			FreeComment* comment = (FreeComment*)item;
-                        QDomElement el = comment->save(domDoc);
-                        comments.appendChild(el);
+			QDomElement el = comment->save(domDoc);
+			comments.appendChild(el);
 			index++;
 		}
 	}
@@ -334,30 +374,30 @@ QDomElement GraphWidget::save(QDomDocument & domDoc)
 /** Функция считывания диаграммы из файла. */
 void GraphWidget::load(const QDomNode & node)
 {
-    QDomNode domNode = node.firstChild();
-    while(!domNode.isNull())
-    {
-        QDomElement domElement = domNode.toElement();
+	QDomNode domNode = node.firstChild();
+	while(!domNode.isNull())
+	{
+		QDomElement domElement = domNode.toElement();
 
-        if (!domElement.isNull())
-        {
-            if (domElement.tagName() == "freecomment")
-            {
-                FreeComment* comment = new FreeComment(this);
-                comment->load(domElement);
-                addComment(comment);
-            }
-            else if (domElement.tagName() == "lifeline")
-            {
-                Lifeline* line = new Lifeline(this);
-                line->load(domElement);
-                addLifeline(line);
-            }
-        }
+		if (!domElement.isNull())
+		{
+			if (domElement.tagName() == "freecomment")
+			{
+				FreeComment* comment = new FreeComment(this);
+				comment->load(domElement);
+				addComment(comment);
+			}
+			else if (domElement.tagName() == "lifeline")
+			{
+				Lifeline* line = new Lifeline(this);
+				line->load(domElement);
+				addLifeline(line);
+			}
+		}
 
-        load(domNode);
-        domNode = domNode.nextSibling();
-    }
+		load(domNode);
+		domNode = domNode.nextSibling();
+	}
 }
 
 /** Добавление сообщения между линиями жизни. */ 
@@ -421,13 +461,13 @@ void GraphWidget::initNewComment(QPointF point)
 		meta.action = COMMENT;
 		meta.name = localUI->nameEdit->text();
 		meta.desc = localUI->descrEdit->toPlainText();
-		meta.id = QString("Comment-"+localUI->nameEdit->text());
+		meta.id = QString("Comment-"+localUI->descrEdit->toPlainText());
 		var.setValue(meta);
-		
+
 		//if (existDublicate(localUI->objectsList, var ))	// Если нет дубликата
 		//	QMessageBox::information(this, "Attention!", "This comment already exist on scene!");
 		//else
-		
+
 		addComment(point);	// Добавляем объект на сцену, задаем стандартный Y
 		addToObjList(localUI->objectsList,COMMENT, var);
 	}
@@ -450,14 +490,14 @@ void GraphWidget::initNewMessage(QMouseEvent * event)
 		meta.action = currentAct;
 		meta.name = localUI->nameEdit->text();
 
-                if (currentAct == MESSAGE)
-                    meta.id = QString("Message-"+localUI->nameEdit->text());
+		if (currentAct == MESSAGE)
+			meta.id = QString("Message-"+localUI->nameEdit->text());
 
-                else if (currentAct == CREATE)
-                    meta.id = QString("Create message-"+localUI->nameEdit->text());
+		else if (currentAct == CREATE)
+			meta.id = QString("Create message-"+localUI->nameEdit->text());
 
-                else
-                    meta.id = QString("Destroy message-"+localUI->nameEdit->text());
+		else
+			meta.id = QString("Destroy message-"+localUI->nameEdit->text());
 
 		var.setValue(meta);
 		if (existDublicate(localUI->objectsList, var ))
@@ -470,7 +510,7 @@ void GraphWidget::initNewMessage(QMouseEvent * event)
 		else
 		{
 			addMessage(mapToScene(event->pos()));  // +=+=+=+=+ addToObjList - поместить внутрь этой функции
-															  // Только еще надо туда передавать var		  +=+=+=+=+
+			// Только еще надо туда передавать var		  +=+=+=+=+
 			//addToObjList(localUI->objectsList, MESSAGE, var);
 		}
 	}
@@ -521,27 +561,27 @@ void GraphWidget::addMessage(QPointF point)
 
 				if (currentAct == RECEIVER)
 				{
-                                    msg = new Message(this,sendLine,recLine,point);	// Создаем новое сообщение
+					msg = new Message(this,sendLine,recLine,point);	// Создаем новое сообщение
 				}
 				else if (currentAct == REC_CREATE)
 				{
-                                    msg = new Message(this,sendLine,recLine,point,CREATE);	// Создаем сообщение создания
+					msg = new Message(this,sendLine,recLine,point,CREATE);	// Создаем сообщение создания
 				}
 				else
 				{
-                                    msg = new Message(this,sendLine,recLine,point,DESTROY);	// Создаем сообщение удаления
+					msg = new Message(this,sendLine,recLine,point,DESTROY);	// Создаем сообщение удаления
 				}
 
-                                msg->name = getParentWindow()->getUI()->nameEdit->text();
+				msg->name = getParentWindow()->getUI()->nameEdit->text();
 
-                                // Связь данных ЛЖ сообщением
-                                sendLine->messages.append(msg);
-                                recLine->messages.append(msg);
+				// Связь данных ЛЖ сообщением
+				sendLine->messages.append(msg);
+				recLine->messages.append(msg);
 
-                                scene->addItem(msg);				// Добавить сообщение на сцену
+				scene->addItem(msg);				// Добавить сообщение на сцену
 
 				// Убираем подсветку отправителя
-                                sendLine->setSelectedByMessage(false);
+				sendLine->setSelectedByMessage(false);
 				sendLine->update();
 
 				// Задаем стандартное событие
