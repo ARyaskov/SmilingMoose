@@ -41,6 +41,40 @@ void addToObjList(QListWidget* list, enum Action act, const QVariant& metainf)
 }
 
 /**
+* Функция удаляет указанный элемент из списка.
+* @param list Указатель на  список
+* @param id ID элемента в списке
+*/
+void delFromList(QListWidget* list, QString id)
+{
+    list->takeItem(rowById(list,id));
+}
+
+/**
+* Функция возвращает номер строки элемента в виджете по его ID
+* @param list Указатель на  список
+* @param id ID элемента в списке
+*/
+int rowById(QListWidget* list, QString id)
+{
+    ElementMetaInfo meta;
+	QVariant tempVar;
+    int result = -1;
+
+	for (int i=0;i<list->count();i++)
+	{
+		tempVar = list->item(i)->data(Qt::UserRole);
+		meta = tempVar.value<ElementMetaInfo>();
+	    if (meta.id == id)
+		{
+		   result = i;
+		   break;
+		}
+	}
+	return result;
+}
+
+/**
 * Функция проверяет есть ли объект, подобный данному (одинаковое имя и структура)
 * @param list Указатель на древовидный список
 * @param act Действие
