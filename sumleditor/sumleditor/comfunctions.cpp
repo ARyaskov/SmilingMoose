@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "comfunctions.h"
-#include <QtTest/QTest>
+#include "volatile.h"
+
 
 /** 
 * Функция меняет цвет выбранного виджета.

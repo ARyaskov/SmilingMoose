@@ -1,8 +1,7 @@
+#pragma once
 #ifndef FREECOMMENT_H
 #define FREECOMMENT_H
 
-#include "graphwidget.h"
-#include <QGraphicsItem>
 
 /**
  * Класс описывающий свободный комментарий на сцене.
@@ -99,6 +98,7 @@ public:
 	 */
 	inline double getY () { return y; }
 
+	Ui::SumleditorClass* getUI();
 protected:
 
 	/** 

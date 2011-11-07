@@ -1,12 +1,7 @@
+#pragma once
 #ifndef LIFELINE_H
 #define LIFELINE_H
 
-#include <QDomElement>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsItem>
-#include "graphwidget.h"
-#include "message.h"
-#include <QListIterator>
 
 /**
  * Класс, описывающий объект и его линию жизни.
@@ -131,6 +126,9 @@ public:
 
         QList<class Message*>messages;	/** Контейнер, сообщений данной ЛЖ. */
 
+ inline Ui::SumleditorClass* getUI(){
+	return this->graph->getParentWindow()->getUI();
+   };
 protected:
 
 	/** 

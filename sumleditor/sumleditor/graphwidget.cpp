@@ -1,10 +1,5 @@
 #include "stdafx.h"
-#include "graphwidget.h"
-#include <QGraphicsSceneMouseEvent>
-#include <QPainterPath>
-#include <QGraphicsScene>
-#include <QGraphicsItem>
-#include "objlist.h"
+#include "volatile.h"
 
 class Message;
 

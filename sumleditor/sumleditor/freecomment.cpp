@@ -1,6 +1,7 @@
 #include "stdafx.h"
+#include "volatile.h"
 #include "freecomment.h"
-#include <QPainterPath>
+
 
 /** Конструктор по умолчанию. */
 FreeComment::FreeComment(GraphWidget *graphWidget)
@@ -16,12 +17,21 @@ FreeComment::FreeComment(GraphWidget *graphWidget)
         this->x = 0;
         this->y = 0;
         this->z = 0;
+
+	graph = graphWidget;
 }
 
 /** Деструктор по умолчанию. */
 FreeComment::~FreeComment()
 {
 
+}
+
+Ui::SumleditorClass* FreeComment::getUI()
+{
+	GraphWidget* gw =  this->graph;
+	Sumleditor* wnd = gw->getParentWindow();
+	return wnd->getUI();
 }
 
 /** Вернуть прямоугольник границ фигуры. */
@@ -157,9 +167,20 @@ QDomElement FreeComment::save(QDomDocument & domDoc)
 /** Считывание свободного комментария из файла. */
 void FreeComment::load(const QDomElement & element)
 {
+	QVariant var;
+	ElementMetaInfo meta;
+
 	text = element.attribute("text", "text");
 	name = element.attribute("name", "name");
 	x    = element.attribute("x", "0").toDouble();
 	y    = element.attribute("y", "0").toDouble();
 	z    = element.attribute("z", "0").toDouble();
+
+	meta.action = COMMENT;
+	meta.desc = text;
+	meta.id = QString("Comment-")+text;
+	var.setValue(meta);
+	addToObjList(this->getUI()->objectsList, COMMENT, var);
+	this->setData(64, meta.id);
+	this->setData(127,"freecomment");
 }

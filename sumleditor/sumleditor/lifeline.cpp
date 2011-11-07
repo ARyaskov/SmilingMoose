@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "volatile.h"
 #include "lifeline.h"
 
 /** Конструктор по умолчанию. */
@@ -187,10 +188,20 @@ QDomElement Lifeline::save(QDomDocument & domDoc, int id)
 /** Функция считывания линии жизни из файла. */
 void Lifeline::load(const QDomElement &element)
 {
+	QVariant var;
+	ElementMetaInfo meta;
     this->x     = element.attribute("x", "0").toDouble();
     this->y     = element.attribute("y", "0").toDouble();
     this->z     = element.attribute("z", "0").toDouble();
-    this->isEnd = element.attribute("is_end", "0").toInt();
+    this->isEnd = (bool)(element.attribute("is_end", "0").toInt());
     this->id    = element.attribute("id", "0").toInt();
     this->name  = element.attribute("name", "name");
+
+	meta.action = LIFELINE;
+	meta.name = this->name;
+	meta.id = QString("Lifeline-")+name;
+	var.setValue(meta);
+	addToObjList(this->getUI()->objectsList, LIFELINE, var);
+	this->setData(64, meta.id);
+	this->setData(127,"lifeline");
 }

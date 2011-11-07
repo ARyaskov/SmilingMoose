@@ -1,10 +1,6 @@
+#pragma once
 #ifndef COMFUNCTIONS_H
 #define COMFUNCTIONS_H
-
-class FreeComment;
-class GraphWidget;
-class Sumleditor;
-class Lifeline;
 
 /** 
 * Функция меняет цвет выбранного виджета.
