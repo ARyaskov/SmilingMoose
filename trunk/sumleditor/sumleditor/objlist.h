@@ -1,5 +1,6 @@
-#include "graphwidget.h"
-
+#pragma once
+#ifndef OBJLIST_H
+#define OBJLIST_H
 /**
 * Функция добавляет указанный элемент к списку объектов.
 * @param list Указатель на список
@@ -30,3 +31,5 @@ bool existDublicate(QListWidget* list, const QVariant& metainf);
 * @param id ID элемента в списке
 */
 int rowById(QListWidget* list, QString id);
+
+#endif

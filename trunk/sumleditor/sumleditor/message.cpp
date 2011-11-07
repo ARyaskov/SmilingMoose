@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "volatile.h"
 #include "message.h"
 
 enum Action;

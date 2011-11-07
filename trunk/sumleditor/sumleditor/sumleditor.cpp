@@ -1,8 +1,7 @@
 #include "stdafx.h"
+#include "volatile.h"
 #include "sumleditor.h"
-#include <QTextCodec>
-#include <QMessageBox>
-#include <QFileDialog>
+
 
 Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 : QMainWindow(parent, flags)
@@ -408,6 +407,7 @@ void Sumleditor::readFromFile()
     if (file.open(QIODevice::ReadOnly))
     {
 		diagram->getScene()->clear();
+		diagram->getParentWindow()->getUI()->objectsList->clear();
 		diagram->addAxis(1);
 
         if (domDoc.setContent(&file))

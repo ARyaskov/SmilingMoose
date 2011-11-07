@@ -1,28 +1,10 @@
+
+#pragma once
 #ifndef GRAPHWIDGET_H
 #define GRAPHWIDGET_H
 
-#include "sumleditor.h"
-#include <QDomElement>
-#include "freecomment.h"
-#include "action.h"
-#include <QTreeWidgetItem>
-#include <QGraphicsView>
 
-class SumleditorClass;
 
-static QList<QTreeWidgetItem* > listItems;
-
-/** Цвет состояния "Предупреждение" */
-static QColor warning_color;
-
-/** Цвет состояния "Ошибка" */
-static QColor error_color;
-
-/** Цвет состояния "Внимание" */
-static QColor attention_color;
-
-/** Цвет состояния "Стандартное" */
-static QColor normal_color;
 
 struct ElementMetaInfo
 {
@@ -59,7 +41,7 @@ public:
     /** 
 	 * Функция возвращает указатель на объект пользовательского интерфейса
 	 */
-    class Sumleditor* getParentWindow()const { return mainWnd; }
+    class Sumleditor* getParentWindow() { return mainWnd; }
 
 	/** 
 	 * Вернуть текущее действие.

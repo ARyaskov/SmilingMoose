@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "volatile.h"
 #include "sumleditor.h"
 #include "uexception.h"
 #include <QtGui/QApplication>

@@ -1,7 +1,7 @@
-
+#pragma once
 #ifndef VALIDATORS_H
 #define VALIDATORS_H
-#include <QValidator>
+
 
 /**
  * Класс, описывающий валидатор строки ввода имени
@@ -20,7 +20,7 @@ public:
 	 * @param input Ссылка на введенный текст.
 	 * @param pos Позиция каретки
 	 */
-	QValidator::State validate(QString & input, int &pos ) const;	
+	QValidator::State validate(QString & input, int & pos ) const;	
 
 };
 

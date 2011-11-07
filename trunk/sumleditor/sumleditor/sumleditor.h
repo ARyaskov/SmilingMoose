@@ -1,13 +1,14 @@
+#pragma once
 #ifndef SUMLEDITOR_H
 #define SUMLEDITOR_H
 
-#include <QtGui/QMainWindow>
-#include "ui_sumleditor.h"
-#include "graphwidget.h"
-#include "validators.h"
-#include "comfunctions.h"
-#include "lifeline.h"
+#pragma warning(push)
+#pragma warning(disable:4127)
+#pragma warning(disable:4251)
 
+#include "ui_sumleditor.h"
+
+#pragma warning(pop)
 
 /**
  * Перечисление Типы сообщений.

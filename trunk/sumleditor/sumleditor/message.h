@@ -1,8 +1,7 @@
+#pragma once
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
-#include "lifeline.h"
-#include "action.h"
 
 class Message : public QGraphicsLineItem 
 {
