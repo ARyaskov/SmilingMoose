@@ -460,7 +460,7 @@ void GraphWidget::initNewLifeline(QMouseEvent * event)
 		}
 	}else
 	{
-		blink(localUI->nameEdit,normal_color, error_color,2);		    // Мигаем красным
+		fadeInto(localUI->nameEdit, error_color);		    // Мигаем красным
 		localUI->nameEdit->setFocus();									// Фокусируемся на строке имени
 	}
 }
@@ -489,7 +489,7 @@ void GraphWidget::initNewComment(QPointF point)
 	}
 	else
 	{
-		blink(localUI->descrEdit,normal_color, error_color,2);		    // Мигаем красным
+		fadeInto(localUI->descrEdit, error_color);		    // Мигаем красным
 		localUI->descrEdit->setFocus();									// Фокусируемся на строке описания
 	}
 }
@@ -532,7 +532,7 @@ void GraphWidget::initNewMessage(QMouseEvent * event)
 	}
 	else
 	{
-		blink(localUI->nameEdit,normal_color, error_color,2);		    // Мигаем красным
+		fadeInto(localUI->nameEdit, error_color);		    // Мигаем красным
 		localUI->nameEdit->setFocus();									// Фокусируемся на строке имени
 	}
 }

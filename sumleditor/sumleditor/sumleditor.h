@@ -72,6 +72,8 @@ public slots:
 	 * Слот, срабатывающий при нажатии кнопки выбора объекта.
 	 */
 	void selection(bool checked);
+
+
 private slots:
 
 
