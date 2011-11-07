@@ -48,6 +48,7 @@ Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 	connect(ui.nameEdit,	SIGNAL(textEdited(const QString &)),this,SLOT(nameLEChanged(const QString &)));
 	connect(ui.descrEdit,	SIGNAL(textChanged(const QString &)),this,SLOT(descrChanged(const QString &)));
 
+
 	nameLE_val=new validatorNameLE(this);
 
 	ui.nameEdit->setValidator(nameLE_val);
@@ -56,6 +57,8 @@ Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 
 	ui.actSelect->setChecked(true);		// Режим выбора объектов
 }
+
+
 
 void Sumleditor::objListCurRowChanged(int currentrow)
 {
@@ -85,12 +88,13 @@ void Sumleditor::nameLEChanged(const QString & text)
 {
 	qDebug("nameLEChanged");
 	if (!ui.nameEdit->hasAcceptableInput())
-		blink(ui.nameEdit, normal_color, error_color, 1);
+		fadeInto(ui.nameEdit, error_color);
 
 	QPalette palette = ui.nameEdit->palette();
 
 
-	if (ui.nameEdit->palette().color(QPalette::Base) == attention_color)
+	if (ui.nameEdit->palette().color(QPalette::Base) == attention_color ||
+		ui.nameEdit->palette().color(QPalette::Base) == error_color)
 	{
 		QPalette palette = ui.nameEdit->palette();
 		palette.setColor( QPalette::Base, normal_color );
@@ -104,7 +108,8 @@ void Sumleditor::descrChanged(const QString & text)
 
 	QPalette palette = ui.nameEdit->palette();
 
-	if (ui.descrEdit->palette().color(QPalette::Base) == attention_color)
+	if (ui.nameEdit->palette().color(QPalette::Base) == attention_color ||
+		ui.nameEdit->palette().color(QPalette::Base) == error_color)
 	{
 		QPalette palette = ui.descrEdit->palette();
 		palette.setColor( QPalette::Base, normal_color );
@@ -206,7 +211,6 @@ void Sumleditor::addLifeline()
 
 	this->diagram->setCurrentAct(LIFELINE);		// Действие - добавляем линию жизни
 
-	blink(ui.nameEdit, normal_color,  attention_color, 2);	// Помигать
 	fadeInto(ui.nameEdit,  attention_color);	// Задаем цвет полю ввода
 
 	ui.statusBar->showMessage(QString("Добавление линии жизни. Введите имя и кликните на нажное место на сцене."));
@@ -225,7 +229,6 @@ void Sumleditor::addMessage()
 	
 	this->diagram->setCurrentAct(MESSAGE);		// Действие - добавляем линию жизни
 
-	blink(ui.nameEdit, normal_color,  attention_color, 2);	// Помигать
 	fadeInto(ui.nameEdit,  attention_color);	// Задаем цвет полю ввода
 }
 
@@ -243,7 +246,6 @@ void Sumleditor::addCreate()
 	
 	this->diagram->setCurrentAct(CREATE);		// Действие - добавляем линию жизни
 
-	blink(ui.nameEdit, normal_color,  attention_color, 2);	// Помигать
 	fadeInto(ui.nameEdit,  attention_color);	// Задаем цвет полю ввода
 }
 
@@ -286,7 +288,6 @@ void Sumleditor::addComment()
 
 	this->diagram->setCurrentAct(COMMENT);		// Действие - добавляем линию жизни
 
-	blink(ui.descrEdit, normal_color,  attention_color, 2);	// Помигать
 	fadeInto(ui.descrEdit,  attention_color);	// Задаем цвет полю ввода
 
 	ui.statusBar->showMessage(QString("Добавление комментария. Введите имя и кликните на нужное место на сцене."));

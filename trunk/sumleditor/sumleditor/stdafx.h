@@ -55,7 +55,9 @@
 #include <QString>
 #include <QTextCodec>
 #include <QTextEdit> 
+#include <QTimer>
 #include <QToolBar>
+#include <QThread>
 #include <QValidator>
 #include <QVariant> 
 #include <QVector>
@@ -63,7 +65,7 @@
 
 
 #include <QtGui/QMainWindow>
-#include <QtTest/QTest>
+
 
 #pragma warning(pop)
 
