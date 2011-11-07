@@ -128,13 +128,14 @@ void Message::setCoords(double newX, double newY, double newZ)
 /** Событие движения мыши при зажатой кнопке мыши. */
 void Message::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
-	QGraphicsItem::mouseMoveEvent(event);
+	if (messageType!=CREATE)
+		QGraphicsItem::mouseMoveEvent(event);
 
 	if (this->pos().y()>300)
 		this->setY(300);
 
-	if (this->pos().y()<60)
-		this->setY(60);
+	if (this->pos().y()<receiver->pos().y()+20 && messageType!=CREATE)
+		this->setY(receiver->pos().y()+20);
 
         if (startX > endX)
             this->setX(endX);
@@ -185,19 +186,33 @@ void Message::calcCoordinates(QPointF click)
 
     }
 
-
-
     int endY = click.y();
 
     // Задаем диапазон координате
     if (endY>300)
             endY = 300;
 
-    if (endY<60)
-            endY = 100;
+	if (endY<receiver->pos().y()+30 && messageType != CREATE)
+            endY = receiver->pos().y()+30;
 
     if (startX < endX)
         this->setPos(startX,endY);
     else
         this->setPos(endX,endY);
+}
+
+bool Message::isTopMessage(Lifeline *snd, Lifeline *rec, QPointF click)
+{
+	QListIterator<Message*>i(snd->messages);
+	bool result = true;
+	Message *buf;
+
+	while(i.hasNext() && result)
+	{
+		buf = i.next();
+		if (buf->receiver == rec && buf->pos().y() <= click.y())
+			result = false;
+	}
+
+	return result;
 }

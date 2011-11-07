@@ -68,8 +68,10 @@ public:
 	Lifeline * receiver;	/** ЛЖ получатель.  */
 
 
-        /** Вычислить координату, из которой будет исходить сообщение. */
-        void calcCoordinates(QPointF click);
+    /** Вычислить координату, из которой будет исходить сообщение. */
+	void calcCoordinates(QPointF click);
+
+	static bool isTopMessage(Lifeline *snd, Lifeline *rec, QPointF click);
 
 protected:
 
