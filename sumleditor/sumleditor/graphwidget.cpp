@@ -582,20 +582,30 @@ void GraphWidget::addMessage(QPointF point)
 				}
 				else if (currentAct == REC_CREATE)
 				{
-					msg = new Message(this,sendLine,recLine,point,CREATE);	// Создаем сообщение создания
+					if (Message::isTopMessage(sendLine,recLine,point))
+						msg = new Message(this,sendLine,recLine,point,CREATE);	// Создаем сообщение создания
+					else
+					{
+						QMessageBox::warning(this,QString("Добавление сообщения создания"),
+						QString("Создание должно быть на вершине линии жизни!"));
+						msg = NULL;
+					}
 				}
 				else
 				{
 					msg = new Message(this,sendLine,recLine,point,DESTROY);	// Создаем сообщение удаления
 				}
 
-				msg->name = getParentWindow()->getUI()->nameEdit->text();
+				if (msg != NULL)
+				{
+					msg->name = getParentWindow()->getUI()->nameEdit->text();
 
-				// Связь данных ЛЖ сообщением
-				sendLine->messages.append(msg);
-				recLine->messages.append(msg);
+					// Связь данных ЛЖ сообщением
+					sendLine->messages.append(msg);
+					recLine->messages.append(msg);
 
-				scene->addItem(msg);				// Добавить сообщение на сцену
+					scene->addItem(msg);				// Добавить сообщение на сцену
+				}
 
 				// Убираем подсветку отправителя
 				sendLine->setSelectedByMessage(false);
