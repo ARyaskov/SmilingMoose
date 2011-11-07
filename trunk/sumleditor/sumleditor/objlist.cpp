@@ -22,9 +22,17 @@ void addToObjList(QListWidget* list, enum Action act, const QVariant& metainf)
 	case LIFELINE:
 		{
 			if (desc.length())
-				item->setText(name+" : "+desc);
-			else
-				item->setText(name);
+			{
+				item->setText(name + " : " + desc);
+			}
+			else 
+			{
+				QString text;
+				if ((name.length()) > 30) { text = name.remove(30, name.length() - 30); text += "..."; }
+				else text = name;
+				text.remove("\n");
+				item->setText(text);
+			}
 			item->setIcon(QIcon(":/sumleditor/resources/L.bmp"));	
 		}break;
 
@@ -34,7 +42,13 @@ void addToObjList(QListWidget* list, enum Action act, const QVariant& metainf)
 			if (name.length())
 				item->setText(name+" : "+desc);
 			else
-				item->setText(desc);
+			{
+				QString text = "";
+				if ((desc.length()) > 30) { text = desc.remove(30, desc.length() - 30); text += "..."; }
+				else text = desc;
+				text.replace("\n", " ");
+				item->setText(text);
+			}
 			item->setIcon(QIcon(":/sumleditor/resources/c.bmp"));
 		}break;
 	}
