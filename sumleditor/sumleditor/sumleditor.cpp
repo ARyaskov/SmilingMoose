@@ -262,7 +262,9 @@ void Sumleditor::addDelete()
 */
 void Sumleditor::addReply()
 {
-	qDebug("addReply");
+	setToolbarAdding();
+	
+	this->diagram->setCurrentAct(REPLY);		// Действие - добавляем линию жизни
 }
 
 /**

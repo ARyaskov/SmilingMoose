@@ -111,6 +111,10 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 		initNewMessage(event);
 		break;
 
+	case REPLY:
+		addMessage(mapToScene(event->pos()));
+		break;
+
 	case RECEIVER:
 		addMessage(mapToScene(event->pos()));
 		break;
@@ -232,16 +236,16 @@ void GraphWidget::selectItem(QPointF point)
 			com->setSelected(false);
 			com->update();
 		}
-                else if(currentItem->type() == 2)
-                {
-                        mes = (Message*)currentItem;
-                        mes->setSelected(false);
-                        mes->sender->setSelectedByMessage(false);
-                        mes->receiver->setSelectedByMessage(false);
-                        mes->update();
-                        mes->sender->update();
-                        mes->receiver->update();
-                }
+        else if(currentItem->type() == 2)
+        {
+                mes = (Message*)currentItem;
+                mes->setSelected(false);
+                mes->sender->setSelectedByMessage(false);
+                mes->receiver->setSelectedByMessage(false);
+                mes->update();
+                mes->sender->update();
+                mes->receiver->update();
+        }
 		this->mainWnd->getUI()->
 			objectsList->setCurrentRow(-1);
 
@@ -267,16 +271,16 @@ void GraphWidget::selectItem(QPointF point)
 			com->setSelected(true);
 			com->update();
 		}
-                else if(currentItem->type() == 2)
-                {
-                        mes = (Message*)currentItem;
-                        mes->setSelected(true);
-                        mes->sender->setSelectedByMessage(true);
-                        mes->receiver->setSelectedByMessage(true);
-                        mes->update();
-                        mes->sender->update();
-                        mes->receiver->update();
-                }
+        else if(currentItem->type() == 2)
+        {
+                mes = (Message*)currentItem;
+                mes->setSelected(true);
+                mes->sender->setSelectedByMessage(true);
+                mes->receiver->setSelectedByMessage(true);
+                mes->update();
+                mes->sender->update();
+                mes->receiver->update();
+        }
 		tempVar = currentItem->data(64);
 		this->mainWnd->getUI()->
 			objectsList->setCurrentRow(rowById(this->mainWnd->getUI()->objectsList, tempVar.toString()));
@@ -328,6 +332,14 @@ void GraphWidget::removeCurrentItem()
 		}
 
 	}
+	else if (currentItem!=NULL && currentItem->type()==2)
+	{
+		Message* msg = (Message*)currentItem;
+
+		if (msg->messageType == REPLY)
+			msg->parentMsg->hasReply = false;
+	}
+
 	scene->removeItem(currentItem);
 	delFromList(this->mainWnd->getUI()->objectsList, currentItem->data(64).toString());
 }
@@ -541,6 +553,7 @@ void GraphWidget::initNewMessage(QMouseEvent * event)
 void GraphWidget::addMessage(QPointF point)
 {
 	QGraphicsItem *item = scene->itemAt(point,QTransform());	// Берем выделенный эдлемент сцены
+	Message * msg;
 
 	if (item!=NULL && item->type() == 0)		// Если это ЛЖ и элемент не пуст
 	{
@@ -548,7 +561,7 @@ void GraphWidget::addMessage(QPointF point)
 		{
 			sendLine = (Lifeline*)item;				// Преобразуем текущий элемент в ЛЖ
 
-                        selectItem(point);
+            selectItem(point);
 			sendLine->setSelectedByMessage(true);	// Помечаем отправителя
 
 			sendLine->update();						// Обновляем отправителя
@@ -561,12 +574,6 @@ void GraphWidget::addMessage(QPointF point)
 
 			else if (currentAct == DESTROY) // Сообщение удаления
 				currentAct = REC_DESTROY;
-
-			else
-			{
-				;							// Возвратное сообщение
-			}
-
 		}
 		else
 		{
@@ -574,8 +581,6 @@ void GraphWidget::addMessage(QPointF point)
 
 			if (sendLine!=recLine)					// Если отправитель не совпадает с получателем
 			{
-				Message * msg;
-
 				if (currentAct == RECEIVER)
 				{
 					msg = new Message(this,sendLine,recLine,point);	// Создаем новое сообщение
@@ -617,6 +622,40 @@ void GraphWidget::addMessage(QPointF point)
 				getParentWindow()->setToolbarDefault();
 			}
 		}
+	}
+	else if (item!=NULL && item->type() == 2 && currentAct == REPLY)
+	{
+		Message * currentMsg = (Message *)item;
+		if (currentMsg->messageType!=REPLY)
+		{
+			selectItem(point);
+			if (!currentMsg->hasReply)
+			{
+				msg = new Message(this,sendLine,recLine,point,REPLY);
+				currentMsg->hasReply = true;
+				msg->name = currentMsg->name;
+
+				// Связь данных ЛЖ сообщением
+				currentMsg->sender->messages.append(msg);
+				currentMsg->receiver->messages.append(msg);
+
+				msg->setY(currentMsg->pos().y() + 30);
+
+				scene->addItem(msg);				// Добавить сообщение на сцену
+			}
+			else
+				QMessageBox::warning(this,QString("Добавление возвратного сообщения"),
+							QString("Для данного сообщения возвратное сообщение уже существует!"));
+		}
+		else
+		{
+			QMessageBox::warning(this,QString("Добавление возвратного сообщения"),
+						QString("Нельзя создать возвратное сообщение для другого возвратного сообщения!"));
+		}
+		// Задаем стандартное событие
+		currentAct = SELECT;
+		setCursor(Qt::ArrowCursor);	
+		getParentWindow()->setToolbarDefault();
 	}
 }
 

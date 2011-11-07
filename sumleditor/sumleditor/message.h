@@ -107,8 +107,6 @@ private:
 
         int endX;
 
-        enum Action messageType;        /** Тип сообщения. */
-
 public:
 	
 	QString name;	/** Имя.	  */
@@ -116,6 +114,12 @@ public:
 	QString descr;	/** Описание. */
 
 	QString param;	/** Параметр. */
+
+	bool hasReply;  /** Флаг, означающий, что у данного сообщения. уже есть ответ. */
+
+	enum Action messageType;        /** Тип сообщения. */
+
+	Message* parentMsg;
 };
 
 #endif // MESSAGE_H
