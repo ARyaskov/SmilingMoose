@@ -185,7 +185,7 @@ void Sumleditor::cancel()
 
 	ui.nameEdit->clear();							// Очистить поле ввода имени заогловка
 
-	if (diagram->getCurrentItem()!= NULL && diagram->getCurrentItem()->type() == 0)
+        if (diagram->getCurrentItem()!= NULL && diagram->getCurrentItem()->type() == 0)
 	{
 		Lifeline* line = (Lifeline*)diagram->getCurrentItem();
 		line->setSelectedByMessage(false);
@@ -222,8 +222,7 @@ void Sumleditor::addMessage()
 
 	ui.nameEdit->clear();						// Очистить поле ввода имени заголовка
 	ui.nameEdit->setFocus();					// Задать фокус на поле ввода заголовка
-
-	ui.descrEdit->clear();					    // Очистить поле ввода описания
+        ui.descrEdit->clear();					    // Очистить поле ввода описания
 	
 	this->diagram->setCurrentAct(MESSAGE);		// Действие - добавляем линию жизни
 

@@ -68,7 +68,7 @@ void  Lifeline::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 		pen.setColor(Qt::black);
 
 	if (isSelectedByMessage)
-		pen.setColor(QColor(255,200,15));
+                pen.setColor(QColor(255,200,15)/*Qt::darkYellow*/);
 
 	painter->setPen(pen);
 	painter->drawRect(0,0,90,30);
