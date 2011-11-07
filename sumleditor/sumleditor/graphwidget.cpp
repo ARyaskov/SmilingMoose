@@ -555,7 +555,7 @@ void GraphWidget::addMessage(QPointF point)
 	QGraphicsItem *item = scene->itemAt(point,QTransform());	// Берем выделенный эдлемент сцены
 	Message * msg;
 
-	if (item!=NULL && item->type() == 0)		// Если это ЛЖ и элемент не пуст
+	if (item!=NULL && item->type() == 0 && currentAct!=REPLY)		// Если это ЛЖ и элемент не пуст
 	{
 		if (currentAct < RECEIVER)				// Если выделяем отправителя
 		{
