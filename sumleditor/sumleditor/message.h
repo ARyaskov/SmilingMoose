@@ -73,6 +73,8 @@ public:
 
 	static bool isTopMessage(Lifeline *snd, Lifeline *rec, QPointF click);
 
+	static bool hasUpperCreate(Lifeline *snd, Lifeline *rec, QPointF click);
+
 protected:
 
 	/** 

@@ -234,3 +234,19 @@ bool Message::isTopMessage(Lifeline *snd, Lifeline *rec, QPointF click)
 
 	return result;
 }
+
+bool Message::hasUpperCreate(Lifeline *snd, Lifeline *rec, QPointF click)
+{
+	QListIterator<Message*>i(rec->messages);
+	bool result = true;
+	Message *buf;
+
+	while(i.hasNext() && result)
+	{
+		buf = i.next();
+		if (buf->messageType == CREATE && buf->pos().y() <= click.y())
+			result = false;
+	}
+
+	return result;
+}

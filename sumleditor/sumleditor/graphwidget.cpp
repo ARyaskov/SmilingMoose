@@ -588,7 +588,16 @@ void GraphWidget::addMessage(QPointF point)
 				else if (currentAct == REC_CREATE)
 				{
 					if (Message::isTopMessage(sendLine,recLine,point))
-						msg = new Message(this,sendLine,recLine,point,CREATE);	// Создаем сообщение создания
+					{
+						if (Message::hasUpperCreate(sendLine,recLine,point))
+							msg = new Message(this,sendLine,recLine,point,CREATE);	// Создаем сообщение создания
+						else
+						{
+							QMessageBox::warning(this,QString("Добавление сообщения создания"),
+							QString("Создание не может быть позже другого создания данным объектом!"));
+							msg = NULL;
+						}
+					}
 					else
 					{
 						QMessageBox::warning(this,QString("Добавление сообщения создания"),
