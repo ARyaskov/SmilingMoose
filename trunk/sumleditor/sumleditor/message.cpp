@@ -10,7 +10,7 @@ Message::Message(GraphWidget *graphWidget, Lifeline * _sender, Lifeline * _recei
 	graph = graphWidget;
 	sender = _sender;
 	receiver = _receiver;
-        this->messageType = messageType;
+	this->messageType = messageType;
 
 	// Задаем параметры фигуре
 	setFlag(ItemIsSelectable);
@@ -22,12 +22,15 @@ Message::Message(GraphWidget *graphWidget, Lifeline * _sender, Lifeline * _recei
 	setZValue(1);
 
 	isSelected = false;
+	hasReply = false;
 
-        this->x = 0;
-        this->y = 0;
-        this->z = 0;
+	this->x = 0;
+	this->y = 0;
+	this->z = 0;
 
-        calcCoordinates(click);
+	parentMsg = (Message*)graphWidget->getCurrentItem();
+
+	calcCoordinates(click);
 }
 
 /** Деструктор по умолчанию. */
@@ -39,14 +42,14 @@ Message::~Message()
 /** Вернуть прямоугольник границ фигуры. */
 QRectF Message::boundingRect() const
 {
-        return QRectF(0,0,length,20);
+        return QRectF(0,0,length,30);
 }
 
 /** Вернуть форму фигуры. */
 QPainterPath  Message::shape() const
 {
 	QPainterPath path;
-        path.addRect(QRectF(0,0,length,20));
+        path.addRect(QRectF(0,0,length,30));
 
 	return path;
 }
@@ -57,32 +60,35 @@ void  Message::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     QPen pen;			// Задаем стиль рисования
     pen.setWidth(2);	// Задаем в стиле толщину линии
 
+	if (messageType == REPLY)
+		pen.setStyle(Qt::DashLine);
+
     if (isSelected)
         pen.setColor(Qt::red);
     else
         pen.setColor(Qt::black);
 
     // Область линии - прямоугольник размером length * 20
-    QLine line (length,15,0,15);	// Создаем линию заданной длины с координатой по У 15,
+    QLine line (length,25,0,25);	// Создаем линию заданной длины с координатой по У 15,
                                                                     // а в простренстве от 0 до 15 над ней будет текст
     painter->setPen(pen);			// Задаем отрисовщику стиль
     painter->drawLine(line);		// Рисуем линию
 
-    if (startX < endX)	// Если координата конца левее координаты начала
+    if ( (startX < endX && messageType != REPLY) || (startX > endX && messageType == REPLY))	// Если координата конца левее координаты начала
     {
             // Рисуем линию с права на лево
-            painter->drawLine(length-10,10,length,15);
-            painter->drawLine(length-10,20,length,15);
+            painter->drawLine(length-10,20,length,25);
+            painter->drawLine(length-10,30,length,25);
     }
     else				// Если координата конца правее координаты начала
     {
             // Рисуем линию с лева на право
-            painter->drawLine(0,15,10,10);
-            painter->drawLine(0,15,10,20);
+            painter->drawLine(0,25,10,20);
+            painter->drawLine(0,25,10,30);
     }
 
     // Добавить текстовое поле с именем сообщения над стрелкой
-    QRectF textRect(5,0,length-5,10);   // Прямоугольник с текстом в поле по У от 0 до 10, и по Х от 5 до длина-5
+    QRectF textRect(5,8,length-10,18);   // Прямоугольник с текстом в поле по У от 0 до 10, и по Х от 5 до длина-5
 
     // Задать шрифт
     QFont font = painter->font();
@@ -96,7 +102,21 @@ void  Message::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     QTextOption opt;
     opt.setAlignment(Qt::AlignCenter);		// Выравнивание по центру
 
-    painter->drawText(textRect,name,opt);	// Рисуем текст
+	if (messageType == REPLY)
+		painter->drawText(textRect,QString("Re: ") + name,opt);	// Рисуем текст
+	else
+		painter->drawText(textRect,name,opt);	// Рисуем текст
+
+	if (messageType==CREATE)
+	{
+		textRect.setRect(5,0,length-10,10);
+
+		font.setBold(false);				// Стиль "жирный"
+		font.setPointSize(8);			// Размер шрифта
+
+		painter->setFont(font);			// Задаем шрифт
+		painter->drawText(textRect,QString("<<create>>"),opt);
+	}
 }
 
 /** Событие клика пользователем на фигуру. */
@@ -149,7 +169,7 @@ void Message::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 /** Вычислить координату, из которой будет исходить сообщение. */
 void Message::calcCoordinates(QPointF click)
 {
-    if (messageType==MESSAGE)
+    if (messageType==MESSAGE || messageType==REPLY)
     {
         // Рассчитываем длину
         // Стартовая пощзиция по Х: координата отправителя + половина от длины прямоугольника заголовка ЛЖ
@@ -177,8 +197,6 @@ void Message::calcCoordinates(QPointF click)
         if (receiver->pos().x()<=sender->pos().x()+45 && receiver->pos().x()>=sender->pos().x()-45)
             length=0;
 
-
-
         receiver->setY(click.y());
     }
     else
@@ -186,14 +204,14 @@ void Message::calcCoordinates(QPointF click)
 
     }
 
-    int endY = click.y();
+	int endY = click.y();
 
     // Задаем диапазон координате
     if (endY>300)
             endY = 300;
 
-	if (endY<receiver->pos().y()+30 && messageType != CREATE)
-            endY = receiver->pos().y()+30;
+	if (endY<receiver->pos().y()+20 && messageType != CREATE)
+            endY = receiver->pos().y()+20;
 
     if (startX < endX)
         this->setPos(startX,endY);
