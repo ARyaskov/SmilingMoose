@@ -41,7 +41,7 @@ GraphWidget::GraphWidget(QWidget *parent)
 
 	currentItem = NULL;
 
-	addAxis(1);	// Добавляем ось
+        //addAxis(1);	// Добавляем ось
 }
 
 /** Деструктор по умолчанию. */
@@ -209,6 +209,7 @@ void GraphWidget::selectItem(QPointF point)
 	QGraphicsItem *item;
 	Lifeline * line;
 	FreeComment * com;
+        Message * mes;
 	QVariant tempVar;
 
 	item = scene->itemAt(point/*event->posF()*/,QTransform());
@@ -236,6 +237,16 @@ void GraphWidget::selectItem(QPointF point)
 			com->setSelected(false);
 			com->update();
 		}
+                else if(currentItem->type() == 2)
+                {
+                        mes = (Message*)currentItem;
+                        mes->setSelected(false);
+                        mes->sender->setSelectedByMessage(false);
+                        mes->receiver->setSelectedByMessage(false);
+                        mes->update();
+                        mes->sender->update();
+                        mes->receiver->update();
+                }
 		this->mainWnd->getUI()->
 			objectsList->setCurrentRow(-1);
 
@@ -261,6 +272,16 @@ void GraphWidget::selectItem(QPointF point)
 			com->setSelected(true);
 			com->update();
 		}
+                else if(currentItem->type() == 2)
+                {
+                        mes = (Message*)currentItem;
+                        mes->setSelected(true);
+                        mes->sender->setSelectedByMessage(true);
+                        mes->receiver->setSelectedByMessage(true);
+                        mes->update();
+                        mes->sender->update();
+                        mes->receiver->update();
+                }
 		tempVar = currentItem->data(64);
 		this->mainWnd->getUI()->
 			objectsList->setCurrentRow(rowById(this->mainWnd->getUI()->objectsList, tempVar.toString()));
@@ -509,7 +530,7 @@ void GraphWidget::initNewMessage(QMouseEvent * event)
 		}
 		else
 		{
-			addMessage(mapToScene(event->pos()));  // +=+=+=+=+ addToObjList - поместить внутрь этой функции
+                        addMessage(mapToScene(event->pos()));  // +=+=+=+=+ addToObjList - поместить внутрь этой функции
 			// Только еще надо туда передавать var		  +=+=+=+=+
 			//addToObjList(localUI->objectsList, MESSAGE, var);
 		}
@@ -532,6 +553,7 @@ void GraphWidget::addMessage(QPointF point)
 		{
 			sendLine = (Lifeline*)item;				// Преобразуем текущий элемент в ЛЖ
 
+                        selectItem(point);
 			sendLine->setSelectedByMessage(true);	// Помечаем отправителя
 
 			sendLine->update();						// Обновляем отправителя

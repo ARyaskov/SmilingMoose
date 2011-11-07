@@ -56,6 +56,11 @@ void  Message::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     QPen pen;			// Задаем стиль рисования
     pen.setWidth(2);	// Задаем в стиле толщину линии
 
+    if (isSelected)
+        pen.setColor(Qt::red);
+    else
+        pen.setColor(Qt::black);
+
     // Область линии - прямоугольник размером length * 20
     QLine line (length,15,0,15);	// Создаем линию заданной длины с координатой по У 15,
                                                                     // а в простренстве от 0 до 15 над ней будет текст
@@ -84,7 +89,7 @@ void  Message::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     font.setPointSize(10);			// Размер шрифта
 
     painter->setFont(font);			// Задаем шрифт
-    painter->setPen(Qt::black);		// Задаем  цвет
+    painter->setPen(pen);		// Задаем  цвет
 
     // Задать свойства тексту
     QTextOption opt;
