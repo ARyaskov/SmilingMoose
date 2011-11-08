@@ -20,6 +20,7 @@ Lifeline::Lifeline(GraphWidget *graphWidget)
     this->y = 0;
     this->z = 0;
 	isSelectedByMessage = false;
+	isCreated = false;
 
 	endY = 300;
 	bndRect = QRectF(0,0,90,endY+20);
@@ -113,8 +114,6 @@ void  Lifeline::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 		painter->drawLine(25,endY-20,65,endY+20);
 		painter->drawLine(25,endY+20,65,endY-20);
 	}
-
-
 	if (isSelected)
 	{
 		pen.setStyle(Qt::SolidLine);
@@ -169,6 +168,8 @@ void Lifeline::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
     }
 
 	QPointF p = mapToItem(this,event->pos());
+
+
 	if (p.x()>=41 && p.x()<=49 && p.y() >= endY-10 && p.y() <= endY+10)
 		setSize(p.y());
 }
@@ -177,7 +178,7 @@ QDomElement Lifeline::save(QDomDocument & domDoc, int id)
 {
 	QDomElement element = domDoc.createElement("lifeline");
 
-        getCurrentCoords();
+	getCurrentCoords();
 
 	QDomAttr attr = domDoc.createAttribute("name");
 	attr.setValue(name.toUtf8());
@@ -229,7 +230,7 @@ void Lifeline::load(const QDomElement &element)
 
 void Lifeline::setSize(int newY)
 {
-	if (newY >= lastMessageCoord)
+	if (newY > lastMessageCoord)
 	{
 		endY = newY;
 

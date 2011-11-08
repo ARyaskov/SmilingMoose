@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "volatile.h"
 #include "message.h"
+#include <QGraphicsSceneMouseEvent>
 
 enum Action;
 
@@ -42,14 +43,14 @@ Message::~Message()
 /** Вернуть прямоугольник границ фигуры. */
 QRectF Message::boundingRect() const
 {
-        return QRectF(0,0,length,30);
+        return QRectF(0,0,length+10,35);
 }
 
 /** Вернуть форму фигуры. */
 QPainterPath  Message::shape() const
 {
 	QPainterPath path;
-        path.addRect(QRectF(0,0,length,30));
+        path.addRect(QRectF(0,0,length+10,35));
 
 	return path;
 }
@@ -117,6 +118,20 @@ void  Message::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 		painter->setFont(font);			// Задаем шрифт
 		painter->drawText(textRect,QString("<<create>>"),opt);
 	}
+
+	if (messageType==DESTROY)
+	{
+		textRect.setRect(5,0,length-10,10);
+
+		font.setBold(false);				// Стиль "жирный"
+		font.setPointSize(8);			// Размер шрифта
+
+		painter->setFont(font);			// Задаем шрифт
+		painter->drawText(textRect,QString("<<destroy>>"),opt);
+
+		painter->drawLine(length-10,15,length+10,35);
+		painter->drawLine(length-10,35,length+10,15);
+	}
 }
 
 /** Событие клика пользователем на фигуру. */
@@ -151,32 +166,50 @@ void Message::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	if (messageType!=CREATE)
 		QGraphicsItem::mouseMoveEvent(event);
 
-	//int qwe = this->pos().y();
-	//qwe = sender->pos().y() + sender->endY - 20;
-	//qwe = receiver->pos().y() + receiver->endY - 20;
+	// Устанавливаем координату по Х, чтобы не вылезало слева
+    if (startX > endX)
+        this->setX(endX);
+    else
+        this->setX(startX);
 
-	if (this->pos().y() > sender->pos().y() + sender->endY - 25)
-		this->setY(sender->pos().y() + sender->endY - 25);
+	// Чтобы не вылезало за пределы СЕНДЕРА снизу
+	if (pos().y() > sender->pos().y() + sender->endY - 25)
+		setY(sender->pos().y() + sender->endY - 25);
 
-	if (this->pos().y() > receiver->pos().y() + receiver->endY - 25)
-		this->setY(receiver->pos().y() + receiver->endY - 25);
-
-	if (this->pos().y()<receiver->pos().y()+20 && messageType!=CREATE)
+	// Чтобы не вылезало за пределы РЕСИВЕРА снизу
+	if (pos().y() > receiver->pos().y() + receiver->endY - 25)
+		setY(receiver->pos().y() + receiver->endY - 25);
+ 
+	// Чтобы не вылезало выше сообщения создания
+	if (pos().y() < receiver->pos().y()+20 && messageType!=CREATE)
 		this->setY(receiver->pos().y()+20);
 
-        if (startX > endX)
-            this->setX(endX);
-        else
-            this->setX(startX);
+	// Если получатель не налезает на создающую его ЛЖ - проводим линию данной длины
+	if (!(messageType == CREATE && abs(startX-endX)<45))
+		setLine(QLineF(startX,pos().y(),endX,pos().y()));
 
-        if (!(messageType == CREATE && abs(startX-endX)<45))
-            setLine(QLineF(startX,pos().y(),endX,pos().y()));
+	// Чтобы нельзя было поднять ЛЖ выше самого нижнего сообщения
+	int buf = this->pos().y();
+
+	// Если это сообщение нижнее записать ее координату
+
+	if (isLowestMessage(sender,receiver,buf))
+	{
+		sender->lastMessageCoord = buf;
+		receiver->lastMessageCoord = buf;
+	}
+
+	if (messageType==DESTROY)
+	{
+		this->receiver->lastMessageCoord = buf-1;
+		this->receiver->setSize(buf);
+	}
 }
 
 /** Вычислить координату, из которой будет исходить сообщение. */
 void Message::calcCoordinates(QPointF click)
 {
-    if (messageType==MESSAGE || messageType==REPLY)
+    if (messageType==MESSAGE || messageType==REPLY || messageType == DESTROY)
     {
         // Рассчитываем длину
         // Стартовая пощзиция по Х: координата отправителя + половина от длины прямоугольника заголовка ЛЖ
@@ -187,7 +220,7 @@ void Message::calcCoordinates(QPointF click)
 
         length = abs(startX-endX);  // Длина - это модуль разницы позиций
     }
-    else if (messageType == CREATE || messageType == DESTROY)
+    else if (messageType == CREATE)
     {
         // Рассчитываем длину
         startX = sender->pos().x()+45;
@@ -211,26 +244,19 @@ void Message::calcCoordinates(QPointF click)
 	}
 	else if (messageType == DESTROY)
 	{
-
+		receiver->setSize(click.y());
 	}
     
+	int currEndY = click.y();
 
-	int endY = click.y();
-
-    // Задаем диапазон координате
-	if (endY>sender->endY)
-		endY = sender->endY;
-
-	if (endY>receiver->endY)
-		endY = receiver->endY;
-
-	if (endY<receiver->pos().y()+20 && messageType != CREATE)
-            endY = receiver->pos().y()+20;
+	// Задаем диапазон координате сообщения создания
+	if (currEndY < receiver->pos().y()+20 && messageType != CREATE)
+		currEndY = receiver->pos().y()+20;
 
     if (startX < endX)
-        this->setPos(startX,endY);
+        this->setPos(startX,currEndY);
     else
-        this->setPos(endX,endY);
+        this->setPos(endX,currEndY);
 }
 
 bool Message::isTopMessage(Lifeline *snd, Lifeline *rec, QPointF click)
@@ -264,3 +290,48 @@ bool Message::hasUpperCreate(Lifeline *snd, Lifeline *rec, QPointF click)
 
 	return result;
 }
+
+bool Message::isLowestMessage(Lifeline *snd, Lifeline *rec, int curY)
+{
+	QListIterator<Message*>i(snd->messages);
+	bool result = true;
+	Message *buf;
+
+	while(i.hasNext() && result)
+	{
+		buf = i.next();
+		if (buf->receiver == rec && buf->pos().y() > curY)
+			result = false;
+	}
+
+	return result;
+}
+
+bool Message::hasLowerDestr(Lifeline *snd, Lifeline *rec, QPointF click)
+{
+	QListIterator<Message*>i(rec->messages);
+	bool result = true;
+	Message *buf;
+
+	while(i.hasNext() && result)
+	{
+		buf = i.next();
+		if (buf->messageType == DESTROY && buf->pos().y() > click.y())
+			result = false;
+	}
+
+	return result;
+}
+
+
+	//{
+	//	if (buf <=sender->endY)
+	//		sender->lastMessageCoord = buf;
+	//	else
+	//		sender->lastMessageCoord = sender->endY;
+
+	//	if (buf <=receiver->endY)
+	//		receiver->lastMessageCoord = buf;
+	//	else
+	//		receiver->lastMessageCoord = receiver->endY;
+	//}
