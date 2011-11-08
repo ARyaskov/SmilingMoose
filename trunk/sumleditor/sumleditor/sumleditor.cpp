@@ -56,6 +56,8 @@ Sumleditor::Sumleditor(QWidget *parent, Qt::WFlags flags)
 	ui.actCancel->setEnabled(false);	// Декативируем кнопку отмены
 
 	ui.actSelect->setChecked(true);		// Режим выбора объектов
+
+	isSaved = true;
 }
 
 
@@ -119,6 +121,8 @@ void Sumleditor::descrChanged(const QString & text)
 
 Sumleditor::~Sumleditor()
 {
+	emit slotExit();
+
 	delete nameLE_val;
 	delete diagram;
 }
@@ -214,6 +218,8 @@ void Sumleditor::addLifeline()
 	fadeInto(ui.nameEdit,  attention_color);	// Задаем цвет полю ввода
 
 	ui.statusBar->showMessage(QString("Добавление линии жизни. Введите имя и кликните на нажное место на сцене."));
+
+	isSaved = false;
 }
 
 /**
@@ -230,6 +236,8 @@ void Sumleditor::addMessage()
 	this->diagram->setCurrentAct(MESSAGE);		// Действие - добавляем линию жизни
 
 	fadeInto(ui.nameEdit,  attention_color);	// Задаем цвет полю ввода
+
+	isSaved = false;
 }
 
 /**
@@ -247,6 +255,8 @@ void Sumleditor::addCreate()
 	this->diagram->setCurrentAct(CREATE);		// Действие - добавляем линию жизни
 
 	fadeInto(ui.nameEdit,  attention_color);	// Задаем цвет полю ввода
+	
+	isSaved = false;
 }
 
 /**
@@ -264,6 +274,8 @@ void Sumleditor::addDelete()
 	this->diagram->setCurrentAct(DESTROY);		// Действие - добавляем линию жизни
 
 	fadeInto(ui.nameEdit,  attention_color);	// Задаем цвет полю ввода
+	
+	isSaved = false;
 }
 
 /**
@@ -274,6 +286,8 @@ void Sumleditor::addReply()
 	setToolbarAdding();
 	
 	this->diagram->setCurrentAct(REPLY);		// Действие - добавляем линию жизни
+	
+	isSaved = false;
 }
 
 /**
@@ -284,6 +298,8 @@ void Sumleditor::addStop()
 	setToolbarAdding();
 
 	diagram->setCurrentAct(STOP);		// Действие - добавляем линию жизни
+	
+	isSaved = false;
 }
 
 /**
@@ -302,14 +318,22 @@ void Sumleditor::addComment()
 	fadeInto(ui.descrEdit,  attention_color);	// Задаем цвет полю ввода
 
 	ui.statusBar->showMessage(QString("Добавление комментария. Введите имя и кликните на нужное место на сцене."));
+	
+	isSaved = false;
 }
 
 /** Слот срабатывающий при нажатии кнопки "Выход" в главном меню. */
 void Sumleditor::slotExit()
 {
-	if (QMessageBox::Yes == QMessageBox::question(this,QString("Закрытие программы"),
-		QString("Закрыть программу?"),QMessageBox::Yes | QMessageBox::No,QMessageBox::No) )
-		exit(0);
+	//if (QMessageBox::Yes == QMessageBox::question(this,QString("Закрытие программы"),
+	//	QString("Закрыть программу?"),QMessageBox::Yes | QMessageBox::No,QMessageBox::No) )
+	//	exit(0);
+	
+	if (!isSaved &&  QMessageBox::Yes == QMessageBox::question(this,QString("Закрытие программы"),
+			QString("Сохранить диаграмму?"),QMessageBox::Yes | QMessageBox::No,QMessageBox::Yes) )
+		slotSave();
+	
+	exit(0);
 }
 
 /** Слот срабатывающий при нажатии кнопки "О Qt" в главном меню. */
@@ -338,6 +362,12 @@ void Sumleditor::slotSave()
 	{
 		slotSaveAs();
 	}
+	else
+	{
+		saveToFile();
+
+		isSaved = true;
+	}	
 
 	qDebug("slotSave");
 }
@@ -355,6 +385,8 @@ void Sumleditor::slotSaveAs()
 	}
 
 	saveToFile();
+
+	isSaved = true;
 
 	qDebug("slotSaveAs");
 }
@@ -420,7 +452,7 @@ void Sumleditor::readFromFile()
     {
 		diagram->getScene()->clear();
 		diagram->getParentWindow()->getUI()->objectsList->clear();
-		diagram->addAxis(1);
+		//diagram->addAxis(1);
 
         if (domDoc.setContent(&file))
         {
