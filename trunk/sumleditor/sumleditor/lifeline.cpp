@@ -21,6 +21,7 @@ Lifeline::Lifeline(GraphWidget *graphWidget)
     this->z = 0;
 	isSelectedByMessage = false;
 	isCreated = false;
+	isDestroyed = false;
 
 	endY = 300;
 	bndRect = QRectF(0,0,90,endY+20);

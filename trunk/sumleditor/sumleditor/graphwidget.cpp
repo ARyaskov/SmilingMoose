@@ -359,6 +359,9 @@ void GraphWidget::removeCurrentItem()
 		if (msg->messageType == REPLY)
 			msg->parentMsg->hasReply = false;
 
+		if (msg->messageType == DESTROY)
+			msg->receiver->isDestroyed = false;
+
 		msg->sender->messages.removeOne(msg);
 		msg->receiver->messages.removeOne(msg);
 	}
@@ -466,8 +469,15 @@ void GraphWidget::addStop(QPointF point)
 	if (item!=NULL && item->type() == 0)
 	{
 		Lifeline * line = (Lifeline*)item;
-		line->setEnded();
-		line->update();
+
+		if (!line->isDestroyed)
+		{
+			line->setEnded();
+			line->update();
+		}
+		else
+			QMessageBox::warning(this,QString("Остановка линии жизни"),
+				QString("Нельзя останавливать или возобновлять удаленную сообщением линию жизни!"));
 
 		currentAct = SELECT;					// Задаем текущее действие
 		setCursor(Qt::ArrowCursor);				// Задаем ноовый курсор
@@ -643,6 +653,12 @@ void GraphWidget::addMessage(QPointF point)
 						if (Message::hasLowerDestr(sendLine,recLine,point))
 						{
 							msg = new Message(this,sendLine,recLine,point,DESTROY);	// Создаем сообщение удаления
+							recLine->isDestroyed = true;
+							if (recLine->isEnd)
+							{
+								recLine->setEnded();
+								recLine->update();
+							}
 						}
 						else
 						{

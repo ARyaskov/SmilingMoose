@@ -137,6 +137,10 @@ public:
 		void setSize(int newY);
 
 		inline void setName(const QString& newName) {name = newName;};
+
+		bool isDestroyed;           /** Флаг, означающий, что данная Л.Ж. остановлена другой Л.Ж. */
+
+		bool isEnd;                 /** Флаг, наличия конца линии жизни. */
 protected:
 
 	/** 
@@ -172,11 +176,9 @@ private:
 
 	bool isSelectedByMessage;   /** Флаг, означающий, что данная Л.Ж. выделена при добавлении сообщения. */
 
-	bool isEnd;                 /** Флаг, наличия конца линии жизни. */
+
 
 	bool isCreated;             /** Флаг, означающий, что данная Л.Ж. порождена другой Л.Ж. */
-
-	bool isDestroyed;           /** Флаг, означающий, что данная Л.Ж. остановлена другой Л.Ж. */
 
 	QRectF bndRect;
 
