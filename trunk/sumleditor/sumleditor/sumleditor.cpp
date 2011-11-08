@@ -94,7 +94,6 @@ void Sumleditor::nameLEChanged(const QString & text)
 
 	QPalette palette = ui.nameEdit->palette();
 
-
 	if (ui.nameEdit->palette().color(QPalette::Base) == attention_color ||
 		ui.nameEdit->palette().color(QPalette::Base) == error_color)
 	{
@@ -102,6 +101,9 @@ void Sumleditor::nameLEChanged(const QString & text)
 		palette.setColor( QPalette::Base, normal_color );
 		ui.nameEdit->setPalette(palette);
 	}
+
+    savedname = text;
+
 }
 
 void Sumleditor::descrChanged(const QString & text)
@@ -117,6 +119,7 @@ void Sumleditor::descrChanged(const QString & text)
 		palette.setColor( QPalette::Base, normal_color );
 		ui.descrEdit->setPalette(palette);
 	}
+	saveddescr = text;
 }
 
 Sumleditor::~Sumleditor()
@@ -407,13 +410,13 @@ void Sumleditor::saveAsPicture()
         qDebug("filename:");
         qDebug(filename.toAscii().data());
 
-        QRect rect;
-
-	rect.setCoords(0,0,600,600);
-	QImage image(600,600, QImage::Format_ARGB32_Premultiplied);
+   
+	QRectF tmpRectF = diagram->getScene()->itemsBoundingRect();
+	QRect rect(tmpRectF.toRect());
+	QImage image(rect.width()+200,rect.height()+200, QImage::Format_ARGB32_Premultiplied);
 	image.fill(NULL);
 	QPainter painter(&image);
-	this->diagram->getScene()->render(&painter,rect,rect,Qt::KeepAspectRatioByExpanding);
+	this->diagram->getScene()->render(&painter,tmpRectF,tmpRectF,Qt::KeepAspectRatioByExpanding);
 	image.save(filename);
 }
 
