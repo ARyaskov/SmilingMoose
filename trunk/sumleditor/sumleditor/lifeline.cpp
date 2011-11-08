@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "volatile.h"
 #include "lifeline.h"
+#include <QGraphicsSceneMouseEvent>
 
 /** Конструктор по умолчанию. */
 Lifeline::Lifeline(GraphWidget *graphWidget)
@@ -15,10 +16,15 @@ Lifeline::Lifeline(GraphWidget *graphWidget)
 	setZValue(1);
 	isSelected = false;
 	isEnd = false;
-        this->x = 0;
-        this->y = 0;
-        this->z = 0;
+    this->x = 0;
+    this->y = 0;
+    this->z = 0;
 	isSelectedByMessage = false;
+
+	endY = 300;
+	bndRect = QRectF(0,0,90,endY+20);
+
+	lastMessageCoord = 80;
 }
 
 /** Деструктор по умолчанию. */
@@ -30,14 +36,14 @@ Lifeline::~Lifeline()
 /** Вернуть прямоугольник границ фигуры. */
 QRectF Lifeline::boundingRect() const
 {
-	return QRectF(0,0,90,320);
+	return bndRect;
 }
 
 /** Вернуть форму фигуры. */
 QPainterPath  Lifeline::shape() const
 {
 	QPainterPath path;
-	path.addRect(0,0,90,320);
+	path.addRect(bndRect);
 
 	return path;
 }
@@ -93,7 +99,7 @@ void  Lifeline::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 	painter->setPen(Qt::white);
 	painter->drawText(textRect, name, opt);
 
-	QLine line (45,30,45,300);
+	QLine line (45,30,45,endY);
 	pen.setStyle(Qt::DashLine);
 	pen.setDashOffset(3);
 	painter->setPen(pen);
@@ -104,8 +110,19 @@ void  Lifeline::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 		// Рисуем на конце линии крестик
 		pen.setStyle(Qt::SolidLine);
 		painter->setPen(pen);
-		painter->drawLine(25,280,65,320);
-		painter->drawLine(25,320,65,280);
+		painter->drawLine(25,endY-20,65,endY+20);
+		painter->drawLine(25,endY+20,65,endY-20);
+	}
+
+
+	if (isSelected)
+	{
+		pen.setStyle(Qt::SolidLine);
+		painter->setBrush(QColor(Qt::white));
+		pen.setColor(Qt::black);
+		pen.setWidth(0.1);
+		painter->setPen(pen);
+		painter->drawEllipse(41,endY-5,8,8);
 	}
 }
 
@@ -140,16 +157,20 @@ void Lifeline::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
 	QGraphicsItem::mouseMoveEvent(event);
 	this->setY(30);							// Линия жизни остается на одной координате У
-        QListIterator<Message*>i(messages);
+    QListIterator<Message*>i(messages);
 
-        Message *buf;
+    Message *buf;
 
-        while(i.hasNext())
-        {
-            buf = i.next();
-            buf->update();
-            buf->calcCoordinates(buf->pos());
-        }
+    while(i.hasNext())
+    {
+        buf = i.next();
+        buf->update();
+        buf->calcCoordinates(buf->pos());
+    }
+
+	QPointF p = mapToItem(this,event->pos());
+	if (p.x()>=41 && p.x()<=49 && p.y() >= endY-5 && p.y() <= endY+3)
+		setSize(p.y());
 }
 
 QDomElement Lifeline::save(QDomDocument & domDoc, int id)
@@ -204,4 +225,13 @@ void Lifeline::load(const QDomElement &element)
 	addToObjList(this->getUI()->objectsList, LIFELINE, var);
 	this->setData(64, meta.id);
 	this->setData(127,"lifeline");
+}
+
+void Lifeline::setSize(int newY)
+{
+	if (newY >= lastMessageCoord && newY <=1000)
+	{
+		endY = newY;
+		bndRect = QRectF(0,0,90,endY+20);
+	}
 }

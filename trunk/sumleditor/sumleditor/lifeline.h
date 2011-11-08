@@ -129,6 +129,13 @@ public:
  inline Ui::SumleditorClass* getUI(){
 	return this->graph->getParentWindow()->getUI();
    };
+		
+ 
+		int lastMessageCoord;
+
+		int endY;
+
+		void setSize(int newY);
 protected:
 
 	/** 
@@ -147,21 +154,24 @@ private:
 	/** Указатель на виджет, на котором рисуем. */
 	GraphWidget		*graph;
 
-        double x;                   /** Координата по оси Х. */
+	double x;                   /** Координата по оси Х. */
 
-        double y;                   /** Координата по оси y. */
+	double y;                   /** Координата по оси y. */
 
-        double z;                   /** Координата по оси Z. */
+	double z;                   /** Координата по оси Z. */
 
-        bool isSelected;            /** Флаг выделения данного объекта. */
+	bool isSelected;            /** Флаг выделения данного объекта. */
 
-        bool isSelectedByMessage;   /** Флаг, означающий, что данная Л.Ж. выделена при добавлении сообщения. */
+	bool isSelectedByMessage;   /** Флаг, означающий, что данная Л.Ж. выделена при добавлении сообщения. */
 
-        bool isEnd;                 /** Флаг, наличия конца линии жизни. */
+	bool isEnd;                 /** Флаг, наличия конца линии жизни. */
 
-        bool isCreated;             /** Флаг, означающий, что данная Л.Ж. порождена другой Л.Ж. */
+	bool isCreated;             /** Флаг, означающий, что данная Л.Ж. порождена другой Л.Ж. */
 
-        bool isDestroyed;           /** Флаг, означающий, что данная Л.Ж. остановлена другой Л.Ж. */
+	bool isDestroyed;           /** Флаг, означающий, что данная Л.Ж. остановлена другой Л.Ж. */
+
+	QRectF bndRect;
+
 };
 
 #endif // LIFELINE_H
