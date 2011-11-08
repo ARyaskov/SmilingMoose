@@ -641,7 +641,9 @@ void GraphWidget::addMessage(QPointF point)
 					if (Message::isLowestMessage(sendLine,recLine,point.y()))
 					{
 						if (Message::hasLowerDestr(sendLine,recLine,point))
+						{
 							msg = new Message(this,sendLine,recLine,point,DESTROY);	// Создаем сообщение удаления
+						}
 						else
 						{
 							QMessageBox::warning(this,QString("Добавление сообщения уничтожения"),

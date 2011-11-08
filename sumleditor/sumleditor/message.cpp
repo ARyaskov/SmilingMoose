@@ -43,14 +43,14 @@ Message::~Message()
 /** Вернуть прямоугольник границ фигуры. */
 QRectF Message::boundingRect() const
 {
-        return QRectF(0,0,length+10,35);
+        return QRectF(-10,0,length+20,35);
 }
 
 /** Вернуть форму фигуры. */
 QPainterPath  Message::shape() const
 {
 	QPainterPath path;
-        path.addRect(QRectF(0,0,length+10,35));
+        path.addRect(QRectF(-10,0,length+20,35));
 
 	return path;
 }
@@ -129,8 +129,16 @@ void  Message::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 		painter->setFont(font);			// Задаем шрифт
 		painter->drawText(textRect,QString("<<destroy>>"),opt);
 
-		painter->drawLine(length-10,15,length+10,35);
-		painter->drawLine(length-10,35,length+10,15);
+		if ( startX < endX )
+		{
+			painter->drawLine(length-10,15,length+10,35);
+			painter->drawLine(length-10,35,length+10,15);
+		}
+		else
+		{
+			painter->drawLine(-10,15,10,35);
+			painter->drawLine(-10,35,10,15);
+		}
 	}
 }
 
