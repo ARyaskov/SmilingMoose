@@ -282,13 +282,13 @@ void GraphWidget::selectItem(QPointF point)
 		}
         else if(currentItem->type() == 2)
         {
-                mes = (Message*)currentItem;
-                mes->setSelected(true);
-                mes->sender->setSelectedByMessage(true);
-                mes->receiver->setSelectedByMessage(true);
-                mes->update();
-                mes->sender->update();
-                mes->receiver->update();
+			mes = (Message*)currentItem;
+			mes->setSelected(true);
+			mes->sender->setSelectedByMessage(true);
+			mes->receiver->setSelectedByMessage(true);
+			mes->update();
+			mes->sender->update();
+			mes->receiver->update();
         }
 		tempVar = currentItem->data(64);
 		this->mainWnd->getUI()->
@@ -339,7 +339,6 @@ void GraphWidget::removeCurrentItem()
 
 			scene->removeItem(msg);
 		}
-
 	}
 	else if (currentItem!=NULL && currentItem->type()==2)
 	{
@@ -347,6 +346,9 @@ void GraphWidget::removeCurrentItem()
 
 		if (msg->messageType == REPLY)
 			msg->parentMsg->hasReply = false;
+
+		msg->sender->messages.removeOne(msg);
+		msg->receiver->messages.removeOne(msg);
 	}
 
 	scene->removeItem(currentItem);
@@ -617,7 +619,23 @@ void GraphWidget::addMessage(QPointF point)
 				}
 				else
 				{
-					msg = new Message(this,sendLine,recLine,point,DESTROY);	// Создаем сообщение удаления
+					if (Message::isLowestMessage(sendLine,recLine,point.y()))
+					{
+						if (Message::hasLowerDestr(sendLine,recLine,point))
+							msg = new Message(this,sendLine,recLine,point,DESTROY);	// Создаем сообщение удаления
+						else
+						{
+							QMessageBox::warning(this,QString("Добавление сообщения уничтожения"),
+							QString("Уничтожение не может быть позже другого уничтожения данным объектом!"));
+							msg = NULL;
+						}
+					}
+					else
+					{
+						QMessageBox::warning(this,QString("Добавление сообщения уничтожения"),
+						QString("Удаление должно быть в самом низу линии жизни!"));
+						msg = NULL;
+					}
 				}
 
 				if (msg != NULL)

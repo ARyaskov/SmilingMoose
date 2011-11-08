@@ -75,6 +75,10 @@ public:
 
 	static bool hasUpperCreate(Lifeline *snd, Lifeline *rec, QPointF click);
 
+	static bool isLowestMessage(Lifeline *snd, Lifeline *rec, int curY);
+
+	static bool hasLowerDestr(Lifeline *snd, Lifeline *rec, QPointF click);
+
 protected:
 
 	/** 
