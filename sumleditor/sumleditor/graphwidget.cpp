@@ -666,12 +666,12 @@ void GraphWidget::addMessage(QPointF point)
 
 				if (currentMsg->pos().y() + 30 > currentMsg->sender->endY)
 				{
-					currentMsg->sender->endY = currentMsg->pos().y() + 30;
+					currentMsg->sender->setSize(currentMsg->pos().y() + 30);	// Еще 20 пикселей ниже для крестика
 					currentMsg->sender->update();
 				}
 				if (currentMsg->pos().y() + 30 > currentMsg->receiver->endY)
 				{
-					currentMsg->receiver->endY = currentMsg->pos().y() + 30;
+					currentMsg->receiver->setSize(currentMsg->pos().y() + 30);
 					currentMsg->receiver->update();
 				}
 
