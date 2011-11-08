@@ -169,7 +169,7 @@ void Lifeline::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
     }
 
 	QPointF p = mapToItem(this,event->pos());
-	if (p.x()>=41 && p.x()<=49 && p.y() >= endY-5 && p.y() <= endY+3)
+	if (p.x()>=41 && p.x()<=49 && p.y() >= endY-10 && p.y() <= endY+10)
 		setSize(p.y());
 }
 
@@ -229,9 +229,11 @@ void Lifeline::load(const QDomElement &element)
 
 void Lifeline::setSize(int newY)
 {
-	if (newY >= lastMessageCoord && newY <=1000)
+	if (newY >= lastMessageCoord)
 	{
 		endY = newY;
+
 		bndRect = QRectF(0,0,90,endY+20);
+		this->update();
 	}
 }

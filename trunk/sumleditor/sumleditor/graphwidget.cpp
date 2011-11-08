@@ -16,6 +16,7 @@ GraphWidget::GraphWidget(QWidget *parent)
 
 	scene->setItemIndexMethod(QGraphicsScene::NoIndex);	// Задание метода индексирования сцены
 	setOptimizationFlags(QGraphicsView::DontSavePainterState);
+//	setViewportUpdateMode(FullViewportUpdate);
 
 	scene->setSceneRect(0,0,600,600);					// Задание стандартных размеров сцене
 	setScene(scene);									// Задание текущей сцены на виджете
