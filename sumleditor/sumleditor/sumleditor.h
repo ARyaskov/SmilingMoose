@@ -67,6 +67,8 @@ private:
 
 	QString filename; /** Имя файла - проекта. */
 
+	bool isSaved;
+
 public slots:
 	/**
 	 * Слот, срабатывающий при нажатии кнопки выбора объекта.
