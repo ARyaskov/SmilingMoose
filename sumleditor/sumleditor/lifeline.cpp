@@ -238,3 +238,14 @@ void Lifeline::setSize(int newY)
 		this->update();
 	}
 }
+
+void  Lifeline::mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event )
+{
+     QGraphicsItem::mouseDoubleClickEvent(event);
+	/* QPointF point = event->buttonDownPos(Qt::LeftButton);
+	 QLineEdit*  lineEdit = new QLineEdit(this->name, graph);
+	 lineEdit->move(point.x()+10, point.y()+10); 
+	 QGraphicsProxyWidget* proxyW = graph->getScene()->addWidget(lineEdit);*/
+
+
+}

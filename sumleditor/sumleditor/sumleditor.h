@@ -58,6 +58,8 @@ public:
          */
         void readFromFile ();
 
+	QString savedname;
+	QString saveddescr;
 private:
 	Ui::SumleditorClass ui;
 	
