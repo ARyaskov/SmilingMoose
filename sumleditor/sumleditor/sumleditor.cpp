@@ -254,7 +254,16 @@ void Sumleditor::addCreate()
 */
 void Sumleditor::addDelete()
 {
-	qDebug("addDelete");
+	setToolbarAdding();
+
+	ui.nameEdit->clear();						// Очистить поле ввода имени заголовка
+	ui.nameEdit->setFocus();					// Задать фокус на поле ввода заголовка
+
+	ui.descrEdit->clear();					    // Очистить поле ввода описания
+	
+	this->diagram->setCurrentAct(DESTROY);		// Действие - добавляем линию жизни
+
+	fadeInto(ui.nameEdit,  attention_color);	// Задаем цвет полю ввода
 }
 
 /**

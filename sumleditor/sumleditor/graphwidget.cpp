@@ -537,7 +537,7 @@ void GraphWidget::initNewMessage(QMouseEvent * event)
 		}
 		else
 		{
-                        addMessage(mapToScene(event->pos()));  // +=+=+=+=+ addToObjList - поместить внутрь этой функции
+			addMessage(mapToScene(event->pos()));  // +=+=+=+=+ addToObjList - поместить внутрь этой функции
 			// Только еще надо туда передавать var		  +=+=+=+=+
 			//addToObjList(localUI->objectsList, MESSAGE, var);
 		}
@@ -648,7 +648,8 @@ void GraphWidget::addMessage(QPointF point)
 				currentMsg->sender->messages.append(msg);
 				currentMsg->receiver->messages.append(msg);
 
-				msg->setY(currentMsg->pos().y() + 30);
+				if (currentMsg->pos().y() + 30<=300)
+					msg->setY(currentMsg->pos().y() + 30);
 
 				scene->addItem(msg);				// Добавить сообщение на сцену
 			}
