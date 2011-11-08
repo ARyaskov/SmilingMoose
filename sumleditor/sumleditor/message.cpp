@@ -151,11 +151,15 @@ void Message::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	if (messageType!=CREATE)
 		QGraphicsItem::mouseMoveEvent(event);
 
-	if (this->pos().y()>sender->endY)
-		this->setY(sender->endY);
+	//int qwe = this->pos().y();
+	//qwe = sender->pos().y() + sender->endY - 20;
+	//qwe = receiver->pos().y() + receiver->endY - 20;
 
-	if (this->pos().y()>receiver->endY)
-		this->setY(receiver->endY);
+	if (this->pos().y() > sender->pos().y() + sender->endY - 25)
+		this->setY(sender->pos().y() + sender->endY - 25);
+
+	if (this->pos().y() > receiver->pos().y() + receiver->endY - 25)
+		this->setY(receiver->pos().y() + receiver->endY - 25);
 
 	if (this->pos().y()<receiver->pos().y()+20 && messageType!=CREATE)
 		this->setY(receiver->pos().y()+20);
@@ -202,7 +206,9 @@ void Message::calcCoordinates(QPointF click)
 	}
 
 	if (messageType == CREATE)
+	{
         receiver->setY(click.y());
+	}
 	else if (messageType == DESTROY)
 	{
 
