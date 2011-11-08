@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
 	{
 		QApplication a(argc, argv);
 		Sumleditor w;
+		w.setWindowState(w.windowState() ^ Qt::WindowMaximized);	// Развернуть окно на весь экран
 		w.show();
 		return a.exec();
 	}
