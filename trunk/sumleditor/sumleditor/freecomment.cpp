@@ -104,8 +104,49 @@ void  FreeComment::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	//painter->drawText(textRect.translated(2, 2),text,opt); // Create shadow of the name
 	
 	// Нарисовать текст
+	QString g = parseText();
 	painter->setPen(Qt::black);
-	painter->drawText(textRect,text, opt);
+	painter->drawText(textRect,g, opt);
+}
+
+QString FreeComment::parseText()
+{
+	QString result = "";
+	QStringList list = text.split('\n');
+	bool flag = true;
+
+	do
+	{	// Цикл проверки длины строк комментариев.
+		for (int i = 0; i < list.size(); i++)
+		{
+			if (list[i].size() > 17)
+			{
+				list[i].insert(17, "\n");
+				QStringList s = list.at(i).split("\n");
+				list.insert(i+1,s[1]);
+				list[i].remove(17,list[i].size()-17);
+				break;
+			}
+			
+			if (i == list.size()-1) flag = false;
+		}
+	}
+	while(flag);
+
+	// Заполнение результата в зависимости от размера комментариев.
+	if (list.size() > 5)
+	{
+		list[4] = "...";
+		for (int i = 0; i < 5; i++) result.append('\n' + list[i]);
+	}
+	else
+		for (int i = 0; i < list.size(); i++)
+		{
+			result.append(list[i]);
+			result.append("\n");
+		}
+
+	return result;
 }
 
 /** Событие клика пользователем на фигуру. */
