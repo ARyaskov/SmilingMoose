@@ -111,6 +111,10 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 		initNewMessage(event);
 		break;
 
+	case DESTROY:
+		initNewMessage(event);
+		break;
+
 	case REPLY:
 		addMessage(mapToScene(event->pos()));
 		break;
@@ -120,6 +124,10 @@ void GraphWidget::mousePressEvent(QMouseEvent * event)
 		break;
 
 	case REC_CREATE:
+		addMessage(mapToScene(event->pos()));
+		break;
+
+	case REC_DESTROY:
 		addMessage(mapToScene(event->pos()));
 		break;
 
@@ -528,6 +536,7 @@ void GraphWidget::initNewMessage(QMouseEvent * event)
 			meta.id = QString("Destroy message-"+localUI->nameEdit->text());
 
 		var.setValue(meta);
+
 		if (existDublicate(localUI->objectsList, var ))
 		{	// Если нет дубликата, то добавляем
 			QMessageBox::information(this, "Attention!", "This name already exists!");
@@ -616,7 +625,14 @@ void GraphWidget::addMessage(QPointF point)
 
 					// Связь данных ЛЖ сообщением
 					sendLine->messages.append(msg);
+
+					if (sendLine->lastMessageCoord < msg->pos().y())
+						sendLine->lastMessageCoord = msg->pos().y();
+
 					recLine->messages.append(msg);
+
+					if (recLine->lastMessageCoord < msg->pos().y())
+						recLine->lastMessageCoord = msg->pos().y();
 
 					scene->addItem(msg);				// Добавить сообщение на сцену
 				}
@@ -648,8 +664,18 @@ void GraphWidget::addMessage(QPointF point)
 				currentMsg->sender->messages.append(msg);
 				currentMsg->receiver->messages.append(msg);
 
-				if (currentMsg->pos().y() + 30<=300)
-					msg->setY(currentMsg->pos().y() + 30);
+				if (currentMsg->pos().y() + 30 > currentMsg->sender->endY)
+				{
+					currentMsg->sender->endY = currentMsg->pos().y() + 30;
+					currentMsg->sender->update();
+				}
+				if (currentMsg->pos().y() + 30 > currentMsg->receiver->endY)
+				{
+					currentMsg->receiver->endY = currentMsg->pos().y() + 30;
+					currentMsg->receiver->update();
+				}
+
+				msg->setY(currentMsg->pos().y() + 30);
 
 				scene->addItem(msg);				// Добавить сообщение на сцену
 			}

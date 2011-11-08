@@ -151,8 +151,11 @@ void Message::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	if (messageType!=CREATE)
 		QGraphicsItem::mouseMoveEvent(event);
 
-	if (this->pos().y()>300)
-		this->setY(300);
+	if (this->pos().y()>sender->endY)
+		this->setY(sender->endY);
+
+	if (this->pos().y()>receiver->endY)
+		this->setY(receiver->endY);
 
 	if (this->pos().y()<receiver->pos().y()+20 && messageType!=CREATE)
 		this->setY(receiver->pos().y()+20);
@@ -180,7 +183,7 @@ void Message::calcCoordinates(QPointF click)
 
         length = abs(startX-endX);  // Длина - это модуль разницы позиций
     }
-    else if (messageType == CREATE)
+    else if (messageType == CREATE || messageType == DESTROY)
     {
         // Рассчитываем длину
         startX = sender->pos().x()+45;
@@ -196,19 +199,24 @@ void Message::calcCoordinates(QPointF click)
 
         if (receiver->pos().x()<=sender->pos().x()+45 && receiver->pos().x()>=sender->pos().x()-45)
             length=0;
+	}
 
+	if (messageType == CREATE)
         receiver->setY(click.y());
-    }
-    else
-    {
+	else if (messageType == DESTROY)
+	{
 
-    }
+	}
+    
 
 	int endY = click.y();
 
     // Задаем диапазон координате
-    if (endY>300)
-            endY = 300;
+	if (endY>sender->endY)
+		endY = sender->endY;
+
+	if (endY>receiver->endY)
+		endY = receiver->endY;
 
 	if (endY<receiver->pos().y()+20 && messageType != CREATE)
             endY = receiver->pos().y()+20;
