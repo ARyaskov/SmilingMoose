@@ -149,7 +149,8 @@ public:
 	 */
 	void addAxis(int level);
 
-    
+
+
 private:
 	QGraphicsScene* scene;  /** ”казатель на динамический объект сцены. */
 

@@ -126,41 +126,29 @@ public:
 
         QList<class Message*>messages;	/** Контейнер, сообщений данной ЛЖ. */
 
-        inline Ui::SumleditorClass* getUI(){
-	        return this->graph->getParentWindow()->getUI();
-        };
+ inline Ui::SumleditorClass* getUI(){
+	return this->graph->getParentWindow()->getUI();
+   };
 		
+ 
 		int lastMessageCoord;
 
 		int endY;
 
 		void setSize(int newY);
-
-		inline void setName(const QString& newName) {name = newName;};
-
-		bool isDestroyed;           /** Флаг, означающий, что данная Л.Ж. остановлена другой Л.Ж. */
-
-		bool isEnd;                 /** Флаг, наличия конца линии жизни. */
 protected:
 
 	/** 
 	 * Событие клика пользователем на фигуру.
-	 * @param event Событие мыши.
+	 * @param Событие мыши.
 	 */
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
 	/** 
 	 * Событие движения мыши при зажатой кнопке мыши.
-	 * @param event Событие мыши.
+	 * @param Событие мыши.
 	 */
 	virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
-
-	
-	/** 
-	 * Событие двойного щелчка мыши.
-	 * @param event Событие мыши.
-	 */
-	void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event );
 
 private:
 	/** Указатель на виджет, на котором рисуем. */
@@ -176,9 +164,11 @@ private:
 
 	bool isSelectedByMessage;   /** Флаг, означающий, что данная Л.Ж. выделена при добавлении сообщения. */
 
-
+	bool isEnd;                 /** Флаг, наличия конца линии жизни. */
 
 	bool isCreated;             /** Флаг, означающий, что данная Л.Ж. порождена другой Л.Ж. */
+
+	bool isDestroyed;           /** Флаг, означающий, что данная Л.Ж. остановлена другой Л.Ж. */
 
 	QRectF bndRect;
 

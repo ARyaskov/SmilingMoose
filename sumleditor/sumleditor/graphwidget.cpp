@@ -18,7 +18,7 @@ GraphWidget::GraphWidget(QWidget *parent)
 	setOptimizationFlags(QGraphicsView::DontSavePainterState);
 //	setViewportUpdateMode(FullViewportUpdate);
 
-	scene->setSceneRect(0,0,1900,1600);					// Задание стандартных размеров сцене
+	scene->setSceneRect(0,0,600,600);					// Задание стандартных размеров сцене
 	setScene(scene);									// Задание текущей сцены на виджете
 
 	setDragMode(QGraphicsView::ScrollHandDrag);			// Задать перемещение по сцене "рукой"
@@ -267,26 +267,18 @@ void GraphWidget::selectItem(QPointF point)
 	{
 		currentItem = item;
 
-		// Если это линия жизни
+		// Если это линия жезни
 		if (item->type() == 0)
 		{
 			line = (Lifeline*)currentItem;
 			line->setSelected(true);
 			line->update();
-            this->mainWnd->getUI()->descrEdit->clear();
-			this->mainWnd->getUI()->nameEdit->setText(line->name);
-			this->mainWnd->getUI()->sourceEdit->setText("Неприменимо");
-			this->mainWnd->getUI()->targetEdit->setText("Неприменимо");
 		}
 		else if (item->type() == 1)
 		{
 			com = (FreeComment*)currentItem;
 			com->setSelected(true);
 			com->update();
-			this->mainWnd->getUI()->nameEdit->clear();
-			this->mainWnd->getUI()->descrEdit->setText(com->text);
-			this->mainWnd->getUI()->sourceEdit->setText("Неприменимо");
-			this->mainWnd->getUI()->targetEdit->setText("Неприменимо");
 		}
         else if(currentItem->type() == 2)
         {
@@ -297,10 +289,6 @@ void GraphWidget::selectItem(QPointF point)
 			mes->update();
 			mes->sender->update();
 			mes->receiver->update();
-				this->mainWnd->getUI()->nameEdit->setText(mes->name);
-				this->mainWnd->getUI()->descrEdit->setText(mes->descr);
-				this->mainWnd->getUI()->sourceEdit->setText(mes->sender->name);
-				this->mainWnd->getUI()->targetEdit->setText(mes->receiver->name);
         }
 		tempVar = currentItem->data(64);
 		this->mainWnd->getUI()->
@@ -359,22 +347,12 @@ void GraphWidget::removeCurrentItem()
 		if (msg->messageType == REPLY)
 			msg->parentMsg->hasReply = false;
 
-		if (msg->messageType == DESTROY)
-			msg->receiver->isDestroyed = false;
-
 		msg->sender->messages.removeOne(msg);
 		msg->receiver->messages.removeOne(msg);
 	}
 
 	scene->removeItem(currentItem);
 	delFromList(this->mainWnd->getUI()->objectsList, currentItem->data(64).toString());
-	if (this->mainWnd->getUI()->objectsList->count())
-	    this->mainWnd->getUI()->actDelete->setEnabled(true);
-
-	this->mainWnd->getUI()->nameEdit->clear();
-	this->mainWnd->getUI()->descrEdit->clear();
-	this->mainWnd->getUI()->sourceEdit->clear();
-	this->mainWnd->getUI()->targetEdit->clear();
 }
 
 /** Функция сохранения диаграммы в файл. */
@@ -428,6 +406,24 @@ QDomElement GraphWidget::save(QDomDocument & domDoc)
 	lifelines.setAttributeNode(attr);
 	diagram.appendChild(lifelines);
 
+	index = 0;
+	QDomElement message = domDoc.createElement("message");
+	// Шаг третий: сохранение сообщения.
+	for (int i = 0; i < list.size(); i++)
+	{
+		if (list.at(i)->data(127).toString() == "message")
+		{
+			QGraphicsItem* item = list[i];
+			Message* message = (Message*)item;
+			message->id = index;
+			message.appendChild(message->save(domDoc, index));
+			index++;
+		}
+	}
+	attr.setValue(QString::number(index));
+	lifelines.setAttributeNode(attr);
+	diagram.appendChild(lifelines);
+
 	element.appendChild(diagram);
 	return element;
 }
@@ -454,6 +450,12 @@ void GraphWidget::load(const QDomNode & node)
 				line->load(domElement);
 				addLifeline(line);
 			}
+			else if (domElement.tagName() == "message")
+			{
+				Message* message = new Message(this);
+				message->load(domElement);
+				addMessage(message);
+			}
 		}
 
 		load(domNode);
@@ -469,15 +471,8 @@ void GraphWidget::addStop(QPointF point)
 	if (item!=NULL && item->type() == 0)
 	{
 		Lifeline * line = (Lifeline*)item;
-
-		if (!line->isDestroyed)
-		{
-			line->setEnded();
-			line->update();
-		}
-		else
-			QMessageBox::warning(this,QString("Остановка линии жизни"),
-				QString("Нельзя останавливать или возобновлять удаленную сообщением линию жизни!"));
+		line->setEnded();
+		line->update();
 
 		currentAct = SELECT;					// Задаем текущее действие
 		setCursor(Qt::ArrowCursor);				// Задаем ноовый курсор
@@ -651,15 +646,7 @@ void GraphWidget::addMessage(QPointF point)
 					if (Message::isLowestMessage(sendLine,recLine,point.y()))
 					{
 						if (Message::hasLowerDestr(sendLine,recLine,point))
-						{
 							msg = new Message(this,sendLine,recLine,point,DESTROY);	// Создаем сообщение удаления
-							recLine->isDestroyed = true;
-							if (recLine->isEnd)
-							{
-								recLine->setEnded();
-								recLine->update();
-							}
-						}
 						else
 						{
 							QMessageBox::warning(this,QString("Добавление сообщения уничтожения"),
@@ -677,8 +664,8 @@ void GraphWidget::addMessage(QPointF point)
 
 				if (msg != NULL)
 				{
-					//msg->name = getParentWindow()->getUI()->nameEdit->text();
-                    msg->name = getParentWindow()->savedname;
+					msg->name = getParentWindow()->getUI()->nameEdit->text();
+
 					// Связь данных ЛЖ сообщением
 					sendLine->messages.append(msg);
 
@@ -765,4 +752,3 @@ QDomElement GraphWidget::saveProperties(QDomDocument & domDoc)
 
 	return prop;
 }
-
