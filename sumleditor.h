@@ -58,6 +58,8 @@ public:
          */
         void readFromFile ();
 
+	QString savedname;
+	QString saveddescr;
 private:
 	Ui::SumleditorClass ui;
 	
@@ -66,6 +68,8 @@ private:
 	QValidator * nameLE_val;/** Валидатор поля ввода имени. */
 
 	QString filename; /** Имя файла - проекта. */
+
+	bool isSaved;
 
 public slots:
 	/**

@@ -43,14 +43,14 @@ Message::~Message()
 /** Вернуть прямоугольник границ фигуры. */
 QRectF Message::boundingRect() const
 {
-        return QRectF(0,0,length+10,35);
+        return QRectF(-10,0,length+20,35);
 }
 
 /** Вернуть форму фигуры. */
 QPainterPath  Message::shape() const
 {
 	QPainterPath path;
-        path.addRect(QRectF(0,0,length+10,35));
+        path.addRect(QRectF(-10,0,length+20,35));
 
 	return path;
 }
@@ -129,8 +129,16 @@ void  Message::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 		painter->setFont(font);			// Задаем шрифт
 		painter->drawText(textRect,QString("<<destroy>>"),opt);
 
-		painter->drawLine(length-10,15,length+10,35);
-		painter->drawLine(length-10,35,length+10,15);
+		if ( startX < endX )
+		{
+			painter->drawLine(length-10,15,length+10,35);
+			painter->drawLine(length-10,35,length+10,15);
+		}
+		else
+		{
+			painter->drawLine(-10,15,10,35);
+			painter->drawLine(-10,35,10,15);
+		}
 	}
 }
 
@@ -323,79 +331,6 @@ bool Message::hasLowerDestr(Lifeline *snd, Lifeline *rec, QPointF click)
 	return result;
 }
 
-QDomElement Message::save(QDomDocument & domDoc, int id)
-{
-	QDomElement element = domDoc.createElement("message");
-
-	getCurrentCoords();
-
-	QDomAttr attr = domDoc.createAttribute("name");
-	attr.setValue(name.toUtf8());
-	element.setAttributeNode(attr);
-
-	attr = domDoc.createAttribute("descr");
-	attr.setValue(name.toUtf8());
-	element.setAttributeNode(attr);
-
-	attr = domDoc.createAttribute("startx");
-	attr.setValue(QString::number(startX));
-	element.setAttributeNode(attr);
-
-	attr = domDoc.createAttribute("endx");
-	attr.setValue(QString::number(endX));
-	element.setAttributeNode(attr);
-
-	attr = domDoc.createAttribute("lenght");
-	attr.setValue(QString::number(lenght));
-	element.setAttributeNode(attr);
-
-	attr = domDoc.createAttribute("is_selected");
-	attr.setValue(QString::number(isSelected));
-	element.setAttributeNode(attr);
-
-	attr = domDoc.createAttribute("x");
-	attr.setValue(QString::number(x));
-	element.setAttributeNode(attr);
-
-	attr = domDoc.createAttribute("y");
-	attr.setValue(QString::number(y));
-	element.setAttributeNode(attr);
-
-	attr = domDoc.createAttribute("z");
-	attr.setValue(QString::number(z));
-	element.setAttributeNode(attr);
-
-	attr = domDoc.createAttribute("id");
-	attr.setValue(QString::number(id));
-	element.setAttributeNode(attr);
-
-	return element;
-}
-
-/** Функция считывания линии жизни из файла. */
-void Message::load(const QDomElement &element)
-{
-	QVariant var;
-	ElementMetaInfo meta;
-    this->x     = element.attribute("x", "0").toDouble();
-    this->y     = element.attribute("y", "0").toDouble();
-    this->z     = element.attribute("z", "0").toDouble();
-	this->length= element.attribute("lenght", "0").toInt();
-	this->endX	= element.attribute("endx", "0").toInt();
-	this->startX= element.attribute("startx", "0").toInt();
-    this->isSelected = (bool)(element.attribute("isselected", "0").toInt());
-    this->id    = element.attribute("id", "0").toInt();
-    this->name  = element.attribute("name", "name");
-	this->descr = element.attribute("descr", "descr");
-
-	meta.action = MESSAGE;
-	meta.name = this->name;
-	meta.id = QString("Message-")+name;
-	var.setValue(meta);
-	addToObjList(this->getUI()->objectsList, MESSAGE, var);
-	this->setData(64, meta.id);
-	this->setData(127,"message");
-}
 
 	//{
 	//	if (buf <=sender->endY)

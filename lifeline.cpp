@@ -21,6 +21,7 @@ Lifeline::Lifeline(GraphWidget *graphWidget)
     this->z = 0;
 	isSelectedByMessage = false;
 	isCreated = false;
+	isDestroyed = false;
 
 	endY = 300;
 	bndRect = QRectF(0,0,90,endY+20);
@@ -237,4 +238,15 @@ void Lifeline::setSize(int newY)
 		bndRect = QRectF(0,0,90,endY+20);
 		this->update();
 	}
+}
+
+void  Lifeline::mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event )
+{
+     QGraphicsItem::mouseDoubleClickEvent(event);
+	/* QPointF point = event->buttonDownPos(Qt::LeftButton);
+	 QLineEdit*  lineEdit = new QLineEdit(this->name, graph);
+	 lineEdit->move(point.x()+10, point.y()+10); 
+	 QGraphicsProxyWidget* proxyW = graph->getScene()->addWidget(lineEdit);*/
+
+
 }
