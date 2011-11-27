@@ -92,8 +92,12 @@ public class FreeComment extends UMLObject {
         return element;
     }
 
+    /**
+     * Метод чтения комментария из xml файла.
+     * @param element Узел xml дерева.
+     */
     @Override
     public void read(Element element) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.setDescription(element.getAttribute("description"));
     }
 }
