@@ -41,6 +41,22 @@ public class LifeLine extends UMLObject {
     }
     
     /**
+     * Метод получения файлового идентификатора.
+     * @return Файловый идентификатор.
+     */
+    public int getFileId () {
+        return m_fileId;
+    }
+    
+    /**
+     * Метод задания файлового идентификатора.
+     * @param id Новый файловый идентификатор.
+     */
+    public void setFileId (int id) {
+        m_fileId = id;
+    }
+    
+    /**
      * Конструктор по умолчанию.
      */
     public LifeLine () {
