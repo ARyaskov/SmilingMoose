@@ -25,6 +25,22 @@ public class LifeLine extends UMLObject {
     private ArrayList<Message> m_messages; /** Массив сообщений, связанных с этой линией жизни. */
     
     /**
+     * Метод получения имени.
+     * @return Имя/заголовок линии жизни.
+     */
+    public String getName () {
+        return m_name;
+    }
+    
+    /**
+     * Метод задания имени линии жизни.
+     * @param name Новое имя линии жизни.
+     */
+    public void setName (String name) {
+        m_name = name;
+    }
+    
+    /**
      * Конструктор по умолчанию.
      */
     public LifeLine () {
