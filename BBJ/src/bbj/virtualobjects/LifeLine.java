@@ -122,6 +122,15 @@ public class LifeLine extends UMLObject {
     }
     
     /**
+     * Метод записи сообщения по индексу.
+     * @param index Индекс сообщения.
+     * @param message Записываемое сообщение.
+     */
+    public void set (int index, Message message) {
+        m_messages.set(index, message);
+    }
+    
+    /**
      * Конструктор по умолчанию.
      */
     public LifeLine () {
