@@ -105,6 +105,14 @@ public class LifeLine extends UMLObject {
     }
     
     /**
+     * Метод добавления сообщения к линии жизни.
+     * @param message Добавляемое сообщение.
+     */
+    public void addMessage (Message message) {
+        m_messages.add(message);
+    }
+    
+    /**
      * Конструктор по умолчанию.
      */
     public LifeLine () {
