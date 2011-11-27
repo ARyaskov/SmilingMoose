@@ -23,6 +23,20 @@ public class LifeLine extends UMLObject {
     private boolean m_isDestroyed; /** Флаг, была ли линия жизни уничтожена другой линией жизни. */
     //private ArrayList<Message> m_messages; /** Массив сообщений, связанных с этой линией жизни. */
     
+    /**
+     * Конструктор по умолчанию.
+     */
+    public LifeLine () {
+        this.setDescription("");
+        this.setId(0);
+        m_name = "";
+        m_fileId = 0;
+        m_isEnd = false;
+        m_isCreated = false;
+        m_isDestroyed = false;
+        //m_messages = new ArrayList();
+    }
+    
     @Override
     public Element write(Document document) {
         throw new UnsupportedOperationException("Not supported yet.");
