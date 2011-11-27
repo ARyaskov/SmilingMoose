@@ -50,6 +50,28 @@ public class LifeLine extends UMLObject {
         m_name = name;
     }
     
+    /**
+     * Конструктор с параметрами.
+     * @param desc Описание линии жизни.
+     * @param id Идентификатор линии жизни.
+     * @param name Имя линии жизни.
+     * @param fid Файловый идентификатор линии жизни.
+     * @param end Наличие конца лии жизни.
+     * @param create Линия жизни создана другой линией жизни.
+     * @param destr Линия жизни уничтожена линией жизни.
+     * @param ms Связанные с линией жизни сообщения.
+     */
+    public LifeLine (String desc, int id, String name, int fid, boolean end, boolean create, boolean destr, ArrayList<Message> ms) {
+        this.setDescription(desc);
+        this.setId(id);
+        m_name = name;
+        m_fileId = fid;
+        m_isEnd = end;
+        m_isCreated = create;
+        m_isDestroyed = destr;
+        m_messages = new ArrayList(ms);
+    }
+    
     @Override
     public Element write(Document document) {
         throw new UnsupportedOperationException("Not supported yet.");
