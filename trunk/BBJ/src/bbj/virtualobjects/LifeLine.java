@@ -15,6 +15,14 @@ import org.w3c.dom.Element;
  */
 public class LifeLine extends UMLObject {
 
+    /* Поля класса. */
+    private String m_name; /** Имя/заголовок линии жизни. */
+    private int    m_fileId; /** Идентификатор линии жизни, используемый при сохранении в xml файл. */
+    private boolean m_isEnd; /** Имеет ли линия жизни конец. */
+    private boolean m_isCreated; /** Флаг, была ли линия жизни создана другой линией жизни. */
+    private boolean m_isDestroyed; /** Флаг, была ли линия жизни уничтожена другой линией жизни. */
+    //private ArrayList<Message> m_messages; /** Массив сообщений, связанных с этой линией жизни. */
+    
     @Override
     public Element write(Document document) {
         throw new UnsupportedOperationException("Not supported yet.");
