@@ -4,6 +4,7 @@
  */
 package bbj.virtualobjects;
 
+import java.util.ArrayList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -21,7 +22,7 @@ public class LifeLine extends UMLObject {
     private boolean m_isEnd; /** Имеет ли линия жизни конец. */
     private boolean m_isCreated; /** Флаг, была ли линия жизни создана другой линией жизни. */
     private boolean m_isDestroyed; /** Флаг, была ли линия жизни уничтожена другой линией жизни. */
-    //private ArrayList<Message> m_messages; /** Массив сообщений, связанных с этой линией жизни. */
+    private ArrayList<Message> m_messages; /** Массив сообщений, связанных с этой линией жизни. */
     
     /**
      * Конструктор по умолчанию.
@@ -34,7 +35,7 @@ public class LifeLine extends UMLObject {
         m_isEnd = false;
         m_isCreated = false;
         m_isDestroyed = false;
-        //m_messages = new ArrayList();
+        m_messages = new ArrayList();
     }
     
     /**
