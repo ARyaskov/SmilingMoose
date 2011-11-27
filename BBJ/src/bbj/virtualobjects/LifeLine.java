@@ -203,9 +203,16 @@ public class LifeLine extends UMLObject {
         return element;
     }
 
+    /**
+     * Метод чтения линии жизни из xml файла.
+     * @param element Узел xml дерева.
+     */
     @Override
     public void read(Element element) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        m_name = element.getAttribute("name");
+        this.setDescription(element.getAttribute("description"));
+        m_fileId = Integer.parseInt(element.getAttribute("id"));
+        m_isEnd = Boolean.parseBoolean(element.getAttribute("is-End"));
     }
     
 }
