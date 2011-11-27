@@ -89,6 +89,22 @@ public class LifeLine extends UMLObject {
     }
     
     /**
+     * Метод получения факта, уничтожена линия жизни другой или нет.
+     * @return TRUE если уничтожена, иначе FALSE.
+     */
+    public boolean hasDestroyed () {
+        return m_isDestroyed;
+    }
+    
+    /**
+     * Метод задания факта, уничтожена линия жизни другой или нет.
+     * @param flag Значение факта, уничтожена линия жизни другой или нет.
+     */
+    public void setDestroyed (boolean flag) {
+        m_isDestroyed = flag;
+    }
+    
+    /**
      * Конструктор по умолчанию.
      */
     public LifeLine () {
