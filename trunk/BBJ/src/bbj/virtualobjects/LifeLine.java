@@ -73,6 +73,22 @@ public class LifeLine extends UMLObject {
     }
     
     /**
+     * Метод получения факта, создана линия жизни другой или нет.
+     * @return TRUE если создана, иначе FALSE.
+     */
+    public boolean hasCreated () {
+        return m_isCreated;
+    }
+    
+    /**
+     * Метод задания факта, создана линия жизни другой или нет.
+     * @param flag Значение факта, создана линия жизни другой или нет.
+     */
+    public void setCreated (boolean flag) {
+        m_isCreated = flag;
+    }
+    
+    /**
      * Конструктор по умолчанию.
      */
     public LifeLine () {
