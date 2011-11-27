@@ -113,6 +113,15 @@ public class LifeLine extends UMLObject {
     }
     
     /**
+     * Метод получения сообщения, принадлежащего линии жизни.
+     * @param index Индекс сообщения.
+     * @return Сообщение.
+     */
+    public Message get (int index) {
+        return m_messages.get(index);
+    }
+    
+    /**
      * Конструктор по умолчанию.
      */
     public LifeLine () {
