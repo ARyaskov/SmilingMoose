@@ -57,6 +57,22 @@ public class LifeLine extends UMLObject {
     }
     
     /**
+     * Метод получения наличия конца линии жизни.
+     * @return Наличие у линии жизни конца.
+     */
+    public boolean hasEnd () {
+        return m_isEnd;
+    }
+    
+    /**
+     * Метод задания наличия у линии жизни конца.
+     * @param flag Значение наличия конца у линии жинзи.
+     */
+    public void setEnd (boolean flag) {
+        m_isEnd = flag;
+    }
+    
+    /**
      * Конструктор по умолчанию.
      */
     public LifeLine () {
