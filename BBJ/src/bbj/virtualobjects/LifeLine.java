@@ -186,9 +186,21 @@ public class LifeLine extends UMLObject {
         m_messages = new ArrayList(ms);
     }
     
+    /**
+     * Метод записи линии жизни в xml файл.
+     * @param document Главный документ файла.
+     * @return Узел xml дерева.
+     */
     @Override
     public Element write(Document document) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Element element = document.createElement("LifeLine");
+        
+        element.setAttribute("name", m_name);
+        element.setAttribute("description", this.getDescription());
+        element.setAttribute("id", Integer.toString(m_fileId));
+        element.setAttribute("is-End", Boolean.toString(m_isEnd));
+        
+        return element;
     }
 
     @Override
