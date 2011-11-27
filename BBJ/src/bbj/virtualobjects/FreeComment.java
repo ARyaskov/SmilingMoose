@@ -78,9 +78,18 @@ public class FreeComment extends UMLObject {
         return result;
     }
 
+    /**
+     * Метод записи комментария в xml файл.
+     * @param document Главный документ файла.
+     * @return Узел xml дерева.
+     */
     @Override
     public Element write(Document document) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Element element = document.createElement("Comment");
+        
+        element.setAttribute("description", this.getDescription());
+        
+        return element;
     }
 
     @Override
