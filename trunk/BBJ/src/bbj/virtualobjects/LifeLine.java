@@ -131,6 +131,14 @@ public class LifeLine extends UMLObject {
     }
     
     /**
+     * Метод получения количества сообщений.
+     * @return Количество сообщений.
+     */
+    public int count () {
+        return m_messages.size();
+    }
+    
+    /**
      * Конструктор по умолчанию.
      */
     public LifeLine () {
