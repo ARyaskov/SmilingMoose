@@ -54,4 +54,14 @@ abstract public class Message extends UMLObject {
         m_sender = null;
         m_receiver = null;
     }
+    
+    /**
+     * Конструктор с параметром.
+     * @param sender Новый отправитель сообщения.
+     * @param receiver Новый приемник сообщения.
+     */
+    protected Message (LifeLine sender, LifeLine receiver) {
+        m_sender = sender;
+        m_receiver = receiver;
+    }
 }
