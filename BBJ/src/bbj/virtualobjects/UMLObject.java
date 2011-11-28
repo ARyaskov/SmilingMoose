@@ -63,13 +63,6 @@ abstract public class UMLObject {
     abstract public void read (Element element);
     
     /**
-     * Абстрактный метод сравнения двух объектов.
-     * @param other Сравниваемый объект.
-     * @return Результат сравнения.
-     */
-    abstract public boolean equal (UMLObject other);
-    
-    /**
      * Конструктор по умолчанию.
      */
     protected UMLObject () {
