@@ -18,4 +18,12 @@ public class VirtualModel {
     private Scene m_scene; /** Указатель на графическое представление диаграммы. */
     private ArrayList<UMLObject> m_objects; /** Контейнер объектов диаграммы. */
     
+    /**
+     * Конструктор по умочанию.
+     */
+    public VirtualModel () {
+        m_scene = null;
+        m_objects = new ArrayList();
+    }
+    
 }
