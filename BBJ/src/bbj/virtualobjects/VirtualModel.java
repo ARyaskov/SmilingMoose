@@ -43,4 +43,12 @@ public class VirtualModel {
         return m_scene;
     }
     
+    /**
+     * Метод задания ссылки на сцену.
+     * @param scene Ссылка на новую сцену.
+     */
+    public void setScene (Scene scene) {
+        m_scene = scene;
+    }
+    
 }
