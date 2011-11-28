@@ -35,4 +35,12 @@ public class VirtualModel {
         m_objects = new ArrayList();
     }
     
+    /**
+     * Метод получения ссылки на сцену.
+     * @return Ссылка на сцену.
+     */
+    public Scene getScene () {
+        return m_scene;
+    }
+    
 }
