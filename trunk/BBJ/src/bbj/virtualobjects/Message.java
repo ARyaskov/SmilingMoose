@@ -30,4 +30,20 @@ abstract public class Message extends UMLObject {
     public void setSender (LifeLine other) {
         m_sender = other;
     }
+    
+    /**
+     * Метод получения приемника сообщения.
+     * @return Линия жизни, приемник сообщения.
+     */
+    public LifeLine getReceiver () {
+        return m_receiver;
+    }
+    
+    /**
+     * Метод задания приемника сообщения.
+     * @param other Линия жизни, новый приемник сообщения.
+     */
+    public void setReceiver (LifeLine other) {
+        m_receiver = other;
+    }
 }
