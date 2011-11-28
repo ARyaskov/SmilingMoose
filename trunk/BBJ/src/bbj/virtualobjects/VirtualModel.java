@@ -59,4 +59,13 @@ public class VirtualModel {
         m_objects.add(object);
     }
     
+    /**
+     * Метод получения объекта по индексу.
+     * @param index Индекс, по которому получается объект.
+     * @return Объект, полученный по индексу.
+     */
+    public UMLObject getObject (int index) {
+        return m_objects.get(index);
+    }
+    
 }
