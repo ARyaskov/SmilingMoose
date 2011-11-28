@@ -10,5 +10,8 @@ package bbj.virtualobjects;
  * @version 1.0
  */
 abstract public class Message extends UMLObject {
-    
+
+    /* Поля класса. */
+    private LifeLine m_sender; /** Линия жизин - отправитель сообщения. */
+    private LifeLine m_receiver; /** Линия жизни - приемник сообщения. */
 }
