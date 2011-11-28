@@ -100,4 +100,19 @@ public class FreeComment extends UMLObject {
     public void read(Element element) {
         this.setDescription(element.getAttribute("description"));
     }
+
+    /**
+     * Метод сравнения свободных комментариев.
+     * @param other Сравниваемый комментарий.
+     * @return Результат сравнения.
+     */
+    public boolean equal(FreeComment other) {
+        boolean flag = true;
+        
+        if (!this.getDescription().equals(other.getDescription()) ||
+            this.getId() != other.getId())
+            flag = false;
+        
+        return flag;
+    }
 }
