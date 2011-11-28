@@ -51,4 +51,12 @@ public class VirtualModel {
         m_scene = scene;
     }
     
+    /**
+     * Метод добавления объекта в модель.
+     * @param object Добавляемый объект.
+     */
+    public void addObject (UMLObject object) {
+        m_objects.add(object);
+    }
+    
 }
