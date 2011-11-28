@@ -26,4 +26,13 @@ public class VirtualModel {
         m_objects = new ArrayList();
     }
     
+    /**
+     * Конструктор с параметром.
+     * @param scene Ссылка на сцену - графическое отображение диаграммы.
+     */
+    public VirtualModel (Scene scene) {
+        m_scene = scene;
+        m_objects = new ArrayList();
+    }
+    
 }
