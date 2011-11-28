@@ -46,4 +46,12 @@ abstract public class Message extends UMLObject {
     public void setReceiver (LifeLine other) {
         m_receiver = other;
     }
+    
+    /**
+     * Конструктор по умолчанию.
+     */
+    protected Message () {
+        m_sender = null;
+        m_receiver = null;
+    }
 }
