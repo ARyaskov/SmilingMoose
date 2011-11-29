@@ -90,4 +90,12 @@ public class VirtualModel {
         m_objects.remove(object);
     }
     
+    /**
+     * Метод удаления объекта из модели.
+     * @param index Индекс удаляемого объекта.
+     */
+    public void removeObject (int index) {
+        m_objects.remove(index);
+    }
+    
 }
