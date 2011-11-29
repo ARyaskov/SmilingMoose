@@ -17,6 +17,22 @@ public class SimpleMessage extends Message {
     
     /* Поля класса */
     private boolean m_hasReply; /** Флаг, имеет ли сообщение ответ. */
+    
+    /**
+     * Метод получения факта: имеет ли сообщение ответ.
+     * @return TRUE если сообщение имеет ответ, иначе FALSE.
+     */
+    public boolean hasReply () {
+        return m_hasReply;
+    }
+    
+    /**
+     * Метод задания факта: имеет ли сообщение ответ.
+     * @param flag Значение факта.
+     */
+    public void setReply (boolean flag) {
+        m_hasReply = flag;
+    }
 
     @Override
     public Element write(Document document) {
