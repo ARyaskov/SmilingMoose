@@ -4,6 +4,9 @@
  */
 package bbj.virtualobjects;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 /**
  * Класс простого сообщения.
  * Наследуется от Message.
@@ -11,5 +14,18 @@ package bbj.virtualobjects;
  * @version 1.0
  */
 public class SimpleMessage extends Message {
+    
+    /* Поля класса */
+    private boolean m_hasReply; /** Флаг, имеет ли сообщение ответ. */
+
+    @Override
+    public Element write(Document document) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void read(Element element) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
 }
