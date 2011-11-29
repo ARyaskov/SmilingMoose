@@ -14,6 +14,25 @@ import org.w3c.dom.Element;
  * @version 1.0
  */
 public class ReplyMessage extends Message {
+    
+    /* Поля класса. */
+    private Message m_parent; /** Указатель на сообщеие, которому требуется ответ. */
+    
+    /**
+     * Метод получения сообщения, которому требуется ответ.
+     * @return Сообщеие, которому требуется ответ.
+     */
+    public Message getParent () {
+        return m_parent;
+    }
+    
+    /**
+     * Метод задания сообщения, которому требуется ответ.
+     * @param parent Сообщение, которому требуется ответ.
+     */
+    public void setParent (Message parent) {
+        m_parent = parent;
+    }
 
     @Override
     public Element write(Document document) {
