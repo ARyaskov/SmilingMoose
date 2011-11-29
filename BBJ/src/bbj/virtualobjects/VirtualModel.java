@@ -82,4 +82,12 @@ public class VirtualModel {
         return flag;
     }
     
+    /**
+     * Метод удаления объекта из модели.
+     * @param object Удаляемый объект.
+     */
+    public void removeObject (UMLObject object) {
+        m_objects.remove(object);
+    }
+    
 }
