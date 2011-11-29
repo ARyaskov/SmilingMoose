@@ -68,4 +68,18 @@ public class VirtualModel {
         return m_objects.get(index);
     }
     
+    /**
+     * Метод проверки существования объекта в модели.
+     * @param object Проверяемый объект.
+     * @return TRUE если объект добавлен, иначе FALSE.
+     */
+    public boolean hasObject (UMLObject object) {
+        boolean flag = true;
+        
+        if (m_objects.indexOf(object) == -1)
+            flag = false;
+        
+        return flag;
+    }
+    
 }
