@@ -145,4 +145,25 @@ public class VirtualModel {
         return false;
     }
     
+    /**
+     * Метод сохранения количества комментариев в xml файл.
+     * @param doc Главный документ xml дерева.
+     * @return Элемент, хранящий количество комментариев.
+     */
+    private Element getCommentsCount (Document doc) {
+        Element element = doc.createElement("comments");
+        int count = 0;
+        
+        for (int i = 0; i < m_objects.size(); i++) {
+            if (m_objects.get(i).getClass() == FreeComment.class)
+                count++;
+        }
+        
+        element.setAttribute("count", Integer.toString(count));
+        
+        // Запуск сохранения по всем комментариям.
+        
+        return element;
+    }
+    
 }
