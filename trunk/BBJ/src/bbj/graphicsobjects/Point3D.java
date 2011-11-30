@@ -13,4 +13,23 @@ import java.awt.Point;
  */
 public class Point3D extends Point {
     
+    /* Поля класса. */
+    private double m_z; /** Координата Z. */
+    
+    /**
+     * Метод получения координаты Z.
+     * @return Координата Z.
+     */
+    public double getZ() {
+        return m_z;
+    }
+    
+    /**
+     * Метод задания координаты Z.
+     * @param val Новое значение координаты Z.
+     */
+    public void setZ(double val) {
+        m_z = val;
+    }
+    
 }
