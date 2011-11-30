@@ -6,6 +6,9 @@ package bbj.virtualobjects;
 
 import bbj.graphicsobjects.Scene;
 import java.util.ArrayList;
+import java.util.Date;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * Класс виртуальной модели.
@@ -105,6 +108,27 @@ public class VirtualModel {
      */
     public void editObject (UMLObject object, int index) {
         m_objects.set(index, object);
+    }
+    
+    /**
+     * Метод сохранения аттрибутов файла.
+     * @param doc Главный xml документ.
+     * @param isDraft Черновая диаграмма или нет.
+     * @return Элемент - аттрибуты файла.
+     */
+    public Element saveProperties (Document doc, boolean isDraft) {
+        Element element = doc.createElement("properties");
+        
+        // Запись даты сохранения.
+        element.appendChild(doc.createElement("create_date").appendChild(doc.createTextNode((new Date().toString()))));
+        
+        // Запись имени пользователя.
+        element.appendChild(doc.createElement("author").appendChild(doc.createTextNode(System.getProperty("user.name"))));
+        
+        // Запись флага черновика.
+        element.appendChild(doc.createElement("isDraft").appendChild(doc.createTextNode(Boolean.toString(isDraft))));
+        
+        return element;
     }
     
 }
