@@ -32,4 +32,12 @@ public class Point3D extends Point {
         m_z = val;
     }
     
+    /**
+     * Конструктор по умолчанию.
+     */
+    public Point3D () {
+        super();
+        m_z = 0;
+    }
+    
 }
