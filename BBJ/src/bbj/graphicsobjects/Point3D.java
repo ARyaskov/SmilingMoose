@@ -40,4 +40,15 @@ public class Point3D extends Point {
         m_z = 0;
     }
     
+    /**
+     * Конструктор с параметрами.
+     * @param x Координата X.
+     * @param y Координата Y.
+     * @param z Координата Z.
+     */
+    public Point3D (double x, double y, double z) {
+        super((int)x,(int)y);
+        m_z = z;
+    }
+    
 }
