@@ -45,6 +45,21 @@ public class CreateMessage extends Message {
         this.setSender(null);
     }
     
+    /**
+     * Конструктор с параметрами.
+     * @param desc Описанние сообщеия.
+     * @param id Идентификатор сообщения.
+     * @param send Отправитель сообщения.
+     * @param recv Приемник сообщения.
+     */
+    public CreateMessage (String desc, int id, LifeLine send, LifeLine recv) {
+        this.setDescription(desc);
+        this.setId(id);
+        this.setSender(send);
+        this.setReceiver(recv);
+        m_hasReply = false;
+    }
+    
     @Override
     public Element write(Document document) {
         throw new UnsupportedOperationException("Not supported yet.");
