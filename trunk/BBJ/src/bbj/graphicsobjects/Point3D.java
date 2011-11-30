@@ -51,4 +51,15 @@ public class Point3D extends Point {
         m_z = z;
     }
     
+    /**
+     * Метод перемещения точки.
+     * @param x Новая координата X.
+     * @param y Новая координата Y.
+     * @param z Новая координата Z.
+     */
+    public void setLocation (double x, double y, double z) {
+        super.setLocation(x, y);
+        m_z = z;
+    }
+    
 }
