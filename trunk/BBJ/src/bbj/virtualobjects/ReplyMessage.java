@@ -33,6 +33,17 @@ public class ReplyMessage extends Message {
     public void setParent (Message parent) {
         m_parent = parent;
     }
+    
+    /**
+     * Конструктор по умолчанию.
+     */
+    public ReplyMessage () {
+        this.setDescription("");
+        this.setId(0);
+        this.setParent(null);
+        this.setReceiver(null);
+        this.setDescription(null);
+    }
 
     @Override
     public Element write(Document document) {
