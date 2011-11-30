@@ -79,4 +79,22 @@ abstract public class UMLObject {
         this.m_description = str;
         this.m_id = val;
     }
+    
+    /**
+     * Метод сравнения объектов.
+     * @param other Сравниваемый объект.
+     * @return TRUE если объекты равны, иначе FALSE.
+     */
+    public boolean equal (UMLObject other) {
+        boolean flag = true;
+        
+        if (this.getClass() != other.getClass()) flag = false;
+        else {
+            if (!this.m_description.equals(other.m_description) ||
+                this.m_id != other.m_id)
+                flag = false;
+        }
+
+        return flag;
+    }
 }

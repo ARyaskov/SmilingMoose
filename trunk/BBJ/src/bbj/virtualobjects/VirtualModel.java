@@ -98,4 +98,13 @@ public class VirtualModel {
         m_objects.remove(index);
     }
     
+    /**
+     * Метод изменения объекта в моделе.
+     * @param object
+     * @param index 
+     */
+    public void editObject (UMLObject object, int index) {
+        m_objects.set(index, object);
+    }
+    
 }
