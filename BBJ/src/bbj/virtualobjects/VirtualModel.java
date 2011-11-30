@@ -131,4 +131,18 @@ public class VirtualModel {
         return element;
     }
     
+    /**
+     * Метод проверки, является ли файл черновым.
+     * @param filename Имя файла.
+     * @return TRUE если файл черновой, иначе FALSE.
+     */
+    public boolean isDraft (String filename) {
+        boolean flag = false;
+        
+        if (filename.matches("^.*\\.suefd$"))
+            flag = true;
+        
+        return false;
+    }
+    
 }
