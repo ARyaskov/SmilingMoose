@@ -34,6 +34,17 @@ public class CreateMessage extends Message {
         m_hasReply = flag;
     }
     
+    /**
+     * Конструктор с параметрами.
+     */
+    public CreateMessage () {
+        this.setDescription("");
+        this.setId(0);
+        this.setReceiver(null);
+        this.setReply(false);
+        this.setSender(null);
+    }
+    
     @Override
     public Element write(Document document) {
         throw new UnsupportedOperationException("Not supported yet.");
