@@ -33,6 +33,17 @@ public class SimpleMessage extends Message {
     public void setReply (boolean flag) {
         m_hasReply = flag;
     }
+    
+    /**
+     * Конструктор с параметрами.
+     */
+    public SimpleMessage () {
+        this.setDescription("");
+        this.setId(0);
+        this.setReceiver(null);
+        this.setReply(false);
+        this.setSender(null);
+    }
 
     @Override
     public Element write(Document document) {
