@@ -44,6 +44,20 @@ public class ReplyMessage extends Message {
         this.setReceiver(null);
         this.setDescription(null);
     }
+    
+    /**
+     * Конструктор с параметрами.
+     * @param desc Описание сообщения.
+     * @param id Идентификатор сообщения.
+     * @param parent Родитель, инициирующий ответ.
+     */
+    public ReplyMessage (String desc, int id, Message parent) {
+        this.setDescription(desc);
+        this.setId(id);
+        this.setParent(parent);
+        this.setReceiver(parent.getReceiver());
+        this.setSender(parent.getSender());
+    }
 
     @Override
     public Element write(Document document) {
