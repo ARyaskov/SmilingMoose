@@ -22,6 +22,9 @@ public class Scene extends JPanel {
     private VirtualModel m_model;
     private ArrayList<Component> m_objects;
     
+    /**
+     * Конструктор по умолчанию.
+     */
     public Scene(){
         super();
         isGrid = true;

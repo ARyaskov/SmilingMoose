@@ -11,4 +11,7 @@ package bbj.graphicsobjects;
  */
 abstract public class SceneItem {
     
+    /* Поля класса. */
+    private Point3D m_coordinate; /** Координата объекта. */
+    private boolean m_isSelected; /** Флаг выбора объекта фокусом. */
 }
