@@ -12,7 +12,7 @@ import org.w3c.dom.Element;
  * Класс свободного комментария.
  * Наследуется от UMLObjects.
  * @see {@link uml.virtualobjects.UMLObjects}
- * @version 1.0
+ * @version 1.2
  */
 public class FreeComment extends UMLObject {
     
@@ -87,7 +87,9 @@ public class FreeComment extends UMLObject {
     public Element write(Document document) {
         Element element = document.createElement("Comment");
         
-        element.setAttribute("description", this.getDescription());
+        element.appendChild(document.createTextNode(this.getDescription()));
+        
+        // Сохранение координат
         
         return element;
     }
