@@ -15,9 +15,9 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class Scene extends JPanel {
-    private boolean isGrid;
-    private int gridFactor = 20;
-    private Color gridColor = new Color(128,128,128,64);
+    private boolean m_isGrid;
+    private int m_gridFactor = 20;
+    private Color m_gridColor = new Color(128,128,128,64);
     
     private VirtualModel m_model;
     private ArrayList<Component> m_objects;
@@ -27,32 +27,59 @@ public class Scene extends JPanel {
      */
     public Scene(){
         super();
-        isGrid = true;
+        m_isGrid = true;
         m_model = new VirtualModel();
         m_objects = new ArrayList<Component>();
         
         
     }
+
+    public void setIsGrid(boolean _isGrid){
+        m_isGrid = _isGrid;
+        repaint();
+    }
+    public void setGridFactor(int factor){
+        m_gridFactor = factor;
+        repaint();
+    }
     
+    public void setGridColor(Color color){
+        m_gridColor = color;
+        repaint();
+    }
+    
+    public Color getGridColor(){
+        return m_gridColor;
+    }
+    
+    public boolean getIsGrid(){
+        return m_isGrid;
+    }
+    
+    public int getGridFactor(){
+        return m_gridFactor;
+    }
     @Override
     protected void paintComponent(Graphics g) {
-            
-            if (isGrid)
-                makeGrid(g);
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, getWidth(), getHeight());
+        if (m_isGrid)
+            makeGrid(g);
             //isGrid = false;
             //UILifeLine ll = new UILifeLine();
             //ll.paintComponent(g);
         }
     
     protected void makeGrid(Graphics g){
-        g.setColor(gridColor);
+        
+        g.setColor(m_gridColor);
         int _height=this.getHeight();
         int _width=this.getWidth();
         for (int i=0;i<200;i++){
-            g.drawLine(0, gridFactor*i, _width, gridFactor*i); // Горизонтальные
+            g.drawLine(0, m_gridFactor*i, _width, m_gridFactor*i); // Горизонтальные
         }
         for (int i=0;i<200;i++){
-            g.drawLine(gridFactor*i, 0, gridFactor*i, _height); // Вертикальные
+            g.drawLine(m_gridFactor*i, 0, m_gridFactor*i, _height); // Вертикальные
         }
         
     }

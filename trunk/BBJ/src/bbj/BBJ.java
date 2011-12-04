@@ -14,6 +14,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.event.*;
 import java.awt.event.*;
+import javax.swing.JDialog;
+import javax.swing.UIManager;
 
 /** JDK >= 1.4!
  *
@@ -21,9 +23,13 @@ import java.awt.event.*;
  */
 public final class BBJ {
 
-    public Font menuFont;
-    public Font messageFont;
-    public Font messageTitleFont;
+    public static Font menuFont;
+    public static Font messageFont;
+    public static Font messageTitleFont;
+    public static Font borderTitleFont;
+    public static Font tabTitleFont;
+    public static Font commonArial;
+    
     public Font inputFont;
     public JMenu menuFile;
     public JMenu menuMisc;
@@ -38,14 +44,22 @@ public final class BBJ {
     public JMenuItem inXMIItem;
     public JMenuItem exitItem;
     public JFrame mainFrame;
-    public Scene canvas;
     
+    public JDialog prefsWindow;
+    
+    protected Scene canvas;
+    public static BBJ app;
+    
+    public Scene getScene(){
+        return canvas;
+    }
     
     
     public BBJ(){
+        setupFonts();
         fillGUIContent();
         bindListeners();
-       
+        
     }
     
     
@@ -114,76 +128,100 @@ public final class BBJ {
      }
      
      public void setupMenus(JMenuBar menuBar){
-         Font coolFont = new Font("Arial",
-                  Font.PLAIN, 11);
-         
+     
          menuFile = new JMenu("Файл");
-         menuFile.setFont(coolFont);
+         menuFile.setFont(menuFont);
      
          menuBar.add(menuFile);
          
          menuMisc = new JMenu("Прочее");
-         menuMisc.setFont(coolFont);
+         menuMisc.setFont(menuFont);
      
          menuBar.add(menuMisc);
          
          createItem = new JMenuItem("Создать");
          menuFile.add(createItem);
-         createItem.setFont(coolFont);
+         createItem.setFont(menuFont);
          
          openItem = new JMenuItem("Открыть...");
          menuFile.add(openItem);
-         openItem.setFont(coolFont);
+         openItem.setFont(menuFont);
          
          saveItem = new JMenuItem("Сохранить");
          menuFile.add(saveItem);
-         saveItem.setFont(coolFont);
+         saveItem.setFont(menuFont);
          
          saveAsItem = new JMenuItem("Сохранить как...");
          menuFile.add(saveAsItem);
-         saveAsItem.setFont(coolFont);
+         saveAsItem.setFont(menuFont);
          
          menuFile.addSeparator();
          
          importItem = new JMenuItem("Импорт из XMI...");
          menuFile.add(importItem);
-         importItem.setFont(coolFont);
+         importItem.setFont(menuFont);
          
          exportItem = new JMenu("Экспорт");
          menuFile.add(exportItem);
-         exportItem.setFont(coolFont);
+         exportItem.setFont(menuFont);
          
          inPictItem = new JMenuItem("в картинку...");
          exportItem.add(inPictItem);
-         inPictItem.setFont(coolFont);
+         inPictItem.setFont(menuFont);
          
          inXMIItem = new JMenuItem("в XMI файл...");
          exportItem.add(inXMIItem);
-         inXMIItem.setFont(coolFont);
+         inXMIItem.setFont(menuFont);
+         
          
  
          
          
          /* == Misc Menu ==*/
-         JMenuItem setupsItem = new JMenuItem("Настройки");
-         menuMisc.add(setupsItem);
-         setupsItem.setFont(coolFont);
+         JMenuItem prefersItem = new JMenuItem("Настройки");
+         menuMisc.add(prefersItem);
+         prefersItem.setFont(menuFont);
+         prefersItem.addActionListener(new ActionListener()
+             {public void actionPerformed(ActionEvent e)
+             {prefsWindow = new PreferenceWindow(mainFrame, "Настройки", true);
+             prefsWindow.setLocationRelativeTo(mainFrame.getContentPane());
+             prefsWindow.setVisible(true);} });
+         
          
          menuMisc.addSeparator();
          
          JMenuItem helpItem = new JMenuItem("Справка");
          menuMisc.add(helpItem);
-         helpItem.setFont(coolFont);
+         helpItem.setFont(menuFont);
 
+         
          
      }
      
      
      public void setupFonts(){
-         int dpi = Toolkit.getDefaultToolkit().getScreenResolution();
-         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int dpi = Toolkit.getDefaultToolkit().getScreenResolution();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
          
+        
+        
+        commonArial = new Font("Arial",
+                  Font.PLAIN, 11); 
          
+        menuFont = new Font("Arial",
+                  Font.PLAIN, 11); 
+        messageFont = new Font("Arial",
+                  Font.PLAIN, 11); 
+        messageTitleFont = new Font("Arial",
+                  Font.PLAIN, 11); 
+        borderTitleFont = new Font("Georgia",
+                  Font.PLAIN, 13);   
+        tabTitleFont = new Font("Arial",
+                  Font.PLAIN, 12);   
+        
+        UIManager.put("Label.font", BBJ.commonArial);
+       
+             
      }
      public void fillToolBar() {
 
@@ -235,6 +273,6 @@ public final class BBJ {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new BBJ();
+        app = new BBJ();
     }
 }
