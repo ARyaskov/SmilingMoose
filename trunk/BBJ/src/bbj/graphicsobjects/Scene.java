@@ -20,7 +20,16 @@ public class Scene extends JPanel {
     private Color m_gridColor = new Color(128,128,128,64);
     
     private VirtualModel m_model;
-    private ArrayList<Component> m_objects;
+    private ArrayList<SceneItem> m_objects;
+    
+    /**
+     * Метод получения объекта сцены по индексу.
+     * @param index Индекс получаемого объекта.
+     * @return Объект сцены.
+     */
+    public SceneItem get (int index) {
+        return m_objects.get(index);
+    }
     
     /**
      * Конструктор по умолчанию.
@@ -29,7 +38,7 @@ public class Scene extends JPanel {
         super();
         m_isGrid = true;
         m_model = new VirtualModel();
-        m_objects = new ArrayList<Component>();
+        m_objects = new ArrayList<SceneItem>();
         
         
     }
