@@ -15,22 +15,70 @@ import java.awt.geom.GeneralPath;
  */
 public class UIFreeComment extends  SceneItem {
 
+    /** Текст комментария. */
+    private String m_text;
+    
+    /**
+     * Основной конструктор по умолчанию
+     * @param x Координата по оси Х
+     * @param y Координата по оси У
+     * @param text Текст комментария
+     */
+    UIFreeComment(int x, int y, String text){
+        this.m_coordinates = new Point3D();     // Создаем объект координат
+        
+        // Задаем значения полям
+        this.m_coordinates.setLocation(x, y);   
+        this.m_isSelected = false;
+        this.m_text = text;
+    }
+    
+    /**
+     * Функция отрисовки комментария
+     * @param g Компонент, на котором рисуем
+     */
     @Override
     public void draw(Graphics g) {
-
-        Polygon p = new Polygon();
-        p.addPoint(0, 0);
-        p.addPoint(0, 60);
-        p.addPoint(60, 60);
-        p.addPoint(60, 0);
+                
+        int i,      // Итератор цикла
+            rem;    // Остаток от деления длины строки
         
-        g.setColor(Color.orange);
+        // Запомним координаты
+        int x = this.m_coordinates.x;
+        int y = this.m_coordinates.y;
+           
+        Polygon p = new Polygon();  // Полигон комментария
+        
+        // Рисуем прямоугольник со скошенным уголком
+        p.addPoint(x, y);
+        p.addPoint(x + 100, y);
+        p.addPoint(x + 120, y + 20);
+        p.addPoint(x + 120, y + 80);
+        p.addPoint(x, y + 80);
+        
+        // Заливаем полигон голубоватым цветом
+        g.setColor(Color.getHSBColor(205, 235, 245));
         g.fillPolygon(p);
         
+        // Рисуем границы полигона черным цветом
         g.setColor(Color.black);
         g.drawPolygon(p);
         
-        g.drawString("TESTasdasdasdasdasd", 5, 20); 
+        // Разбиваем текст на массив символов
+        char [] drawedText = m_text.toCharArray();
+        
+        // Рисуем текст по 15 символов в строке
+        for(i=0; i< drawedText.length / 15; i++){
+            g.drawChars(drawedText, 0 + i * 15, 
+                        15, x + 5, 15 + i * 12 + y);
+        }
+        
+        rem = drawedText.length % 15;   // Вычисляем остаток
+        
+        // Если остаток есть, дорисовываем символы, которые остались
+        if (rem != 0 )
+            g.drawChars(drawedText, drawedText.length - rem, rem, 
+                        x + 5, 15 + i * 12 + y);
     }
     
 }

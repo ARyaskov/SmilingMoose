@@ -14,8 +14,12 @@ import java.awt.Graphics;
 abstract public class SceneItem {
     
     /* Поля класса. */
-    private Point3D m_coordinates; /** Координата объекта. */
-    private boolean m_isSelected; /** Флаг выбора объекта фокусом. */
+    
+    /** Координата объекта. */
+    Point3D m_coordinates;
+    
+    /** Флаг выбора объекта фокусом. */
+    boolean m_isSelected; 
     
     /**
      * Вернуть текущие координаты.
