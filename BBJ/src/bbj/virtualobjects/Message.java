@@ -4,6 +4,7 @@
  */
 package bbj.virtualobjects;
 
+import bbj.graphicsobjects.Point3D;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -87,6 +88,11 @@ abstract public class Message extends UMLObject {
         m_name = name;
     }
     
+    /**
+     * Метод записи линии жизни в xml файл.
+     * @param document Главный документ файла.
+     * @return Узел xml дерева.
+     */
     @Override
     public Element write(Document document) {
         Element element = document.createElement("message");
@@ -99,5 +105,24 @@ abstract public class Message extends UMLObject {
         element.setAttribute("z", Double.toString(this.getCoordinates().getZ()));
         
         return element;
+    }
+    
+    /**
+     * Метод чтения линии жизни из xml файла.
+     * @param element Узел xml дерева.
+     */
+    @Override
+    public void read(Element element) {
+        
+        double x,y,z;
+        m_name = element.getAttribute("name");
+        
+        // Реализация считывания сообщений.
+        
+        x = Double.parseDouble(element.getAttribute("x"));
+        y = Double.parseDouble(element.getAttribute("y"));
+        z = Double.parseDouble(element.getAttribute("z"));
+        
+        this.setCoordinates(new Point3D(x,y,z));
     }
 }
