@@ -166,4 +166,25 @@ public class VirtualModel {
         return element;
     }
     
+    /**
+     * Метод сохранения количества линий жизни в xml файл.
+     * @param doc Главный документ xml дерева.
+     * @return Элемент, хранящий количество линий жизни.
+     */
+    private Element getLifeLinesCount (Document doc) {
+        Element element = doc.createElement("lifelines");
+        int count = 0;
+        
+        for (int i = 0; i < m_objects.size(); i++) {
+            if (m_objects.get(i).getClass() == LifeLine.class)
+                count++;
+        }
+        
+        element.setAttribute("count", Integer.toString(count));
+        
+        // Запуск сохранения по всем линиям жизни.
+        
+        return element;
+    }
+    
 }
