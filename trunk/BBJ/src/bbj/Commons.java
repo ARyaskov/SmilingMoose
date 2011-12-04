@@ -4,6 +4,8 @@
  */
 package bbj;
 
+import java.awt.*;
+
 /** @file Класс содержит разнообразные статические функции общего назначения.
  * 
  * @author Lemon
@@ -16,5 +18,6 @@ public class Commons {
     public static void doAnything(){
         
     }
-  
+ 
+ 
 }
