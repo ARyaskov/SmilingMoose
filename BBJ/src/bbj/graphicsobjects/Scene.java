@@ -90,7 +90,8 @@ public class Scene extends JPanel {
         for (int i=0;i<200;i++){
             g.drawLine(m_gridFactor*i, 0, m_gridFactor*i, _height); // Вертикальные
         }
-        UIFreeComment qwe = new UIFreeComment();
-        qwe.draw(g);
+        
+        UIFreeComment testComment = new UIFreeComment(100,55,"abcd efghij klmnop \n qrstuvwxyz\n1234567890");
+        testComment.draw(g);
     }
 }
