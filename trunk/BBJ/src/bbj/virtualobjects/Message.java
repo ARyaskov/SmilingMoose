@@ -4,6 +4,9 @@
  */
 package bbj.virtualobjects;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 /**
  * Абстрактный класс сообщений.
  * Является суперклассом для сообщений.
@@ -14,6 +17,23 @@ abstract public class Message extends UMLObject {
     /* Поля класса. */
     private LifeLine m_sender; /** Линия жизин - отправитель сообщения. */
     private LifeLine m_receiver; /** Линия жизни - приемник сообщения. */
+    private String m_name; /** Имя линии жизни. */
+    
+    /**
+     * Метод возвращающий имя сообщения.
+     * @return Имя сообщения.
+     */
+    public String getName () {
+        return m_name;
+    }
+    
+    /**
+     * Метод задания имени сообщения.
+     * @param name Новое имя сообщения.
+     */
+    public void setName (String name) {
+        m_name = name;
+    }
     
     /**
      * Метод получения отправителя сообщения.
@@ -53,6 +73,7 @@ abstract public class Message extends UMLObject {
     protected Message () {
         m_sender = null;
         m_receiver = null;
+        m_name = "";
     }
     
     /**
@@ -60,8 +81,18 @@ abstract public class Message extends UMLObject {
      * @param sender Новый отправитель сообщения.
      * @param receiver Новый приемник сообщения.
      */
-    protected Message (LifeLine sender, LifeLine receiver) {
+    protected Message (String name, LifeLine sender, LifeLine receiver) {
         m_sender = sender;
         m_receiver = receiver;
+        m_name = name;
+    }
+    
+    @Override
+    public Element write (Document doc) {
+        Element element = doc.createElement("message");
+        
+        element.setAttribute("name","");
+        
+        return element;
     }
 }
