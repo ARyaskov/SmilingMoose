@@ -161,7 +161,11 @@ public class VirtualModel {
         
         element.setAttribute("count", Integer.toString(count));
         
-        // Запуск сохранения по всем комментариям.
+        // Сохранение комментариев.
+        for (int i = 0; i < m_objects.size(); i++) {
+            if (m_objects.get(i).getClass() == FreeComment.class)
+                element.appendChild(m_objects.get(i).write(doc));
+        }
         
         return element;
     }
