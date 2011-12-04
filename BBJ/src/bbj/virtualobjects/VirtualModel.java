@@ -180,6 +180,7 @@ public class VirtualModel {
     private Element getLifeLinesCount (Document doc) {
         Element element = doc.createElement("lifelines");
         int count = 0;
+        int id = 0;
         
         for (int i = 0; i < m_objects.size(); i++) {
             if (m_objects.get(i).getClass() == LifeLine.class)
@@ -192,7 +193,9 @@ public class VirtualModel {
         for (int i = 0; i < m_objects.size(); i++) {
             if (m_objects.get(i).getClass() == LifeLine.class) {
                 m_objects.get(i).setCoordinates(m_scene.get(i).getCoordinates());
+                ((LifeLine)m_objects.get(i)).setFileId(id);
                 element.appendChild(m_objects.get(i).write(doc));
+                id++;
             }
         }
         
@@ -227,6 +230,7 @@ public class VirtualModel {
                 m_objects.get(i).getClass() == SimpleMessage.class ||
                 m_objects.get(i).getClass() == ReplyMessage.class)
             {
+                m_objects.get(i).setCoordinates(m_scene.get(i).getCoordinates());
                 element.appendChild(m_objects.get(i).write(doc));
             }
         }
