@@ -59,14 +59,27 @@ public class ReplyMessage extends Message {
         this.setSender(parent.getSender());
     }
 
+    /**
+     * Метод записи линии жизни в xml файл.
+     * @param document Главный документ файла.
+     * @return Узел xml дерева.
+     */
     @Override
     public Element write(Document document) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Element element = super.write(document);
+        
+        element.setAttribute("type", "reply");
+        
+        return element;
     }
 
+    /**
+     * Метод чтения линии жизни из xml файла.
+     * @param element Узел xml дерева.
+     */
     @Override
     public void read(Element element) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        super.read(element);
     }
     
 }
