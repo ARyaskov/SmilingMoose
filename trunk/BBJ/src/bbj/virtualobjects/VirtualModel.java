@@ -116,7 +116,7 @@ public class VirtualModel {
      * @param isDraft Черновая диаграмма или нет.
      * @return Элемент - аттрибуты файла.
      */
-    public Element saveProperties (Document doc, boolean isDraft) {
+    private Element saveProperties (Document doc, boolean isDraft) {
         Element element = doc.createElement("properties");
         
         // Запись даты сохранения.
@@ -136,7 +136,7 @@ public class VirtualModel {
      * @param filename Имя файла.
      * @return TRUE если файл черновой, иначе FALSE.
      */
-    public boolean isDraft (String filename) {
+    private boolean isDraft (String filename) {
         boolean flag = false;
         
         if (filename.matches("^.*\\.suefd$"))
@@ -163,8 +163,10 @@ public class VirtualModel {
         
         // Сохранение комментариев.
         for (int i = 0; i < m_objects.size(); i++) {
-            if (m_objects.get(i).getClass() == FreeComment.class)
+            if (m_objects.get(i).getClass() == FreeComment.class) {
+                m_objects.get(i).setCoordinates(m_scene.get(i).getCoordinates());
                 element.appendChild(m_objects.get(i).write(doc));
+            }
         }
         
         return element;
@@ -228,6 +230,14 @@ public class VirtualModel {
         }
         
         return element;
+    }
+    
+    /**
+     * Метод сохранения диаграммы в файл.
+     * @param filename 
+     */
+    public void save (String filename) {
+        
     }
     
 }
