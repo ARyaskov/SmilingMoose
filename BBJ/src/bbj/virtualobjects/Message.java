@@ -19,6 +19,7 @@ abstract public class Message extends UMLObject {
     private LifeLine m_sender; /** Линия жизин - отправитель сообщения. */
     private LifeLine m_receiver; /** Линия жизни - приемник сообщения. */
     private String m_name; /** Имя линии жизни. */
+    public int[] ids = new int[2]; /** Идентификаторы связанных линий жизни. */
     
     /**
      * Метод возвращающий имя сообщения.
@@ -117,7 +118,8 @@ abstract public class Message extends UMLObject {
         double x,y,z;
         m_name = element.getAttribute("name");
         
-        // Реализация считывания сообщений.
+        ids[0] = Integer.parseInt(element.getAttribute("start_id"));
+        ids[1] = Integer.parseInt(element.getAttribute("end_id"));
         
         x = Double.parseDouble(element.getAttribute("x"));
         y = Double.parseDouble(element.getAttribute("y"));
