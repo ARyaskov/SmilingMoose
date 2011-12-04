@@ -4,6 +4,7 @@
  */
 package bbj.virtualobjects;
 
+import bbj.graphicsobjects.Point3D;
 import java.util.ArrayList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -199,6 +200,9 @@ public class LifeLine extends UMLObject {
         element.setAttribute("description", this.getDescription());
         element.setAttribute("id", Integer.toString(m_fileId));
         element.setAttribute("is-End", Boolean.toString(m_isEnd));
+        element.setAttribute("x", Double.toString(this.getCoordinates().getX()));
+        element.setAttribute("y", Double.toString(this.getCoordinates().getY()));
+        element.setAttribute("z", Double.toString(this.getCoordinates().getZ()));
         
         return element;
     }
@@ -209,10 +213,16 @@ public class LifeLine extends UMLObject {
      */
     @Override
     public void read(Element element) {
+        double x,y,z;
         m_name = element.getAttribute("name");
         this.setDescription(element.getAttribute("description"));
         m_fileId = Integer.parseInt(element.getAttribute("id"));
         m_isEnd = Boolean.parseBoolean(element.getAttribute("is-End"));
+        x = Double.parseDouble(element.getAttribute("x"));
+        y = Double.parseDouble(element.getAttribute("y"));
+        z = Double.parseDouble(element.getAttribute("z"));
+        
+        this.setCoordinates(new Point3D(x,y,z));
     }
     
 }
