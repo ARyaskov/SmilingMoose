@@ -187,4 +187,29 @@ public class VirtualModel {
         return element;
     }
     
+    /**
+     * Метод сохранения количества сообщений в xml файл.
+     * @param doc Главный документ xml дерева.
+     * @return Элемент, хранящий количество линий жизни.
+     */
+    private Element getMessagesCount (Document doc) {
+        Element element = doc.createElement("messages");
+        int count = 0;
+        
+        for (int i = 0; i < m_objects.size(); i++) {
+            if (m_objects.get(i).getClass() == Message.class ||
+                m_objects.get(i).getClass() == CreateMessage.class ||
+                m_objects.get(i).getClass() == DestroyMessage.class ||
+                m_objects.get(i).getClass() == SimpleMessage.class ||
+                m_objects.get(i).getClass() == ReplyMessage.class)
+                count++;
+        }
+        
+        element.setAttribute("count", Integer.toString(count));
+        
+        // Запуск сохранения по всем линиям жизни.
+        
+        return element;
+    }
+    
 }
