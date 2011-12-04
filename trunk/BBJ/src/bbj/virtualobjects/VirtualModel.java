@@ -5,10 +5,15 @@
 package bbj.virtualobjects;
 
 import bbj.graphicsobjects.Scene;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 /**
  * Класс виртуальной модели.
@@ -242,7 +247,24 @@ public class VirtualModel {
      * Метод сохранения диаграммы в файл.
      * @param filename 
      */
-    public void save (String filename) {
+    public void save (String filename) throws ParserConfigurationException, SAXException, IOException {
+        
+        DocumentBuilderFactory fact = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = fact.newDocumentBuilder();
+        Document doc = builder.parse(filename);
+        
+        // Сохранение свойтв проекта.
+        doc.appendChild(this.saveProperties(doc, this.isDraft(filename)));
+        // Сохранение объектов.
+        Element element = doc.createElement("diagram");
+        
+        element.setAttribute("total_count", Integer.toString(this.m_objects.size()));
+        
+        element.appendChild(this.getCommentsCount(doc));
+        element.appendChild(this.getLifeLinesCount(doc));
+        element.appendChild(this.getMessagesCount(doc));
+        
+        doc.appendChild(element);
         
     }
     
