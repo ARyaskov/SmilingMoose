@@ -4,6 +4,7 @@
  */
 package bbj.virtualobjects;
 
+import bbj.graphicsobjects.Point3D;
 import java.util.ArrayList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -89,7 +90,9 @@ public class FreeComment extends UMLObject {
         
         element.appendChild(document.createTextNode(this.getDescription()));
         
-        // Сохранение координат
+        element.setAttribute("x", Double.toString(this.getCoordinates().getX()));
+        element.setAttribute("y", Double.toString(this.getCoordinates().getY()));
+        element.setAttribute("z", Double.toString(this.getCoordinates().getZ()));
         
         return element;
     }
@@ -100,7 +103,15 @@ public class FreeComment extends UMLObject {
      */
     @Override
     public void read(Element element) {
-        this.setDescription(element.getAttribute("description"));
+        double x,y,z;
+        
+        x = Double.parseDouble(element.getAttribute("x"));
+        y = Double.parseDouble(element.getAttribute("y"));
+        z = Double.parseDouble(element.getAttribute("z"));
+        
+        this.setDescription(element.getTextContent());
+        
+        this.setCoordinates(new Point3D(x,y,z));
     }
     
     /**
