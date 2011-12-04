@@ -4,6 +4,7 @@
  */
 package bbj.virtualobjects;
 
+import bbj.graphicsobjects.Point3D;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -16,6 +17,7 @@ abstract public class UMLObject {
     /* Поля класса. */
     private int m_id; /** Идентификатор объекта. */
     private String m_description; /** Описание объекта. */
+    private Point3D m_coordinates; /** Координаты объекта на сцене. */
     
     /**
      * Метод возврата идентификатора объекта.
@@ -23,6 +25,22 @@ abstract public class UMLObject {
      */
     public int getId () {
         return m_id;
+    }
+    
+    /**
+     * Метод получения координат объекта.
+     * @return Координаты объекта.
+     */
+    public Point3D getCoordinates () {
+        return m_coordinates;
+    }
+    
+    /**
+     * Метод задания координат.
+     * @param point Новая позиция объекта.
+     */
+    public void setCoordinates (Point3D point) {
+        m_coordinates = point;
     }
     
     /**
@@ -68,6 +86,7 @@ abstract public class UMLObject {
     protected UMLObject () {
         this.m_description = "";
         this.m_id = 0;
+        this.m_coordinates = new Point3D();
     }
     
     /**
@@ -78,6 +97,7 @@ abstract public class UMLObject {
     protected UMLObject(String str, int val) {
         this.m_description = str;
         this.m_id = val;
+        this.m_coordinates = new Point3D();
     }
     
     /**
