@@ -29,6 +29,7 @@ public final class BBJ {
     public static Font borderTitleFont;
     public static Font tabTitleFont;
     public static Font commonArial;
+    public static Font messageNameFont;
     
     public Font inputFont;
     public JMenu menuFile;
@@ -44,6 +45,10 @@ public final class BBJ {
     public JMenuItem inXMIItem;
     public JMenuItem exitItem;
     public JFrame mainFrame;
+    
+    
+    public static int windowHeight;
+    public static int windowWidth;
     
     public JDialog prefsWindow;
     
@@ -101,7 +106,13 @@ public final class BBJ {
        //  mainFrame.add(viewport);
          mainFrame.add(canvas);
          
-         mainFrame.addWindowListener(new WindowListener() {
+         mainFrame.addWindowListener(new mainFrameWindowListener());
+         
+         mainFrame.setVisible(true);
+         
+     }
+     
+      class mainFrameWindowListener implements ComponentListener, WindowListener {
 
 			public void windowActivated(WindowEvent event) {}
 			public void windowClosed(WindowEvent event) {}
@@ -121,11 +132,23 @@ public final class BBJ {
 			public void windowDeiconified(WindowEvent event) {}
 			public void windowIconified(WindowEvent event) {canvas.repaint();}
 			public void windowOpened(WindowEvent event) {canvas.repaint();}
-		});
+                        
+                        public void componentHidden(ComponentEvent e){
+                            
+                        }  
+                        public void componentMoved(ComponentEvent e){
+                            
+                        }  
+                        public void componentResized(ComponentEvent e){
+                           windowHeight = e.getComponent().getHeight();
+                           windowWidth = e.getComponent().getWidth();
+                        }
+                        public void componentShown(ComponentEvent e){
+                            
+                        }
          
-         mainFrame.setVisible(true);
-         
-     }
+                        
+      }
      
      public void setupMenus(JMenuBar menuBar){
      
@@ -218,7 +241,8 @@ public final class BBJ {
                   Font.PLAIN, 13);   
         tabTitleFont = new Font("Arial",
                   Font.PLAIN, 12);   
-        
+        messageNameFont = new Font("Georgia",
+                  Font.PLAIN, 14); 
         UIManager.put("Label.font", BBJ.commonArial);
        
              
