@@ -186,7 +186,11 @@ public class VirtualModel {
         
         element.setAttribute("count", Integer.toString(count));
         
-        // Запуск сохранения по всем линиям жизни.
+        // Сохранение линий жизни.
+        for (int i = 0; i < m_objects.size(); i++) {
+            if (m_objects.get(i).getClass() == LifeLine.class)
+                element.appendChild(m_objects.get(i).write(doc));
+        }
         
         return element;
     }
