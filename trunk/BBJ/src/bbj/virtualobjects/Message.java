@@ -88,10 +88,15 @@ abstract public class Message extends UMLObject {
     }
     
     @Override
-    public Element write (Document doc) {
-        Element element = doc.createElement("message");
+    public Element write(Document document) {
+        Element element = document.createElement("message");
         
-        element.setAttribute("name","");
+        element.setAttribute("name",m_name);
+        element.setAttribute("start_id", Integer.toString(m_sender.getFileId()));
+        element.setAttribute("end_id", Integer.toString(m_receiver.getFileId()));
+        element.setAttribute("x", Double.toString(this.getCoordinates().getX()));
+        element.setAttribute("y", Double.toString(this.getCoordinates().getY()));
+        element.setAttribute("z", Double.toString(this.getCoordinates().getZ()));
         
         return element;
     }
