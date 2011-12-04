@@ -46,6 +46,4 @@ abstract public class SceneItem {
      * @param g Объект, на котором будем рисовать
      */
     abstract public void draw(Graphics g);
-    
-    /** тест **/
 }
