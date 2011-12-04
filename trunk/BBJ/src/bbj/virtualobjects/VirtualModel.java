@@ -190,8 +190,10 @@ public class VirtualModel {
         
         // Сохранение линий жизни.
         for (int i = 0; i < m_objects.size(); i++) {
-            if (m_objects.get(i).getClass() == LifeLine.class)
+            if (m_objects.get(i).getClass() == LifeLine.class) {
+                m_objects.get(i).setCoordinates(m_scene.get(i).getCoordinates());
                 element.appendChild(m_objects.get(i).write(doc));
+            }
         }
         
         return element;
