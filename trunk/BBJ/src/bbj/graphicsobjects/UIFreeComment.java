@@ -56,13 +56,21 @@ public class UIFreeComment extends  SceneItem {
         p.addPoint(x + 120, y + 80);
         p.addPoint(x, y + 80);
         
-        // Заливаем полигон голубоватым цветом
-        g.setColor(Color.getHSBColor(205, 235, 245));
+        if (m_isSelected)   // Если выбрали - заливаем желтым   
+            g.setColor(Color.getHSBColor(105, 215, 245));
+        else                // Иначе, заливаем полигон голубоватым цветом
+            g.setColor(Color.getHSBColor(205, 235, 245));
+        
         g.fillPolygon(p);
         
-        // Рисуем границы полигона черным цветом
-        g.setColor(Color.black);
+        if (m_isSelected)   // Рисуем границы полигона красным цветом
+            g.setColor(Color.red);
+        else                // Рисуем границы полигона черным цветом
+            g.setColor(Color.black);
+        
         g.drawPolygon(p);
+        
+        g.setColor(Color.black);    // Цвет текста
         
         // Разбиваем текст на массив символов
         char [] drawedText = m_text.toCharArray();
