@@ -108,12 +108,20 @@ public final class Scene extends JPanel {
         /* UIFreeComment testComment = new UIFreeComment(200,155,
         "abcd efghij klmnop \n qrstuvwxyz\n1234567890");
         */UIFreeComment testCommentChecked = new UIFreeComment(250,75,
-        "qweqwe rere asdasd");
+        "qweqwe rere asdasdqqqqqqqq qqqqqqqqqq uuuuuuuuuu gggggggggggg" +
+                "zzzzzzzzzzzz wwwwwwwwwwwww eeeeeeeeeeeeeee oooooooooooooo");
 
-        testCommentChecked.select(true);
-        testCommentChecked.draw(g);
+        testCommentChecked.select(false);
+        
        
+        UIFreeComment testCommentChecked1 = new UIFreeComment(300,150,
+        "qweqwe rere asdasdqqqqqqqq");
 
+        testCommentChecked1.select(true);
+        testCommentChecked1.paint(g);
+        testCommentChecked.paint(g);
+        this.add(testCommentChecked);
+        this.add(testCommentChecked1);
         // Добавляем тестовые объекты в контейнер
         m_objects.add(testCommentChecked);
 
@@ -184,18 +192,6 @@ public final class Scene extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e) {
 
-            // Координаты, куда кликнули
-            int x = e.getX();
-            int y = e.getY();
-
-            // М-м-м-м-м! Старые добрые Java-итераторы!
-            Iterator<SceneItem> i = m_objects.iterator();
-
-            while (i.hasNext()) {
-                if (i.next().coordContains(x, y)) {
-                    System.out.print("QWEQWEQWE");
-                }
-            }
         }
 
         public void mouseEntered(MouseEvent e) {
