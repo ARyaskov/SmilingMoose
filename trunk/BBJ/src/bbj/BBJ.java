@@ -264,9 +264,26 @@ public final class BBJ {
             }
         });
          
-         inXMIItem = new JMenuItem("в XMI файл...");
+         inXMIItem = new JMenuItem("в XML файл...");
          exportItem.add(inXMIItem);
          inXMIItem.setFont(menuFont);
+         inXMIItem.addActionListener(new ActionListener() {
+
+            /**
+              * Метод сохранения диаграммы в указанный xml файл.
+              */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser chooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "XML files (*.xml)", "xml");
+                chooser.setFileFilter(filter);
+                int returnVal = chooser.showSaveDialog(mainFrame);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = chooser.getSelectedFile();
+                }
+            }
+        });
          
          
  
