@@ -353,7 +353,7 @@ public final class BBJ {
        JToolBar.Separator sep1 = new JToolBar.Separator(new Dimension(20,toolBar.getHeight()));
        toolBar.add(sep1);
        
-       JToggleButton message_button = new JToggleButton();
+     /*  JToggleButton message_button = new JToggleButton();
        message_button.setIcon(new ImageIcon(BBJ.class.getResource("images/message_arrow.png")));
        toolBar.add(message_button);
        
@@ -367,7 +367,7 @@ public final class BBJ {
        
        JToolBar.Separator sep2 = new JToolBar.Separator(new Dimension(20,toolBar.getHeight()));
        toolBar.add(sep2);
-       
+       */
        JButton undo_button = new JButton();
        undo_button.setIcon(new ImageIcon(BBJ.class.getResource("images/undo.png")));
        toolBar.add(undo_button);
