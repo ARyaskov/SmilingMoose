@@ -219,6 +219,24 @@ public final class BBJ {
          importItem = new JMenuItem("Импорт из XML...");
          menuFile.add(importItem);
          importItem.setFont(menuFont);
+         importItem.addActionListener(new ActionListener() {
+
+            /**
+              * Метод открытия файла с диаграммой.
+              * Метод импорта диаграммы из xml файла.
+              */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser chooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "XML files (*.xml)", "xml");
+                chooser.setFileFilter(filter);
+                int returnVal = chooser.showOpenDialog(mainFrame);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = chooser.getSelectedFile();
+                }
+            }
+        });
          
          exportItem = new JMenu("Экспорт");
          menuFile.add(exportItem);
