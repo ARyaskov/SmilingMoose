@@ -245,6 +245,24 @@ public final class BBJ {
          inPictItem = new JMenuItem("в картинку...");
          exportItem.add(inPictItem);
          inPictItem.setFont(menuFont);
+         inPictItem.addActionListener(new ActionListener() {
+
+            /**
+              * Метод сохранения диаграммы в указанный графический файл.
+              * Диаграмма будет сохранена в виде изображения.
+              */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser chooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "Draw images (*.png)", "png");
+                chooser.setFileFilter(filter);
+                int returnVal = chooser.showSaveDialog(mainFrame);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = chooser.getSelectedFile();
+                }
+            }
+        });
          
          inXMIItem = new JMenuItem("в XMI файл...");
          exportItem.add(inXMIItem);
