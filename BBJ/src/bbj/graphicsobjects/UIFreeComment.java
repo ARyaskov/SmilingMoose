@@ -7,6 +7,8 @@ package bbj.graphicsobjects;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  *
@@ -17,23 +19,22 @@ public class UIFreeComment extends  SceneItem {
     /** Текст комментария. */
     private String m_text;
     
+    public String getText(){
+        return m_text;
+    }
     /**
      * Основной конструктор по умолчанию
      * @param x Координата по оси Х
      * @param y Координата по оси У
      * @param text Текст комментария
      */
-    UIFreeComment(int x, int y, String text){
-        this.m_coordinates = new Point3D();     // Создаем объект координат
+    public UIFreeComment(int x, int y, String text){
+
+        this.setBounds(x, y, 120, 80);  // Задаем размеры 
+        this.m_isSelected = false;      // Не выделен
+        this.m_text = text;             //Задаем текст
         
-        // Задаем значения полям
-        this.m_coordinates.setLocation(x, y);   
-        this.m_isSelected = false;
-        this.m_text = text;
-        
-        /** Задаем размеры. */
-        this.m_height = 80;
-        this.m_width = 120;
+        this.addMouseListener(new SceneItemListener());
     }
     
     /**
@@ -41,17 +42,16 @@ public class UIFreeComment extends  SceneItem {
      * @param g Компонент, на котором рисуем
      */
     @Override
-    public void draw(Graphics g) {
-                
+    public void paint(Graphics g) {
         int i,      // Итератор цикла
             rem;    // Остаток от деления длины строки
         
-        // Запомним координаты
-        int x = this.m_coordinates.x;
-        int y = this.m_coordinates.y;
-        int w = this.m_width;
-        int h = this.m_height;
-           
+                // Запомним координаты
+        int x = this.getX();
+        int y = this.getY();
+        int w = this.getWidth();
+        int h = this.getHeight();
+        
         Polygon dark = new Polygon();   // Полигон тени
         
         // Смещаем координаты     
@@ -102,10 +102,18 @@ public class UIFreeComment extends  SceneItem {
         char [] drawedText = m_text.toCharArray();
         
         // Рисуем текст по 15 символов в строке
-        for(i=0; i< drawedText.length / 15; i++){
+        for(i=0; i< drawedText.length / 15 && i < 4; i++){
             g.drawChars(drawedText, 0 + i * 15, 
                         15, x + 5, 15 + i * 12 + y);
         }
+        
+        char [] dots = {'.','.','.'};
+        
+        if (i >= 4)
+            g.drawChars(dots, 0, 3, 
+                        x + 5, 15 + i * 12 + y);
+        
+        i++;
         
         rem = drawedText.length % 15;   // Вычисляем остаток
         
