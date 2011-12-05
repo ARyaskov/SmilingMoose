@@ -14,8 +14,10 @@ import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.event.*;
 import java.awt.event.*;
+import java.io.File;
 import javax.swing.JDialog;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /** JDK >= 1.4!
  *
@@ -177,10 +179,27 @@ public final class BBJ {
          saveAsItem = new JMenuItem("Сохранить как...");
          menuFile.add(saveAsItem);
          saveAsItem.setFont(menuFont);
+         saveAsItem.addActionListener(new ActionListener() {
+
+             /**
+              * Метод сохранения диаграммы в указанный файл.
+              */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser chooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "Smilling Moose Projects files (*.suef,*.suefd)", "suef", "suefd");
+                chooser.setFileFilter(filter);
+                int returnVal = chooser.showSaveDialog(mainFrame);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = chooser.getSelectedFile();
+                }
+            }
+        });
          
          menuFile.addSeparator();
          
-         importItem = new JMenuItem("Импорт из XMI...");
+         importItem = new JMenuItem("Импорт из XML...");
          menuFile.add(importItem);
          importItem.setFont(menuFont);
          
