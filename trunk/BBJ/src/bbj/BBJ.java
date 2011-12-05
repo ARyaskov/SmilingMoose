@@ -171,6 +171,23 @@ public final class BBJ {
          openItem = new JMenuItem("Открыть...");
          menuFile.add(openItem);
          openItem.setFont(menuFont);
+         openItem.addActionListener(new ActionListener() {
+
+             /**
+              * Метод открытия файла с диаграммой.
+              */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser chooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "Smilling Moose Projects files (*.suef,*.suefd)", "suef", "suefd");
+                chooser.setFileFilter(filter);
+                int returnVal = chooser.showOpenDialog(mainFrame);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = chooser.getSelectedFile();
+                }
+            }
+        });
          
          saveItem = new JMenuItem("Сохранить");
          menuFile.add(saveItem);
