@@ -7,8 +7,6 @@ package bbj.graphicsobjects;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.awt.geom.GeneralPath;
 
 /**
  *
@@ -32,6 +30,10 @@ public class UIFreeComment extends  SceneItem {
         this.m_coordinates.setLocation(x, y);   
         this.m_isSelected = false;
         this.m_text = text;
+        
+        /** Задаем размеры. */
+        this.m_height = 80;
+        this.m_width = 120;
     }
     
     /**
@@ -47,6 +49,8 @@ public class UIFreeComment extends  SceneItem {
         // Запомним координаты
         int x = this.m_coordinates.x;
         int y = this.m_coordinates.y;
+        int w = this.m_width;
+        int h = this.m_height;
            
         Polygon dark = new Polygon();   // Полигон тени
         
@@ -56,10 +60,10 @@ public class UIFreeComment extends  SceneItem {
         
         // Рисуем полигон
         dark.addPoint(x, y);
-        dark.addPoint(x + 100, y);
-        dark.addPoint(x + 120, y + 20);
-        dark.addPoint(x + 120, y + 80);
-        dark.addPoint(x, y + 80);
+        dark.addPoint(x + w-20, y);
+        dark.addPoint(x + w, y + 20);
+        dark.addPoint(x + w, y + h);
+        dark.addPoint(x, y + h);
         
         // Возвращаем координаты обратно
         x-=10;
@@ -69,14 +73,14 @@ public class UIFreeComment extends  SceneItem {
         g.setColor(c);                      // Задаем цвет
         g.fillPolygon(dark);                // Заполняем полигон
          
-        Polygon p = new Polygon();  // Полигон комментария
+        Polygon p = new Polygon();          // Полигон комментария
         
         // Рисуем прямоугольник со скошенным уголком
         p.addPoint(x, y);
-        p.addPoint(x + 100, y);
-        p.addPoint(x + 120, y + 20);
-        p.addPoint(x + 120, y + 80);
-        p.addPoint(x, y + 80);
+        p.addPoint(x + w-20, y);
+        p.addPoint(x + w, y + 20);
+        p.addPoint(x + w, y + h);
+        p.addPoint(x, y + h);
         
         if (m_isSelected)   // Если выбрали - заливаем желтым   
             g.setColor(Color.getHSBColor(105, 215, 245));
