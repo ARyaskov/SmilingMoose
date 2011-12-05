@@ -7,6 +7,7 @@ package bbj.graphicsobjects;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.awt.geom.GeneralPath;
 
 /**
@@ -47,6 +48,27 @@ public class UIFreeComment extends  SceneItem {
         int x = this.m_coordinates.x;
         int y = this.m_coordinates.y;
            
+        Polygon dark = new Polygon();   // Полигон тени
+        
+        // Смещаем координаты     
+        x+=10;
+        y+=10;
+        
+        // Рисуем полигон
+        dark.addPoint(x, y);
+        dark.addPoint(x + 100, y);
+        dark.addPoint(x + 120, y + 20);
+        dark.addPoint(x + 120, y + 80);
+        dark.addPoint(x, y + 80);
+        
+        // Возвращаем координаты обратно
+        x-=10;
+        y-=10;  
+        
+        Color c = new Color(0, 0, 0,125);   // Цвет черный и прозрачный
+        g.setColor(c);                      // Задаем цвет
+        g.fillPolygon(dark);                // Заполняем полигон
+         
         Polygon p = new Polygon();  // Полигон комментария
         
         // Рисуем прямоугольник со скошенным уголком
@@ -88,5 +110,4 @@ public class UIFreeComment extends  SceneItem {
             g.drawChars(drawedText, drawedText.length - rem, rem, 
                         x + 5, 15 + i * 12 + y);
     }
-    
 }

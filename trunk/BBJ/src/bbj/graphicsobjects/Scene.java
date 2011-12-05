@@ -90,7 +90,7 @@ public final class Scene extends JPanel {
          
         UIFreeComment testComment = new UIFreeComment(200,155,
                 "abcd efghij klmnop \n qrstuvwxyz\n1234567890");
-       UIFreeComment testCommentChecked = new UIFreeComment(300,75,
+       UIFreeComment testCommentChecked = new UIFreeComment(250,75,
                 "qweqwe rere asdasd");
        testCommentChecked.select(true);
        testComment.draw(g);
