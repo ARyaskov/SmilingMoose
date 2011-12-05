@@ -21,6 +21,12 @@ abstract public class SceneItem {
     /** Флаг выбора объекта фокусом. */
     boolean m_isSelected; 
     
+    /** Ширина объекта. */
+    int m_width;
+    
+    /** Высота объекта. */
+    int m_height;
+    
     /**
      * Вернуть текущие координаты.
      * @return Координаты объекта
@@ -50,4 +56,15 @@ abstract public class SceneItem {
      * @param g Объект, на котором будем рисовать
      */
     abstract public void draw(Graphics g);
+    
+    /**
+     * Метода проверки, содержатся ли в данном объекте указанные координаты
+     * @param x Координата по оси Х
+     * @param y Координата по оси У
+     * @return Результат проверки
+     */
+    public boolean coordContains(int x, int y){
+        return m_coordinates.x <= x && m_coordinates.x + m_width >=x &&
+               m_coordinates.y <= y && m_coordinates.y + m_height >= y;
+    }
 }

@@ -9,13 +9,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**
  * Класс - сцена для отрисовки объектов диаграммы.
  * @version 1.0
  */
-public final class Scene extends JPanel {
+public final class Scene extends JPanel implements MouseListener {
     private boolean m_isGrid;
     private int m_gridFactor = 20;
     private Color m_gridColor = new Color(128,128,128,64);
@@ -48,6 +49,7 @@ public final class Scene extends JPanel {
         
         makeSelectors();
         
+        this.addMouseListener(this);    // Добавляем слушателя мыши на сцену
     }
 
     public void setIsGrid(boolean _isGrid){
@@ -90,11 +92,15 @@ public final class Scene extends JPanel {
          
         UIFreeComment testComment = new UIFreeComment(200,155,
                 "abcd efghij klmnop \n qrstuvwxyz\n1234567890");
-       UIFreeComment testCommentChecked = new UIFreeComment(250,75,
+        UIFreeComment testCommentChecked = new UIFreeComment(250,75,
                 "qweqwe rere asdasd");
-       testCommentChecked.select(true);
-       testComment.draw(g);
-       testCommentChecked.draw(g);
+        testCommentChecked.select(true);
+        testComment.draw(g);
+        testCommentChecked.draw(g);
+        
+        // Добавляем тестовые объекты в контейнер
+        m_objects.add(testComment);
+        m_objects.add(testCommentChecked);
          
         }
     
@@ -120,6 +126,47 @@ public final class Scene extends JPanel {
         this.add(m_messageSelector);
         
     }
+
+    /**
+     * Действие при клике мышью на сцену
+     * @param e Объект события
+     */
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        
+        // Координаты, куда кликнули
+        int x = e.getX();
+        int y = e.getY();
+        
+        // М-м-м-м-м! Старые добрые Java-итераторы!
+        Iterator<SceneItem> i = m_objects.iterator();
+        
+        while(i.hasNext()){
+            if (i.next().coordContains(x, y))
+                System.out.print("QWEQWEQWE");
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        
+    }
+    
     class MouseMotionSlot implements MouseMotionListener{
         public void mouseDragged(MouseEvent e) {
            
