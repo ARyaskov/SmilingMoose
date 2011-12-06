@@ -167,10 +167,14 @@ public final class BBJ {
          createItem = new JMenuItem("Создать");
          menuFile.add(createItem);
          createItem.setFont(menuFont);
+         createItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N,
+                 java.awt.Event.CTRL_MASK));
          
          openItem = new JMenuItem("Открыть...");
          menuFile.add(openItem);
          openItem.setFont(menuFont);
+         openItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O,
+                 java.awt.Event.CTRL_MASK));
          openItem.addActionListener(new ActionListener() {
 
              /**
@@ -192,6 +196,8 @@ public final class BBJ {
          saveItem = new JMenuItem("Сохранить");
          menuFile.add(saveItem);
          saveItem.setFont(menuFont);
+         saveItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S,
+                 java.awt.Event.CTRL_MASK));
          
          saveAsItem = new JMenuItem("Сохранить как...");
          menuFile.add(saveAsItem);
@@ -307,6 +313,7 @@ public final class BBJ {
          JMenuItem helpItem = new JMenuItem("Справка");
          menuMisc.add(helpItem);
          helpItem.setFont(menuFont);
+         helpItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.Event.ALT_MASK));
 
          
          
