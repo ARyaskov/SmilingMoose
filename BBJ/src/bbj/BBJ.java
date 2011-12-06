@@ -196,6 +196,8 @@ public final class BBJ {
          saveAsItem = new JMenuItem("Сохранить как...");
          menuFile.add(saveAsItem);
          saveAsItem.setFont(menuFont);
+         saveAsItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S,
+                                           java.awt.Event.CTRL_MASK + java.awt.Event.SHIFT_MASK));
          saveAsItem.addActionListener(new ActionListener() {
 
              /**
