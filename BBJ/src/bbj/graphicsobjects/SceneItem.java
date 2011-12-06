@@ -33,12 +33,47 @@ abstract public class SceneItem extends JPanel {
     /** Флаг выбора режима просмотр/редактирование */
     protected boolean m_isEdit;
     
+    /** Текст элемента. */
+    protected String m_text;
+    
+    /**
+     * Получить текст элемента
+     * @return Текст
+     */
+    public String getText(){
+        return m_text;
+    }
+    
+    /**
+     * Задать текст элементу
+     * @param text новый текст
+     */
+    public void setText(String text){
+        m_text = text;
+    }
+    
     /**
      * Выбрать объект
      * @param flag Выбран ли объект
      */
     public void select(boolean flag){
         m_isSelected = flag;
+    }
+    
+    /**
+     * Узнать, выделен ли объект
+     * @return Результат
+     */
+    public boolean isSelected(){
+        return m_isSelected;
+    }
+    
+    /**
+     * Узнать, редактируется ли объект
+     * @return Результат
+     */
+    public boolean isEdited(){
+        return m_isEdit;
     }
     
     /**

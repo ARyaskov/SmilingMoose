@@ -90,7 +90,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
         m_selectedItem.x = endX;
         m_selectedItem.y = endY;
         
-        m_selectedItem.repaint();     // Перерисовываем объект
+        m_selectedItem.updateUI();     // Перерисовываем объект
     }
 
     /**
