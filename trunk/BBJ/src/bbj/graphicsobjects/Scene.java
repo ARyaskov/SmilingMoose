@@ -62,7 +62,6 @@ public final class Scene extends JPanel {
         makeSelectors();
         this.setToolTipText("Диаграмма последовательности");
 
-
         this.addMouseListener(new MouseSlot());    // Добавляем слушателя мыши на сцену
         
         UIFreeComment testCommentChecked = new UIFreeComment(250,75,
@@ -72,14 +71,19 @@ public final class Scene extends JPanel {
         // Добавляем тестовые объекты в контейнер       
         UIFreeComment testCommentChecked1 = new UIFreeComment(333,333,
         "qweqwe rere asdasdqqqqqqqq qqqqqqqqqq uuuuuuuuuu gggggggggggg");
-        
-        
+
         this.add(testCommentChecked1);
         this.add(testCommentChecked);
         
         // Добавляем тестовые объекты в контейнер
         m_objects.add(testCommentChecked);
         m_objects.add(testCommentChecked1);
+        
+        // Создаем сцене особого слушателя
+        SceneItemListener sceneItemListener = new SceneItemListener();
+        
+        // Задаем сцене слушателя
+        this.addMouseListener(sceneItemListener);
     }
 
     public void setIsGrid(boolean _isGrid) {
@@ -130,6 +134,7 @@ public final class Scene extends JPanel {
         }
         makeSelectors();
    
+        // Отрисовываем все объекты сцены
         Iterator<SceneItem> i = m_objects.iterator();
         
         while(i.hasNext())
