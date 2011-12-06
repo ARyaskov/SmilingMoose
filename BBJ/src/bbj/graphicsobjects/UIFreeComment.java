@@ -35,6 +35,7 @@ public class UIFreeComment extends  SceneItem {
         this.m_text = text;             //Задаем текст
         
         this.addMouseListener(new SceneItemListener());
+        this.setToolTipText("Свободный комментарий");
     }
     
     /**

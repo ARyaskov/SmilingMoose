@@ -52,6 +52,7 @@ public final class Scene extends JPanel {
         m_messageSelector_y = 5;
         m_draggedNow = new String();
         makeSelectors();
+        this.setToolTipText("Диаграмма последовательности");
 
 
         this.addMouseListener(new MouseSlot());    // Добавляем слушателя мыши на сцену
