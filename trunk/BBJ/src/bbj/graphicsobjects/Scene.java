@@ -39,6 +39,14 @@ public final class Scene extends JPanel {
     public SceneItem get(int index) {
         return m_objects.get(index);
     }
+    
+    /**
+     *  Метод получения ссылки на модель.
+     * @return Модель.
+     */
+    public VirtualModel getModel() {
+        return m_model;
+    }
 
     /**
      * Конструктор по умолчанию.
