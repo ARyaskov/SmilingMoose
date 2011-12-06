@@ -16,6 +16,8 @@ import java.awt.event.MouseListener;
  */
 public class UIFreeComment extends  SceneItem {
 
+    int x,y,w,h;
+    
     /** Текст комментария. */
     private String m_text;
     
@@ -30,11 +32,19 @@ public class UIFreeComment extends  SceneItem {
      */
     public UIFreeComment(int x, int y, String text){
 
-        this.setBounds(x, y, 120, 80);  // Задаем размеры 
+        this.x=x;
+        this.y=y;
+        w=120;
+        h=80;
+        this.setBounds(this.x,this.y,w,h);
+       
         this.m_isSelected = false;      // Не выделен
         this.m_text = text;             //Задаем текст
         
-        this.addMouseListener(new SceneItemListener());
+        SceneItemListener listener = new SceneItemListener();
+                
+        this.addMouseListener(listener);
+        this.addMouseMotionListener(listener);
         this.setToolTipText("Свободный комментарий");
     }
     
@@ -46,14 +56,14 @@ public class UIFreeComment extends  SceneItem {
     public void paint(Graphics g) {
         int i,      // Итератор цикла
             rem;    // Остаток от деления длины строки
-        
-                // Запомним координаты
-        int x = this.getX();
-        int y = this.getY();
-        int w = this.getWidth();
-        int h = this.getHeight();
-        
+               
         Polygon dark = new Polygon();   // Полигон тени
+        
+        //        int x = getX();
+//        int y = getY();
+//        int w = getWidth();
+//        int h = getHeight();
+        this.setBounds(this.x,this.y,w+10,h+10);
         
         // Смещаем координаты     
         x+=10;

@@ -64,7 +64,22 @@ public final class Scene extends JPanel {
 
 
         this.addMouseListener(new MouseSlot());    // Добавляем слушателя мыши на сцену
-
+        
+        UIFreeComment testCommentChecked = new UIFreeComment(250,75,
+        "qweqwe rere asdasdqqqqqqqq qqqqqqqqqq uuuuuuuuuu gggggggggggg" +
+                "zzzzzzzzzzzz wwwwwwwwwwwww eeeeeeeeeeeeeee oooooooooooooo");
+        
+        // Добавляем тестовые объекты в контейнер       
+        UIFreeComment testCommentChecked1 = new UIFreeComment(333,333,
+        "qweqwe rere asdasdqqqqqqqq qqqqqqqqqq uuuuuuuuuu gggggggggggg");
+        
+        
+        this.add(testCommentChecked1);
+        this.add(testCommentChecked);
+        
+        // Добавляем тестовые объекты в контейнер
+        m_objects.add(testCommentChecked);
+        m_objects.add(testCommentChecked1);
     }
 
     public void setIsGrid(boolean _isGrid) {
@@ -114,26 +129,11 @@ public final class Scene extends JPanel {
 
         }
         makeSelectors();
-        /* UIFreeComment testComment = new UIFreeComment(200,155,
-        "abcd efghij klmnop \n qrstuvwxyz\n1234567890");
-        */UIFreeComment testCommentChecked = new UIFreeComment(250,75,
-        "qweqwe rere asdasdqqqqqqqq qqqqqqqqqq uuuuuuuuuu gggggggggggg" +
-                "zzzzzzzzzzzz wwwwwwwwwwwww eeeeeeeeeeeeeee oooooooooooooo");
-
-        testCommentChecked.select(false);
+   
+        Iterator<SceneItem> i = m_objects.iterator();
         
-       
-        UIFreeComment testCommentChecked1 = new UIFreeComment(300,150,
-        "qweqwe rere asdasdqqqqqqqq");
-
-        testCommentChecked1.select(true);
-        testCommentChecked1.paint(g);
-        testCommentChecked.paint(g);
-        this.add(testCommentChecked);
-        this.add(testCommentChecked1);
-        // Добавляем тестовые объекты в контейнер
-        m_objects.add(testCommentChecked);
-
+        while(i.hasNext())
+            i.next().paint(g);
 
     }
 
