@@ -5,14 +5,22 @@
 package bbj.virtualobjects;
 
 import bbj.graphicsobjects.Scene;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
 /**
@@ -125,13 +133,22 @@ public class VirtualModel {
         Element element = doc.createElement("properties");
         
         // Запись даты сохранения.
-        element.appendChild(doc.createElement("create_date").appendChild(doc.createTextNode((new Date().toString()))));
+        Element createDate = doc.createElement("create_date");
+        Text tnode1 = doc.createTextNode(new Date().toString());
+        createDate.appendChild(tnode1);
+        element.appendChild(createDate);
         
         // Запись имени пользователя.
-        element.appendChild(doc.createElement("author").appendChild(doc.createTextNode(System.getProperty("user.name"))));
+        Element author = doc.createElement("author");
+        Text tnode2 = doc.createTextNode(System.getProperty("user.name"));
+        author.appendChild(tnode2);
+        element.appendChild(author);
         
         // Запись флага черновика.
-        element.appendChild(doc.createElement("isDraft").appendChild(doc.createTextNode(Boolean.toString(isDraft))));
+        Element isdraft = doc.createElement("isDraft");
+        Text tnode3 = doc.createTextNode(Boolean.toString(isDraft));
+        isdraft.appendChild(tnode3);
+        element.appendChild(isdraft);
         
         return element;
     }
@@ -247,24 +264,39 @@ public class VirtualModel {
      * Метод сохранения диаграммы в файл.
      * @param filename 
      */
-    public void save (String filename) throws ParserConfigurationException, SAXException, IOException {
+    public void save (String filename) throws ParserConfigurationException, SAXException, IOException, TransformerConfigurationException, TransformerException {
         
         DocumentBuilderFactory fact = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = fact.newDocumentBuilder();
-        Document doc = builder.parse(filename);
+        Document doc = builder.newDocument();
+        
+        Element root = doc.createElement("root");
         
         // Сохранение свойтв проекта.
-        doc.appendChild(this.saveProperties(doc, this.isDraft(filename)));
+        root.appendChild(this.saveProperties(doc, this.isDraft(filename)));
         // Сохранение объектов.
         Element element = doc.createElement("diagram");
         
         element.setAttribute("total_count", Integer.toString(this.m_objects.size()));
         
-        element.appendChild(this.getCommentsCount(doc));
-        element.appendChild(this.getLifeLinesCount(doc));
-        element.appendChild(this.getMessagesCount(doc));
+        Element comments = getCommentsCount(doc);
+        Element lifelines = getLifeLinesCount(doc);
+        Element messages = getMessagesCount(doc);
         
-        doc.appendChild(element);
+        element.appendChild(comments);
+        element.appendChild(lifelines);
+        element.appendChild(messages);
+
+        root.appendChild(element);
+        
+        doc.appendChild(root);
+        
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);
+        StreamResult result = new StreamResult(new File(filename));
+
+        transformer.transform(source, result);
         
     }
     

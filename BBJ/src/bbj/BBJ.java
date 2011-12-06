@@ -10,17 +10,19 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-import java.awt.event.*;
 
 import javax.swing.border.*;
 import java.awt.*;
 import java.util.ArrayList;
-import javax.swing.event.*;
 import java.awt.event.*;
 import java.io.File;
 import javax.swing.JDialog;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import org.xml.sax.SAXException;
 
 /** JDK >= 1.4!
  *
@@ -221,6 +223,21 @@ public final class BBJ {
                 int returnVal = chooser.showSaveDialog(mainFrame);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = chooser.getSelectedFile();
+                    try {
+                        try {
+                            canvas.getModel().save(file.getPath());
+                        } catch (TransformerConfigurationException ex) {
+                            Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (TransformerException ex) {
+                            Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } catch (ParserConfigurationException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SAXException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         });
