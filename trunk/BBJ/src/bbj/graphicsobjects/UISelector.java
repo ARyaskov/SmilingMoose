@@ -1,4 +1,3 @@
-
 package bbj.graphicsobjects;
 
 import bbj.*;
@@ -13,7 +12,7 @@ import java.util.*;
  * 
  * @author Lemon
  */
-public class UISelector extends JPanel {
+public class UISelector extends JComponent {
 
     private Image m_arrowLeft;
     private Image m_arrowRight;
@@ -63,7 +62,6 @@ public class UISelector extends JPanel {
         }
     }
 
-
     /**
      * 
      * @param nameOfItems Массив с названиями элементов карусельного меню
@@ -79,21 +77,20 @@ public class UISelector extends JPanel {
             String path48,
             String path24,
             String path16,
-            String nameSuffix) 
-    {
+            String nameSuffix) {
 
 
         if (nameOfItems.size() < 3) {
             System.out.println("UISelector: Нужно больше элементов для выбора! (Минимум 3)");
         } else {
-           
+            this.setDoubleBuffered(true);
             m_listOfUI = new ArrayList<UIElementInfo>();
             m_images24px = new ArrayList<Image>();
             m_images48px = new ArrayList<Image>();
             m_orderOfTypes = nameOfItems;
 
             m_pointer = pointer;
-            
+
             Iterator it48 = m_orderOfTypes.iterator();
             while (it48.hasNext()) {
                 m_images48px.add(new ImageIcon(BBJ.class.getResource(path48 + nameSuffix + it48.next() + ".png")).getImage());
@@ -117,14 +114,13 @@ public class UISelector extends JPanel {
             m_arrowRightInvert =
                     new ImageIcon(BBJ.class.getResource(path16 + "arrowRightInvert.png")).getImage();
 
-           
+
             m_leftSmall = getTrinityImage(this.SMALL);
             m_centerBig = getTrinityImage(this.BIG);
             m_rightSmall = getTrinityImage(this.SMALL2);
 
             setSize(new Dimension(m_leftSmall.getWidth(null) * 2 + m_centerBig.getWidth(null) + 24,
                     m_centerBig.getHeight(null) + m_arrowRight.getHeight(null) + 24));
-
 
             int distance = 2;
             m_listOfUI.add(new UIElementInfo(m_leftSmall.getWidth(null),
@@ -209,65 +205,73 @@ public class UISelector extends JPanel {
     }
 
     @Override
-    public void paintComponent(Graphics g) {
-
-        g.setColor(new Color(255, 255, 255, 255));
-        g.fillRect(0, 0, getWidth(), getHeight());
+    public void paint(Graphics g) {
 
 
-        g.setColor(new Color(0, 0, 0, 255));
-        g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(new Color(255, 255, 255, 255));
+        g2.fillRect(0, 0, getWidth(), getHeight());
+        /*g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);*/
+
+
+        g2.setColor(new Color(0, 0, 0, 255));
+        g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
+        //g2.drawRect(0, 0, getWidth() - 1, getHeight() -1);
 
         m_leftSmall = getTrinityImage(this.SMALL);
         m_centerBig = getTrinityImage(this.BIG);
         m_rightSmall = getTrinityImage(this.SMALL2);
 
 
-        g.setColor(new Color(0, 0, 0, 0));
-        g.fillRect(0, 0, getWidth(), getHeight());
+        g2.setColor(new Color(0, 0, 0, 0));
+        g2.fillRect(0, 0, getWidth(), getHeight());
 
-        g.drawImage(m_leftSmall, getElementByName("Previous").m_x, getElementByName("Previous").m_y, null);
-        g.drawImage(m_centerBig, getElementByName("Current").m_x, getElementByName("Previous").m_y, null);
-        g.drawImage(m_rightSmall, getElementByName("Forward").m_x, getElementByName("Previous").m_y, null);
+        g2.drawImage(m_leftSmall, getElementByName("Previous").m_x, getElementByName("Previous").m_y, null);
+        g2.drawImage(m_centerBig, getElementByName("Current").m_x, getElementByName("Previous").m_y, null);
+        g2.drawImage(m_rightSmall, getElementByName("Forward").m_x, getElementByName("Previous").m_y, null);
 
         int dist = (int) (getSize().getWidth() / 2 - m_arrowLeft.getWidth(null) / 2 - 5);
-        g.setFont(BBJ.messageNameFont);
-        g.setColor(new Color(0, 0, 0, 255));
-        g.drawString(m_orderOfTypes.get(m_pointer), dist, m_centerBig.getHeight(null) + 16);
+        g2.setFont(BBJ.messageNameFont);
+        g2.setColor(new Color(0, 0, 0, 255));
+        g2.drawString(m_orderOfTypes.get(m_pointer), dist, m_centerBig.getHeight(null) + 16);
 
 
 
         if (m_drawInvertLeft) {
-            g.drawImage(m_arrowLeftInvert, getElementByName("arrowLeft").m_x,
+            g2.drawImage(m_arrowLeftInvert, getElementByName("arrowLeft").m_x,
                     getElementByName("arrowLeft").m_y, null);
         } else {
-            g.drawImage(m_arrowLeft, getElementByName("arrowLeft").m_x,
+            g2.drawImage(m_arrowLeft, getElementByName("arrowLeft").m_x,
                     getElementByName("arrowLeft").m_y, null);
         }
         if (m_drawInvertRight) {
-            g.drawImage(m_arrowRightInvert, getElementByName("arrowRight").m_x,
+            g2.drawImage(m_arrowRightInvert, getElementByName("arrowRight").m_x,
                     getElementByName("arrowRight").m_y, null);
         } else {
-            g.drawImage(m_arrowRight, getElementByName("arrowRight").m_x,
+            g2.drawImage(m_arrowRight, getElementByName("arrowRight").m_x,
                     getElementByName("arrowRight").m_y, null);
         }
 
         if (m_drawSelectFill) {
-            g.setColor(new Color(255, 255, 255, 128));
+            g2.setColor(new Color(255, 255, 255, 128));
             UIElementInfo curElem = getElementByName("Current");
 
-            g.fillRoundRect(curElem.m_x, curElem.m_y + 2, curElem.m_width,
+            g2.fillRoundRect(curElem.m_x, curElem.m_y + 2, curElem.m_width,
                     curElem.m_height, 10, 10);
-            g.setColor(new Color(0, 0, 0, 255));
-            g.drawRoundRect(curElem.m_x, curElem.m_y + 2, curElem.m_width,
+            g2.setColor(new Color(0, 0, 0, 255));
+            g2.drawRoundRect(curElem.m_x, curElem.m_y + 2, curElem.m_width,
                     curElem.m_height, 10, 10);
         }
         if (m_drawSelect) {
 
             UIElementInfo curElem = getElementByName("Current");
 
-            g.setColor(new Color(0, 0, 0, 255));
-            g.drawRoundRect(curElem.m_x, curElem.m_y + 2, curElem.m_width,
+            g2.setColor(new Color(0, 0, 0, 255));
+            g2.drawRoundRect(curElem.m_x, curElem.m_y + 2, curElem.m_width,
                     curElem.m_height, 10, 10);
 
             /* Вариант с линиями
@@ -343,13 +347,12 @@ public class UISelector extends JPanel {
                 }
             }
         }
-        
+
         public void mouseDragged(MouseEvent e) {
-           
         }
 
-        public void mouseMoved(MouseEvent e)  {}
-
+        public void mouseMoved(MouseEvent e) {
+        }
     }
 
     /** Определяет элемент, расположенный по данным координатам
@@ -369,13 +372,13 @@ public class UISelector extends JPanel {
         }
         return null;
     }
+
     /** Возвращает имя элемента, расположенного в центре (текущего)
      *  Полагается на имена из массива, переданного ранее в конструктор
      * 
      * @return Имя выбранного элемента
      */
-   public String getSelected() {
+    public String getSelected() {
         return m_orderOfTypes.get(m_pointer);
     }
-    
 }

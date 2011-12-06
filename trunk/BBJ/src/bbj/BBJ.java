@@ -91,7 +91,8 @@ public final class BBJ {
          mainFrame.setTitle("Smiling Moose");
          mainFrame.setSize(800, 600);
          mainFrame.setLocationRelativeTo(null);
-
+         mainFrame.setMinimumSize(new Dimension(400,400));
+         mainFrame.setMaximumSize(new Dimension(2560,1600));
          
          JMenuBar menuBar = new JMenuBar();
          setupMenus(menuBar);
@@ -105,12 +106,17 @@ public final class BBJ {
          mainFrame.add(toolBar, "North");
 
          canvas = new Scene();
-         canvas.setDoubleBuffered(true);
-         canvas.setSize(mainFrame.getWidth(), mainFrame.getHeight() - toolBar.getHeight()
+       
+         canvas.setSize(mainFrame.getWidth()+100, mainFrame.getHeight() - toolBar.getHeight()
                  - menuBar.getHeight());
-         //JViewport viewport = new JViewport();
-        // viewport.setView(canvas);
-       //  mainFrame.add(viewport);
+         
+         
+         /*JViewport viewport = new JViewport();
+         viewport.setView(canvas);
+         mainFrame.add(viewport);*/
+          final JScrollPane scrollPane = new JScrollPane(canvas);
+           mainFrame.add(scrollPane, BorderLayout.CENTER);
+         
          mainFrame.add(canvas);
          
          mainFrame.addWindowListener(new mainFrameWindowListener());
@@ -149,6 +155,7 @@ public final class BBJ {
                         public void componentResized(ComponentEvent e){
                            windowHeight = e.getComponent().getHeight();
                            windowWidth = e.getComponent().getWidth();
+                           BBJ.app.getScene().updateUI();
                         }
                         public void componentShown(ComponentEvent e){
                             
