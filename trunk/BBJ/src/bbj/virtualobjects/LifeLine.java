@@ -163,6 +163,7 @@ public class LifeLine extends UMLObject {
         this.setDescription(desc);
         this.setId(id);
         m_name = name;
+        m_messages = new ArrayList<Message>();
     }
     
     /**
