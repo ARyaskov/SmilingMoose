@@ -6,6 +6,9 @@ package bbj;
 
 import bbj.graphicsobjects.*;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -314,6 +317,43 @@ public final class BBJ {
          menuMisc.add(helpItem);
          helpItem.setFont(menuFont);
          helpItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.Event.ALT_MASK));
+         helpItem.addActionListener(new ActionListener() {
+
+             /**
+              * Метод вызова справки через браузер пользователя.
+              */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String url = "index.html";
+                String os = System.getProperty("os.name").toLowerCase();
+                Runtime rt = Runtime.getRuntime();
+                
+                if (os.indexOf("win") >= 0) {
+                    try {
+                        rt.exec( "rundll32 url.dll,FileProtocolHandler " + url);
+                    } catch (IOException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else if (os.indexOf( "mac" ) >= 0) {
+                    try {
+                        rt.exec( "open " + url);
+                    } catch (IOException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else if (os.indexOf( "nix") >=0 || os.indexOf( "nux") >=0) {
+                    String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror",
+	       			             "netscape","opera","links","lynx"};
+                    StringBuffer cmd = new StringBuffer();
+                    for (int i=0; i<browsers.length; i++)
+                        cmd.append( (i==0  ? "" : " || " ) + browsers[i] +" \"" + url + "\" ");
+                    try {
+                        rt.exec(new String[] { "sh", "-c", cmd.toString() });
+                    } catch (IOException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
 
          
          
