@@ -6,8 +6,10 @@ package bbj.graphicsobjects;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.*;
 import java.awt.Polygon;
 import javax.swing.JTextArea;
+import java.awt.*;
 
 /**
  *
@@ -23,6 +25,8 @@ public class UIFreeComment extends  SceneItem {
      */
     public UIFreeComment(int x, int y, String text){
 
+         
+        
         this.x=x;
         this.y=y;
         w=120;
@@ -49,7 +53,17 @@ public class UIFreeComment extends  SceneItem {
     public void paint(Graphics g) {
         int i,      // Итератор цикла
             rem;    // Остаток от деления длины строки
-               
+           
+        Graphics2D g2 = (Graphics2D)g;
+        //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+       // g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        
+        /*g2.setColor(new Color(0,0,0,255));
+        g2.drawRect(getX(), getY(), getWidth(), getHeight());*/
+        
         Polygon dark = new Polygon();   // Полигон тени
         
         this.setBounds(this.x,this.y,w+10,h+10);
@@ -70,6 +84,8 @@ public class UIFreeComment extends  SceneItem {
         y-=10;  
         
         Color c = new Color(0, 0, 0,125);   // Цвет черный и прозрачный
+        Stroke stroke = new BasicStroke(1);
+        g2.setStroke(stroke);
         g.setColor(c);                      // Задаем цвет
         g.fillPolygon(dark);                // Заполняем полигон
          

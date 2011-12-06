@@ -10,7 +10,7 @@ import javax.swing.*;
  *
  * @author Lemon
  */
-public class UILifeLine extends JComponent{
+public class UILifeLine extends SceneItem{
     
     public UILifeLine(){
         

@@ -5,6 +5,7 @@
 package bbj;
 
 import java.awt.*;
+import java.util.*;
 
 /** @file Класс содержит разнообразные статические функции общего назначения.
  * 
@@ -21,3 +22,4 @@ public class Commons {
  
  
 }
+
