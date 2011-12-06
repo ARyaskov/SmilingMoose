@@ -14,13 +14,13 @@ import java.awt.event.MouseMotionListener;
  */
 public class SceneItemListener implements MouseListener, MouseMotionListener {
     
-    public static SceneItem currentSelectedItem;       // Текущий выделенный объект
+    public static SceneItem m_currentSelectedItem;       // Текущий выделенный объект
             
     private int m_startX;               // Координата начала перетаскивания
     
     private int m_startY;               // Координата конца перетаскивания
     
-    private SceneItem selectedItem;     // Перетаскиваемый коммент
+    private SceneItem m_selectedItem;     // Перетаскиваемый коммент
     
     /**
      * Конструктор с параметрами (используется всеми элементами сцены)
@@ -29,12 +29,12 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
     SceneItemListener(SceneItem item){
         
         // Зануляем поля
-        selectedItem = null;
-        selectedItem = null;
+        m_selectedItem = null;
+        m_selectedItem = null;
 
         // Определяем тип текущего объекта и запоминаем его 
         if (item.toString().contains("UIFreeComment")){
-            selectedItem = (UIFreeComment)item;
+            m_selectedItem = (UIFreeComment)item;
         }
     }
     
@@ -44,13 +44,23 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
     SceneItemListener(){
         
         // Зануляем поля
-        selectedItem = null;
-        selectedItem = null;
+        m_selectedItem = null;
+        m_selectedItem = null;
     }
     
+    /**
+     * Действия при клике на объект
+     * @param e Данное событие мыши
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        
+        //Если кликнули больше одного раза
+        if(e.getClickCount() > 1 && m_selectedItem != null){
+            
+        }
+        else
+            mousePressed(e);
     }
     
     /**
@@ -61,7 +71,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
     public void mouseDragged(MouseEvent e) {
         
         // Если объект существует
-        if (selectedItem == null)
+        if (m_selectedItem == null)
             return;
         
         // Определяем координаты конца движения
@@ -70,17 +80,17 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
         
         // Проверим, что не вылезли за гграницы окна по Х
         endX = Math.max(endX, 0);
-        endX = Math.min(endX, selectedItem.getParent().getWidth() - selectedItem.w);
+        endX = Math.min(endX, m_selectedItem.getParent().getWidth() - m_selectedItem.w);
         
         // Проверим, что не вылезли за гграницы окна по Y
         endY = Math.max(endY, 0);
-        endY = Math.min(endY, selectedItem.getParent().getHeight() - selectedItem.h);
+        endY = Math.min(endY, m_selectedItem.getParent().getHeight() - m_selectedItem.h);
         
         // Задаем координаты
-        selectedItem.x = endX;
-        selectedItem.y = endY;
+        m_selectedItem.x = endX;
+        m_selectedItem.y = endY;
         
-        selectedItem.repaint();     // Перерисовываем объект
+        m_selectedItem.repaint();     // Перерисовываем объект
     }
 
     /**
@@ -91,28 +101,28 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
     public void mousePressed(MouseEvent e) {
 
         // Снимаем выделение с прежнего объекта если он существует
-        if (SceneItemListener.currentSelectedItem != null){
-            SceneItemListener.currentSelectedItem.select(false);// Ставим флаг
-            SceneItemListener.currentSelectedItem.repaint();    // Перерисовываем
-            SceneItemListener.currentSelectedItem = null;       // Зануляем
+        if (SceneItemListener.m_currentSelectedItem != null){
+            SceneItemListener.m_currentSelectedItem.select(false);// Ставим флаг
+            SceneItemListener.m_currentSelectedItem.updateUI();    // Перерисовываем
+            SceneItemListener.m_currentSelectedItem = null;       // Зануляем
         }
                 
         // Если данный объект не сцена
-        if (selectedItem == null)
+        if (m_selectedItem == null)
             return;
                 
-        selectedItem.select(true);  // Выделяем объект
+        m_selectedItem.select(true);  // Выделяем объект
         
         // Запоминаем выделенный объект
-        SceneItemListener.currentSelectedItem = selectedItem;
+        SceneItemListener.m_currentSelectedItem = m_selectedItem;
         
         // Координаты щелчка мыши
         int x = e.getXOnScreen();
         int y = e.getYOnScreen();
 
         // Вычисляем координаты начала перетаскивания
-        this.m_startX = x - selectedItem.x;
-        this.m_startY = y - selectedItem.y;
+        this.m_startX = x - m_selectedItem.x;
+        this.m_startY = y - m_selectedItem.y;
     }
 
     @Override
