@@ -14,13 +14,7 @@ import javax.swing.JTextArea;
  * @author Alexander
  */
 public class UIFreeComment extends  SceneItem {
-    
-    /** Текст комментария. */
-    private String m_text;
-    
-    public String getText(){
-        return m_text;
-    }
+        
     /**
      * Основной конструктор по умолчанию
      * @param x Координата по оси Х
@@ -58,10 +52,6 @@ public class UIFreeComment extends  SceneItem {
                
         Polygon dark = new Polygon();   // Полигон тени
         
-        //        int x = getX();
-//        int y = getY();
-//        int w = getWidth();
-//        int h = getHeight();
         this.setBounds(this.x,this.y,w+10,h+10);
         
         // Смещаем координаты     
