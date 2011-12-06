@@ -4,40 +4,49 @@
  */
 package bbj.graphicsobjects;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 /**
  * Класс графического отображения UML объектов.
  * Наследуется от AWT {@link java.awt.Graphics2D}.
  * @version 1.0
  */
-abstract public class SceneItem extends JComponent {
+abstract public class SceneItem extends JPanel {
     
     /* Поля класса. */
     
     /** Координата Х */
-    int x;
+    protected int x;
     
     /** Координата У */
-    int y;
+    protected int y;
     
     /** Ширина */
-    int w;
+    protected int w;
     
     /** Высота */
-    int h;
+    protected int h;
         
     /** Флаг выбора объекта фокусом. */
     protected boolean m_isSelected; 
             
+    /** Флаг выбора режима просмотр/редактирование */
+    protected boolean m_isEdit;
+    
     /**
      * Выбрать объект
      * @param flag Выбран ли объект
      */
     public void select(boolean flag){
         m_isSelected = flag;
+    }
+    
+    /**
+     * Редактировать объект
+     * @param flag Редактируется ли объект
+     */
+    public void edit(boolean flag){
+        m_isEdit = flag;
     }
     
     /**
