@@ -218,14 +218,22 @@ public final class BBJ {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser chooser = new JFileChooser();
                 FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                    "Smilling Moose Projects files (*.suef,*.suefd)", "suef", "suefd");
+                    "Smiling Moose Projects files (*.suef)", "suef");
                 chooser.setFileFilter(filter);
+                chooser.addChoosableFileFilter(filter);
+                chooser.addChoosableFileFilter(new FileNameExtensionFilter("Smiling Moose Draft Projects files (*.suefd)",
+                        "suefd"));
                 int returnVal = chooser.showSaveDialog(mainFrame);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = chooser.getSelectedFile();
+                    String filePath = file.getPath();
+                    if (!filePath.matches(".+\\..+")) {
+                        String[] ps = ((FileNameExtensionFilter)chooser.getFileFilter()).getExtensions(); 
+                        filePath += ("." + ps[0]);
+                     }
                     try {
                         try {
-                            canvas.getModel().save(file.getPath());
+                            canvas.getModel().save(filePath);
                         } catch (TransformerConfigurationException ex) {
                             Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (TransformerException ex) {
@@ -309,8 +317,13 @@ public final class BBJ {
                 int returnVal = chooser.showSaveDialog(mainFrame);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = chooser.getSelectedFile();
+                    String filePath = file.getPath();
+                    if (!filePath.matches(".+\\..+")) {
+                        String[] ps = ((FileNameExtensionFilter)chooser.getFileFilter()).getExtensions(); 
+                        filePath += ("." + ps[0]);
+                     }
                     try {
-                        canvas.getModel().save(file.getPath());
+                        canvas.getModel().save(filePath);
                     } catch (ParserConfigurationException ex) {
                         Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (SAXException ex) {
