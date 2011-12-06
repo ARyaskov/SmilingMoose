@@ -15,8 +15,6 @@ import java.awt.event.MouseListener;
  * @author Alexander
  */
 public class UIFreeComment extends  SceneItem {
-
-    int x,y,w,h;
     
     /** Текст комментария. */
     private String m_text;
@@ -36,12 +34,14 @@ public class UIFreeComment extends  SceneItem {
         this.y=y;
         w=120;
         h=80;
+        
+        // Задаем координаты и размеры
         this.setBounds(this.x,this.y,w,h);
        
         this.m_isSelected = false;      // Не выделен
         this.m_text = text;             //Задаем текст
         
-        SceneItemListener listener = new SceneItemListener();
+        SceneItemListener listener = new SceneItemListener(this);
                 
         this.addMouseListener(listener);
         this.addMouseMotionListener(listener);

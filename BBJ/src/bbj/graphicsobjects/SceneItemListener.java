@@ -14,57 +14,105 @@ import java.awt.event.MouseMotionListener;
  */
 public class SceneItemListener implements MouseListener, MouseMotionListener {
     
-    private int m_startX;
+    public static SceneItem currentSelectedItem;       // Текущий выделенный объект
+            
+    private int m_startX;               // Координата начала перетаскивания
     
-    private int m_startY;
+    private int m_startY;               // Координата конца перетаскивания
     
-    private UIFreeComment m_comment;
+    private SceneItem selectedItem;     // Перетаскиваемый коммент
+    
+    /**
+     * Конструктор с параметрами (используется всеми элементами сцены)
+     * @param item Слушаемый элемент сцены
+     */
+    SceneItemListener(SceneItem item){
+        
+        // Зануляем поля
+        selectedItem = null;
+        selectedItem = null;
+
+        // Определяем тип текущего объекта и запоминаем его 
+        if (item.toString().contains("UIFreeComment")){
+            selectedItem = (UIFreeComment)item;
+        }
+    }
+    
+    /**
+     * Конструктор по умолчанию (используется сценой)
+     */
+    SceneItemListener(){
+        
+        // Зануляем поля
+        selectedItem = null;
+        selectedItem = null;
+    }
     
     @Override
     public void mouseClicked(MouseEvent e) {
 
     }
     
+    /**
+     * Действие при перемещении объекта мышью
+     * @param e Данное событие мыши
+     */
     @Override
     public void mouseDragged(MouseEvent e) {
         
-        if (m_comment == null)
+        // Если объект существует
+        if (selectedItem == null)
             return;
         
-       int endX = e.getXOnScreen() - m_startX;
-       int endY = e.getYOnScreen() - m_startY;
+        // Определяем координаты конца движения
+        int endX = e.getXOnScreen() - m_startX;
+        int endY = e.getYOnScreen() - m_startY;
         
         // Проверим, что не вылезли за гграницы окна по Х
         endX = Math.max(endX, 0);
-        endX = Math.min(endX, m_comment.getParent().getWidth() - m_comment.w);
+        endX = Math.min(endX, selectedItem.getParent().getWidth() - selectedItem.w);
         
         // Проверим, что не вылезли за гграницы окна по Y
         endY = Math.max(endY, 0);
-        endY = Math.min(endY, m_comment.getParent().getHeight() - m_comment.h);
+        endY = Math.min(endY, selectedItem.getParent().getHeight() - selectedItem.h);
         
-        //m_comment.setLocation(endX, endY);  // Задаем координаты объекту
-        m_comment.x = endX;
-        m_comment.y = endY;
+        // Задаем координаты
+        selectedItem.x = endX;
+        selectedItem.y = endY;
         
-        m_comment.repaint();                // Перерисовываем объект
+        selectedItem.repaint();     // Перерисовываем объект
     }
 
+    /**
+     * Действия при нажатии на объект
+     * @param e Данное событие мыши
+     */
     @Override
     public void mousePressed(MouseEvent e) {
-           
-        // Запоминаем текущий объект
-        m_comment = (UIFreeComment)e.getSource();
-       // c.x = c.x+10;
-       // c.y = c.y+10;
-       // c.repaint();
-      
+
+        // Снимаем выделение с прежнего объекта если он существует
+        if (SceneItemListener.currentSelectedItem != null){
+            SceneItemListener.currentSelectedItem.select(false);// Ставим флаг
+            SceneItemListener.currentSelectedItem.repaint();    // Перерисовываем
+            SceneItemListener.currentSelectedItem = null;       // Зануляем
+        }
+                
+        // Если данный объект не сцена
+        if (selectedItem == null)
+            return;
+                
+        selectedItem.select(true);  // Выделяем объект
+        
+        // Запоминаем выделенный объект
+        SceneItemListener.currentSelectedItem = selectedItem;
+        
         // Координаты щелчка мыши
         int x = e.getXOnScreen();
         int y = e.getYOnScreen();
-        
+
         // Вычисляем координаты начала перетаскивания
-        this.m_startX = x - m_comment.x;
-        this.m_startY = y - m_comment.y;
+        this.m_startX = x - selectedItem.x;
+        this.m_startY = y - selectedItem.y;
     }
 
     @Override

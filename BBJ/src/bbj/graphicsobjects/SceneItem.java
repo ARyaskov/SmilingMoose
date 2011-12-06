@@ -16,6 +16,18 @@ import javax.swing.JComponent;
 abstract public class SceneItem extends JComponent {
     
     /* Поля класса. */
+    
+    /** Координата Х */
+    int x;
+    
+    /** Координата У */
+    int y;
+    
+    /** Ширина */
+    int w;
+    
+    /** Высота */
+    int h;
         
     /** Флаг выбора объекта фокусом. */
     protected boolean m_isSelected; 
