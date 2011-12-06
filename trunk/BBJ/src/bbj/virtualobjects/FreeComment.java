@@ -34,50 +34,6 @@ public class FreeComment extends UMLObject {
         this.setDescription(str);
         this.setId(id);
     }
-    
-    /**
-     * Функция обрезания текста для записи его в графический объект.
-     * @return Обрезанный текст.
-     */
-    public String changeText () {
-        String result = "";
-        String[] parse = this.getDescription().split("\n");
-        ArrayList<String> qwe = new ArrayList();
-        
-        // Ограниченик по строкам.
-        for (int i = 0; i < parse.length; i++) {
-            if (parse[i].length() > 20) {
-                String buf = parse[i].substring(0, 20);
-                buf += "\n";
-                qwe.add(buf);
-                buf = parse[i].substring(21, parse[i].length());
-                qwe.add(buf);
-            }
-            else qwe.add(parse[i]);
-        }
-        
-        if (qwe.size() > 7) {
-            parse = new String[7];
-            for (int i = 0; i < 6; i++) {
-                parse[i] = qwe.get(i);
-            }
-            parse[6] = "...";
-        }
-        else {
-            parse = new String[qwe.size()];
-            for (int i = 0; i < qwe.size(); i++) {
-                parse[i] = qwe.get(i);
-            }
-        }
-        
-        for (int i = 0; i < parse.length; i++) {
-            result += parse[i];
-            if (i != parse.length - 1)
-                result += "\n";
-        }
-        
-        return result;
-    }
 
     /**
      * Метод записи комментария в xml файл.
