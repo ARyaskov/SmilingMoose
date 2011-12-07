@@ -5,9 +5,10 @@
 package bbj.virtualobjects;
 
 import bbj.graphicsobjects.Point3D;
-import java.util.ArrayList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 /**
  * Класс свободного комментария.
@@ -65,19 +66,36 @@ public class FreeComment extends UMLObject {
     }
 
     /**
-     * Метод чтения комментария из xml файла.
-     * @param element Узел xml дерева.
+     * Абстрактный метод считывания объекта из файла.
+     * @param node Текущий узел - элемент дерева.
      */
     @Override
-    public void read(Element element) {
+    public void read(Node node) {
         double x,y,z;
-        
-        x = Double.parseDouble(element.getAttribute("x"));
-        y = Double.parseDouble(element.getAttribute("y"));
-        z = Double.parseDouble(element.getAttribute("z"));
-        
-        this.setDescription(element.getTextContent());
-        
+        String buffer;
+        NamedNodeMap attributes = node.getAttributes();
+        // Считывание координаты z.
+        Node attr = attributes.getNamedItem("z");
+        buffer = attr.getNodeValue();
+        z = Double.parseDouble(buffer);
+        // Считывание координаты y.
+        attr = attributes.getNamedItem("y");
+        buffer = attr.getNodeValue();
+        y = Double.parseDouble(buffer);
+        // Считывание координаты x.
+        attr = attributes.getNamedItem("x");
+        buffer = attr.getNodeValue();
+        x = Double.parseDouble(buffer);
+        // Считывание описания.
+        buffer = node.getTextContent();
+        // Считывания идентификатора.
+        attr = attributes.getNamedItem("id");
+        buffer = attr.getNodeValue();
+        this.setId(Integer.parseInt(buffer));
+        // Считывание индекса для копий.
+        attr = attributes.getNamedItem("index");
+        buffer = attr.getNodeValue();
+        m_index = Integer.parseInt(buffer);
         this.setCoordinates(new Point3D(x,y,z));
     }
     
