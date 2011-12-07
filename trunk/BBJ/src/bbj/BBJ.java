@@ -216,6 +216,33 @@ public final class BBJ {
          saveItem.setFont(menuFont);
          saveItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S,
                  java.awt.Event.CTRL_MASK));
+         saveItem.addActionListener(new ActionListener() {
+
+             /**
+              * Метод сохранения диаграммы по пункту меню "Сохранить".
+              */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!m_hasFile) {
+                    saveFileUs();
+                }
+                else {
+                    try {
+                        canvas.getModel().save(m_filename);
+                    } catch (ParserConfigurationException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SAXException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (TransformerConfigurationException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (TransformerException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
          
          saveAsItem = new JMenuItem("Сохранить как...");
          menuFile.add(saveAsItem);
