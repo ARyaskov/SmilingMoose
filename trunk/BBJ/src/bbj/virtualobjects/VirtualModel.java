@@ -164,7 +164,7 @@ public class VirtualModel {
         if (filename.matches("^.*\\.suefd$"))
             flag = true;
         
-        return false;
+        return flag;
     }
     
     /**
