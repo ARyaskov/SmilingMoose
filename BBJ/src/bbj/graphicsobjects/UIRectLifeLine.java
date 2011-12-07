@@ -25,9 +25,9 @@ public class UIRectLifeLine extends UILifeLine {
         this.w = 120;
         this.h = 300;
         
-        m_textCoordX = 5;
+        m_textCoordX = 10;
         m_textCoordY = 30;
-
+        
         m_text = text;
 
         setBounds(x, y, w, h);
@@ -69,7 +69,7 @@ public class UIRectLifeLine extends UILifeLine {
         
         Polygon p = new Polygon();          // Полигон комментария
 
-        // Рисуем прямоугольник со скошенным уголком
+        // Рисуем прямоугольник
         p.addPoint(x, y);
         p.addPoint(x + 120, y);
         p.addPoint(x + 120, y + 50);

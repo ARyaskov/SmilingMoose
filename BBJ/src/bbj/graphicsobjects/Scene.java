@@ -110,16 +110,21 @@ public final class Scene extends JPanel {
 
         UIRectLifeLine ll = new UIRectLifeLine(111, 111, "Линия жизни 1");
         
+        UIActorLifeLine al = new UIActorLifeLine(111, 333, "Актёр 1");
+                
         ll.setEnded(true);
         this.add(testCommentChecked1);
         this.add(testCommentChecked);
         this.add(ll);
+        this.add(al);
 
+        
+        
         // Добавляем тестовые объекты в контейнер
         m_objects.add(testCommentChecked);
         m_objects.add(testCommentChecked1);
         m_objects.add(ll);
-
+        m_objects.add(al);
 
         // Создаем сцене особого слушателя
         SceneItemListener sceneItemListener = new SceneItemListener();

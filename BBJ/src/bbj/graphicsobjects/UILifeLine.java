@@ -16,8 +16,10 @@ abstract public class UILifeLine extends SceneItem{
     /** Флаг завершенности линии жизни. */
     protected boolean m_isEnded;
     
+    /** Координата текста по Х */
     protected int m_textCoordX;
     
+    /** Координата текста по У */
     protected int m_textCoordY;
     
     /**
@@ -63,6 +65,12 @@ abstract public class UILifeLine extends SceneItem{
                  
         g2.setStroke(new BasicStroke(1.0f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,
                 1.0f,new float[]{8.0f,4.0f},0.0f));
+        
+        if (m_isSelected)   // Рисуем границы полигона красным цветом
+            g2.setColor(Color.red);
+        else                // Рисуем границы полигона черным цветом
+            g2.setColor(Color.black);
+                
         g2.drawLine(60, 50, 60, 280);
         
          // Разбиваем текст на массив символов
@@ -72,7 +80,7 @@ abstract public class UILifeLine extends SceneItem{
         g.drawChars(drawedText, 0, java.lang.Math.min(13, m_text.length()), m_textCoordX, m_textCoordY);
         
         if (m_text.length() >= 14)
-            g.drawChars(dots, 0, 3, m_textCoordX+100, m_textCoordY);
+            g.drawChars(dots, 0, 3, m_textCoordX+90, m_textCoordY);
 
         if (m_isEdit) 
             f.repaint();
