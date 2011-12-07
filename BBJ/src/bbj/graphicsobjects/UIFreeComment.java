@@ -42,11 +42,11 @@ public class UIFreeComment extends  SceneItem {
                 
         this.addMouseListener(listener);
         this.addMouseMotionListener(listener);
-        this.setToolTipText("Свободный комментарий");
+        this.setToolTipText("Свободный комментарий: " + this.m_text);
     }
     
     /**
-     * Функция отрисовки комментария
+     * Метод отрисовки комментария
      * @param g Компонент, на котором рисуем
      */
     @Override
