@@ -4,6 +4,9 @@
  */
 package bbj.virtualobjects;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 /**
  * Класс асинхронного сообщения.
  * Наследуется от Message.
@@ -36,6 +39,20 @@ public class AsynchronousMessages extends Message {
         setId(id);
         setSender(send);
         setReceiver(recv);
+    }
+    
+    /**
+     * Метод записи асинхронного сообщения в xml файл.
+     * @param document Главный документ файла.
+     * @return Узел xml дерева.
+     */
+    @Override
+    public Element write(Document document) {
+        Element element = super.write(document);
+        
+        element.setAttribute("type", "asynch");
+        
+        return element;
     }
     
 }

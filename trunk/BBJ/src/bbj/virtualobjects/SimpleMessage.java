@@ -61,7 +61,7 @@ public class SimpleMessage extends Message {
     }
 
     /**
-     * Метод записи линии жизни в xml файл.
+     * Метод записи простого сообщения в xml файл.
      * @param document Главный документ файла.
      * @return Узел xml дерева.
      */
