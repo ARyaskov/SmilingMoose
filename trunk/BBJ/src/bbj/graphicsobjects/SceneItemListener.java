@@ -54,6 +54,9 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
 
         //Если кликнули больше одного раза
         if (e.getClickCount() > 1 && m_selectedItem != null) {
+            m_selectedItem.edit(true);
+            EditField f = new EditField(m_selectedItem);
+            m_selectedItem.f = f;
         } else {
             mousePressed(e);
         }
@@ -118,6 +121,10 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
             while (it.hasNext()) {// Очищаем все элементы от выделения
                 SceneItem cur = (SceneItem) it.next();
                 cur.select(false);
+                if (cur.isEdited()){
+                    cur.f.setVisible(false);
+                    cur.remove(cur.f);
+                }
             }
         }
 

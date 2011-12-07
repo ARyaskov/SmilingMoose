@@ -16,6 +16,9 @@ import java.util.*;
 abstract public class SceneItem extends JPanel {
 
     /* Поля класса. */
+    
+    EditField f;
+            
     /** Координата Х */
     protected int x;
     /** Координата У */
