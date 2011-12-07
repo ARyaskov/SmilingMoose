@@ -17,6 +17,17 @@ import org.w3c.dom.Element;
  */
 public class FreeComment extends UMLObject {
     
+    /* Поля класса. */
+    private int m_index = 0; /** Поле индекса копии. */
+    
+    /**
+     * Метод смена индекса для копии.
+     * @return Новый индекс.
+     */
+    private int incrementCopyIndex () {
+        return ++m_index;
+    }
+    
     /**
      * Конструктор с параметрами.
      */
@@ -87,5 +98,26 @@ public class FreeComment extends UMLObject {
                 flag = false;
         
         return flag;
+    }
+
+    /**
+     * Метод создания копии текущего комментария.
+     * @return Копия текущего комментария.
+     */
+    public FreeComment copy() {
+        FreeComment fc = new FreeComment();
+        String d = this.getDescription();
+        
+        // Создание нового имени.
+        if (d.matches("^.*_copy[0-9]+$")) {
+            d.replaceAll("_copy[0-9]+$", "_copy" + Integer.toString(this.incrementCopyIndex()));
+        } else {
+            d += "_copy" + Integer.toString(this.incrementCopyIndex());
+        }
+        
+        fc.setDescription(d);
+        fc.setCoordinates(getCoordinates());
+        
+        return fc;
     }
 }
