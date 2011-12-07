@@ -229,39 +229,7 @@ public final class BBJ {
               */
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFileChooser chooser = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                    "Smiling Moose Projects files (*.suef)", "suef");
-                chooser.setFileFilter(filter);
-                chooser.addChoosableFileFilter(filter);
-                chooser.addChoosableFileFilter(new FileNameExtensionFilter("Smiling Moose Draft Projects files (*.suefd)",
-                        "suefd"));
-                int returnVal = chooser.showSaveDialog(mainFrame);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = chooser.getSelectedFile();
-                    String filePath = file.getPath();
-                    m_hasFile = true;
-                    if (!filePath.matches(".+\\..+")) {
-                        String[] ps = ((FileNameExtensionFilter)chooser.getFileFilter()).getExtensions(); 
-                        filePath += ("." + ps[0]);
-                     }
-                    m_filename = filePath;
-                    try {
-                        try {
-                            canvas.getModel().save(filePath);
-                        } catch (TransformerConfigurationException ex) {
-                            Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (TransformerException ex) {
-                            Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } catch (ParserConfigurationException ex) {
-                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (SAXException ex) {
-                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException ex) {
-                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
+                   saveFileUs ();
             }
         });
          
@@ -483,6 +451,46 @@ public final class BBJ {
        redo_button.setIcon(new ImageIcon(BBJ.class.getResource("images/redo.png")));
        toolBar.add(redo_button);
    }
+     
+     /**
+      *  Метод вызываемый при выборе меню "Сохранить как..."
+      */
+     private void saveFileUs () {
+         
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+            "Smiling Moose Projects files (*.suef)", "suef");
+        chooser.setFileFilter(filter);
+        chooser.addChoosableFileFilter(filter);
+        chooser.addChoosableFileFilter(new FileNameExtensionFilter("Smiling Moose Draft Projects files (*.suefd)",
+                "suefd"));
+        int returnVal = chooser.showSaveDialog(mainFrame);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = chooser.getSelectedFile();
+            String filePath = file.getPath();
+            m_hasFile = true;
+            if (!filePath.matches(".+\\..+")) {
+                String[] ps = ((FileNameExtensionFilter)chooser.getFileFilter()).getExtensions(); 
+                filePath += ("." + ps[0]);
+             }
+            m_filename = filePath;
+            try {
+                try {
+                    canvas.getModel().save(filePath);
+                } catch (TransformerConfigurationException ex) {
+                    Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (TransformerException ex) {
+                    Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (ParserConfigurationException ex) {
+                Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SAXException ex) {
+                Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+     }
     
     public void bindListeners(){
   
