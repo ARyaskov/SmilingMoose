@@ -452,7 +452,7 @@ public final class BBJ {
               */
             @Override
             public void actionPerformed(ActionEvent e) {
-                String url = "index.html";
+                String url = "help/index.html";
                 String os = System.getProperty("os.name").toLowerCase();
                 Runtime rt = Runtime.getRuntime();
                 
