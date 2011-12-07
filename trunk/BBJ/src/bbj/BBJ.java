@@ -33,6 +33,7 @@ public final class BBJ {
     /* Поля класса для сохранения в файл. */
     private boolean m_hasFile;  /** Флаг наличия привязанного файла. */
     private String  m_filename; /** Имя файла, в который ведется сохранение. */
+    private boolean m_hasModifications; /** Флаг появления изменений с момента последнего сохранения. */
 
     public static Font menuFont;
     public static Font messageFont;
@@ -75,6 +76,8 @@ public final class BBJ {
         setupFonts();
         fillGUIContent();
         bindListeners();
+        m_hasFile = false;
+        m_hasModifications = false;
         
     }
     
