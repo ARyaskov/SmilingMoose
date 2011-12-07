@@ -23,4 +23,19 @@ public class AsynchronousMessages extends Message {
         setSender(null);
     }
     
+    /**
+     * Конструктор с параметрами.
+     * @param desc Описание сообщения.
+     * @param id Идентификатор сообщения.
+     * @param send Отправитель сообщения.
+     * @param recv Приемник сообщения.
+     */
+    public AsynchronousMessages (String desc, int id, LifeLine send, LifeLine recv) {
+        
+        setDescription(desc);
+        setId(id);
+        setSender(send);
+        setReceiver(recv);
+    }
+    
 }
