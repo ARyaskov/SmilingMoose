@@ -237,6 +237,21 @@ public final class BBJ {
                     File file = chooser.getSelectedFile();
                     m_hasFile = true;
                     m_filename = file.getPath();
+                    if (m_hasModifications) {
+                        try {
+                            saveDialog();
+                        } catch (ParserConfigurationException ex) {
+                            Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (SAXException ex) {
+                            Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (IOException ex) {
+                            Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (TransformerConfigurationException ex) {
+                            Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (TransformerException ex) {
+                            Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                 }
             }
         });
