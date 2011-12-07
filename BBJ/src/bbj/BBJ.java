@@ -144,8 +144,23 @@ public final class BBJ {
 								JOptionPane.QUESTION_MESSAGE, null, options,
 								options[0]);
 				if (n == 0) {
-					event.getWindow().setVisible(false);
-					System.exit(0);
+                                        if (m_hasModifications) {
+                                            try {
+                                                saveDialog();
+                                            } catch (ParserConfigurationException ex) {
+                                                Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                                            } catch (SAXException ex) {
+                                                Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                                            } catch (IOException ex) {
+                                                Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                                            } catch (TransformerConfigurationException ex) {
+                                                Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                                            } catch (TransformerException ex) {
+                                                Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                                            }
+                                        }
+                                        event.getWindow().setVisible(false);
+                                        System.exit(0);
 				}
 			}
 			public void windowDeactivated(WindowEvent event) {}
@@ -544,5 +559,24 @@ public final class BBJ {
      */
     public static void main(String[] args) {
         app = new BBJ();
+    }
+    
+    /**
+     * Диалог сохранения диаграммы при закрытии программы.
+     */
+    private void saveDialog () throws ParserConfigurationException, SAXException, IOException, TransformerConfigurationException, TransformerException {
+        Object[] options = { "Да", "Нет!" };
+
+        int answer = JOptionPane.showOptionDialog(this.mainFrame, "Сохранить изменения в проекте?",
+                                        "Подтверждение", JOptionPane.YES_NO_OPTION,
+                                        JOptionPane.QUESTION_MESSAGE, null, options,
+                                        options[0]);
+        if (answer == 0) {
+            if (!m_hasFile) {
+                saveFileUs();
+            } else {
+                canvas.getModel().save(m_filename);
+            }
+        }
     }
 }
