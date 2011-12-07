@@ -443,4 +443,13 @@ public final class Scene extends JPanel {
             listener.selectionCancelled(event);
         }
     }
+    
+    /**
+     * Метод очистки диаграммы.
+     */
+    public void clear () {
+        this.m_objects.clear();
+        this.m_model.clear();
+        this.repaint();
+    }
 }

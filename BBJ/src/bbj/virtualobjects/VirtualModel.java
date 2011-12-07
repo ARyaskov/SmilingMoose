@@ -300,4 +300,11 @@ public class VirtualModel {
         
     }
     
+    /**
+     * Метод очистки модели
+     */
+    public void clear () {
+        m_objects.clear();
+    }
+    
 }

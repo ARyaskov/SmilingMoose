@@ -185,6 +185,18 @@ public final class BBJ {
          createItem.setFont(menuFont);
          createItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N,
                  java.awt.Event.CTRL_MASK));
+         createItem.addActionListener(new ActionListener() {
+
+             /**
+              * Метод создания новой диаграммы.
+              */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                canvas.clear();
+                m_hasFile = false;
+                m_filename = "";
+            }
+        });
          
          openItem = new JMenuItem("Открыть...");
          menuFile.add(openItem);
