@@ -7,6 +7,7 @@ package bbj.virtualobjects;
 import bbj.graphicsobjects.Point3D;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * Абстрактный класс UML объектов.
@@ -76,9 +77,9 @@ abstract public class UMLObject {
     
     /**
      * Абстрактный метод считывания объекта из файла.
-     * @param element Текущий узел - элемент дерева.
+     * @param node Текущий узел - элемент дерева.
      */
-    abstract public void read (Element element);
+    abstract public void read (Node node);
     
     /**
      * Конструктор по умолчанию.
