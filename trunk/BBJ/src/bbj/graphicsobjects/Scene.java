@@ -108,9 +108,9 @@ public final class Scene extends JPanel {
                 "Процессоры Power PC также используются в многоядерных"
                 + " процессорах в качестве управляющих ядер, например:");
 
-        UIRectLifeLine ll = new UIRectLifeLine(222, 222, "Линия жизни 1");
+        UIRectLifeLine ll = new UIRectLifeLine(111, 111, "Линия жизни 1");
         
-        
+        ll.setEnded(true);
         this.add(testCommentChecked1);
         this.add(testCommentChecked);
         this.add(ll);
