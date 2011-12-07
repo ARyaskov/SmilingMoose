@@ -137,5 +137,8 @@ public class UIFreeComment extends  SceneItem {
         if (rem != 0 )
             g.drawChars(drawedText, drawedText.length - rem, rem, 
                         x + 5, 15 + i * 12 + y);
+        
+        if (m_isEdit)
+            f.repaint();
     }
 }
