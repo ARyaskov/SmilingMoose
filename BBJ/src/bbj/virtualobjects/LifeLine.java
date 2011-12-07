@@ -24,6 +24,15 @@ public class LifeLine extends UMLObject {
     private boolean m_isCreated; /** Флаг, была ли линия жизни создана другой линией жизни. */
     private boolean m_isDestroyed; /** Флаг, была ли линия жизни уничтожена другой линией жизни. */
     private ArrayList<Message> m_messages; /** Массив сообщений, связанных с этой линией жизни. */
+    private int m_index = 0; /** Поле индекса копии. */
+    
+    /**
+     * Метод смена индекса для копии.
+     * @return Новый индекс.
+     */
+    private int incrementCopyIndex () {
+        return ++m_index;
+    }
     
     /**
      * Метод получения имени.
@@ -224,6 +233,28 @@ public class LifeLine extends UMLObject {
         z = Double.parseDouble(element.getAttribute("z"));
         
         this.setCoordinates(new Point3D(x,y,z));
+    }
+    
+    /**
+     * Метод создания копии текущей линии жизни.
+     * @return Копия текущей линии жизни.
+     */
+    public LifeLine copy() {
+        
+        String d = this.getName();
+        LifeLine ll = new LifeLine();
+        
+        // Создание нового имени.
+        if (d.matches("^.*_copy[0-9]+$")) {
+            d.replaceAll("_copy[0-9]+$", "_copy" + Integer.toString(this.incrementCopyIndex()));
+        } else {
+            d += "_copy" + Integer.toString(this.incrementCopyIndex());
+        }
+        
+        ll.setCoordinates(this.getCoordinates());
+        ll.setDescription(this.getDescription());
+        
+        return ll;
     }
     
 }
