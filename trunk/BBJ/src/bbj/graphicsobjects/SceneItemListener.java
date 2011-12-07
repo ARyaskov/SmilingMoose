@@ -35,6 +35,9 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
         if (item.toString().contains("UIFreeComment")) {
             m_selectedItem = (UIFreeComment) item;
         }
+        else if (item.toString().contains("UIRectLifeLine")){
+            m_selectedItem = (UIRectLifeLine) item;
+        }
     }
 
     /**

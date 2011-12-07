@@ -6,22 +6,16 @@ import bbj.virtualobjects.*;
 
 import java.awt.*;
 import javax.swing.*;
+
 /**
- *
+ * Абстрактный класс линии жизни
  * @author Lemon
  */
-public class UILifeLine extends SceneItem{
-    
-    public UILifeLine(){
+abstract public class UILifeLine extends SceneItem{
         
-    }
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        GradientPaint gp = new GradientPaint(0, 0, Color.YELLOW,
-                                       0, 10, Color.WHITE);
-        Graphics2D g2 = (Graphics2D)g;
-        g2.setPaint(gp);
-        g2.fillRect(0, 0, 80, 30);       
-    }
+    /**
+     * Отрисивка линии жизни
+     * @param g Компонент, на котором рисуем
+     */
+    abstract public void paint(Graphics g);
 }

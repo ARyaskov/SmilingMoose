@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 public class EditField extends JTextField implements KeyListener{
 
     SceneItem m_item;   // Родительский элемент сцены
+    int m_type;
             
     /**
      * Конструктор с параметром
@@ -29,9 +30,17 @@ public class EditField extends JTextField implements KeyListener{
         this.setVisible(true);
         this.grabFocus();
 
-        String qwe = item.getText();
-        this.setText(qwe);
+        String currentText = item.getText();
+        this.setText(currentText);
         this.addKeyListener(this);
+        m_type = -1;
+        
+        if (m_item.toString().contains("UIFreeComment")) {
+            m_type = 0;
+        }
+        else if (m_item.toString().contains("UIRectLifeLine")) {
+            m_type = 1;
+        }
     }
     
     /**
@@ -43,8 +52,14 @@ public class EditField extends JTextField implements KeyListener{
         if (e.getKeyChar() == KeyEvent.VK_ENTER){   // Если нажали Enter
             
             // Изменить текст
-            String qwe = this.getText();
-            m_item.setText(qwe);
+            String newText = this.getText();
+            m_item.setText(newText);
+            
+            if (m_type==0)
+                m_item.setToolTipText("Свободный комментарий: " + newText);
+            else if (m_type == 1)
+                m_item.setToolTipText("Линия жизни: " + newText);
+            
             m_item.updateUI();
             this.setVisible(false);
             m_item.remove(this);
