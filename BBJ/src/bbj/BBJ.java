@@ -29,6 +29,10 @@ import org.xml.sax.SAXException;
  * @author Lemon
  */
 public final class BBJ {
+    
+    /* Поля класса для сохранения в файл. */
+    private boolean m_hasFile;  /** Флаг наличия привязанного файла. */
+    private String  m_filename; /** Имя файла, в который ведется сохранение. */
 
     public static Font menuFont;
     public static Font messageFont;
@@ -201,6 +205,8 @@ public final class BBJ {
                 int returnVal = chooser.showOpenDialog(mainFrame);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = chooser.getSelectedFile();
+                    m_hasFile = true;
+                    m_filename = file.getPath();
                 }
             }
         });
@@ -234,10 +240,12 @@ public final class BBJ {
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = chooser.getSelectedFile();
                     String filePath = file.getPath();
+                    m_hasFile = true;
                     if (!filePath.matches(".+\\..+")) {
                         String[] ps = ((FileNameExtensionFilter)chooser.getFileFilter()).getExtensions(); 
                         filePath += ("." + ps[0]);
                      }
+                    m_filename = filePath;
                     try {
                         try {
                             canvas.getModel().save(filePath);
