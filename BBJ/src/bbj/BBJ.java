@@ -210,6 +210,21 @@ public final class BBJ {
               */
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (!m_hasModifications) {
+                    try {
+                        saveDialog();
+                    } catch (ParserConfigurationException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SAXException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (TransformerConfigurationException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (TransformerException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
                 canvas.clear();
                 m_hasFile = false;
                 m_filename = "";
