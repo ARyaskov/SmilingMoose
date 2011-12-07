@@ -355,6 +355,15 @@ public final class BBJ {
                             Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
+                    try {
+                        canvas.getModel().load(file.getPath());
+                    } catch (ParserConfigurationException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SAXException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         });

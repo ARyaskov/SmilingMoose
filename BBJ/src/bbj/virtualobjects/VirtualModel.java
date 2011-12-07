@@ -4,7 +4,9 @@
  */
 package bbj.virtualobjects;
 
+import bbj.graphicsobjects.Point3D;
 import bbj.graphicsobjects.Scene;
+import bbj.virtualobjects.SimpleMessage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,6 +22,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
@@ -298,6 +303,243 @@ public class VirtualModel {
 
         transformer.transform(source, result);
         
+    }
+    
+    /**
+     * Метод загрузки модели из файла.
+     * @param filename Имя чмиаемого файла.
+     */
+    public void load (String filename) throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+        f.setValidating(false);
+        DocumentBuilder builder = f.newDocumentBuilder();
+        Document doc = builder.parse(new File(filename));
+        
+        NodeList nodes = doc.getChildNodes();
+        nodes = nodes.item(0).getChildNodes();
+        nodes = nodes.item(1).getChildNodes();
+        
+        for (int i = 0; i < nodes.getLength(); i++) {
+            
+            if("comments".equals(nodes.item(i).getNodeName())) {
+                loadComments(nodes.item(i));
+            } else if ("lifelines".equals(nodes.item(i).getNodeName())) {
+                loadLifeLines(nodes.item(i));
+            } else if ("messages".equals(nodes.item(i).getNodeName())) {
+                this.readMessages(nodes.item(i));
+            }
+        }
+
+    }
+    
+    /**
+     * Метод считывания сободных комментариев.
+     * @param node 
+     */
+    private void loadComments(Node node) {
+        
+        NodeList nodes = node.getChildNodes();
+        
+        for (int i = 0; i < nodes.getLength(); i++) {
+            FreeComment fc = new FreeComment();
+            System.out.println(nodes.item(i).getNodeName());
+            NamedNodeMap attributes = nodes.item(i).getAttributes();
+            Node cAttrib = attributes.getNamedItem("z");
+            String buf = cAttrib.getNodeValue();
+            double x,z = Double.parseDouble(buf),y;
+            buf = nodes.item(i).getTextContent();
+            fc.setDescription(buf);
+            cAttrib = attributes.getNamedItem("x");
+            buf = cAttrib.getNodeValue();
+            x = Double.parseDouble(buf);
+            cAttrib = attributes.getNamedItem("y");
+            buf = cAttrib.getNodeValue();
+            y = Double.parseDouble(buf);
+            fc.setCoordinates(new Point3D(x,y,z));
+            
+            this.m_objects.add(fc);
+
+        }
+    }
+    
+    /**
+     * Метод загрузки линий жизни.
+     * @param node 
+     */
+    private void loadLifeLines (Node node) {
+        
+        NodeList nodes = node.getChildNodes();
+        
+        for (int i = 0; i < nodes.getLength(); i++) {
+            LifeLine fc = new LifeLine();
+            System.out.println(nodes.item(i).getNodeName());
+            NamedNodeMap attributes = nodes.item(i).getAttributes();
+            Node cAttrib = attributes.getNamedItem("z");
+            String buf = cAttrib.getNodeValue();
+            double x,z = Double.parseDouble(buf),y;
+            cAttrib = attributes.getNamedItem("x");
+            buf = cAttrib.getNodeValue();
+            x = Double.parseDouble(buf);
+            cAttrib = attributes.getNamedItem("y");
+            buf = cAttrib.getNodeValue();
+            y = Double.parseDouble(buf);
+            fc.setCoordinates(new Point3D(x,y,z));
+            cAttrib = attributes.getNamedItem("description");
+            buf = cAttrib.getNodeValue();
+            fc.setDescription(buf);
+            cAttrib = attributes.getNamedItem("name");
+            buf = cAttrib.getNodeValue();
+            fc.setName(buf);
+            cAttrib = attributes.getNamedItem("id");
+            buf = cAttrib.getNodeValue();
+            fc.setFileId(Integer.parseInt(buf));
+            cAttrib = attributes.getNamedItem("is-End");
+            buf = cAttrib.getNodeValue();
+            fc.setEnd(Boolean.parseBoolean(buf));
+            
+            this.m_objects.add(fc);
+
+        }
+    }
+    
+    /**
+     * Метод загрузки простых сообщений.
+     * @param node Узел дерева.
+     */
+    private void readSimpleMessage (Node node) {
+        
+        SimpleMessage simple = new SimpleMessage();
+        NamedNodeMap attributes = node.getAttributes();
+        Node cAttrib = attributes.getNamedItem("end_id");
+        String buf = cAttrib.getNodeValue();
+        simple.ids[1] = Integer.parseInt(buf);
+        cAttrib = attributes.getNamedItem("name");
+        buf = cAttrib.getNodeValue();
+        simple.setName(buf);
+        cAttrib = attributes.getNamedItem("start_id");
+        buf = cAttrib.getNodeValue();
+        simple.ids[1] = Integer.parseInt(buf);
+        cAttrib = attributes.getNamedItem("z");
+        buf = cAttrib.getNodeValue();
+        double x,z = Double.parseDouble(buf),y;
+        cAttrib = attributes.getNamedItem("x");
+        buf = cAttrib.getNodeValue();
+        x = Double.parseDouble(buf);
+        cAttrib = attributes.getNamedItem("y");
+        buf = cAttrib.getNodeValue();
+        y = Double.parseDouble(buf);
+        simple.setCoordinates(new Point3D(x,y,z));
+    }
+    
+    /**
+     * Метод загрузки сообщений создания.
+     * @param node Узел дерева.
+     */
+    private void readCreateMessage (Node node) {
+        
+        CreateMessage simple = new CreateMessage();
+        NamedNodeMap attributes = node.getAttributes();
+        Node cAttrib = attributes.getNamedItem("end_id");
+        String buf = cAttrib.getNodeValue();
+        simple.ids[1] = Integer.parseInt(buf);
+        cAttrib = attributes.getNamedItem("name");
+        buf = cAttrib.getNodeValue();
+        simple.setName(buf);
+        cAttrib = attributes.getNamedItem("start_id");
+        buf = cAttrib.getNodeValue();
+        simple.ids[1] = Integer.parseInt(buf);
+        cAttrib = attributes.getNamedItem("z");
+        buf = cAttrib.getNodeValue();
+        double x,z = Double.parseDouble(buf),y;
+        cAttrib = attributes.getNamedItem("x");
+        buf = cAttrib.getNodeValue();
+        x = Double.parseDouble(buf);
+        cAttrib = attributes.getNamedItem("y");
+        buf = cAttrib.getNodeValue();
+        y = Double.parseDouble(buf);
+        simple.setCoordinates(new Point3D(x,y,z));
+    }
+    
+    /**
+     * Метод загрузки сообщений уничтожения.
+     * @param node Узел дерева.
+     */
+    private void readDestroyMessage (Node node) {
+        
+        DestroyMessage simple = new DestroyMessage();
+        NamedNodeMap attributes = node.getAttributes();
+        Node cAttrib = attributes.getNamedItem("end_id");
+        String buf = cAttrib.getNodeValue();
+        simple.ids[1] = Integer.parseInt(buf);
+        cAttrib = attributes.getNamedItem("name");
+        buf = cAttrib.getNodeValue();
+        simple.setName(buf);
+        cAttrib = attributes.getNamedItem("start_id");
+        buf = cAttrib.getNodeValue();
+        simple.ids[1] = Integer.parseInt(buf);
+        cAttrib = attributes.getNamedItem("z");
+        buf = cAttrib.getNodeValue();
+        double x,z = Double.parseDouble(buf),y;
+        cAttrib = attributes.getNamedItem("x");
+        buf = cAttrib.getNodeValue();
+        x = Double.parseDouble(buf);
+        cAttrib = attributes.getNamedItem("y");
+        buf = cAttrib.getNodeValue();
+        y = Double.parseDouble(buf);
+        simple.setCoordinates(new Point3D(x,y,z));
+    }
+    
+    /**
+     * Метод загрузки возвратных сообщений.
+     * @param node Узел дерева.
+     */
+    private void readReplyMessage (Node node) {
+        
+        ReplyMessage simple = new ReplyMessage();
+        NamedNodeMap attributes = node.getAttributes();
+        Node cAttrib = attributes.getNamedItem("end_id");
+        String buf = cAttrib.getNodeValue();
+        simple.ids[1] = Integer.parseInt(buf);
+        cAttrib = attributes.getNamedItem("name");
+        buf = cAttrib.getNodeValue();
+        simple.setName(buf);
+        cAttrib = attributes.getNamedItem("start_id");
+        buf = cAttrib.getNodeValue();
+        simple.ids[1] = Integer.parseInt(buf);
+        cAttrib = attributes.getNamedItem("z");
+        buf = cAttrib.getNodeValue();
+        double x,z = Double.parseDouble(buf),y;
+        cAttrib = attributes.getNamedItem("x");
+        buf = cAttrib.getNodeValue();
+        x = Double.parseDouble(buf);
+        cAttrib = attributes.getNamedItem("y");
+        buf = cAttrib.getNodeValue();
+        y = Double.parseDouble(buf);
+        simple.setCoordinates(new Point3D(x,y,z));
+    }
+    
+    /**
+     * Метод загрузки сообщений.
+     * @param node Узел дерева.
+     */
+    private void readMessages (Node node) {
+        NodeList list = node.getChildNodes();
+        
+        for (int i = 0; i < list.getLength(); i++) {
+            NamedNodeMap attributes = list.item(i).getAttributes();
+            Node cAttrib = attributes.getNamedItem("end_id");
+            String buf = cAttrib.getNodeValue();
+            
+            if ("simple".equals(buf)) {
+                this.readSimpleMessage(list.item(i));
+            } else if ("create".equals(buf)) {
+                readCreateMessage(list.item(i));
+            } else if ("destroy".equals(buf)) {
+                readDestroyMessage(list.item(i));
+            } else {
+                readReplyMessage(list.item(i));
+            }
+        }
     }
     
     /**
