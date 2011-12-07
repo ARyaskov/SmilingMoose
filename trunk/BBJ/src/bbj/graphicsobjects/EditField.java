@@ -41,6 +41,9 @@ public class EditField extends JTextField implements KeyListener{
         else if (m_item.toString().contains("UIRectLifeLine")) {
             m_type = 1;
         }
+        else if(m_item.toString().contains("UIActorLifeLine")) {
+            m_type = 2;
+        }
     }
     
     /**
@@ -59,6 +62,8 @@ public class EditField extends JTextField implements KeyListener{
                 m_item.setToolTipText("Свободный комментарий: " + newText);
             else if (m_type == 1)
                 m_item.setToolTipText("Линия жизни: " + newText);
+            else if (m_type == 2)
+                m_item.setToolTipText("Исполнитель: " + newText);
             
             m_item.updateUI();
             this.setVisible(false);

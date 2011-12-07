@@ -38,6 +38,9 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
         else if (item.toString().contains("UIRectLifeLine")){
             m_selectedItem = (UIRectLifeLine) item;
         }
+        else if (item.toString().contains("UIActorLifeLine")){
+            m_selectedItem = (UIActorLifeLine) item;
+        }
     }
 
     /**
