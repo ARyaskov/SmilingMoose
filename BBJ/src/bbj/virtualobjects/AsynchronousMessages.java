@@ -55,4 +55,13 @@ public class AsynchronousMessages extends Message {
         return element;
     }
     
+    /**
+     * Метод чтения асинхронные сообщения из xml файла.
+     * @param element Узел xml дерева.
+     */
+    @Override
+    public void read(Element element) {
+        super.read(element);
+    }
+    
 }
