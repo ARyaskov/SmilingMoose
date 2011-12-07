@@ -12,4 +12,15 @@ package bbj.virtualobjects;
  */
 public class AsynchronousMessages extends Message {
     
+    /**
+     * Конструктор по умолчанию.
+     */
+    public AsynchronousMessages () {
+        
+        setDescription("");
+        setId(0);
+        setReceiver(null);
+        setSender(null);
+    }
+    
 }
