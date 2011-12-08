@@ -474,4 +474,12 @@ public final class Scene extends JPanel {
     public void save (String filename) throws ParserConfigurationException, SAXException, IOException, TransformerConfigurationException, TransformerException {
         m_model.save(filename);
     }
+    
+    /**
+     * Метод чтения диаграммы из файла.
+     * @param filename 
+     */
+    public void load (String filename) throws ParserConfigurationException, SAXException, IOException {
+        m_model.load(filename);
+    }
 }
