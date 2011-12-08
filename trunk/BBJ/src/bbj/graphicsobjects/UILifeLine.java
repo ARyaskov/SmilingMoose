@@ -44,7 +44,7 @@ abstract public class UILifeLine extends SceneItem{
      */
     public void paint(Graphics g){
         specificPaint(g);
-        
+                       
         Graphics2D g2 = (Graphics2D)g;
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
         g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
@@ -59,8 +59,8 @@ abstract public class UILifeLine extends SceneItem{
         g2.setStroke(new BasicStroke(1));
        
         if (m_isEnded){
-            g.drawLine(40, 260, 80, 300);
-            g.drawLine(40, 300, 80, 260);
+            g.drawLine(x+40, y+260, x+80, y+300);
+            g.drawLine(x+40, y+300, x+80, y+260);
         }
                  
         g2.setStroke(new BasicStroke(1.0f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,
@@ -71,7 +71,7 @@ abstract public class UILifeLine extends SceneItem{
         else                // Рисуем границы полигона черным цветом
             g2.setColor(Color.black);
                 
-        g2.drawLine(60, 50, 60, 280);
+        g2.drawLine(x+60, y+50, x+60, y+280);
         
          // Разбиваем текст на массив символов
         char [] drawedText = m_text.toCharArray();

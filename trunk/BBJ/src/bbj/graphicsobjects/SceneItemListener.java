@@ -95,13 +95,13 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
 
         Rectangle rect = BBJ.app.getScene().getUIPanelsRectangle();
         //m_comment.setLocation(endX, endY);  // Задаем координаты объекту
-        if (rect.contains(endX, endY)) {
-            m_selectedItem.x = rect.x + rect.width + 2;
-            m_selectedItem.y = rect.y + rect.height + 2;
-        } else {
-            m_selectedItem.x = endX;
-            m_selectedItem.y = endY;
-        }
+//        if (rect.contains(endX, endY)) {
+//            m_selectedItem.x = rect.x + rect.width + 2;
+//            m_selectedItem.y = rect.y + rect.height + 2;
+//        } else {
+//            m_selectedItem.x = endX;
+//            m_selectedItem.y = endY;
+//        }
 
         // Задаем координаты
         m_selectedItem.x = endX;
@@ -127,6 +127,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
             while (it.hasNext()) {// Очищаем все элементы от выделения
                 SceneItem cur = (SceneItem) it.next();
                 cur.select(false);
+ //               cur.updateUI();
                 if (cur.isEdited()){
                     cur.f.setVisible(false);
                     cur.remove(cur.f);
