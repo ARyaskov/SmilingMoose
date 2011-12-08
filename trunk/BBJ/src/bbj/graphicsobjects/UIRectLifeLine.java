@@ -19,25 +19,14 @@ public class UIRectLifeLine extends UILifeLine {
      * @param text Текст ЛЖ
      */
     public UIRectLifeLine(int x, int y, String text) {
-        
-        this.x = x;
-        this.y = y;
-        this.w = 120;
-        this.h = 300;
-        
-        m_textCoordX = x+10;
-        m_textCoordY = y+30;
-        
-        m_text = text;
-
-        setBounds(x, y, w, h);
-        this.m_isEdit = false;
-        this.m_isSelected = false;
-
+         
+        fillData(x,y,text);
+                
         SceneItemListener listener = new SceneItemListener(this);
 
         this.addMouseListener(listener);
         this.addMouseMotionListener(listener);
+        
         this.setToolTipText("Линия жизни: " + m_text);
     }
 

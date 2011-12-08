@@ -116,7 +116,7 @@ public final class Scene extends JPanel {
         UIRectLifeLine ll = new UIRectLifeLine(111, 111, "Линия жизни 1");
         
         UIActorLifeLine al = new UIActorLifeLine(111, 333, "Исполнитель 1 тест");
-                
+                       
         ll.setEnded(true);
         this.add(testCommentChecked1);
         this.add(testCommentChecked);
