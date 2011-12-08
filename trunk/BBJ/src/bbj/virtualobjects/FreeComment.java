@@ -54,13 +54,15 @@ public class FreeComment extends UMLObject {
      */
     @Override
     public Element write(Document document) {
-        Element element = document.createElement("Comment");
+        Element element = document.createElement("comment");
         
         element.appendChild(document.createTextNode(this.getDescription()));
         
         element.setAttribute("x", Double.toString(this.getCoordinates().getX()));
         element.setAttribute("y", Double.toString(this.getCoordinates().getY()));
         element.setAttribute("z", Double.toString(this.getCoordinates().getZ()));
+        element.setAttribute("id", Integer.toString(this.getId()));
+        element.setAttribute("index", Integer.toString(m_index));
         
         return element;
     }
