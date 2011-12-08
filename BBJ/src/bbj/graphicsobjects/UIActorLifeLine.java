@@ -24,8 +24,8 @@ public class UIActorLifeLine extends UILifeLine {
         this.w = 120;
         this.h = 300;
         
-        m_textCoordX = 10;
-        m_textCoordY = 47;
+        m_textCoordX = x+10;
+        m_textCoordY = y+47;
         
         m_text = text;
 
@@ -42,6 +42,8 @@ public class UIActorLifeLine extends UILifeLine {
             
     @Override
     public void specificPaint(Graphics g) {
+        m_textCoordX = x+10;
+        m_textCoordY = y+47;
         
         Graphics2D g2 = (Graphics2D)g;
                      
@@ -69,11 +71,11 @@ public class UIActorLifeLine extends UILifeLine {
                 
         // Рисуем человечка
         g2.setStroke(new BasicStroke(3));
-        g2.drawOval(55, 0, 10, 10);
-        g2.drawLine(60, 10, 60, 20);
-        g2.drawLine(52, 13, 68, 13);
-        g2.drawLine(60, 20, 65, 32);
-        g2.drawLine(60, 20, 55, 32);
+        g2.drawOval(x +55, y + 0, 10, 10);
+        g2.drawLine(x +60, y + 10, x +60, y + 20);
+        g2.drawLine(x +52, y + 13, x +68, y + 13);
+        g2.drawLine(x +60, y + 20, x +65, y + 32);
+        g2.drawLine(x +60, y + 20, x +55, y + 32);
     }
     
 }
