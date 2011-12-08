@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <properties>
+        <create-date>01.01.2010</create-date>
+        <author>Admin</author>
+        <is-draft>false</is-draft>
+    </properties>
+    
+    <diagram total-count = "5">
+        <lifelines count = "2">
+            <lifeline id = "0" name = "LL1" x = "5" y = "6" z = "7" is-end = "true" is-created = "true" is_destroyed = "true" index = "0" />
+            <lifeline id = "1" name = "LL2" x = "4" y = "3" z = "2" is-end = "false" is-created = "false" is_destroyed = "false" index = "0" />
+        </lifelines>
+        
+        <comments count = "1">
+            <comment id = "9" x = "5" y = "5" z = "3" index = "0">
+                comment
+            </comment>
+        </comments>
+        
+        <messages count = "2">
+            <!-- type = simple, reply, create, destroy, asynch -->
+            <message name = "M1" type = "simple" start-id = "0" end-id = "1" x = "2" y = "2" z = "1" id = "3" parent = "-" />
+            <message name = "M2" type = "reply" start-id = "1" end-id = "0" x = "3" y = "3" z = "3" id = "4" parent = "3" />
+        </messages>
+    </diagram>
+</root>
