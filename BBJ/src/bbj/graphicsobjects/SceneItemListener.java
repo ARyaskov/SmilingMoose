@@ -32,13 +32,13 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
         m_selectedItem = null;
 
         // Определяем тип текущего объекта и запоминаем его 
-        if (item.toString().contains("UIFreeComment")) {
+        if (item.getClass().getName().equals("bbj.graphicsobjects.UIFreeComment")) {
             m_selectedItem = (UIFreeComment) item;
         }
-        else if (item.toString().contains("UIRectLifeLine")){
+        else if (item.getClass().getName().equals("bbj.graphicsobjects.UIRectLifeLine")){
             m_selectedItem = (UIRectLifeLine) item;
         }
-        else if (item.toString().contains("UIActorLifeLine")){
+        else if (item.getClass().getName().equals("bbj.graphicsobjects.UIActorLifeLine")){
             m_selectedItem = (UIActorLifeLine) item;
         }
     }
@@ -79,18 +79,26 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
         if (m_selectedItem == null) {
             return;
         }
-
+        int endX, endY;
+        
         // Определяем координаты конца движения
-        int endX = e.getXOnScreen() - m_startX;
-        int endY = e.getYOnScreen() - m_startY;
-
+        endX = e.getXOnScreen() - m_startX;
+        
         // Проверим, что не вылезли за гграницы окна по Х
         endX = Math.max(endX, 0);
         endX = Math.min(endX, m_selectedItem.getParent().getWidth() - m_selectedItem.w);
+                
+        if (!m_selectedItem.getClass().getSuperclass().getName().equals("bbj.graphicsobjects.UILifeLine")){
+            endY = e.getYOnScreen() - m_startY;
+            // Проверим, что не вылезли за гграницы окна по Y
+            endY = Math.max(endY, 0);
+            endY = Math.min(endY, m_selectedItem.getParent().getHeight() - m_selectedItem.h); 
+        }
+        else{
+            endY = 50;
+        }
+        
 
-        // Проверим, что не вылезли за гграницы окна по Y
-        endY = Math.max(endY, 0);
-        endY = Math.min(endY, m_selectedItem.getParent().getHeight() - m_selectedItem.h);
 
 
         Rectangle rect = BBJ.app.getScene().getUIPanelsRectangle();
@@ -127,7 +135,6 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
             while (it.hasNext()) {// Очищаем все элементы от выделения
                 SceneItem cur = (SceneItem) it.next();
                 cur.select(false);
- //               cur.updateUI();
                 if (cur.isEdited()){
                     cur.f.setVisible(false);
                     cur.remove(cur.f);
