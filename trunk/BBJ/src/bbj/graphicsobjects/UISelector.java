@@ -12,7 +12,7 @@ import java.util.*;
  * 
  * @author Lemon
  */
-public class UISelector extends JComponent {
+public class UISelector extends SceneItem {
 
     private Image m_arrowLeft;
     private Image m_arrowRight;
@@ -61,6 +61,8 @@ public class UISelector extends JComponent {
             m_name = name;
         }
     }
+    
+   
 
     /**
      * 
@@ -79,11 +81,12 @@ public class UISelector extends JComponent {
             String path16,
             String nameSuffix) {
 
+        super();
 
         if (nameOfItems.size() < 3) {
             System.out.println("UISelector: Нужно больше элементов для выбора! (Минимум 3)");
         } else {
-            this.setDoubleBuffered(true);
+            
             m_listOfUI = new ArrayList<UIElementInfo>();
             m_images24px = new ArrayList<Image>();
             m_images48px = new ArrayList<Image>();
@@ -121,7 +124,7 @@ public class UISelector extends JComponent {
 
             setSize(new Dimension(m_leftSmall.getWidth(null) * 2 + m_centerBig.getWidth(null) + 24,
                     m_centerBig.getHeight(null) + m_arrowRight.getHeight(null) + 24));
-
+            System.out.printf(" W:%d, H:%d ",getSize().width, getSize().height);
             int distance = 2;
             m_listOfUI.add(new UIElementInfo(m_leftSmall.getWidth(null),
                     m_leftSmall.getHeight(null), distance, 2, "Previous"));
@@ -205,17 +208,17 @@ public class UISelector extends JComponent {
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
 
-
+        super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(new Color(255, 255, 255, 255));
         g2.fillRect(0, 0, getWidth(), getHeight());
-        /*g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
         g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);*/
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 
 
         g2.setColor(new Color(0, 0, 0, 255));
@@ -288,7 +291,7 @@ public class UISelector extends JComponent {
     }
 
     public UIElementInfo getElementByName(String s) {
-        Iterator itr = m_listOfUI.iterator();
+        /*Iterator itr = m_listOfUI.iterator();
         UIElementInfo element;
         while (itr.hasNext()) {
             element = (UIElementInfo) itr.next();
@@ -296,6 +299,14 @@ public class UISelector extends JComponent {
                 return element;
             }
 
+        }*/
+        UIElementInfo element;
+        int size = m_listOfUI.size();
+        for (int i=0;i<size;i++){
+            element = m_listOfUI.get(i);
+            if (element.m_name == null ? s == null : element.m_name.equals(s)) {
+                return element;
+            }
         }
         return null;
     }
@@ -335,10 +346,10 @@ public class UISelector extends JComponent {
         public void mouseReleased(MouseEvent e) {
             if (e.getButton() == MouseEvent.BUTTON1) {
                 String owner = getOwner(e.getPoint());
-                if (owner == "arrowLeft" && m_drawInvertLeft == true) {
+                if ("arrowLeft".equals(owner) && m_drawInvertLeft == true) {
                     m_drawInvertLeft = false;
                     repaint();
-                } else if (owner == "arrowRight" && m_drawInvertRight == true) {
+                } else if ("arrowRight".equals(owner) && m_drawInvertRight == true) {
                     m_drawInvertRight = false;
                     repaint();
                 } else {

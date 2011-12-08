@@ -80,7 +80,7 @@ public class DestroyMessage extends Message {
      * Метод чтения сообщения уничтожения из xml файла.
      * @param element Узел xml дерева.
      */
-    @Override
+   // @Override
     public void read(Node node) {
         super.read(node);
     }

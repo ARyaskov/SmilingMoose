@@ -16,6 +16,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.awt.event.*;
 import java.io.File;
+import javax.swing.*;
 import javax.swing.JDialog;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -43,6 +44,8 @@ public final class BBJ {
     public static Font commonArial;
     public static Font messageNameFont;
     
+    public static Color m_background_color = new Color(255,255,255);
+    
     public Font inputFont;
     public JMenu menuFile;
     public JMenu menuMisc;
@@ -57,20 +60,32 @@ public final class BBJ {
     public JMenuItem inXMIItem;
     public JMenuItem exitItem;
     public JFrame mainFrame;
-    
+    public JMenuBar menuBar;
     
     public static int windowHeight;
     public static int windowWidth;
     
+     private ArrayList<String> itemsMessages;
+     private ArrayList<String> itemsEntities;
+     public UISelector m_messageSelector;
+     public UISelector m_entitySelector;
+    
     public JDialog prefsWindow;
     
     protected Scene canvas;
+    private JPanel m_canvasUI;
     public static BBJ app;
+    
+    
+    private JPanel panel;
     
     public Scene getScene(){
         return canvas;
     }
     
+    public JPanel getCanvasUI(){
+        return m_canvasUI;
+    }
     
     public BBJ(){
         setupFonts();
@@ -81,10 +96,62 @@ public final class BBJ {
         
     }
     
-    
+    public void repaintSelectors(){
+        if (m_messageSelector != null && m_entitySelector != null){
+            m_messageSelector.repaint();
+            m_entitySelector.repaint();
+        }
+    }
  
      public void fillGUIContent(){
          mainFrame = new JFrame();
+         menuBar = new JMenuBar();
+         toolBar = new JToolBar(JToolBar.HORIZONTAL);
+         itemsMessages = new ArrayList<String>();
+         itemsEntities = new ArrayList<String>();
+         
+         setupMenus(menuBar);
+         mainFrame.setJMenuBar(menuBar);
+
+         toolBar.setFloatable(false);
+         toolBar.setBorder(new BevelBorder(BevelBorder.RAISED));
+         fillToolBar();
+         
+         mainFrame.add(toolBar, "North");
+
+        
+        itemsMessages.add("Reply");
+        itemsMessages.add("Create");
+        itemsMessages.add("Message");
+        itemsMessages.add("Delete");
+        itemsMessages.add("Sync");
+        itemsMessages.add("Async");
+
+
+        
+        itemsEntities.add("Actor");
+        itemsEntities.add("Comment");
+        itemsEntities.add("LifeLine");
+
+        m_messageSelector = new UISelector(
+                itemsMessages,
+                2,
+                "images/48/",
+                "images/24/",
+                "images/16/",
+                "message");
+        m_entitySelector = new UISelector(
+                itemsEntities,
+                2,
+                "images/48/",
+                "images/24/",
+                "images/16/",
+                "entity");
+         
+         canvas = new Scene(this);
+         canvas.setSize(mainFrame.getWidth(), mainFrame.getHeight() - toolBar.getHeight()
+                 - menuBar.getHeight());
+         
          mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE );
          ArrayList<Image> listOfIcons = new ArrayList();
          listOfIcons.add(new ImageIcon(BBJ.class.getResource("images/moose16.png")).getImage());
@@ -101,36 +168,30 @@ public final class BBJ {
          mainFrame.setMinimumSize(new Dimension(400,400));
          mainFrame.setMaximumSize(new Dimension(2560,1600));
          
-         JMenuBar menuBar = new JMenuBar();
-         setupMenus(menuBar);
-         mainFrame.setJMenuBar(menuBar);
-       
-         
-         toolBar = new JToolBar(JToolBar.HORIZONTAL);
-         toolBar.setFloatable(false);
-         toolBar.setBorder(new BevelBorder(BevelBorder.RAISED));
-         fillToolBar();
-         mainFrame.add(toolBar, "North");
+        
 
-         canvas = new Scene();
-       
-         canvas.setSize(mainFrame.getWidth()+100, mainFrame.getHeight() - toolBar.getHeight()
-                 - menuBar.getHeight());
          
-         
-         /*JViewport viewport = new JViewport();
-         viewport.setView(canvas);
-         mainFrame.add(viewport);*/
-          final JScrollPane scrollPane = new JScrollPane(canvas);
-           mainFrame.add(scrollPane, BorderLayout.CENTER);
-         
+         mainFrame.add(m_messageSelector);
+         mainFrame.add(m_entitySelector);
+      
+         m_messageSelector.setLocation(5, 50);
+         m_entitySelector.setLocation(5, m_messageSelector.getY()+m_messageSelector.getHeight()+10);
+        
          mainFrame.add(canvas);
-         
+
          mainFrame.addWindowListener(new mainFrameWindowListener());
          
          mainFrame.setVisible(true);
+     
+         
+         
+         
          
      }
+     
+
+     
+
      
       class mainFrameWindowListener implements ComponentListener, WindowListener {
 
@@ -177,7 +238,9 @@ public final class BBJ {
                         public void componentResized(ComponentEvent e){
                            windowHeight = e.getComponent().getHeight();
                            windowWidth = e.getComponent().getWidth();
-                           BBJ.app.getScene().updateUI();
+                           //Убрать когда скролл сделаем
+                           BBJ.app.getScene().setSize(windowWidth, windowHeight);
+                           BBJ.app.getScene().repaint();
                         }
                         public void componentShown(ComponentEvent e){
                             
