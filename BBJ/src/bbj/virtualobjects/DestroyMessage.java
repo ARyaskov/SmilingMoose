@@ -6,6 +6,7 @@ package bbj.virtualobjects;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * Класс сообщения уничтожения.
@@ -61,7 +62,7 @@ public class DestroyMessage extends Message {
     }
 
     /**
-     * Метод записи линии жизни в xml файл.
+     * Метод записи сообщения уничтожения в xml файл.
      * @param document Главный документ файла.
      * @return Узел xml дерева.
      */
@@ -70,17 +71,18 @@ public class DestroyMessage extends Message {
         Element element = super.write(document);
         
         element.setAttribute("type", "destroy");
+        element.setAttribute("parent", "-");
         
         return element;
     }
 
     /**
-     * Метод чтения линии жизни из xml файла.
+     * Метод чтения сообщения уничтожения из xml файла.
      * @param element Узел xml дерева.
      */
     @Override
-    public void read(Element element) {
-        super.read(element);
+    public void read(Node node) {
+        super.read(node);
     }
     
 }
