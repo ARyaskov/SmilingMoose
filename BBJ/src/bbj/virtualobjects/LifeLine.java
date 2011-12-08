@@ -8,6 +8,7 @@ import bbj.graphicsobjects.Point3D;
 import java.util.ArrayList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * Класс линии жизни.
@@ -207,12 +208,14 @@ public class LifeLine extends UMLObject {
         Element element = document.createElement("LifeLine");
         
         element.setAttribute("name", m_name);
-        element.setAttribute("description", this.getDescription());
         element.setAttribute("id", Integer.toString(m_fileId));
-        element.setAttribute("is-End", Boolean.toString(m_isEnd));
+        element.setAttribute("is-end", Boolean.toString(m_isEnd));
         element.setAttribute("x", Double.toString(this.getCoordinates().getX()));
         element.setAttribute("y", Double.toString(this.getCoordinates().getY()));
         element.setAttribute("z", Double.toString(this.getCoordinates().getZ()));
+        element.setAttribute("is-created", Boolean.toString(m_isCreated));
+        element.setAttribute("is-destroyed", Boolean.toString(m_isDestroyed));
+        element.setAttribute("index", Integer.toString(m_index));
         
         return element;
     }
@@ -221,7 +224,7 @@ public class LifeLine extends UMLObject {
      * Метод чтения линии жизни из xml файла.
      * @param element Узел xml дерева.
      */
-    @Override
+  //  @Override
     public void read(Element element) {
         double x,y,z;
         m_name = element.getAttribute("name");
@@ -255,6 +258,11 @@ public class LifeLine extends UMLObject {
         ll.setDescription(this.getDescription());
         
         return ll;
+    }
+
+    @Override
+    public void read(Node node) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }
