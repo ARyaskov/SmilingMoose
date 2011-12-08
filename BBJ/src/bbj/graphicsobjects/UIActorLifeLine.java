@@ -59,7 +59,7 @@ public class UIActorLifeLine extends UILifeLine {
                 
         // Рисуем человечка
         g2.setStroke(new BasicStroke(3));
-        g2.drawOval(x +55, y + 0, 10, 10);
+        g2.drawOval(x +55, y, 10, 10);
         g2.drawLine(x +60, y + 10, x +60, y + 20);
         g2.drawLine(x +52, y + 13, x +68, y + 13);
         g2.drawLine(x +60, y + 20, x +65, y + 32);
