@@ -7,6 +7,7 @@ package bbj.virtualobjects;
 import bbj.graphicsobjects.Point3D;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
@@ -111,12 +112,41 @@ public class Message extends UMLObject {
     }
     
     /**
-     * Метод чтения линии жизни из xml файла.
+     * Метод чтения сообщения из xml файла.
      * @param element Узел xml дерева.
      */
-
     @Override
     public void read(Node node) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        double x,y,z;
+        String buffer;
+        NamedNodeMap attributes = node.getAttributes();
+        // Считывание координаты z.
+        Node attr = attributes.getNamedItem("z");
+        buffer = attr.getNodeValue();
+        z = Double.parseDouble(buffer);
+        // Считывание координаты y.
+        attr = attributes.getNamedItem("y");
+        buffer = attr.getNodeValue();
+        y = Double.parseDouble(buffer);
+        // Считывание координаты x.
+        attr = attributes.getNamedItem("x");
+        buffer = attr.getNodeValue();
+        x = Double.parseDouble(buffer);
+        // Считывания идентификатора.
+        attr = attributes.getNamedItem("id");
+        buffer = attr.getNodeValue();
+        this.setId(Integer.parseInt(buffer));
+        // Считывание имени сообщения.
+        attr = attributes.getNamedItem("name");
+        buffer = attr.getNodeValue();
+        m_name = buffer;
+        // Считывание идентификатора началала сообщения.
+        attr = attributes.getNamedItem("start-id");
+        buffer = attr.getNodeValue();
+        ids[0] = Integer.parseInt(buffer);
+        // Считывание идентификатора конца сообщения.
+        attr = attributes.getNamedItem("end-id");
+        buffer = attr.getNodeValue();
+        ids[1] = Integer.parseInt(buffer);
     }
 }
