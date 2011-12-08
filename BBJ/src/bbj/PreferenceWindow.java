@@ -44,7 +44,7 @@ public final class PreferenceWindow extends JDialog
         this.setResizable(false);
         scene = BBJ.app.getScene();
         setSize(new Dimension(500, 300));
-        gridColors = new Vector(2);
+        gridColors = new Vector();
         gridColors.add(new Color(128,128,128,64));
         gridColors.add(new Color(204,255,243));
         gridColors.add(new Color(204,241,255));
@@ -108,8 +108,7 @@ public final class PreferenceWindow extends JDialog
         gridPrefsPanel.add(gridDisplay);
         
         
-        
-
+       
         // Добавим Spinner для величины ячеек в сетке
         SpinnerModel model =
             new SpinnerNumberModel(scene.getGridFactor(), //initial value
