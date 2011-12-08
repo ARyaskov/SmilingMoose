@@ -423,6 +423,27 @@ public class VirtualModel {
     }
     
     /**
+     * Метод синхронизации сообщений возврата с другими сообщениями.
+     */
+    private void syncReply () {
+        
+        for (int i = 0; i < m_objects.size(); i++) {
+            
+            if (m_objects.get(i).getClass() == ReplyMessage.class) {
+                
+                for (int j = 0; j < m_objects.size(); j++) {
+                    
+                    if (m_objects.get(j).getId() == ((ReplyMessage)m_objects.get(i)).getParent().getId()) {
+                        
+                        ((ReplyMessage)m_objects.get(i)).setParent((Message)m_objects.get(j));
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
      * Метод очистки модели
      */
     public void clear () {
