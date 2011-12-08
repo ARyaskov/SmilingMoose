@@ -382,22 +382,42 @@ public class VirtualModel {
                 SimpleMessage sm = new SimpleMessage();
                 sm.read(list.item(i));
                 m_objects.add(sm);
+                syncMessages(sm);
             } else if ("create".equals(buf)) {
                 CreateMessage cm = new CreateMessage();
                 cm.read(list.item(i));
                 m_objects.add(cm);
+                syncMessages(cm);
             } else if ("destroy".equals(buf)) {
                 DestroyMessage dm = new DestroyMessage();
                 dm.read(list.item(i));
                 m_objects.add(dm);
+                syncMessages(dm);
             } else if ("reply".equals(buf)) {
                 ReplyMessage rm = new ReplyMessage();
                 rm.read(list.item(i));
                 m_objects.add(rm);
+                syncMessages(rm);
             } else if ("asynch".equals(buf)) {
                 AsynchronousMessages am = new AsynchronousMessages();
                 am.read(list.item(i));
                 m_objects.add(am);
+                syncMessages(am);
+            }
+        }
+    }
+    
+    /**
+     * Метод синхронизации сообщений с связанными линиями жизни.
+     * @param message Синхронизуемое сообщение.
+     */
+    private void syncMessages (Message message) {
+        for (int i = 0; i < m_objects.size(); i++) {
+            if (m_objects.get(i).getId() == message.ids[0]) {
+                ((LifeLine)m_objects.get(i)).addMessage(message);
+                message.setReceiver((LifeLine)m_objects.get(i));
+            } else if (m_objects.get(i).getId() == message.ids[1]) {
+                message.setReceiver((LifeLine)m_objects.get(i));
             }
         }
     }
