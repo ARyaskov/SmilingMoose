@@ -6,6 +6,7 @@ package bbj.virtualobjects;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * Класс простого сообщения.
@@ -70,17 +71,18 @@ public class SimpleMessage extends Message {
         Element element = super.write(document);
         
         element.setAttribute("type", "simple");
+        element.setAttribute("parent", "-");
         
         return element;
     }
 
     /**
-     * Метод чтения линии жизни из xml файла.
+     * Метод чтения простого сообщения из xml файла.
      * @param element Узел xml дерева.
      */
     @Override
-    public void read(Element element) {
-        super.read(element);
+    public void read(Node node) {
+        super.read(node);
     }
     
 }
