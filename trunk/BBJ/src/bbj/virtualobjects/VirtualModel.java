@@ -329,6 +329,8 @@ public class VirtualModel {
                 this.readMessages(nodes.item(i));
             }
         }
+        
+        syncReply ();
 
     }
     
