@@ -149,18 +149,20 @@ public final class Scene extends JPanel {
                 "Процессоры Power PC также используются в многоядерных"
                 + " процессорах в качестве управляющих ядер, например:");
 
-        UIRectLifeLine ll = new UIRectLifeLine(311, 111, "Линия жизни 1");
+        UIRectLifeLine ll = new UIRectLifeLine(200, 111, "Линия жизни 1");
         
 
-        UIActorLifeLine al = new UIActorLifeLine(311, 333, "Исполнитель 1 тест");
+        
+        UIActorLifeLine al = new UIActorLifeLine(400, 333, "Исполнитель 1 тест");
                 
+        UISimpleMessage m = new UISimpleMessage(ll, al, 215);
 
         ll.setEnded(true);
         this.add(ll);
         this.add(testCommentChecked1);
         this.add(testCommentChecked);
         this.add(al);
-        //this.add(al);
+        this.add(m);
 
         
         
@@ -169,7 +171,7 @@ public final class Scene extends JPanel {
         m_objects.add(testCommentChecked);
         m_objects.add(testCommentChecked1);
         m_objects.add(al);
-        //m_objects.add(al);
+        m_objects.add(m);
 
         // Создаем сцене особого слушателя
         SceneItemListener sceneItemListener = new SceneItemListener();
