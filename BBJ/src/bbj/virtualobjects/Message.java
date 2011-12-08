@@ -7,13 +7,14 @@ package bbj.virtualobjects;
 import bbj.graphicsobjects.Point3D;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
- * Абстрактный класс сообщений.
+ * Класс сообщений.
  * Является суперклассом для сообщений.
  * @version 1.0
  */
-abstract public class Message extends UMLObject {
+public class Message extends UMLObject {
 
     /* Поля класса. */
     private LifeLine m_sender; /** Линия жизин - отправитель сообщения. */
@@ -90,7 +91,7 @@ abstract public class Message extends UMLObject {
     }
     
     /**
-     * Метод записи линии жизни в xml файл.
+     * Метод записи сообщений в xml файл.
      * @param document Главный документ файла.
      * @return Узел xml дерева.
      */
@@ -99,11 +100,12 @@ abstract public class Message extends UMLObject {
         Element element = document.createElement("message");
         
         element.setAttribute("name",m_name);
-        element.setAttribute("start_id", Integer.toString(m_sender.getFileId()));
-        element.setAttribute("end_id", Integer.toString(m_receiver.getFileId()));
+        element.setAttribute("start-id", Integer.toString(m_sender.getFileId()));
+        element.setAttribute("end-id", Integer.toString(m_receiver.getFileId()));
         element.setAttribute("x", Double.toString(this.getCoordinates().getX()));
         element.setAttribute("y", Double.toString(this.getCoordinates().getY()));
         element.setAttribute("z", Double.toString(this.getCoordinates().getZ()));
+        element.setAttribute("id", Integer.toString(this.getId()));
         
         return element;
     }
@@ -112,19 +114,9 @@ abstract public class Message extends UMLObject {
      * Метод чтения линии жизни из xml файла.
      * @param element Узел xml дерева.
      */
+
     @Override
-    public void read(Element element) {
-        
-        double x,y,z;
-        m_name = element.getAttribute("name");
-        
-        ids[0] = Integer.parseInt(element.getAttribute("start_id"));
-        ids[1] = Integer.parseInt(element.getAttribute("end_id"));
-        
-        x = Double.parseDouble(element.getAttribute("x"));
-        y = Double.parseDouble(element.getAttribute("y"));
-        z = Double.parseDouble(element.getAttribute("z"));
-        
-        this.setCoordinates(new Point3D(x,y,z));
+    public void read(Node node) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
