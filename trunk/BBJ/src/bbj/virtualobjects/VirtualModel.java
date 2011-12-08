@@ -342,20 +342,7 @@ public class VirtualModel {
         
         for (int i = 0; i < nodes.getLength(); i++) {
             FreeComment fc = new FreeComment();
-            System.out.println(nodes.item(i).getNodeName());
-            NamedNodeMap attributes = nodes.item(i).getAttributes();
-            Node cAttrib = attributes.getNamedItem("z");
-            String buf = cAttrib.getNodeValue();
-            double x,z = Double.parseDouble(buf),y;
-            buf = nodes.item(i).getTextContent();
-            fc.setDescription(buf);
-            cAttrib = attributes.getNamedItem("x");
-            buf = cAttrib.getNodeValue();
-            x = Double.parseDouble(buf);
-            cAttrib = attributes.getNamedItem("y");
-            buf = cAttrib.getNodeValue();
-            y = Double.parseDouble(buf);
-            fc.setCoordinates(new Point3D(x,y,z));
+            fc.read(nodes.item(i));
             
             this.m_objects.add(fc);
 
@@ -372,150 +359,11 @@ public class VirtualModel {
         
         for (int i = 0; i < nodes.getLength(); i++) {
             LifeLine fc = new LifeLine();
-            System.out.println(nodes.item(i).getNodeName());
-            NamedNodeMap attributes = nodes.item(i).getAttributes();
-            Node cAttrib = attributes.getNamedItem("z");
-            String buf = cAttrib.getNodeValue();
-            double x,z = Double.parseDouble(buf),y;
-            cAttrib = attributes.getNamedItem("x");
-            buf = cAttrib.getNodeValue();
-            x = Double.parseDouble(buf);
-            cAttrib = attributes.getNamedItem("y");
-            buf = cAttrib.getNodeValue();
-            y = Double.parseDouble(buf);
-            fc.setCoordinates(new Point3D(x,y,z));
-            cAttrib = attributes.getNamedItem("description");
-            buf = cAttrib.getNodeValue();
-            fc.setDescription(buf);
-            cAttrib = attributes.getNamedItem("name");
-            buf = cAttrib.getNodeValue();
-            fc.setName(buf);
-            cAttrib = attributes.getNamedItem("id");
-            buf = cAttrib.getNodeValue();
-            fc.setFileId(Integer.parseInt(buf));
-            cAttrib = attributes.getNamedItem("is-End");
-            buf = cAttrib.getNodeValue();
-            fc.setEnd(Boolean.parseBoolean(buf));
+            fc.read(nodes.item(i));
             
             this.m_objects.add(fc);
 
         }
-    }
-    
-    /**
-     * Метод загрузки простых сообщений.
-     * @param node Узел дерева.
-     */
-    private void readSimpleMessage (Node node) {
-        
-        SimpleMessage simple = new SimpleMessage();
-        NamedNodeMap attributes = node.getAttributes();
-        Node cAttrib = attributes.getNamedItem("end_id");
-        String buf = cAttrib.getNodeValue();
-        simple.ids[1] = Integer.parseInt(buf);
-        cAttrib = attributes.getNamedItem("name");
-        buf = cAttrib.getNodeValue();
-        simple.setName(buf);
-        cAttrib = attributes.getNamedItem("start_id");
-        buf = cAttrib.getNodeValue();
-        simple.ids[1] = Integer.parseInt(buf);
-        cAttrib = attributes.getNamedItem("z");
-        buf = cAttrib.getNodeValue();
-        double x,z = Double.parseDouble(buf),y;
-        cAttrib = attributes.getNamedItem("x");
-        buf = cAttrib.getNodeValue();
-        x = Double.parseDouble(buf);
-        cAttrib = attributes.getNamedItem("y");
-        buf = cAttrib.getNodeValue();
-        y = Double.parseDouble(buf);
-        simple.setCoordinates(new Point3D(x,y,z));
-    }
-    
-    /**
-     * Метод загрузки сообщений создания.
-     * @param node Узел дерева.
-     */
-    private void readCreateMessage (Node node) {
-        
-        CreateMessage simple = new CreateMessage();
-        NamedNodeMap attributes = node.getAttributes();
-        Node cAttrib = attributes.getNamedItem("end_id");
-        String buf = cAttrib.getNodeValue();
-        simple.ids[1] = Integer.parseInt(buf);
-        cAttrib = attributes.getNamedItem("name");
-        buf = cAttrib.getNodeValue();
-        simple.setName(buf);
-        cAttrib = attributes.getNamedItem("start_id");
-        buf = cAttrib.getNodeValue();
-        simple.ids[1] = Integer.parseInt(buf);
-        cAttrib = attributes.getNamedItem("z");
-        buf = cAttrib.getNodeValue();
-        double x,z = Double.parseDouble(buf),y;
-        cAttrib = attributes.getNamedItem("x");
-        buf = cAttrib.getNodeValue();
-        x = Double.parseDouble(buf);
-        cAttrib = attributes.getNamedItem("y");
-        buf = cAttrib.getNodeValue();
-        y = Double.parseDouble(buf);
-        simple.setCoordinates(new Point3D(x,y,z));
-    }
-    
-    /**
-     * Метод загрузки сообщений уничтожения.
-     * @param node Узел дерева.
-     */
-    private void readDestroyMessage (Node node) {
-        
-        DestroyMessage simple = new DestroyMessage();
-        NamedNodeMap attributes = node.getAttributes();
-        Node cAttrib = attributes.getNamedItem("end_id");
-        String buf = cAttrib.getNodeValue();
-        simple.ids[1] = Integer.parseInt(buf);
-        cAttrib = attributes.getNamedItem("name");
-        buf = cAttrib.getNodeValue();
-        simple.setName(buf);
-        cAttrib = attributes.getNamedItem("start_id");
-        buf = cAttrib.getNodeValue();
-        simple.ids[1] = Integer.parseInt(buf);
-        cAttrib = attributes.getNamedItem("z");
-        buf = cAttrib.getNodeValue();
-        double x,z = Double.parseDouble(buf),y;
-        cAttrib = attributes.getNamedItem("x");
-        buf = cAttrib.getNodeValue();
-        x = Double.parseDouble(buf);
-        cAttrib = attributes.getNamedItem("y");
-        buf = cAttrib.getNodeValue();
-        y = Double.parseDouble(buf);
-        simple.setCoordinates(new Point3D(x,y,z));
-    }
-    
-    /**
-     * Метод загрузки возвратных сообщений.
-     * @param node Узел дерева.
-     */
-    private void readReplyMessage (Node node) {
-        
-        ReplyMessage simple = new ReplyMessage();
-        NamedNodeMap attributes = node.getAttributes();
-        Node cAttrib = attributes.getNamedItem("end_id");
-        String buf = cAttrib.getNodeValue();
-        simple.ids[1] = Integer.parseInt(buf);
-        cAttrib = attributes.getNamedItem("name");
-        buf = cAttrib.getNodeValue();
-        simple.setName(buf);
-        cAttrib = attributes.getNamedItem("start_id");
-        buf = cAttrib.getNodeValue();
-        simple.ids[1] = Integer.parseInt(buf);
-        cAttrib = attributes.getNamedItem("z");
-        buf = cAttrib.getNodeValue();
-        double x,z = Double.parseDouble(buf),y;
-        cAttrib = attributes.getNamedItem("x");
-        buf = cAttrib.getNodeValue();
-        x = Double.parseDouble(buf);
-        cAttrib = attributes.getNamedItem("y");
-        buf = cAttrib.getNodeValue();
-        y = Double.parseDouble(buf);
-        simple.setCoordinates(new Point3D(x,y,z));
     }
     
     /**
@@ -527,17 +375,29 @@ public class VirtualModel {
         
         for (int i = 0; i < list.getLength(); i++) {
             NamedNodeMap attributes = list.item(i).getAttributes();
-            Node cAttrib = attributes.getNamedItem("end_id");
+            Node cAttrib = attributes.getNamedItem("type");
             String buf = cAttrib.getNodeValue();
             
             if ("simple".equals(buf)) {
-                this.readSimpleMessage(list.item(i));
+                SimpleMessage sm = new SimpleMessage();
+                sm.read(list.item(i));
+                m_objects.add(sm);
             } else if ("create".equals(buf)) {
-                readCreateMessage(list.item(i));
+                CreateMessage cm = new CreateMessage();
+                cm.read(list.item(i));
+                m_objects.add(cm);
             } else if ("destroy".equals(buf)) {
-                readDestroyMessage(list.item(i));
-            } else {
-                readReplyMessage(list.item(i));
+                DestroyMessage dm = new DestroyMessage();
+                dm.read(list.item(i));
+                m_objects.add(dm);
+            } else if ("reply".equals(buf)) {
+                ReplyMessage rm = new ReplyMessage();
+                rm.read(list.item(i));
+                m_objects.add(rm);
+            } else if ("asynch".equals(buf)) {
+                AsynchronousMessages am = new AsynchronousMessages();
+                am.read(list.item(i));
+                m_objects.add(am);
             }
         }
     }
