@@ -20,10 +20,11 @@ public class UISimpleMessage extends UIMessage {
      * @param sender Отправитель
      * @param receiver Получатель
      */
-    public UISimpleMessage(UILifeLine sender, UILifeLine receiver, int y ){
+    public UISimpleMessage(UILifeLine sender, UILifeLine receiver, int y, String text ){
         m_sender = sender;
         m_receiver = receiver;
         this.y = y;
+        m_text = text;
     }
 
     /**
@@ -41,7 +42,10 @@ public class UISimpleMessage extends UIMessage {
 
         setBounds(x, y, w, h);              // Задаем границы
         
-        g.setColor(Color.black);            // Исходный цвет
+        if (m_isSelected)
+            g.setColor(Color.red);        // Исходный цвет
+        else
+            g.setColor(Color.black);        // Цвет при выделении
         
         g2.setStroke(new BasicStroke(2));   // Берем линию потолще
         
@@ -57,6 +61,22 @@ public class UISimpleMessage extends UIMessage {
             g.drawLine(x, y, x+7, y+5);
             g.drawLine(x, y, x+7, y-5);
         }
+        
+        // Разбиваем текст на массив символов
+        char [] drawedText = m_text.toCharArray();
+        char [] dots = {'.','.','.'};
+        
+        int textX;
+        if (m_sender.x <= m_receiver.x)
+            textX= x + (endX - m_sender.x)/2 - 60;
+        else
+            textX= m_receiver.x + (m_sender.x - m_receiver.x)/2;
+        
+        g.drawChars(drawedText, 0, java.lang.Math.min(13, m_text.length()), textX, y-10);
+        
+        if (m_text.length() >= 14)
+            g.drawChars(dots, 0, 3, textX+85, y-10);
+        
     }
     
     

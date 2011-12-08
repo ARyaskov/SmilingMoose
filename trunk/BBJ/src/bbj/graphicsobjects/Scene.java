@@ -155,7 +155,7 @@ public final class Scene extends JPanel {
         
         UIActorLifeLine al = new UIActorLifeLine(400, 333, "Исполнитель 1 тест");
                 
-        UISimpleMessage m = new UISimpleMessage(ll, al, 215);
+        UISimpleMessage m = new UISimpleMessage(ll, al, 215, "Тестовое сообщение 1");
 
         ll.setEnded(true);
         this.add(ll);
