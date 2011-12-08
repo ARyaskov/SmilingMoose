@@ -288,7 +288,7 @@ public final class BBJ {
                 }
                 else {
                     try {
-                        canvas.getModel().save(m_filename);
+                        canvas.save(m_filename);
                     } catch (ParserConfigurationException ex) {
                         Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (SAXException ex) {
@@ -417,7 +417,7 @@ public final class BBJ {
                         filePath += ("." + ps[0]);
                      }
                     try {
-                        canvas.getModel().save(filePath);
+                        canvas.save(filePath);
                     } catch (ParserConfigurationException ex) {
                         Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (SAXException ex) {
@@ -587,7 +587,7 @@ public final class BBJ {
             m_filename = filePath;
             try {
                 try {
-                    canvas.getModel().save(filePath);
+                    canvas.save(filePath);
                 } catch (TransformerConfigurationException ex) {
                     Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (TransformerException ex) {

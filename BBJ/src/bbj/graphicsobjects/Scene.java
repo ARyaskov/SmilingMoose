@@ -6,6 +6,7 @@ package bbj.graphicsobjects;
 
 import bbj.virtualobjects.*;
 import bbj.graphicsobjects.*;
+import java.io.IOException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -13,6 +14,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import org.xml.sax.SAXException;
 
 /**
  * Класс - сцена для отрисовки объектов диаграммы.
@@ -460,5 +465,13 @@ public final class Scene extends JPanel {
         this.m_objects.clear();
         this.m_model.clear();
         this.repaint();
+    }
+    
+    /**
+     * Метод сохранения диаграммы в файл.
+     * @param filename Имя файла.
+     */
+    public void save (String filename) throws ParserConfigurationException, SAXException, IOException, TransformerConfigurationException, TransformerException {
+        m_model.save(filename);
     }
 }
