@@ -179,8 +179,8 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
 
             }
         
-        endLine1 = m_selectedItem.h-75;
-        endLine2 = m_selectedItem.h-65;  
+            endLine1 = m_selectedItem.h-75;
+            endLine2 = m_selectedItem.h-65;  
         
             m_selectedItem.select(true);  // Выделяем объект
             
@@ -191,7 +191,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
             int x = e.getXOnScreen();
             int y = e.getYOnScreen();
         
-        m_startYOnLine = e.getY();
+            m_startYOnLine = e.getY();
 
             // Вычисляем координаты начала перетаскивания
             this.m_startX = x - m_selectedItem.x;
