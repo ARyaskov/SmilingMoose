@@ -20,7 +20,7 @@ abstract public class UIMessage extends SceneItem {
     
     /** Длина линии жизни. */
     protected int m_length;
-        
+            
     /**
      * Запросить отправителя.
      * @return объект ЛЖ

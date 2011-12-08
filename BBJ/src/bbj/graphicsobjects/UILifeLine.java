@@ -88,7 +88,7 @@ abstract public class UILifeLine extends SceneItem{
                 
         g2.drawLine(x+60, y+50, x+60, this.h-20);
         
-         // Разбиваем текст на массив символов
+        // Разбиваем текст на массив символов
         char [] drawedText = m_text.toCharArray();
         char [] dots = {'.','.','.'};
         
