@@ -65,7 +65,7 @@ abstract public class UILifeLine extends SceneItem{
         g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);  
 
-        this.setBounds(this.x,this.y,w+10,h+10);
+        this.setBounds(this.x,this.y,w+10,h-20);
         
 //        g2.setStroke(new BasicStroke(3.0f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,
 //                1.0f,new float[]{8.0f,6.0f},0.0f));
@@ -74,8 +74,8 @@ abstract public class UILifeLine extends SceneItem{
         g2.setStroke(new BasicStroke(1));
        
         if (m_isEnded){
-            g.drawLine(x+40, y+260, x+80, y+300);
-            g.drawLine(x+40, y+300, x+80, y+260);
+            g.drawLine(x+40, this.h-40, x+80, this.h);
+            g.drawLine(x+40, this.h, x+80, this.h-40);
         }
                  
         g2.setStroke(new BasicStroke(1.0f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,
@@ -86,7 +86,7 @@ abstract public class UILifeLine extends SceneItem{
         else                // Рисуем границы полигона черным цветом
             g2.setColor(Color.black);
                 
-        g2.drawLine(x+60, y+50, x+60, y+280);
+        g2.drawLine(x+60, y+50, x+60, this.h-20);
         
          // Разбиваем текст на массив символов
         char [] drawedText = m_text.toCharArray();
@@ -97,6 +97,12 @@ abstract public class UILifeLine extends SceneItem{
         if (m_text.length() >= 14)
             g.drawChars(dots, 0, 3, m_textCoordX+90, m_textCoordY);
 
+        // Рисуем кружок для изменения размера
+        if (m_isSelected){
+            g2.setStroke(new BasicStroke(1));
+            g2.drawOval(x +57, this.h-23, 6, 6);
+        }
+        
         if (m_isEdit) 
             f.repaint();
     }

@@ -21,7 +21,10 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
     private int m_startX;               // Координата начала перетаскивания
     private int m_startY;               // Координата конца перетаскивания
     private SceneItem m_selectedItem;     // Перетаскиваемый коммент
-
+    private int m_startYOnLine;
+    private int endLine1;
+    private int endLine2;
+    
     /**
      * Конструктор с параметрами (используется всеми элементами сцены)
      * @param item Слушаемый элемент сцены
@@ -49,6 +52,8 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
     SceneItemListener() {
         // Зануляем поля
         m_selectedItem = null;
+        endLine1 = 220;
+        endLine2 = 230;
     }
 
     /**
@@ -87,20 +92,24 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
         // Проверим, что не вылезли за гграницы окна по Х
         endX = Math.max(endX, 0);
         endX = Math.min(endX, m_selectedItem.getParent().getWidth() - m_selectedItem.w);
+
+        endY = e.getYOnScreen() - m_startY;
+
+        // Проверим, что не вылезли за гграницы окна по Y
+        endY = Math.max(endY, 0);
+        endY = Math.min(endY, m_selectedItem.getParent().getHeight() - m_selectedItem.h); 
+            
+        if(m_selectedItem.getClass().getSuperclass().getName().equals("bbj.graphicsobjects.UILifeLine")){
+            endY = 50;  // КОГДА ПОЯВЯТСЯ СООБЩЕНИЯ СОЗДАНИЯ ЗАМЕНИТЬ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        // ======================================================================\
+            
+            int asd = e.getY();
+            if (m_startYOnLine>=endLine1 && m_startYOnLine<=endLine2){
+                changeLifeLineLength((UILifeLine)m_selectedItem, asd);
+            }
                 
-        if (!m_selectedItem.getClass().getSuperclass().getName().equals("bbj.graphicsobjects.UILifeLine")){
-            endY = e.getYOnScreen() - m_startY;
-            // Проверим, что не вылезли за гграницы окна по Y
-            endY = Math.max(endY, 0);
-            endY = Math.min(endY, m_selectedItem.getParent().getHeight() - m_selectedItem.h); 
-        }
-        else{
-            endY = 50;
         }
         
-
-
-
         Rectangle rect = BBJ.app.getScene().getUIPanelsRectangle();
         //m_comment.setLocation(endX, endY);  // Задаем координаты объекту
 //        if (rect.contains(endX, endY)) {
@@ -125,8 +134,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
      */
     @Override
     public void mousePressed(MouseEvent e) {
-
-
+        
         // Снимаем выделение с прежнего объекта если он существует
 
         if (SceneItemListener.m_currentSelectedItem != null) {
@@ -148,13 +156,18 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
         }
 
         m_selectedItem.select(true);  // Выделяем объект
-
+        
+        endLine1 = m_selectedItem.h-75;
+        endLine2 = m_selectedItem.h-65;  
+        
         // Запоминаем выделенный объект
         SceneItemListener.m_currentSelectedItem = m_selectedItem;
 
         // Координаты щелчка мыши
         int x = e.getXOnScreen();
         int y = e.getYOnScreen();
+        
+        m_startYOnLine = e.getY();
 
         // Вычисляем координаты начала перетаскивания
         this.m_startX = x - m_selectedItem.x;
@@ -162,9 +175,21 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
         //SceneItemListener.currentSelectedItem.repaint();    // Перерисовываем
         BBJ.app.getScene().repaint();
     }
+    
+    /**
+     * Изменить размер линии жизни
+     * @param line Сама ЛЖ
+     * @param newY Новая координата конца линии
+     */
+    public void changeLifeLineLength(UILifeLine line, int newY){
+        if (newY >= 60){
+            line.h = newY+70;
+            line.setBounds(line.x, line.y, line.w, line.h);
+        }
+    }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(MouseEvent e) {    
     }
 
     @Override
