@@ -8,6 +8,7 @@ import bbj.graphicsobjects.Point3D;
 import java.util.ArrayList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
@@ -221,21 +222,51 @@ public class LifeLine extends UMLObject {
     }
 
     /**
-     * Метод чтения линии жизни из xml файла.
-     * @param element Узел xml дерева.
+     * Метод считывания объекта из файла.
+     * @param node Текущий узел - элемент дерева.
      */
-  //  @Override
-    public void read(Element element) {
+    @Override
+    public void read(Node node) {
         double x,y,z;
-        m_name = element.getAttribute("name");
-        this.setDescription(element.getAttribute("description"));
-        m_fileId = Integer.parseInt(element.getAttribute("id"));
-        m_isEnd = Boolean.parseBoolean(element.getAttribute("is-End"));
-        x = Double.parseDouble(element.getAttribute("x"));
-        y = Double.parseDouble(element.getAttribute("y"));
-        z = Double.parseDouble(element.getAttribute("z"));
-        
+        String buffer;
+        NamedNodeMap attributes = node.getAttributes();
+        // Считывание координаты z.
+        Node attr = attributes.getNamedItem("z");
+        buffer = attr.getNodeValue();
+        z = Double.parseDouble(buffer);
+        // Считывание координаты y.
+        attr = attributes.getNamedItem("y");
+        buffer = attr.getNodeValue();
+        y = Double.parseDouble(buffer);
+        // Считывание координаты x.
+        attr = attributes.getNamedItem("x");
+        buffer = attr.getNodeValue();
+        x = Double.parseDouble(buffer);
+        // Считывания идентификатора.
+        attr = attributes.getNamedItem("id");
+        buffer = attr.getNodeValue();
+        this.setId(Integer.parseInt(buffer));
+        // Считывание индекса для копий.
+        attr = attributes.getNamedItem("index");
+        buffer = attr.getNodeValue();
+        m_index = Integer.parseInt(buffer);
         this.setCoordinates(new Point3D(x,y,z));
+        // Считывание флага наличия конца.
+        attr = attributes.getNamedItem("is-end");
+        buffer = attr.getNodeValue();
+        m_isEnd = Boolean.parseBoolean(buffer);
+        // Считывание флага создания данной линии жизни.
+        attr = attributes.getNamedItem("is-created");
+        buffer = attr.getNodeValue();
+        m_isCreated = Boolean.parseBoolean(buffer);
+        // Считывание флага удаления данной линии жизни.
+        attr = attributes.getNamedItem("is-destroyed");
+        buffer = attr.getNodeValue();
+        m_isDestroyed = Boolean.parseBoolean(buffer);
+        // Считывание имени линии жизни.
+        attr = attributes.getNamedItem("name");
+        buffer = attr.getNodeValue();
+        m_name = buffer;
     }
     
     /**
@@ -258,11 +289,6 @@ public class LifeLine extends UMLObject {
         ll.setDescription(this.getDescription());
         
         return ll;
-    }
-
-    @Override
-    public void read(Node node) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

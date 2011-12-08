@@ -68,7 +68,7 @@ public class FreeComment extends UMLObject {
     }
 
     /**
-     * Абстрактный метод считывания объекта из файла.
+     * Метод считывания объекта из файла.
      * @param node Текущий узел - элемент дерева.
      */
     @Override
@@ -90,6 +90,7 @@ public class FreeComment extends UMLObject {
         x = Double.parseDouble(buffer);
         // Считывание описания.
         buffer = node.getTextContent();
+        this.setDescription(buffer);
         // Считывания идентификатора.
         attr = attributes.getNamedItem("id");
         buffer = attr.getNodeValue();
