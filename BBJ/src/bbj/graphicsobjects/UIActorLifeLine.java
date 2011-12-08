@@ -50,16 +50,18 @@ public class UIActorLifeLine extends UILifeLine {
         else                // Рисуем границы полигона черным цветом
             g2.setColor(Color.black);
         
-//        g2.setStroke(new BasicStroke(1));
-//        Polygon p = new Polygon();          // Полигон комментария
-//        
-//        p.addPoint(x, y);
-//        p.addPoint(x + 120, y);
-//        p.addPoint(x + 120, y + 50);
-//        p.addPoint(x, y + 50);
-//        
-//        g.drawPolygon(p);
-        
+        if (m_isSelected){
+            g2.setStroke(new BasicStroke(1));
+            Polygon p = new Polygon();          // Полигон комментария
+
+            p.addPoint(x, y);
+            p.addPoint(x + 120, y);
+            p.addPoint(x + 120, y + 50);
+            p.addPoint(x, y + 50);
+
+            g.drawPolygon(p);     
+        }
+
         if (m_isSelected)   // Рисуем границы полигона красным цветом
             g2.setColor(Color.red);
         else                // Рисуем границы полигона черным цветом
