@@ -57,7 +57,6 @@ public final class Scene extends JPanel {
     private int stopDrag_x;
     private int stopDrag_y;
     private boolean m_multiDragMode;
-    private SelectorsPanel m_canvasUI;
     private BBJ m_app;
     
     private int m_messageSelector_width;
@@ -99,7 +98,6 @@ public final class Scene extends JPanel {
         m_isGrid = true;
         m_dragObjects = false;
         m_model = new VirtualModel();
-        m_canvasUI = new SelectorsPanel();
         m_objects = new ArrayList<SceneItem>();
         m_selectedObjects = new ArrayList<SceneItem>();
         m_draggedNow = new String();
@@ -282,7 +280,7 @@ public final class Scene extends JPanel {
                     addToSelectedObjects(item);
                 }
             }
-            fireSelectionHappened();m_canvasUI.repaint();
+            fireSelectionHappened();
         }
         if (false){//не изменять, для теста
             Iterator it = m_selectedObjects.iterator();
