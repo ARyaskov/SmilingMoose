@@ -97,6 +97,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
 
         // Проверим, что не вылезли за гграницы окна по Y
         endY = Math.max(endY, 0);
+
         endY = Math.min(endY, m_selectedItem.getParent().getHeight() - m_selectedItem.h); 
             
         if(m_selectedItem.getClass().getSuperclass().getName().equals("bbj.graphicsobjects.UILifeLine")){
@@ -110,19 +111,23 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
                 
         }
         
+
         Rectangle rect = BBJ.app.getScene().getUIPanelsRectangle();
         //m_comment.setLocation(endX, endY);  // Задаем координаты объекту
-//        if (rect.contains(endX, endY)) {
-//            m_selectedItem.x = rect.x + rect.width + 2;
-//            m_selectedItem.y = rect.y + rect.height + 2;
-//        } else {
-//            m_selectedItem.x = endX;
-//            m_selectedItem.y = endY;
-//        }
 
-        // Задаем координаты
+        if (rect.contains(endX, endY)) {
+           
+            m_selectedItem.x = rect.x + rect.width + 2;
+            m_selectedItem.y = rect.y + rect.height + 2;
+        } else {
+            m_selectedItem.x = endX;
+            m_selectedItem.y = endY;
+        }
+
+
+      /*  // Задаем координаты
         m_selectedItem.x = endX;
-        m_selectedItem.y = endY;
+        m_selectedItem.y = endY;*/
 
         m_selectedItem.updateUI();     // Перерисовываем объект
 
@@ -134,7 +139,23 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
      */
     @Override
     public void mousePressed(MouseEvent e) {
-        
+
+        Scene scene = BBJ.app.getScene();
+        /*if (SceneItemListener.m_currentSelectedItem != null)
+            scene.addToSelectedObjects(m_selectedItem);*/
+        /*if (!scene.isMultipleSelection()) {
+            // Снимаем выделение с прежнего объекта если он существует
+            
+            if (SceneItemListener.m_currentSelectedItem != null) {
+
+                ArrayList<SceneItem> itemList = scene.getSceneObjects();
+                Iterator it = itemList.iterator();
+                while (it.hasNext()) {// Очищаем все элементы от выделения
+                    SceneItem cur = (SceneItem) it.next();
+                    cur.select(false);
+                 if (cur.isEdited()){
+=======
+        */
         // Снимаем выделение с прежнего объекта если он существует
 
         if (SceneItemListener.m_currentSelectedItem != null) {
@@ -146,35 +167,39 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
                 if (cur.isEdited()){
                     cur.f.setVisible(false);
                     cur.remove(cur.f);
+                 }
                 }
+
             }
-        }
 
-        // Если данный объект не сцена
-        if (m_selectedItem == null) {
-            return;
-        }
+            // Если данный объект не сцена
+            if (m_selectedItem == null) {
+                scene.getSelectedObjects().clear();
+                return;
 
-        m_selectedItem.select(true);  // Выделяем объект
+            }
         
         endLine1 = m_selectedItem.h-75;
         endLine2 = m_selectedItem.h-65;  
         
-        // Запоминаем выделенный объект
-        SceneItemListener.m_currentSelectedItem = m_selectedItem;
+            m_selectedItem.select(true);  // Выделяем объект
+            
+            // Запоминаем выделенный объект
+            SceneItemListener.m_currentSelectedItem = m_selectedItem;
 
-        // Координаты щелчка мыши
-        int x = e.getXOnScreen();
-        int y = e.getYOnScreen();
+            // Координаты щелчка мыши
+            int x = e.getXOnScreen();
+            int y = e.getYOnScreen();
         
         m_startYOnLine = e.getY();
 
-        // Вычисляем координаты начала перетаскивания
-        this.m_startX = x - m_selectedItem.x;
-        this.m_startY = y - m_selectedItem.y;
-        //SceneItemListener.currentSelectedItem.repaint();    // Перерисовываем
-        BBJ.app.getScene().repaint();
-    }
+            // Вычисляем координаты начала перетаскивания
+            this.m_startX = x - m_selectedItem.x;
+            this.m_startY = y - m_selectedItem.y;
+            //SceneItemListener.currentSelectedItem.repaint();    // Перерисовываем
+            scene.repaint();
+        }
+    
     
     /**
      * Изменить размер линии жизни
