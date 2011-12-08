@@ -6,6 +6,7 @@ package bbj.virtualobjects;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * Класс асинхронного сообщения.
@@ -51,17 +52,18 @@ public class AsynchronousMessages extends Message {
         Element element = super.write(document);
         
         element.setAttribute("type", "asynch");
+        element.setAttribute("parent", "-");
         
         return element;
     }
     
     /**
-     * Метод чтения асинхронные сообщения из xml файла.
+     * Метод чтения асинхронных сообщений из xml файла.
      * @param element Узел xml дерева.
      */
     @Override
-    public void read(Element element) {
-        super.read(element);
+    public void read(Node node) {
+        super.read(node);
     }
     
 }
