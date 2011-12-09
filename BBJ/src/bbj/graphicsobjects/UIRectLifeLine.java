@@ -12,15 +12,19 @@ import java.awt.*;
  */
 public class UIRectLifeLine extends UILifeLine {
 
+    /** Номер экзампляра данного класса на сцене */
+    public static int m_localNumber = 0;
+    
     /**
      * Конструктор с параметрами
      * @param x Координата по Х
      * @param y Координата по У
      * @param text Текст ЛЖ
      */
-    public UIRectLifeLine(int x, int y, String text) {
+    public UIRectLifeLine(int x, int y) {
          
-        fillData(x,y,text);
+        fillData(x,y);
+        setDefaultName();
                 
         SceneItemListener listener = new SceneItemListener(this);
 
@@ -80,6 +84,11 @@ public class UIRectLifeLine extends UILifeLine {
             g.setColor(Color.black);
 
         g.drawPolygon(p);
+    }
+    
+    @Override
+    protected void setDefaultName() {
+        m_text = "Линия жизни " + Integer.toString(m_localNumber++);
     }
     
 }

@@ -47,7 +47,12 @@ abstract public class SceneItem extends JPanel {
     public String getText() {
         return m_text;
     }
-
+    
+    /**
+     * Задать объекту сцены общее имя
+     */
+    abstract protected void setDefaultName();
+    
     /**
      * Задать текст элементу
      * @param text новый текст

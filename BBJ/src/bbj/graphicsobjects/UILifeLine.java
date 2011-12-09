@@ -22,14 +22,12 @@ abstract public class UILifeLine extends SceneItem{
     /** Координата текста по У */
     protected int m_textCoordY;
 
-    protected void fillData(int x, int y, String text) {
+    protected void fillData(int x, int y) {
         this.x = x;
         this.y = 50;
         this.w = 120;
         this.h = 300;
         
-        m_text = text;
-
         setBounds(x, y, w, h);
         this.m_isEdit = false;
         this.m_isSelected = false;

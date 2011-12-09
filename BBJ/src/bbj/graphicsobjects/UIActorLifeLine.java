@@ -17,9 +17,13 @@ import java.awt.Stroke;
  */
 public class UIActorLifeLine extends UILifeLine {
 
-    UIActorLifeLine(int x, int y, String text){
+    /** Номер экзампляра данного класса на сцене */
+    public static int m_localNumber = 0;
+    
+    UIActorLifeLine(int x, int y){
         
-        fillData(x,y,text);
+        fillData(x,y);
+        setDefaultName();
                 
         SceneItemListener listener = new SceneItemListener(this);
 
@@ -65,6 +69,11 @@ public class UIActorLifeLine extends UILifeLine {
         g2.drawLine(x +52, y + 13, x +68, y + 13);
         g2.drawLine(x +60, y + 20, x +65, y + 32);
         g2.drawLine(x +60, y + 20, x +55, y + 32);
+    }
+
+    @Override
+    protected void setDefaultName() {
+        m_text = "Исполнитель " + Integer.toString(m_localNumber++);
     }
     
 }

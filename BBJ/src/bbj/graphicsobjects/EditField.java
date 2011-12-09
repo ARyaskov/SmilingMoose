@@ -44,7 +44,7 @@ public class EditField extends JTextField implements KeyListener{
         }
         else if (m_item.toString().contains("UISimpleMessage")) {
             m_type = 3;
-            setBounds(55, 5, 120, 40);
+            setBounds(105, 5, 120, 40);
         }
         
         m_item.add(this);
