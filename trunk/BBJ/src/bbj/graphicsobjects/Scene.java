@@ -608,4 +608,10 @@ public final class Scene extends JPanel implements DropTargetListener {
     public void load(String filename) throws ParserConfigurationException, SAXException, IOException {
         m_model.load(filename);
     }
+    
+    /**
+     * Метод удаления выделенных объектов.
+     */
+    public void removeSelectedItems () {
+    }
 }

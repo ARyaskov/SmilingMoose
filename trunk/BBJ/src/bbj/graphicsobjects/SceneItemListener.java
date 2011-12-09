@@ -163,6 +163,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
     public void mousePressed(MouseEvent e) {
 
         Scene scene = BBJ.app.getScene();
+        scene.getSelectedObjects().clear();
         /*if (SceneItemListener.m_currentSelectedItem != null)
             scene.addToSelectedObjects(m_selectedItem);*/
         /*if (!scene.isMultipleSelection()) {
@@ -208,6 +209,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
             
             // Запоминаем выделенный объект
             SceneItemListener.m_currentSelectedItem = m_selectedItem;
+            scene.addToSelectedObjects(m_selectedItem);
 
             // Координаты щелчка мыши
             int x = e.getXOnScreen();
