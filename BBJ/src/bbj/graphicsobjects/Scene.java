@@ -6,8 +6,9 @@ package bbj.graphicsobjects;
 
 import bbj.virtualobjects.*;
 import bbj.graphicsobjects.*;
-
 import bbj.*;
+
+import bbj.AddToSceneEdit.*;
 
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DropTargetDragEvent;
@@ -27,7 +28,7 @@ import java.awt.dnd.DropTargetListener;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.*;
 import java.util.*;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
@@ -77,6 +78,8 @@ public final class Scene extends JPanel implements DropTargetListener {
     private int m_entitySelector_y;
     private int m_scene_height;
     private int m_scene_width;
+    private double m_zoom;
+    private AddToSceneEdit m_undoEdit;
 
     /**
      * Метод получения объекта сцены по индексу.
@@ -97,6 +100,18 @@ public final class Scene extends JPanel implements DropTargetListener {
         return m_model;
     }
 
+    public double getZoom() {
+        return m_zoom;
+    }
+
+    public void setZoom(double newzoom) {
+        m_zoom = newzoom;
+    }
+
+    public ArrayList<SceneItem> getGraphicsObjects() {
+        return m_objects;
+    }
+
     /**
      * Конструктор по умолчанию.
      */
@@ -114,6 +129,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         startSelect_y = 0;
         stopSelect_x = 0;
         stopSelect_y = 0;
+        m_zoom = 1.0;
         m_selectionRect = new Rectangle();
 
         this.setDoubleBuffered(true);
@@ -146,7 +162,7 @@ public final class Scene extends JPanel implements DropTargetListener {
 
 
         UIFreeComment testCommentChecked = new UIFreeComment(150, 200);
-                
+
         // Добавляем тестовые объекты в контейнер       
 
         UIFreeComment testCommentChecked1 = new UIFreeComment(333, 333);
@@ -156,11 +172,12 @@ public final class Scene extends JPanel implements DropTargetListener {
 
 
 
-        
+
         UIActorLifeLine al = new UIActorLifeLine(400, 333);
-                
+
 
         UISimpleMessage m = new UISimpleMessage(al, ll, 215);
+
 
 
 
@@ -177,15 +194,15 @@ public final class Scene extends JPanel implements DropTargetListener {
         m_objects.add(testCommentChecked);
         m_objects.add(testCommentChecked1);
         m_objects.add(al);
-        
+
 
         // Создаем сцене особого слушателя
         SceneItemListener sceneItemListener = new SceneItemListener();
 
         // Задаем сцене слушателя
         this.addMouseListener(sceneItemListener);
-        
-        DropTarget dropTarget = new DropTarget(m_app.m_entitySelector,this);
+
+        DropTarget dropTarget = new DropTarget(m_app.m_entitySelector, this);
         this.setDropTarget(dropTarget);
 
 
@@ -196,6 +213,7 @@ public final class Scene extends JPanel implements DropTargetListener {
 
         super.setBackground(BBJ.app.m_background_color);
         Graphics2D g2 = (Graphics2D) g;
+
 
 
         g.setColor(Color.WHITE);
@@ -289,6 +307,9 @@ public final class Scene extends JPanel implements DropTargetListener {
 
             }
         }
+
+
+
 
     }
 
@@ -412,7 +433,6 @@ public final class Scene extends JPanel implements DropTargetListener {
         }
         return result;
     }
-    
 
     @Override
     public void dragEnter(DropTargetDragEvent dtde) {
@@ -423,48 +443,51 @@ public final class Scene extends JPanel implements DropTargetListener {
 
     @Override
     public void dragOver(DropTargetDragEvent dtde) {
-        
     }
 
     @Override
     public void dropActionChanged(DropTargetDragEvent dtde) {
-        
     }
 
     @Override
     public void dragExit(DropTargetEvent dte) {
-        
     }
 
     @Override
     public void drop(DropTargetDropEvent dtde) {
-        
+
         if (dtde.isDataFlavorSupported(DataFlavor.stringFlavor)) {
             dtde.acceptDrop(DnDConstants.ACTION_COPY);
         } else {
             dtde.rejectDrop();
         }
-        
+
         Transferable t = dtde.getTransferable();
         SceneItem item = null;
         try {
             String data = (String) t.getTransferData(DataFlavor.stringFlavor);
             if ("LifeLine".equals(data)) {
-                item = new UIRectLifeLine(dtde.getLocation().x,dtde.getLocation().y);
+                item = new UIRectLifeLine(dtde.getLocation().x, dtde.getLocation().y);
             } else if ("Actor".equals(data)) {
                 item = new UIActorLifeLine(dtde.getLocation().x, dtde.getLocation().y);
             } else if ("Comment".equals(data)) {
                 item = new UIFreeComment(dtde.getLocation().x, dtde.getLocation().y);
             }
+
+
+            if (item != null) {
+                m_undoEdit = new AddToSceneEdit(this, item);
+
+                m_app.getUndoSupport().postEdit(m_undoEdit);
+                m_app.m_undoButton.setEnabled(m_app.getUndoManager().canUndo());
+                m_app.m_redoButton.setEnabled(m_app.getUndoManager().canRedo());
+                m_objects.add(item);
+                this.add(item);
+            }
         } catch (UnsupportedFlavorException ex) {
             Logger.getLogger(Scene.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Scene.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        if (item != null) {
-            m_objects.add(item);
-            this.add(item);
         }
         dtde.dropComplete(true);
         repaint();
@@ -509,8 +532,7 @@ public final class Scene extends JPanel implements DropTargetListener {
                  * Iterator it = m_objects.iterator(); while(it.hasNext()){
                  * SceneItem item = (SceneItem)it.next(); if
                  * (item.getBounds().contains(startSelect_x, startSelect_x)){
-                 * item.select(true); }else{ item.select(false); }
-                }
+                 * item.select(true); }else{ item.select(false); } }
                  */
                 //  repaint();
             }

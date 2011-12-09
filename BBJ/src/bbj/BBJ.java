@@ -24,7 +24,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
-import javax.swing.undo.UndoManager;
+import javax.swing.undo.UndoableEditSupport;
+import javax.swing.undo.*;
+import javax.swing.event.*;
 
 /**
  * JDK >= 1.4!
@@ -92,7 +94,10 @@ public final class BBJ {
     protected Scene canvas;
     private JPanel m_canvasUI;
     public static BBJ app;
-    public UndoManager undoManager = new UndoManager();
+    private UndoManager m_undoManager;
+    private UndoableEditSupport m_undoSupport;
+    public JButton m_undoButton;
+    public JButton m_redoButton;
     JButton delete_button;
 
     public Scene getScene() {
@@ -106,10 +111,47 @@ public final class BBJ {
     public BBJ() {
         setupFonts();
         fillGUIContent();
+        setupUndoRedo();
         bindListeners();
         m_hasFile = false;
         m_hasModifications = false;
 
+    }
+
+    public UndoManager getUndoManager() {
+        return m_undoManager;
+    }
+
+    public UndoableEditSupport getUndoSupport() {
+        return m_undoSupport;
+    }
+
+    public void setupUndoRedo() {
+
+
+        m_undoManager = new UndoManager();
+        m_undoSupport = new UndoableEditSupport();
+
+
+        UndoableEditListener listener = new UndoableEditListener() {
+
+            public void undoableEditHappened(UndoableEditEvent e) {
+                m_undoManager.addEdit(e.getEdit());
+            }
+        };
+
+        m_undoSupport.addUndoableEditListener(listener);
+
+        /*
+         * Action undoAction = new UndoAction(m_undoManager); Action redoAction
+         * = new RedoAction(m_undoManager); // Assign the actions to keys
+         * ((JComponent)mainFrame.getContentPane()).registerKeyboardAction(
+         * undoAction, KeyStroke.getKeyStroke(KeyEvent.VK_Z,
+         * InputEvent.CTRL_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
+         * ((JComponent)mainFrame.getContentPane()).registerKeyboardAction(redoAction,
+         * KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_MASK),
+         * JComponent.WHEN_IN_FOCUSED_WINDOW);
+         */
     }
 
     public void repaintSelectors() {
@@ -660,18 +702,18 @@ public final class BBJ {
          * JToolBar.Separator sep2 = new JToolBar.Separator(new
          * Dimension(20,toolBar.getHeight())); toolBar.add(sep2);
          */
-        JButton undo_button = new JButton();
-        undo_button.setIcon(new ImageIcon(BBJ.class.getResource("images/32/undo.png")));
-        undo_button.setEnabled(false);
+        m_undoButton = new JButton();
+        m_undoButton.setIcon(new ImageIcon(BBJ.class.getResource("images/32/undo.png")));
+        m_undoButton.setEnabled(false);
         //undo_button.setText("Undo");
-        toolBar.add(undo_button);
+        toolBar.add(m_undoButton);
 
         toolBar.add(new JToolBar.Separator(new Dimension(5, toolBar.getHeight())));
 
-        JButton redo_button = new JButton();
-        redo_button.setIcon(new ImageIcon(BBJ.class.getResource("images/32/redo.png")));
-        redo_button.setEnabled(false);
-        toolBar.add(redo_button);
+        m_redoButton = new JButton();
+        m_redoButton.setIcon(new ImageIcon(BBJ.class.getResource("images/32/redo.png")));
+        m_redoButton.setEnabled(false);
+        toolBar.add(m_redoButton);
 
         toolBar.add(new JToolBar.Separator(new Dimension(60, toolBar.getHeight())));
 
@@ -728,6 +770,85 @@ public final class BBJ {
     }
 
     public void bindListeners() {
+
+        MouseAdapter undoButtonListener = new MouseAdapter() {
+
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1 && m_undoButton.isEnabled()) {
+                    getUndoManager().undo();
+                    m_undoButton.setEnabled(getUndoManager().canUndo());
+                    m_redoButton.setEnabled(getUndoManager().canRedo());
+                }
+            }
+
+            public void mouseEntered(MouseEvent e) {
+                m_undoButton.setToolTipText(getUndoManager().getUndoPresentationName());
+            }
+        };
+
+        MouseAdapter redoButtonListener = new MouseAdapter() {
+
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1 && m_redoButton.isEnabled()) {
+
+                    getUndoManager().redo();
+                    m_redoButton.setEnabled(getUndoManager().canRedo());
+                    m_undoButton.setEnabled(getUndoManager().canUndo());
+
+
+                }
+            }
+
+            public void mouseEntered(MouseEvent e) {
+                m_redoButton.setToolTipText(getUndoManager().getRedoPresentationName());
+            }
+        };
+
+
+
+        m_undoButton.addMouseListener(undoButtonListener);
+        m_redoButton.addMouseListener(redoButtonListener);
+
+
+        ActionListener undoKeyListener = new ActionListener() {
+
+            public void actionPerformed(ActionEvent a) {
+                getUndoManager().undo();
+                m_undoButton.setEnabled(getUndoManager().canUndo());
+                m_redoButton.setEnabled(getUndoManager().canRedo());
+                m_undoButton.setToolTipText(getUndoManager().getUndoPresentationName());
+            }
+        };
+
+        ActionListener redoKeyListener = new ActionListener() {
+
+            public void actionPerformed(ActionEvent a) {
+                getUndoManager().redo();
+                m_redoButton.setEnabled(getUndoManager().canRedo());
+                m_undoButton.setEnabled(getUndoManager().canUndo());
+                m_redoButton.setToolTipText(getUndoManager().getRedoPresentationName());
+            }
+        };
+
+
+
+        ((JComponent) m_undoButton).registerKeyboardAction(
+                undoKeyListener,
+                KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+        ((JComponent) m_redoButton).registerKeyboardAction(
+                redoKeyListener,
+                KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+
+
+
+        // Тут цепляем слушателей к кнопкам
+
+
+
     }
 
     /**
