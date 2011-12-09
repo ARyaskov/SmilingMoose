@@ -392,6 +392,9 @@ public class UISelector extends SceneItem implements DragGestureListener, DragSo
                     repaint();
                 } else if ("Current".equals(owner)) {
                     m_drawSelectFill = true;
+                    if (m_orderOfTypes.get(m_pointer).equals("Message")) {
+                        BBJ.app.getScene().createSimpleMessage();
+                    }
                     repaint();
                 }
 

@@ -259,7 +259,8 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*, 
                 }
             }
             
-            scene.addToSelectedObjects(m_selectedItem);
+            if (!scene.getSelectedObjects().contains(m_selectedItem))
+                scene.addToSelectedObjects(m_selectedItem);
             scene.repaint();
     }
     
