@@ -449,9 +449,17 @@ public final class Scene extends JPanel implements DropTargetListener {
         try {
             String data = (String) t.getTransferData(DataFlavor.stringFlavor);
             if ("LifeLine".equals(data)) {
-                UILifeLine ll = new UIRectLifeLine(dtde.getLocation().x,dtde.getLocation().y);
+                UIRectLifeLine ll = new UIRectLifeLine(dtde.getLocation().x,dtde.getLocation().y);
                 this.m_objects.add(ll);
                 this.repaint();
+            } else if ("Actor".equals(data)) {
+                UIActorLifeLine al = new UIActorLifeLine(dtde.getLocation().x, dtde.getLocation().y);
+                m_objects.add(al);
+                repaint();
+            } else if ("Comment".equals(data)) {
+                UIFreeComment fc = new UIFreeComment(dtde.getLocation().x, dtde.getLocation().y);
+                m_objects.add(fc);
+                repaint();
             }
         } catch (UnsupportedFlavorException ex) {
             Logger.getLogger(Scene.class.getName()).log(Level.SEVERE, null, ex);
