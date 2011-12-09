@@ -18,15 +18,19 @@ import bbj.*;
  */
 public class UIFreeComment extends  SceneItem {
         
+    /** Номер экзампляра данного класса на сцене */
+    public static int m_localNumber = 0;
+    
     /**
      * Основной конструктор по умолчанию
      * @param x Координата по оси Х
      * @param y Координата по оси У
      * @param text Текст комментария
      */
-    public UIFreeComment(int x, int y, String text){
+    public UIFreeComment(int x, int y){
 
          
+        setDefaultName();
         
         this.x=x;
         this.y=y;
@@ -37,7 +41,6 @@ public class UIFreeComment extends  SceneItem {
         this.setBounds(this.x,this.y,w,h);
        
         this.m_isSelected = false;      // Не выделен
-        this.m_text = text;             //Задаем текст
         
         SceneItemListener listener = new SceneItemListener(this);
                 
@@ -141,5 +144,10 @@ public class UIFreeComment extends  SceneItem {
         
         if (m_isEdit)
             f.repaint();
+    }
+    
+    @Override
+    protected void setDefaultName() {
+        m_text = "Комментарий " + Integer.toString(m_localNumber++);
     }
 }

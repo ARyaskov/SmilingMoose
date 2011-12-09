@@ -15,16 +15,20 @@ import java.awt.Graphics2D;
  */
 public class UISimpleMessage extends UIMessage {
     
+    /** Номер экзампляра данного класса на сцене */
+    public static int m_localNumber = 0;
+    
     /**
      * Основной конструктор
      * @param sender Отправитель
      * @param receiver Получатель
      */
-    public UISimpleMessage(UILifeLine sender, UILifeLine receiver, int y, String text ){
+    public UISimpleMessage(UILifeLine sender, UILifeLine receiver, int y){
         m_sender = sender;
         m_receiver = receiver;
         this.y = y;
-        m_text = text;
+        
+        setDefaultName();
         
         SceneItemListener listener = new SceneItemListener(this);
 
@@ -94,5 +98,9 @@ public class UISimpleMessage extends UIMessage {
         }
     }
     
-    
+    @Override
+    protected void setDefaultName() {
+        m_text = "Сообщение " + Integer.toString(m_localNumber++);
+    }
+     
 }

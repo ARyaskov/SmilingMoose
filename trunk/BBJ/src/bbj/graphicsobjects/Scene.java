@@ -134,28 +134,22 @@ public final class Scene extends JPanel {
 
 
 
-        UIFreeComment testCommentChecked = new UIFreeComment(150, 200,
-                "Linux работает на множестве архитектур, таких как "
-                + "Intel x86, x86-64, PowerPC, ARM, Alpha AXP, Sun SPARC, Motorola 68000,"
-                + " Hitachi SuperH, IBM S/390, MIPS, HP PA-RISC,"
-                + " AXIS CRIS, Renesas M32R, Atmel AVR32, Renesas H8/300, NEC V850, Tensilica Xtensa и многих других.");
-
+        UIFreeComment testCommentChecked = new UIFreeComment(150, 200);
+                
         // Добавляем тестовые объекты в контейнер       
 
-        UIFreeComment testCommentChecked1 = new UIFreeComment(333, 333,
-                "Процессоры Power PC также используются в многоядерных"
-                + " процессорах в качестве управляющих ядер, например:");
+        UIFreeComment testCommentChecked1 = new UIFreeComment(333, 333);
 
 
-        UIRectLifeLine ll = new UIRectLifeLine(470, 111, "Линия жизни 1");
+        UIRectLifeLine ll = new UIRectLifeLine(470, 111);
 
 
 
         
-        UIActorLifeLine al = new UIActorLifeLine(400, 333, "Исполнитель 1 тест");
+        UIActorLifeLine al = new UIActorLifeLine(400, 333);
                 
 
-        UISimpleMessage m = new UISimpleMessage(ll, al, 215, "Тестовое сообщение 1");
+        UISimpleMessage m = new UISimpleMessage(ll, al, 215);
 
 
 

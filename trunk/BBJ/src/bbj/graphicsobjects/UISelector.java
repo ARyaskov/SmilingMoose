@@ -392,4 +392,8 @@ public class UISelector extends SceneItem {
     public String getSelected() {
         return m_orderOfTypes.get(m_pointer);
     }
+    
+     @Override
+    protected void setDefaultName() {
+    }
 }
