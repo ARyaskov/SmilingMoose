@@ -55,15 +55,15 @@ public class UIFreeComment extends  SceneItem {
      */
     @Override
     public void paint(Graphics g) {
+      
+        super.paint(g);
+        
+        Graphics2D g2 = (Graphics2D)g;
+
         int i,      // Итератор цикла
             rem;    // Остаток от деления длины строки
            
-        Graphics2D g2 = (Graphics2D)g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, BBJ.qltAntialiasing);
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, BBJ.qltTextAntialiasing);
-        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, BBJ.qltAlphaInterpolation);
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, BBJ.qltInterpolation);
-        g2.setRenderingHint(RenderingHints.KEY_RENDERING, BBJ.qltRender);  
+        
         /*g2.setColor(new Color(0,0,0,255));
         g2.drawRect(getX(), getY(), getWidth(), getHeight());*/
 
