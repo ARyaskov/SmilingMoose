@@ -74,8 +74,8 @@ public class UISimpleMessage extends UIMessage {
             g.drawLine(endX, y, endX-7, y-5);
         }
         else{
-            g.drawLine(x, y, x+7, y+5);
-            g.drawLine(x, y, x+7, y-5);
+            g.drawLine(endX, y, endX+7, y+5);
+            g.drawLine(endX, y, endX+7, y-5);
         }
         
         // Разбиваем текст на массив символов
