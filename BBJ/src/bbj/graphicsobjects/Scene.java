@@ -481,11 +481,14 @@ public final class Scene extends JPanel implements DropTargetListener {
                 m_app.getUndoSupport().postEdit(m_undoEdit);
                 m_app.m_undoButton.setEnabled(m_app.getUndoManager().canUndo());
                 m_app.m_redoButton.setEnabled(m_app.getUndoManager().canRedo());
+                for (int i = 0; i < this.m_selectedObjects.size(); i++) {
+                    m_selectedObjects.get(i).select(false);
+                }
+                m_selectedObjects.clear();
                 m_objects.add(item);
                 this.add(item);
-                for (int i = 0; i < this.m_selectedObjects.size(); i++) { m_selectedObjects.get(i).select(false); }
-                m_selectedObjects.clear();
                 item.select(true);
+                m_selectedObjects.add(item);
             }
         } catch (UnsupportedFlavorException ex) {
             Logger.getLogger(Scene.class.getName()).log(Level.SEVERE, null, ex);

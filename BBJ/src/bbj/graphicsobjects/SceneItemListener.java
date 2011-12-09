@@ -77,7 +77,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*, 
             EditField f = new EditField(m_selectedItem);           
             m_selectedItem.f = f;
         } else {
-            mousePressed(e);
+            //mousePressed(e);
         }
     }
 
@@ -244,8 +244,19 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*, 
                     return;
 
                 }
-                m_selectedItem.select(true);  // Выделяем объект
-                SceneItemListener.m_currentSelectedItem = m_selectedItem;
+                
+                if (m_selectedItem.m_isSelected) {
+                    for (int i = 0; i < scene.getSizeSelectedObjects(); i++) {
+                        if (scene.getSelectedObjects().get(i).equals(m_selectedItem)) {
+                            scene.getSelectedObjects().get(i).select(false);
+                            scene.getSelectedObjects().remove(i);
+                        }
+                    }
+                } else {
+                
+                    m_selectedItem.select(true);  // Выделяем объект
+                    SceneItemListener.m_currentSelectedItem = m_selectedItem;
+                }
             }
             
             scene.addToSelectedObjects(m_selectedItem);
