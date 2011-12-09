@@ -48,8 +48,10 @@ public class UISimpleMessage extends UIMessage {
      */
     @Override
     public void paint(Graphics g) {
-        Graphics2D g2= (Graphics2D)g;
         
+        super.paint(g);
+        
+        Graphics2D g2 = (Graphics2D)g;
         int endX = m_receiver.x+60;         // Конечная точка
         this.x = m_sender.x+60;             // Начальная точка
         this.h =45;                        // Высота объекта

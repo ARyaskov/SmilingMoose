@@ -6,10 +6,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-/** Класс, создающий т.н. селекторы - элементы интерфейса,
- * реализующие концепцию карусельного меню.
- * 
- * 
+/**
+ * Класс, создающий т.н. селекторы - элементы интерфейса, реализующие концепцию
+ * карусельного меню.
+ *
+ *
  * @author Lemon
  */
 public class UISelector extends SceneItem {
@@ -61,18 +62,19 @@ public class UISelector extends SceneItem {
             m_name = name;
         }
     }
-    
-   
 
     /**
-     * 
+     *
      * @param nameOfItems Массив с названиями элементов карусельного меню
      * @param pointer Указатель - с какого элемента массива начинать отображение
-     * @param path48 Путь к папке с 48-пикселными иконками (включая последний '/')
-     * @param path24 Путь к папке с 24-пикселными иконками (включая последний '/')
-     * @param path16 Путь к папке с 16-пикселными иконками (включая последний '/')
-     * @param nameSuffix Приставка для данного типа элементов 
-     *                   (например, для сообщений - message)
+     * @param path48 Путь к папке с 48-пикселными иконками (включая последний
+     * '/')
+     * @param path24 Путь к папке с 24-пикселными иконками (включая последний
+     * '/')
+     * @param path16 Путь к папке с 16-пикселными иконками (включая последний
+     * '/')
+     * @param nameSuffix Приставка для данного типа элементов (например, для
+     * сообщений - message)
      */
     public UISelector(ArrayList<String> nameOfItems,
             int pointer,
@@ -86,7 +88,7 @@ public class UISelector extends SceneItem {
         if (nameOfItems.size() < 3) {
             System.out.println("UISelector: Нужно больше элементов для выбора! (Минимум 3)");
         } else {
-            
+
             m_listOfUI = new ArrayList<UIElementInfo>();
             m_images24px = new ArrayList<Image>();
             m_images48px = new ArrayList<Image>();
@@ -124,7 +126,7 @@ public class UISelector extends SceneItem {
 
             setSize(new Dimension(m_leftSmall.getWidth(null) * 2 + m_centerBig.getWidth(null) + 24,
                     m_centerBig.getHeight(null) + m_arrowRight.getHeight(null) + 24));
-            System.out.printf(" W:%d, H:%d ",getSize().width, getSize().height);
+            System.out.printf(" W:%d, H:%d ", getSize().width, getSize().height);
             int distance = 2;
             m_listOfUI.add(new UIElementInfo(m_leftSmall.getWidth(null),
                     m_leftSmall.getHeight(null), distance, 2, "Previous"));
@@ -152,8 +154,9 @@ public class UISelector extends SceneItem {
         }
     }
 
-    /** Возвращает требуемую иконку из троицы текущих
-     * 
+    /**
+     * Возвращает требуемую иконку из троицы текущих
+     *
      * @param type SMALL BIG SMALL2 - какую из трёх иконок следует вернуть
      * @return Иконка
      */
@@ -185,11 +188,12 @@ public class UISelector extends SceneItem {
         return result;
     }
 
-    /** Сдвиг указателя текущего элемента вправо/влево.
-     * Зачем это надо, почему бы просто не сделать инкремент/декремент?
-     * Из-за необходимости реализации кольцевого списка.
-     * 
-     * 
+    /**
+     * Сдвиг указателя текущего элемента вправо/влево. Зачем это надо, почему бы
+     * просто не сделать инкремент/декремент? Из-за необходимости реализации
+     * кольцевого списка.
+     *
+     *
      * @param type Тип: SHIFTL (влево), SHIFTR (вправо)
      */
     public void shiftPointer(int type) {
@@ -208,18 +212,12 @@ public class UISelector extends SceneItem {
     }
 
     @Override
-    public void paintComponent(Graphics g) {
+    public void paint(Graphics g) {
 
-        super.paintComponent(g);
+        super.paint(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(new Color(255, 255, 255, 255));
         g2.fillRect(0, 0, getWidth(), getHeight());
-
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, BBJ.qltAntialiasing);
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, BBJ.qltTextAntialiasing);
-        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, BBJ.qltAlphaInterpolation);
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, BBJ.qltInterpolation);
-        g2.setRenderingHint(RenderingHints.KEY_RENDERING, BBJ.qltRender);
 
         g2.setColor(new Color(0, 0, 0, 255));
         g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
@@ -277,38 +275,27 @@ public class UISelector extends SceneItem {
             g2.drawRoundRect(curElem.m_x, curElem.m_y + 2, curElem.m_width,
                     curElem.m_height, 10, 10);
 
-            /* Вариант с линиями
-            UIElementInfo curElem = getElementByName("messageCurrent");
-            g.setColor(new Color(0,0,0,255));
-            g.drawLine(curElem.m_x, curElem.m_y, curElem.m_x,
-            curElem.m_y + curElem.m_height);
-            
-            g.drawLine(curElem.m_x + curElem.m_width, curElem.m_y, curElem.m_x,
-            curElem.m_y + curElem.m_height);*/
         }
 
 
     }
 
     public UIElementInfo getElementByName(String s) {
-        /*Iterator itr = m_listOfUI.iterator();
-        UIElementInfo element;
-        while (itr.hasNext()) {
-            element = (UIElementInfo) itr.next();
-            if (element.m_name == null ? s == null : element.m_name.equals(s)) {
-                return element;
-            }
 
-        }*/
         UIElementInfo element;
         int size = m_listOfUI.size();
-        for (int i=0;i<size;i++){
+        for (int i = 0; i < size; i++) {
             element = m_listOfUI.get(i);
             if (element.m_name == null ? s == null : element.m_name.equals(s)) {
                 return element;
             }
         }
         return null;
+    }
+
+    public void deselectCurrent() {
+        m_drawSelectFill = false;
+        repaint();
     }
 
     class MouseSlot implements MouseListener, MouseMotionListener {
@@ -366,10 +353,12 @@ public class UISelector extends SceneItem {
         }
     }
 
-    /** Определяет элемент, расположенный по данным координатам
-     * 
+    /**
+     * Определяет элемент, расположенный по данным координатам
+     *
      * @param p Координаты
-     * @return Имя элемента, выбирается из массива, переданного ранее в конструктор
+     * @return Имя элемента, выбирается из массива, переданного ранее в
+     * конструктор
      */
     public String getOwner(Point p) {
         Iterator itr = m_listOfUI.iterator();
@@ -384,16 +373,17 @@ public class UISelector extends SceneItem {
         return null;
     }
 
-    /** Возвращает имя элемента, расположенного в центре (текущего)
-     *  Полагается на имена из массива, переданного ранее в конструктор
-     * 
+    /**
+     * Возвращает имя элемента, расположенного в центре (текущего) Полагается на
+     * имена из массива, переданного ранее в конструктор
+     *
      * @return Имя выбранного элемента
      */
     public String getSelected() {
         return m_orderOfTypes.get(m_pointer);
     }
-    
-     @Override
+
+    @Override
     protected void setDefaultName() {
     }
 }

@@ -65,16 +65,13 @@ abstract public class UILifeLine extends SceneItem{
      * Отрисивка линии жизни
      * @param g Компонент, на котором рисуем
      */
+    @Override
     public void paint(Graphics g){
-                      
-        Graphics2D g2 = (Graphics2D)g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, BBJ.qltAntialiasing);
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, BBJ.qltTextAntialiasing);
-        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, BBJ.qltAlphaInterpolation);
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, BBJ.qltInterpolation);
-        g2.setRenderingHint(RenderingHints.KEY_RENDERING, BBJ.qltRender);  
-
+          
+        super.paint(g);
         
+        Graphics2D g2 = (Graphics2D)g;
+    
         specificPaint(g2);
         
         this.setBounds(this.x,this.y,w+10,h-20);

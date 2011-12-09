@@ -184,18 +184,6 @@ public final class Scene extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
 
 
-        /*
-         * g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-         * RenderingHints.VALUE_ANTIALIAS_ON);
-         * g2.setRenderingHint(RenderingHints.KEY_RENDERING,
-         * RenderingHints.VALUE_RENDER_QUALITY);
-         * g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-         * RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-         * g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-         * RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-         * g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-         */
-
         g.setColor(Color.WHITE);
 
         m_scene_width = m_app.mainFrame.getWidth();
@@ -219,11 +207,7 @@ public final class Scene extends JPanel {
                 m_messageSelector_y + m_messageSelector_height - 15,
                 m_scene_width,
                 10);
-        /*
-         * g.setColor(Color.BLACK);
-         * g.drawLine(0,m_messageSelector_y+10,1200,m_messageSelector_y);
-         g.setColor(Color.WHITE);
-         */
+
         //красим сбоку
         g.fillRect(0,
                 0,
@@ -235,23 +219,16 @@ public final class Scene extends JPanel {
                 m_scene_width,
                 7);
 
-
-
         if (m_isGrid) {
             makeGrid(g2);
         }
 
-
-
         // Отрисовываем все объекты сцены
         Iterator<SceneItem> i = m_objects.iterator();
-
-
 
         while (i.hasNext()) {
             i.next().paint(g);
         }
-
 
         m_app.repaintSelectors();
 

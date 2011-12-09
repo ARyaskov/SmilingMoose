@@ -1,6 +1,7 @@
 
 package bbj.graphicsobjects;
 
+import bbj.Commons;
 import java.awt.*;
 import javax.swing.JPanel;
 import java.util.*;
@@ -139,5 +140,10 @@ abstract public class SceneItem extends JPanel {
 
     synchronized public void removeSelectionHappenedListener(SelectEventListener l) {
         m_listenersList.remove(l);
+    }
+    
+  
+    public void paint(Graphics g) {
+        Commons.tuneRendering((Graphics2D)g);
     }
 }
