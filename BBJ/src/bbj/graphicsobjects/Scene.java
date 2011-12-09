@@ -446,20 +446,15 @@ public final class Scene extends JPanel implements DropTargetListener {
         }
         
         Transferable t = dtde.getTransferable();
+        SceneItem item = null;
         try {
             String data = (String) t.getTransferData(DataFlavor.stringFlavor);
             if ("LifeLine".equals(data)) {
-                UIRectLifeLine ll = new UIRectLifeLine(dtde.getLocation().x,dtde.getLocation().y);
-                this.m_objects.add(ll);
-                this.repaint();
+                item = new UIRectLifeLine(dtde.getLocation().x,dtde.getLocation().y);
             } else if ("Actor".equals(data)) {
-                UIActorLifeLine al = new UIActorLifeLine(dtde.getLocation().x, dtde.getLocation().y);
-                m_objects.add(al);
-                repaint();
+                item = new UIActorLifeLine(dtde.getLocation().x, dtde.getLocation().y);
             } else if ("Comment".equals(data)) {
-                UIFreeComment fc = new UIFreeComment(dtde.getLocation().x, dtde.getLocation().y);
-                m_objects.add(fc);
-                repaint();
+                item = new UIFreeComment(dtde.getLocation().x, dtde.getLocation().y);
             }
         } catch (UnsupportedFlavorException ex) {
             Logger.getLogger(Scene.class.getName()).log(Level.SEVERE, null, ex);
@@ -467,7 +462,12 @@ public final class Scene extends JPanel implements DropTargetListener {
             Logger.getLogger(Scene.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        if (item != null) {
+            m_objects.add(item);
+            this.add(item);
+        }
         dtde.dropComplete(true);
+        repaint();
     }
 
     class MouseSlot implements MouseListener, MouseMotionListener {
