@@ -1,10 +1,22 @@
 package bbj.graphicsobjects;
 
 import bbj.*;
+import java.awt.dnd.DragGestureEvent;
+import java.io.IOException;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DragGestureListener;
+import java.awt.dnd.DragSource;
 import java.awt.event.*;
 import java.util.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import java.awt.datatransfer.*;
+import java.awt.dnd.*;
+import java.util.ArrayList;
 
 /**
  * Класс, создающий т.н. селекторы - элементы интерфейса, реализующие концепцию
@@ -13,7 +25,7 @@ import java.util.*;
  *
  * @author Lemon
  */
-public class UISelector extends SceneItem {
+public class UISelector extends SceneItem implements DragGestureListener, DragSourceListener {
 
     private Image m_arrowLeft;
     private Image m_arrowRight;
@@ -36,6 +48,62 @@ public class UISelector extends SceneItem {
     private final int SMALL2 = 3;
     private final int SHIFTL = 1;
     private final int SHIFTR = 2;
+    
+    DragSource dragSource;
+
+    @Override
+    public void dragGestureRecognized(DragGestureEvent dge) {
+        dge.startDrag(DragSource.DefaultCopyDrop, this.getTrinityImage(BIG), new Point(10,10), new DragAndDropData(), this);
+    }
+
+    @Override
+    public void dragEnter(DragSourceDragEvent dsde) {
+        
+    }
+
+    @Override
+    public void dragOver(DragSourceDragEvent dsde) {
+        
+    }
+
+    @Override
+    public void dropActionChanged(DragSourceDragEvent dsde) {
+        
+    }
+
+    @Override
+    public void dragExit(DragSourceEvent dse) {
+        
+    }
+
+    @Override
+    public void dragDropEnd(DragSourceDropEvent dsde) {
+        deselectCurrent();
+    }
+    
+    public class DragAndDropData implements Transferable {
+        
+        DataFlavor[] m_data = new DataFlavor[]{DataFlavor.stringFlavor};
+
+        @Override
+        public DataFlavor[] getTransferDataFlavors() {
+            return m_data;
+        }
+
+        @Override
+        public boolean isDataFlavorSupported(DataFlavor flavor) {
+            if (flavor.equals(m_data[0]))
+                return true;
+            else
+                return false;
+        }
+
+        @Override
+        public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+            
+            return m_orderOfTypes.get(m_pointer);
+        }
+    }  
 
     public class UIElementInfo {
 
@@ -152,6 +220,8 @@ public class UISelector extends SceneItem {
 
             this.addMouseListener(new MouseSlot());
         }
+        dragSource = DragSource.getDefaultDragSource();
+        dragSource.createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY, this);
     }
 
     /**

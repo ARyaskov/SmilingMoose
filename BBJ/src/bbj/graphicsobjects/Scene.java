@@ -9,10 +9,21 @@ import bbj.graphicsobjects.*;
 
 import bbj.*;
 
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
 import java.io.IOException;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetListener;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,7 +39,7 @@ import org.xml.sax.SAXException;
  *
  * @version 1.0
  */
-public final class Scene extends JPanel {
+public final class Scene extends JPanel implements DropTargetListener {
 
     private boolean m_isGrid;
     private int m_gridFactor = 20;
@@ -173,6 +184,9 @@ public final class Scene extends JPanel {
 
         // Задаем сцене слушателя
         this.addMouseListener(sceneItemListener);
+        
+        DropTarget dropTarget = new DropTarget(m_app.m_entitySelector,this);
+        this.setDropTarget(dropTarget);
 
 
     }
@@ -397,6 +411,55 @@ public final class Scene extends JPanel {
             }
         }
         return result;
+    }
+    
+
+    @Override
+    public void dragEnter(DropTargetDragEvent dtde) {
+        if (dtde.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+            dtde.acceptDrag(DnDConstants.ACTION_COPY);
+        }
+    }
+
+    @Override
+    public void dragOver(DropTargetDragEvent dtde) {
+        
+    }
+
+    @Override
+    public void dropActionChanged(DropTargetDragEvent dtde) {
+        
+    }
+
+    @Override
+    public void dragExit(DropTargetEvent dte) {
+        
+    }
+
+    @Override
+    public void drop(DropTargetDropEvent dtde) {
+        
+        if (dtde.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+            dtde.acceptDrop(DnDConstants.ACTION_COPY);
+        } else {
+            dtde.rejectDrop();
+        }
+        
+        Transferable t = dtde.getTransferable();
+        try {
+            String data = (String) t.getTransferData(DataFlavor.stringFlavor);
+            if ("LifeLine".equals(data)) {
+                UILifeLine ll = new UIRectLifeLine(dtde.getLocation().x,dtde.getLocation().y);
+                this.m_objects.add(ll);
+                this.repaint();
+            }
+        } catch (UnsupportedFlavorException ex) {
+            Logger.getLogger(Scene.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Scene.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        dtde.dropComplete(true);
     }
 
     class MouseSlot implements MouseListener, MouseMotionListener {
