@@ -29,6 +29,7 @@ public class UIActorLifeLine extends UILifeLine {
 
         this.addMouseListener(listener);
         this.addMouseMotionListener(listener);
+//        this.addKeyListener(listener);
         this.setToolTipText("Исполнитель: " + m_text);
     }
             

@@ -5,17 +5,19 @@
 package bbj.graphicsobjects;
 
 import bbj.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.util.*;
 
 /**
  *
  * @author Alexander
  */
-public class SceneItemListener implements MouseListener, MouseMotionListener {
+public class SceneItemListener implements MouseListener, MouseMotionListener/*, KeyListener*/ {
 
     public static SceneItem m_currentSelectedItem;       // Текущий выделенный объект
     private int m_startX;               // Координата начала перетаскивания
@@ -166,66 +168,89 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
     public void mousePressed(MouseEvent e) {
 
         Scene scene = BBJ.app.getScene();
-        scene.getSelectedObjects().clear();
-        /*if (SceneItemListener.m_currentSelectedItem != null)
-            scene.addToSelectedObjects(m_selectedItem);*/
-        /*if (!scene.isMultipleSelection()) {
-            // Снимаем выделение с прежнего объекта если он существует
-            
-            if (SceneItemListener.m_currentSelectedItem != null) {
+        if (e.getButton() == MouseEvent.BUTTON3) {
+            scene.m_isCTRLPressed = true;
+        } else if (e.getButton() == MouseEvent.BUTTON1) {
+            scene.m_isCTRLPressed = false;
+        }
 
-                ArrayList<SceneItem> itemList = scene.getSceneObjects();
+        if (!scene.m_isCTRLPressed) {
+            scene.getSelectedObjects().clear();
+            /*if (SceneItemListener.m_currentSelectedItem != null)
+                scene.addToSelectedObjects(m_selectedItem);*/
+            /*if (!scene.isMultipleSelection()) {
+                // Снимаем выделение с прежнего объекта если он существует
+
+                if (SceneItemListener.m_currentSelectedItem != null) {
+
+                    ArrayList<SceneItem> itemList = scene.getSceneObjects();
+                    Iterator it = itemList.iterator();
+                    while (it.hasNext()) {// Очищаем все элементы от выделения
+                        SceneItem cur = (SceneItem) it.next();
+                        cur.select(false);
+                     if (cur.isEdited()){
+    =======
+            */
+            // Снимаем выделение с прежнего объекта если он существует
+
+            if (SceneItemListener.m_currentSelectedItem != null) {
+                ArrayList<SceneItem> itemList = BBJ.app.getScene().getSceneObjects();
                 Iterator it = itemList.iterator();
                 while (it.hasNext()) {// Очищаем все элементы от выделения
                     SceneItem cur = (SceneItem) it.next();
                     cur.select(false);
-                 if (cur.isEdited()){
-=======
-        */
-        // Снимаем выделение с прежнего объекта если он существует
+                    if (cur.isEdited()){
+                        cur.f.setVisible(false);
+                        cur.remove(cur.f);
+                     }
+                    }
 
-        if (SceneItemListener.m_currentSelectedItem != null) {
-            ArrayList<SceneItem> itemList = BBJ.app.getScene().getSceneObjects();
-            Iterator it = itemList.iterator();
-            while (it.hasNext()) {// Очищаем все элементы от выделения
-                SceneItem cur = (SceneItem) it.next();
-                cur.select(false);
-                if (cur.isEdited()){
-                    cur.f.setVisible(false);
-                    cur.remove(cur.f);
-                 }
                 }
 
-            }
+                // Если данный объект не сцена
+                if (m_selectedItem == null) {
+                    scene.getSelectedObjects().clear();
+                    return;
 
-            // Если данный объект не сцена
-            if (m_selectedItem == null) {
-                scene.getSelectedObjects().clear();
-                return;
+                }
 
-            }
-        
-            endLine1 = m_selectedItem.h-25 - m_selectedItem.y;
+                endLine1 = m_selectedItem.h-75;
+                endLine2 = m_selectedItem.h-65;  
+
+                m_selectedItem.select(true);  // Выделяем объект
+
+                // Запоминаем выделенный объект
+                SceneItemListener.m_currentSelectedItem = m_selectedItem;
+                scene.addToSelectedObjects(m_selectedItem);
+
+                // Координаты щелчка мыши
+                int x = e.getXOnScreen();
+                int y = e.getYOnScreen();
+
+                m_startYOnLine = e.getY();
+
+                // Вычисляем координаты начала перетаскивания
+                this.m_startX = x - m_selectedItem.x;
+                this.m_startY = y - m_selectedItem.y;
+                //SceneItemListener.currentSelectedItem.repaint();    // Перерисовываем
+                endLine1 = m_selectedItem.h-25 - m_selectedItem.y;
             endLine2 = m_selectedItem.h-15 - m_selectedItem.y;  
         
             m_selectedItem.select(true);  // Выделяем объект
+        } else {
+            // Если данный объект не сцена
+                if (m_selectedItem == null) {
+                    scene.getSelectedObjects().clear();
+                    return;
+
+                }
+                m_selectedItem.select(true);  // Выделяем объект
+                SceneItemListener.m_currentSelectedItem = m_selectedItem;
+            }
             
-            // Запоминаем выделенный объект
-            SceneItemListener.m_currentSelectedItem = m_selectedItem;
             scene.addToSelectedObjects(m_selectedItem);
-
-            // Координаты щелчка мыши
-            int x = e.getXOnScreen();
-            int y = e.getYOnScreen();
-        
-            m_startYOnLine = e.getY();
-
-            // Вычисляем координаты начала перетаскивания
-            this.m_startX = x - m_selectedItem.x;
-            this.m_startY = y - m_selectedItem.y;
-            //SceneItemListener.currentSelectedItem.repaint();    // Перерисовываем
             scene.repaint();
-        }
+    }
     
     /**
      * Изменить размер линии жизни
@@ -276,4 +301,23 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
     @Override
     public void mouseMoved(MouseEvent e) {
     }
+
+//    @Override
+//    public void keyTyped(KeyEvent e) {
+//        
+//    }
+//
+//    @Override
+//    public void keyPressed(KeyEvent e) {
+//        if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+//            Scene scene = BBJ.app.getScene();
+//            scene.m_isCTRLPressed = true;
+//        }
+//    }
+//
+//    @Override
+//    public void keyReleased(KeyEvent e) {
+//        Scene scene = BBJ.app.getScene();
+//        scene.m_isCTRLPressed = false;
+//    }
 }
