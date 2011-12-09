@@ -24,12 +24,10 @@ public class EditField extends JTextField implements KeyListener{
     EditField(SceneItem item){
         
         m_item = item;
+        
+
         this.setBounds(5, 5, 120, 40);
         
-        m_item.add(this);
-        this.setVisible(true);
-        this.grabFocus();
-
         String currentText = item.getText();
         this.setText(currentText);
         this.addKeyListener(this);
@@ -44,6 +42,14 @@ public class EditField extends JTextField implements KeyListener{
         else if(m_item.toString().contains("UIActorLifeLine")) {
             m_type = 2;
         }
+        else if (m_item.toString().contains("UISimpleMessage")) {
+            m_type = 3;
+            setBounds(55, 5, 120, 40);
+        }
+        
+        m_item.add(this);
+        this.setVisible(true);
+        this.grabFocus();
     }
     
     /**
@@ -64,6 +70,8 @@ public class EditField extends JTextField implements KeyListener{
                 m_item.setToolTipText("Линия жизни: " + newText);
             else if (m_type == 2)
                 m_item.setToolTipText("Исполнитель: " + newText);
+            else if (m_type == 3)
+                m_item.setToolTipText("Сообщение: " + newText);
             
             m_item.updateUI();
             this.setVisible(false);

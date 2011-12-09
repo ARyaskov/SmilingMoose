@@ -20,6 +20,8 @@ abstract public class UIMessage extends SceneItem {
     
     /** Длина линии жизни. */
     protected int m_length;
+    
+    protected int textX;
             
     /**
      * Запросить отправителя.
@@ -44,5 +46,9 @@ abstract public class UIMessage extends SceneItem {
     public int getLength(){
         return m_length;
     }   
+    
+    public int getTextX(){
+        return textX;
+    }
     
 }
