@@ -73,6 +73,7 @@ public class UICreateMessage extends UIMessage {
             g.drawLine(x, y, endX, y);        // Рисуем линию сообщения
             g.drawLine(endX, y, endX+7, y+5);
             g.drawLine(endX, y, endX+7, y-5);
+            
         }
             
         // Разбиваем текст на массив символов
@@ -87,7 +88,7 @@ public class UICreateMessage extends UIMessage {
         else{
             setBounds(m_receiver.x+60, y-h, m_sender.x-m_receiver.x, h); // Задаем границы
             
-            textX= m_receiver.x + (m_sender.x - m_receiver.x)/2;
+            textX= m_receiver.x + (m_sender.x - m_receiver.x)/2+50;
         }
         
         g.drawChars(drawedText, 0, java.lang.Math.min(13, m_text.length()), textX, y-10);

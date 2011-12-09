@@ -28,6 +28,8 @@ abstract public class UILifeLine extends SceneItem{
     
     /** Контейнер исходящих сообщений. */
     public ArrayList<UIMessage>m_outbox;
+    
+    public int dotCoord;
 
     protected void fillData(int x, int y) {
         this.x = x;
@@ -75,6 +77,8 @@ abstract public class UILifeLine extends SceneItem{
         specificPaint(g2);
         
         this.setBounds(this.x,this.y,w+10,h-20);
+        
+        dotCoord = this.y + h-20;
         
 //        g2.setStroke(new BasicStroke(3.0f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,
 //                1.0f,new float[]{8.0f,6.0f},0.0f));

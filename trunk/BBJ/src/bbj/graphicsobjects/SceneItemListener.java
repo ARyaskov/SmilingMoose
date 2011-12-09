@@ -109,10 +109,10 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*, 
         endY = Math.min(endY, m_selectedItem.getParent().getHeight() - m_selectedItem.h); 
             
         if(m_selectedItem.getClass().getSuperclass().getName().equals("bbj.graphicsobjects.UILifeLine")){
-            endY = m_selectedItem.y;  // КОГДА ПОЯВЯТСЯ СООБЩЕНИЯ СОЗДАНИЯ ЗАМЕНИТЬ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                                     // ======================================================================\
+            endY = m_selectedItem.y;
+                                     
             
-            int asd = e.getYOnScreen();
+            int asd = e.getY();
             if (m_startYOnLine>=endLine1 && m_startYOnLine<=endLine2){
                 changeLifeLineLength((UILifeLine)m_selectedItem, asd);
             } 
@@ -120,23 +120,34 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*, 
         else if (m_selectedItem.getClass().getSuperclass().getName().equals("bbj.graphicsobjects.UIMessage" )){
             
             // ограничиваем передвижение сообщения по оси У
-            UISimpleMessage currentMessage = (UISimpleMessage)m_selectedItem;
+            UIMessage currentMessage = (UIMessage)m_selectedItem;
+            
             if (endY >= currentMessage.getSender().getHeight()){
                 endY = currentMessage.getSender().getHeight();
             }
 
-            if (endY >= currentMessage.getReceiver().getHeight()){
-                endY = currentMessage.getReceiver().getHeight();
-            }
-            
             if (endY <= currentMessage.getSender().getY()+70){
                 endY = currentMessage.getSender().getY()+70;
             }
-            
-            if (endY <= currentMessage.getReceiver().getY()+70){
-                endY = currentMessage.getReceiver().getY()+70;
+               
+            if (!currentMessage.getClass().getName().equals("bbj.graphicsobjects.UICreateMessage" )){
+                if (endY >= currentMessage.getReceiver().getHeight()){
+                    endY = currentMessage.getReceiver().getHeight();
+                }
+
+                if (endY <= currentMessage.getReceiver().getY()+70){
+                    endY = currentMessage.getReceiver().getY()+70;
+                }
             }
-            
+            else {
+                if (endY-25 <= currentMessage.m_receiver.dotCoord-currentMessage.m_receiver.y-55)
+                    currentMessage.m_receiver.y = endY-25;
+                    
+                else
+                    endY = currentMessage.m_receiver.dotCoord-currentMessage.m_receiver.y-30;
+                
+
+            }
         }
 
         Rectangle rect = BBJ.app.getScene().getUIPanelsRectangle();
@@ -150,11 +161,6 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*, 
             m_selectedItem.x = endX;
             m_selectedItem.y = endY;
         }
-
-
-      /*  // Задаем координаты
-        m_selectedItem.x = endX;
-        m_selectedItem.y = endY;*/
 
         m_selectedItem.updateUI();     // Перерисовываем объект
 
@@ -273,6 +279,9 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*, 
         if (newY >= 70){
             boolean isOk = true;
             
+            if (line.y > 50)
+                newY +=line.y -50;
+            
             Iterator<UIMessage>i = line.m_inbox.iterator();
             
             while(i.hasNext()){
@@ -292,7 +301,8 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*, 
             }
             
             if (isOk){
-                line.h = newY+line.y+20;
+                line.h = newY+70;
+                line.dotCoord = line.h; 
                 line.setBounds(line.x, line.y, line.w, line.h);
             }
         }
