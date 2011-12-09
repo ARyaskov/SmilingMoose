@@ -214,12 +214,12 @@ public class UISelector extends SceneItem {
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(new Color(255, 255, 255, 255));
         g2.fillRect(0, 0, getWidth(), getHeight());
-        /*g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);*/
 
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, BBJ.qltAntialiasing);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, BBJ.qltTextAntialiasing);
+        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, BBJ.qltAlphaInterpolation);
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, BBJ.qltInterpolation);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, BBJ.qltRender);
 
         g2.setColor(new Color(0, 0, 0, 255));
         g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
