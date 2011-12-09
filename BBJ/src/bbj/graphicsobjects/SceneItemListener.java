@@ -104,8 +104,8 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
         endY = Math.min(endY, m_selectedItem.getParent().getHeight() - m_selectedItem.h); 
             
         if(m_selectedItem.getClass().getSuperclass().getName().equals("bbj.graphicsobjects.UILifeLine")){
-            endY = 50;  // КОГДА ПОЯВЯТСЯ СООБЩЕНИЯ СОЗДАНИЯ ЗАМЕНИТЬ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                        // ======================================================================\
+            endY = m_selectedItem.y;  // КОГДА ПОЯВЯТСЯ СООБЩЕНИЯ СОЗДАНИЯ ЗАМЕНИТЬ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                     // ======================================================================\
             
             int asd = e.getY();
             if (m_startYOnLine>=endLine1 && m_startYOnLine<=endLine2){

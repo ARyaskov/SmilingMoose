@@ -160,7 +160,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         UIActorLifeLine al = new UIActorLifeLine(400, 333);
                 
 
-        UISimpleMessage m = new UISimpleMessage(ll, al, 215);
+        UISimpleMessage m = new UISimpleMessage(al, ll, 215);
 
 
 
