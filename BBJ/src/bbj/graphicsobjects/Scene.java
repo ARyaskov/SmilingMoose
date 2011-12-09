@@ -642,4 +642,37 @@ public final class Scene extends JPanel implements DropTargetListener {
      */
     public void removeSelectedItems () {
     }
+    
+    /**
+     * Метод создания простых сообщений.
+     */
+    public void createSimpleMessage () {
+        if (this.m_selectedObjects.size() != 2) {
+            return;
+        }
+        
+        if (this.m_selectedObjects.get(0).getClass() != UIRectLifeLine.class ||
+            this.m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
+            
+            if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class ||
+                m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
+                
+                if (m_selectedObjects.get(0).getClass() != UIRectLifeLine.class ||
+                    m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
+                    
+                    if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class ||
+                        m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
+                        return;
+                    }
+                }
+            }
+        }
+        
+        UISimpleMessage sm = new UISimpleMessage((UILifeLine)m_selectedObjects.get(0),
+                (UILifeLine)m_selectedObjects.get(1), this.m_selectedObjects.get(0).y + 100);
+        
+        this.add(sm);
+        m_objects.add(sm);
+        repaint();
+    }
 }
