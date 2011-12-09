@@ -78,12 +78,12 @@ public class UISimpleMessage extends UIMessage {
         char [] dots = {'.','.','.'};
         
         if (m_sender.x <= m_receiver.x){
-            setBounds(m_sender.x, y-h, m_receiver.x-m_sender.x+60, h); // Задаем границы
+            setBounds(m_sender.x+60, y-h, m_receiver.x-m_sender.x, h); // Задаем границы
             
             textX= x + (endX - m_sender.x)/2 - 60;
         }
         else{
-            setBounds(m_receiver.x, y-h, m_sender.x-m_receiver.x+60, h); // Задаем границы
+            setBounds(m_receiver.x+60, y-h, m_sender.x-m_receiver.x, h); // Задаем границы
             
             textX= m_receiver.x + (m_sender.x - m_receiver.x)/2;
         }
@@ -92,6 +92,11 @@ public class UISimpleMessage extends UIMessage {
         
         if (m_text.length() >= 14)
             g.drawChars(dots, 0, 3, textX+85, y-10);
+        
+        if (m_isSelected){
+            g2.setStroke(new BasicStroke(1));
+            g.drawRect(textX-10, y-h+10, 100, h-5);
+        }
         
         if (m_isEdit){
             f.repaint();
