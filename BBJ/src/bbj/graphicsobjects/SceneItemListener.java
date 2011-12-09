@@ -47,6 +47,9 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
         else if (item.getClass().getName().equals("bbj.graphicsobjects.UISimpleMessage")){
             m_selectedItem = (UISimpleMessage) item;
         }
+        else if (item.getClass().getName().equals("bbj.graphicsobjects.UICreateMessage")){
+            m_selectedItem = (UICreateMessage) item;
+        }
     }
 
     /**
@@ -107,7 +110,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
             endY = m_selectedItem.y;  // КОГДА ПОЯВЯТСЯ СООБЩЕНИЯ СОЗДАНИЯ ЗАМЕНИТЬ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                                      // ======================================================================\
             
-            int asd = e.getY();
+            int asd = e.getYOnScreen();
             if (m_startYOnLine>=endLine1 && m_startYOnLine<=endLine2){
                 changeLifeLineLength((UILifeLine)m_selectedItem, asd);
             } 
@@ -202,8 +205,8 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
 
             }
         
-            endLine1 = m_selectedItem.h-75;
-            endLine2 = m_selectedItem.h-65;  
+            endLine1 = m_selectedItem.h-25 - m_selectedItem.y;
+            endLine2 = m_selectedItem.h-15 - m_selectedItem.y;  
         
             m_selectedItem.select(true);  // Выделяем объект
             
@@ -252,7 +255,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
             }
             
             if (isOk){
-                line.h = newY+70;
+                line.h = newY+line.y+20;
                 line.setBounds(line.x, line.y, line.w, line.h);
             }
         }

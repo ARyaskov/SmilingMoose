@@ -161,11 +161,11 @@ public final class Scene extends JPanel implements DropTargetListener {
 
 
 
-        UIFreeComment testCommentChecked = new UIFreeComment(150, 200);
+       // UIFreeComment testCommentChecked = new UIFreeComment(150, 200);
 
         // Добавляем тестовые объекты в контейнер       
 
-        UIFreeComment testCommentChecked1 = new UIFreeComment(333, 333);
+        //UIFreeComment testCommentChecked1 = new UIFreeComment(333, 333);
 
 
         UIRectLifeLine ll = new UIRectLifeLine(470, 111);
@@ -175,8 +175,7 @@ public final class Scene extends JPanel implements DropTargetListener {
 
         UIActorLifeLine al = new UIActorLifeLine(400, 333);
 
-
-        UISimpleMessage m = new UISimpleMessage(al, ll, 215);
+        UICreateMessage m = new UICreateMessage(al, ll, 215);
 
 
 
@@ -184,15 +183,15 @@ public final class Scene extends JPanel implements DropTargetListener {
         ll.setEnded(true);
         this.add(m);
         this.add(ll);
-        this.add(testCommentChecked1);
-        this.add(testCommentChecked);
+       // this.add(testCommentChecked1);
+        //this.add(testCommentChecked);
         this.add(al);
 
         // Добавляем тестовые объекты в контейнер
         m_objects.add(m);
         m_objects.add(ll);
-        m_objects.add(testCommentChecked);
-        m_objects.add(testCommentChecked1);
+       // m_objects.add(testCommentChecked);
+       // m_objects.add(testCommentChecked1);
         m_objects.add(al);
 
 
