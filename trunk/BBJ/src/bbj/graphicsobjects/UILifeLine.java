@@ -5,6 +5,7 @@ import bbj.graphicsobjects.*;
 import bbj.virtualobjects.*;
 import bbj.*;
 import java.awt.*;
+import java.util.ArrayList;
 import javax.swing.*;
 
 /**
@@ -21,6 +22,12 @@ abstract public class UILifeLine extends SceneItem{
     
     /** Координата текста по У */
     protected int m_textCoordY;
+    
+    /** Контейнер входящих сообщений. */
+    public ArrayList<UIMessage>m_inbox;
+    
+    /** Контейнер исходящих сообщений. */
+    public ArrayList<UIMessage>m_outbox;
 
     protected void fillData(int x, int y) {
         this.x = x;
@@ -32,8 +39,11 @@ abstract public class UILifeLine extends SceneItem{
         this.m_isEdit = false;
         this.m_isSelected = false;
         
+        m_inbox = new ArrayList<UIMessage>();
+        
+        m_outbox = new ArrayList<UIMessage>();
+        
     }
-    
     
     /**
      * Сделать линию жизни завершенной

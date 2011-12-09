@@ -222,16 +222,37 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
             scene.repaint();
         }
     
-    
     /**
      * Изменить размер линии жизни
      * @param line Сама ЛЖ
      * @param newY Новая координата конца линии
      */
     public void changeLifeLineLength(UILifeLine line, int newY){
-        if (newY >= 60){
-            line.h = newY+70;
-            line.setBounds(line.x, line.y, line.w, line.h);
+        if (newY >= 70){
+            boolean isOk = true;
+            
+            Iterator<UIMessage>i = line.m_inbox.iterator();
+            
+            while(i.hasNext()){
+               UIMessage buf = i.next();
+               if (newY <= buf.getY()+buf.getHeight()-50)
+                   isOk = false;
+            }
+            
+            if (isOk){
+                i= line.m_outbox.iterator();
+
+                while(i.hasNext()){
+                   UIMessage buf = i.next();
+                   if (newY <= buf.getY()+buf.getHeight()-50)
+                       isOk = false;
+                }
+            }
+            
+            if (isOk){
+                line.h = newY+70;
+                line.setBounds(line.x, line.y, line.w, line.h);
+            }
         }
     }
 
