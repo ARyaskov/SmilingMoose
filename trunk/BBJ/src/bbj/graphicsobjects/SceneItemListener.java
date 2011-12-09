@@ -44,6 +44,9 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
         else if (item.getClass().getName().equals("bbj.graphicsobjects.UIActorLifeLine")){
             m_selectedItem = (UIActorLifeLine) item;
         }
+        else if (item.getClass().getName().equals("bbj.graphicsobjects.UISimpleMessage")){
+            m_selectedItem = (UISimpleMessage) item;
+        }
     }
 
     /**
@@ -66,7 +69,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
         //Если кликнули больше одного раза
         if (e.getClickCount() > 1 && m_selectedItem != null) {
             m_selectedItem.edit(true);
-            EditField f = new EditField(m_selectedItem);
+            EditField f = new EditField(m_selectedItem);           
             m_selectedItem.f = f;
         } else {
             mousePressed(e);
@@ -107,10 +110,11 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
             int asd = e.getY();
             if (m_startYOnLine>=endLine1 && m_startYOnLine<=endLine2){
                 changeLifeLineLength((UILifeLine)m_selectedItem, asd);
-            }
-                
+            } 
         }
-        
+        else if (m_selectedItem.getClass().getSuperclass().getName().equals("bbj.graphicsobjects.UIMessage" )){
+            // Проверять, чтобы не вылезало за границы ЛЖ
+        }
 
         Rectangle rect = BBJ.app.getScene().getUIPanelsRectangle();
         //m_comment.setLocation(endX, endY);  // Задаем координаты объекту

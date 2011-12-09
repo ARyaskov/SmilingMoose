@@ -158,20 +158,19 @@ public final class Scene extends JPanel {
         UISimpleMessage m = new UISimpleMessage(ll, al, 215, "Тестовое сообщение 1");
 
         ll.setEnded(true);
+        this.add(m);
         this.add(ll);
         this.add(testCommentChecked1);
         this.add(testCommentChecked);
         this.add(al);
-        this.add(m);
-
-        
         
         // Добавляем тестовые объекты в контейнер
+        m_objects.add(m);
         m_objects.add(ll);
         m_objects.add(testCommentChecked);
         m_objects.add(testCommentChecked1);
         m_objects.add(al);
-        m_objects.add(m);
+        
 
         // Создаем сцене особого слушателя
         SceneItemListener sceneItemListener = new SceneItemListener();

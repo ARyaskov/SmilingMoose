@@ -25,6 +25,13 @@ public class UISimpleMessage extends UIMessage {
         m_receiver = receiver;
         this.y = y;
         m_text = text;
+        
+        SceneItemListener listener = new SceneItemListener(this);
+
+        this.addMouseListener(listener);
+        this.addMouseMotionListener(listener);
+        
+        this.setToolTipText("Сообщение: " + m_text);
     }
 
     /**
@@ -37,10 +44,10 @@ public class UISimpleMessage extends UIMessage {
         
         int endX = m_receiver.x+60;         // Конечная точка
         this.x = m_sender.x+60;             // Начальная точка
-        this.h = 25;                        // Высота объекта
+        this.h =45;                        // Высота объекта
         this.w = endX - m_sender.x;         // Длина объекта
 
-        setBounds(x, y, w, h);              // Задаем границы
+        
         
         if (m_isSelected)
             g.setColor(Color.red);        // Исходный цвет
@@ -66,17 +73,25 @@ public class UISimpleMessage extends UIMessage {
         char [] drawedText = m_text.toCharArray();
         char [] dots = {'.','.','.'};
         
-        int textX;
-        if (m_sender.x <= m_receiver.x)
+        if (m_sender.x <= m_receiver.x){
+            setBounds(m_sender.x, y-h, m_receiver.x-m_sender.x+60, h); // Задаем границы
+            
             textX= x + (endX - m_sender.x)/2 - 60;
-        else
+        }
+        else{
+            setBounds(m_receiver.x, y-h, m_sender.x-m_receiver.x+60, h); // Задаем границы
+            
             textX= m_receiver.x + (m_sender.x - m_receiver.x)/2;
+        }
         
         g.drawChars(drawedText, 0, java.lang.Math.min(13, m_text.length()), textX, y-10);
         
         if (m_text.length() >= 14)
             g.drawChars(dots, 0, 3, textX+85, y-10);
         
+        if (m_isEdit){
+            f.repaint();
+        }
     }
     
     
