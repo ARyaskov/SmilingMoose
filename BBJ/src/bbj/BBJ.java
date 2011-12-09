@@ -93,6 +93,7 @@ public final class BBJ {
     private JPanel m_canvasUI;
     public static BBJ app;
     public UndoManager undoManager = new UndoManager();
+    JButton delete_button;
 
     public Scene getScene() {
         return canvas;
@@ -627,9 +628,16 @@ public final class BBJ {
 
         toolBar.add(new JToolBar.Separator(new Dimension(5, toolBar.getHeight())));
 
-        JButton delete_button = new JButton();
+        delete_button = new JButton();
         delete_button.setIcon(new ImageIcon(BBJ.class.getResource("images/32/bin.png")));
         toolBar.add(delete_button);
+        delete_button.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                canvas.removeSelectedItems();
+            }
+        });
 
         toolBar.add(new JToolBar.Separator(new Dimension(60, toolBar.getHeight())));
 
