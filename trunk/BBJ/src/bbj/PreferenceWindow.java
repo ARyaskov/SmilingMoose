@@ -30,7 +30,9 @@ public final class PreferenceWindow extends JDialog
     JPanel flowPanel2;
     JPanel flowPanel3;
     ColorComboBean colorCombo;
-    
+    JCheckBox qualityAntialiasing;
+    JCheckBox qualityTextAntialiasing;
+    JCheckBox qualityInterpolation;
     
     Scene scene;
     JSpinner gridFactorSpinner;
@@ -43,7 +45,7 @@ public final class PreferenceWindow extends JDialog
         super(f,title,isModal);
         this.setResizable(false);
         scene = BBJ.app.getScene();
-        setSize(new Dimension(500, 300));
+        setSize(new Dimension(500, 500));
         gridColors = new Vector();
         gridColors.add(new Color(128,128,128,64));
         gridColors.add(new Color(204,255,243));
@@ -170,6 +172,77 @@ public final class PreferenceWindow extends JDialog
         
         
         drawPrefsPanel.add(gridPrefsPanel);
+        
+        
+        
+        // ==== Следующая секция - качество отрисовки
+        
+        JPanel qualityPrefsPanel = new JPanel();
+        BoxLayout qltLayout = new BoxLayout(qualityPrefsPanel,BoxLayout.Y_AXIS);
+        qualityPrefsPanel.setLayout(qltLayout);
+        TitledBorder borderQuality = new TitledBorder(
+                BorderFactory.createRaisedBevelBorder(),"Качество отрисовки",TitledBorder.CENTER,
+                TitledBorder.DEFAULT_POSITION);
+        border.setTitleFont(BBJ.borderTitleFont);
+        qualityPrefsPanel.setBorder(borderQuality);
+        borderQuality.setTitleFont(BBJ.borderTitleFont);
+        qualityAntialiasing = new JCheckBox("Улучшенное сглаживание");
+        qualityAntialiasing.addItemListener(this);
+        qualityAntialiasing.setSelected(
+                BBJ.qltAntialiasing == RenderingHints.VALUE_ANTIALIAS_ON ?
+                true : false);
+        qualityAntialiasing.setFont(BBJ.commonArial);
+        qualityPrefsPanel.add(qualityAntialiasing);
+        
+        
+        qualityTextAntialiasing = new JCheckBox("Улучшенное сглаживание текста");
+        qualityTextAntialiasing.addItemListener(this);
+        qualityTextAntialiasing.setSelected(
+                BBJ.qltAntialiasing == RenderingHints.VALUE_TEXT_ANTIALIAS_GASP ?
+                true : false);
+        qualityTextAntialiasing.setFont(BBJ.commonArial);
+        qualityPrefsPanel.add( qualityTextAntialiasing);
+        
+        
+        qualityInterpolation = new JCheckBox("Улучшенная интерполяция");
+        qualityInterpolation.addItemListener(this);
+        qualityInterpolation.setSelected(
+                BBJ.qltAntialiasing == RenderingHints.VALUE_INTERPOLATION_BICUBIC ?
+                true : false);
+        qualityInterpolation.setFont(BBJ.commonArial);
+        qualityPrefsPanel.add(qualityInterpolation);
+        
+        JLabel labelRenderQuality = new JLabel("Отрисовка               ");
+        JPanel tempPanel = new JPanel();
+        tempPanel.setLayout(new BoxLayout(tempPanel,BoxLayout.LINE_AXIS));
+        tempPanel.add(labelRenderQuality);
+        Vector tempVector1 = new Vector();
+        tempVector1.add("Скорость");
+        tempVector1.add("Качество");
+        JComboBox comboRenderQuality = new JComboBox(tempVector1);
+        comboRenderQuality.setFont(BBJ.commonArial);
+        tempPanel.add(comboRenderQuality);
+        qualityPrefsPanel.add(tempPanel);
+        
+        JLabel spacer = new JLabel("              ");
+        JPanel tempPanel3 = new JPanel();
+        tempPanel3.setLayout(new BoxLayout(tempPanel3,BoxLayout.LINE_AXIS));
+        tempPanel3.add(spacer);
+        qualityPrefsPanel.add(tempPanel3);
+        
+        JLabel labelAlpha = new JLabel("Прозрачность          ");
+        JPanel tempPanel2 = new JPanel();
+        tempPanel2.setLayout(new BoxLayout(tempPanel2,BoxLayout.LINE_AXIS));
+        tempPanel2.add(labelAlpha);
+        JComboBox comboAlpha = new JComboBox(tempVector1);
+        comboAlpha.setFont(BBJ.commonArial);
+        tempPanel2.add(comboAlpha);
+        qualityPrefsPanel.add(tempPanel2);
+        
+
+        
+        drawPrefsPanel.add(qualityPrefsPanel);
+        
         return drawPrefsPanel;
     }
      

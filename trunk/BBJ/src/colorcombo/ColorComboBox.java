@@ -83,11 +83,6 @@ public final class ColorComboBox extends JComboBox{
     }
 
     @Override
-    public void paintChildren(Graphics g) {
-        super.paintChildren(g);
-    }
-
-    @Override
     public void setSelectedIndex(int anIndex) {
         super.setSelectedIndex(anIndex);
         mSelectedColor = (Color)this.getItemAt(anIndex);

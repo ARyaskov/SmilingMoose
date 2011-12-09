@@ -3,7 +3,7 @@ package bbj.graphicsobjects;
 
 import bbj.graphicsobjects.*;
 import bbj.virtualobjects.*;
-
+import bbj.*;
 import java.awt.*;
 import javax.swing.*;
 
@@ -58,13 +58,17 @@ abstract public class UILifeLine extends SceneItem{
      * @param g Компонент, на котором рисуем
      */
     public void paint(Graphics g){
-        specificPaint(g);
-                       
+                      
         Graphics2D g2 = (Graphics2D)g;
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);  
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, BBJ.qltAntialiasing);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, BBJ.qltTextAntialiasing);
+        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, BBJ.qltAlphaInterpolation);
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, BBJ.qltInterpolation);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, BBJ.qltRender);  
 
+        
+        specificPaint(g2);
+        
         this.setBounds(this.x,this.y,w+10,h-20);
         
 //        g2.setStroke(new BasicStroke(3.0f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,

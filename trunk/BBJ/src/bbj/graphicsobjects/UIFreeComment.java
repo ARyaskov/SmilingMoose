@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.Polygon;
 import javax.swing.JTextArea;
 import java.awt.*;
+import bbj.*;
 
 /**
  *
@@ -55,12 +56,11 @@ public class UIFreeComment extends  SceneItem {
             rem;    // Остаток от деления длины строки
            
         Graphics2D g2 = (Graphics2D)g;
-        //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-       // g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, BBJ.qltAntialiasing);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, BBJ.qltTextAntialiasing);
+        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, BBJ.qltAlphaInterpolation);
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, BBJ.qltInterpolation);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, BBJ.qltRender);  
         /*g2.setColor(new Color(0,0,0,255));
         g2.drawRect(getX(), getY(), getWidth(), getHeight());*/
 
@@ -101,7 +101,8 @@ public class UIFreeComment extends  SceneItem {
         if (m_isSelected)   // Если выбрали - заливаем желтым   
             g.setColor(Color.getHSBColor(105, 215, 245));
         else                // Иначе, заливаем полигон голубоватым цветом
-            g.setColor(Color.getHSBColor(205, 235, 245));
+            g.setColor(new Color(255,210,210));
+            //g.setColor(Color.getHSBColor(205, 235, 245));
         
         g.fillPolygon(p);
         

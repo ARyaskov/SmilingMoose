@@ -24,18 +24,30 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
+import javax.swing.undo.UndoManager;
 
-/** JDK >= 1.4!
+/**
+ * JDK >= 1.4!
  *
  * @author Lemon
  */
 public final class BBJ {
-    
-    /* Поля класса для сохранения в файл. */
-    private boolean m_hasFile;  /** Флаг наличия привязанного файла. */
-    private String  m_filename; /** Имя файла, в который ведется сохранение. */
-    private boolean m_hasModifications; /** Флаг появления изменений с момента последнего сохранения. */
 
+    /*
+     * Поля класса для сохранения в файл.
+     */
+    private boolean m_hasFile;
+    /**
+     * Флаг наличия привязанного файла.
+     */
+    private String m_filename;
+    /**
+     * Имя файла, в который ведется сохранение.
+     */
+    private boolean m_hasModifications;
+    /**
+     * Флаг появления изменений с момента последнего сохранения.
+     */
     public static Font menuFont;
     public static Font messageFont;
     public static Font messageTitleFont;
@@ -43,9 +55,12 @@ public final class BBJ {
     public static Font tabTitleFont;
     public static Font commonArial;
     public static Font messageNameFont;
-    
-    public static Color m_background_color = new Color(255,255,255);
-    
+    public static Object qltAntialiasing = RenderingHints.VALUE_ANTIALIAS_OFF;
+    public static Object qltTextAntialiasing = RenderingHints.VALUE_TEXT_ANTIALIAS_OFF;
+    public static Object qltAlphaInterpolation = RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED;
+    public static Object qltInterpolation = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
+    public static Object qltRender = RenderingHints.VALUE_RENDER_SPEED;
+    public static Color m_background_color = new Color(255, 255, 255);
     public Font inputFont;
     public JMenu menuFile;
     public JMenu menuMisc;
@@ -61,65 +76,59 @@ public final class BBJ {
     public JMenuItem exitItem;
     public JFrame mainFrame;
     public JMenuBar menuBar;
-    
     public static int windowHeight;
     public static int windowWidth;
-    
-     private ArrayList<String> itemsMessages;
-     private ArrayList<String> itemsEntities;
-     public UISelector m_messageSelector;
-     public UISelector m_entitySelector;
-    
+    private ArrayList<String> itemsMessages;
+    private ArrayList<String> itemsEntities;
+    public UISelector m_messageSelector;
+    public UISelector m_entitySelector;
     public JDialog prefsWindow;
-    
     protected Scene canvas;
     private JPanel m_canvasUI;
     public static BBJ app;
-    
-    
-    private JPanel panel;
-    
-    public Scene getScene(){
+    public UndoManager undoManager = new UndoManager();
+
+    public Scene getScene() {
         return canvas;
     }
-    
-    public JPanel getCanvasUI(){
+
+    public JPanel getCanvasUI() {
         return m_canvasUI;
     }
-    
-    public BBJ(){
+
+    public BBJ() {
         setupFonts();
         fillGUIContent();
         bindListeners();
         m_hasFile = false;
         m_hasModifications = false;
-        
+
     }
-    
-    public void repaintSelectors(){
-        if (m_messageSelector != null && m_entitySelector != null){
+
+    public void repaintSelectors() {
+        if (m_messageSelector != null && m_entitySelector != null) {
             m_messageSelector.repaint();
             m_entitySelector.repaint();
         }
     }
- 
-     public void fillGUIContent(){
-         mainFrame = new JFrame();
-         menuBar = new JMenuBar();
-         toolBar = new JToolBar(JToolBar.HORIZONTAL);
-         itemsMessages = new ArrayList<String>();
-         itemsEntities = new ArrayList<String>();
-         
-         setupMenus(menuBar);
-         mainFrame.setJMenuBar(menuBar);
 
-         toolBar.setFloatable(false);
-         toolBar.setBorder(new BevelBorder(BevelBorder.RAISED));
-         fillToolBar();
-         
-         mainFrame.add(toolBar, "North");
+    public void fillGUIContent() {
+        mainFrame = new JFrame();
+        menuBar = new JMenuBar();
+        toolBar = new JToolBar(JToolBar.HORIZONTAL);
+        itemsMessages = new ArrayList<String>();
+        itemsEntities = new ArrayList<String>();
 
-        
+        setupMenus(menuBar);
+        mainFrame.setJMenuBar(menuBar);
+
+        toolBar.setFloatable(false);
+        toolBar.setBorder(new BevelBorder(BevelBorder.RAISED));
+        fillToolBar();
+
+        mainFrame.add(toolBar, "North");
+
+
         itemsMessages.add("Reply");
         itemsMessages.add("Create");
         itemsMessages.add("Message");
@@ -128,7 +137,7 @@ public final class BBJ {
         itemsMessages.add("Async");
 
 
-        
+
         itemsEntities.add("Actor");
         itemsEntities.add("Comment");
         itemsEntities.add("LifeLine");
@@ -147,130 +156,132 @@ public final class BBJ {
                 "images/24/",
                 "images/16/",
                 "entity");
-         
-         canvas = new Scene(this);
-         canvas.setSize(mainFrame.getWidth(), mainFrame.getHeight() - toolBar.getHeight()
-                 - menuBar.getHeight());
-         
-         mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE );
-         ArrayList<Image> listOfIcons = new ArrayList();
-         listOfIcons.add(new ImageIcon(BBJ.class.getResource("images/moose16.png")).getImage());
-         listOfIcons.add(new ImageIcon(BBJ.class.getResource("images/moose24.png")).getImage());
-         listOfIcons.add(new ImageIcon(BBJ.class.getResource("images/moose48.png")).getImage());
-         listOfIcons.add(new ImageIcon(BBJ.class.getResource("images/moose64.png")).getImage());
-         listOfIcons.add(new ImageIcon(BBJ.class.getResource("images/moose128.png")).getImage());
-         mainFrame.setIconImages(listOfIcons);
-        
 
-         mainFrame.setTitle("Smiling Moose");
-         mainFrame.setSize(800, 600);
-         mainFrame.setLocationRelativeTo(null);
-         mainFrame.setMinimumSize(new Dimension(400,400));
-         mainFrame.setMaximumSize(new Dimension(2560,1600));
-         
-        
+        canvas = new Scene(this);
+        canvas.setSize(mainFrame.getWidth(), mainFrame.getHeight() - toolBar.getHeight()
+                - menuBar.getHeight());
 
-         
-         mainFrame.add(m_messageSelector);
-         mainFrame.add(m_entitySelector);
-      
-         m_messageSelector.setLocation(5, 50);
-         m_entitySelector.setLocation(5, m_messageSelector.getY()+m_messageSelector.getHeight()+10);
-        
-         mainFrame.add(canvas);
+        mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        ArrayList<Image> listOfIcons = new ArrayList();
+        listOfIcons.add(new ImageIcon(BBJ.class.getResource("images/moose16.png")).getImage());
+        listOfIcons.add(new ImageIcon(BBJ.class.getResource("images/moose24.png")).getImage());
+        listOfIcons.add(new ImageIcon(BBJ.class.getResource("images/moose48.png")).getImage());
+        listOfIcons.add(new ImageIcon(BBJ.class.getResource("images/moose64.png")).getImage());
+        listOfIcons.add(new ImageIcon(BBJ.class.getResource("images/moose128.png")).getImage());
+        mainFrame.setIconImages(listOfIcons);
 
-         mainFrame.addWindowListener(new mainFrameWindowListener());
-         
-         mainFrame.setVisible(true);
-     
-         
-         
-         
-         
-     }
-     
 
-     
+        mainFrame.setTitle("Smiling Moose");
+        mainFrame.setSize(800, 600);
+        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setMinimumSize(new Dimension(400, 400));
+        mainFrame.setMaximumSize(new Dimension(2560, 1600));
 
-     
-      class mainFrameWindowListener implements ComponentListener, WindowListener {
 
-			public void windowActivated(WindowEvent event) {}
-			public void windowClosed(WindowEvent event) {}
-                        public void windowClosing(WindowEvent event) {
-				Object[] options = { "Да", "Нет!" };
-				int n = JOptionPane
-						.showOptionDialog(event.getWindow(), "Закрыть Smiling Moose?",
-								"Подтверждение", JOptionPane.YES_NO_OPTION,
-								JOptionPane.QUESTION_MESSAGE, null, options,
-								options[0]);
-				if (n == 0) {
-                                        if (m_hasModifications) {
-                                            try {
-                                                saveDialog();
-                                            } catch (ParserConfigurationException ex) {
-                                                Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
-                                            } catch (SAXException ex) {
-                                                Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
-                                            } catch (IOException ex) {
-                                                Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
-                                            } catch (TransformerConfigurationException ex) {
-                                                Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
-                                            } catch (TransformerException ex) {
-                                                Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
-                                            }
-                                        }
-                                        event.getWindow().setVisible(false);
-                                        System.exit(0);
-				}
-			}
-			public void windowDeactivated(WindowEvent event) {}
-			public void windowDeiconified(WindowEvent event) {}
-			public void windowIconified(WindowEvent event) {canvas.repaint();}
-			public void windowOpened(WindowEvent event) {canvas.repaint();}
-                        
-                        public void componentHidden(ComponentEvent e){
-                            
-                        }  
-                        public void componentMoved(ComponentEvent e){
-                            
-                        }  
-                        public void componentResized(ComponentEvent e){
-                           windowHeight = e.getComponent().getHeight();
-                           windowWidth = e.getComponent().getWidth();
-                           //Убрать когда скролл сделаем
-                           BBJ.app.getScene().setSize(windowWidth, windowHeight);
-                           BBJ.app.getScene().repaint();
-                        }
-                        public void componentShown(ComponentEvent e){
-                            
-                        }
-         
-                        
-      }
-     
-     public void setupMenus(JMenuBar menuBar){
-     
-         menuFile = new JMenu("Файл");
-         menuFile.setFont(menuFont);
-     
-         menuBar.add(menuFile);
-         
-         menuMisc = new JMenu("Прочее");
-         menuMisc.setFont(menuFont);
-     
-         menuBar.add(menuMisc);
-         
-         createItem = new JMenuItem("Создать");
-         menuFile.add(createItem);
-         createItem.setFont(menuFont);
-         createItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N,
-                 java.awt.Event.CTRL_MASK));
-         createItem.addActionListener(new ActionListener() {
+        mainFrame.add(m_messageSelector);
+        mainFrame.add(m_entitySelector);
 
-             /**
-              * Метод создания новой диаграммы.
-              */
+        m_messageSelector.setLocation(5, 55);
+        m_entitySelector.setLocation(5, m_messageSelector.getY() + m_messageSelector.getHeight() + 10);
+
+        mainFrame.add(canvas);
+
+        mainFrame.addWindowListener(new mainFrameWindowListener());
+
+        mainFrame.setVisible(true);
+
+
+    }
+
+    class mainFrameWindowListener implements ComponentListener, WindowListener {
+
+        public void windowActivated(WindowEvent event) {
+        }
+
+        public void windowClosed(WindowEvent event) {
+        }
+
+        public void windowClosing(WindowEvent event) {
+            Object[] options = {"Да", "Нет!"};
+            int n = JOptionPane.showOptionDialog(event.getWindow(), "Закрыть Smiling Moose?",
+                    "Подтверждение", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE, null, options,
+                    options[0]);
+            if (n == 0) {
+                if (m_hasModifications) {
+                    try {
+                        saveDialog();
+                    } catch (ParserConfigurationException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SAXException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (TransformerConfigurationException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (TransformerException ex) {
+                        Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                event.getWindow().setVisible(false);
+                System.exit(0);
+            }
+        }
+
+        public void windowDeactivated(WindowEvent event) {
+        }
+
+        public void windowDeiconified(WindowEvent event) {
+        }
+
+        public void windowIconified(WindowEvent event) {
+            canvas.repaint();
+        }
+
+        public void windowOpened(WindowEvent event) {
+            canvas.repaint();
+        }
+
+        public void componentHidden(ComponentEvent e) {
+        }
+
+        public void componentMoved(ComponentEvent e) {
+        }
+
+        public void componentResized(ComponentEvent e) {
+            windowHeight = e.getComponent().getHeight();
+            windowWidth = e.getComponent().getWidth();
+            //Убрать когда скролл сделаем
+            BBJ.app.getScene().setSize(windowWidth, windowHeight);
+            BBJ.app.getScene().repaint();
+        }
+
+        public void componentShown(ComponentEvent e) {
+        }
+    }
+
+    public void setupMenus(JMenuBar menuBar) {
+
+        menuFile = new JMenu("Файл");
+        menuFile.setFont(menuFont);
+
+        menuBar.add(menuFile);
+
+        menuMisc = new JMenu("Прочее");
+        menuMisc.setFont(menuFont);
+
+        menuBar.add(menuMisc);
+
+        createItem = new JMenuItem("Создать");
+        menuFile.add(createItem);
+        createItem.setFont(menuFont);
+        createItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N,
+                java.awt.Event.CTRL_MASK));
+        createItem.addActionListener(new ActionListener() {
+
+            /**
+             * Метод создания новой диаграммы.
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (m_hasModifications) {
@@ -293,22 +304,22 @@ public final class BBJ {
                 m_filename = "";
             }
         });
-         
-         openItem = new JMenuItem("Открыть...");
-         menuFile.add(openItem);
-         openItem.setFont(menuFont);
-         openItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O,
-                 java.awt.Event.CTRL_MASK));
-         openItem.addActionListener(new ActionListener() {
 
-             /**
-              * Метод открытия файла с диаграммой.
-              */
+        openItem = new JMenuItem("Открыть...");
+        menuFile.add(openItem);
+        openItem.setFont(menuFont);
+        openItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O,
+                java.awt.Event.CTRL_MASK));
+        openItem.addActionListener(new ActionListener() {
+
+            /**
+             * Метод открытия файла с диаграммой.
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser chooser = new JFileChooser();
                 FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                    "Smilling Moose Projects files (*.suef,*.suefd)", "suef", "suefd");
+                        "Smilling Moose Projects files (*.suef,*.suefd)", "suef", "suefd");
                 chooser.setFileFilter(filter);
                 int returnVal = chooser.showOpenDialog(mainFrame);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -342,23 +353,22 @@ public final class BBJ {
                 }
             }
         });
-         
-         saveItem = new JMenuItem("Сохранить");
-         menuFile.add(saveItem);
-         saveItem.setFont(menuFont);
-         saveItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S,
-                 java.awt.Event.CTRL_MASK));
-         saveItem.addActionListener(new ActionListener() {
 
-             /**
-              * Метод сохранения диаграммы по пункту меню "Сохранить".
-              */
+        saveItem = new JMenuItem("Сохранить");
+        menuFile.add(saveItem);
+        saveItem.setFont(menuFont);
+        saveItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S,
+                java.awt.Event.CTRL_MASK));
+        saveItem.addActionListener(new ActionListener() {
+
+            /**
+             * Метод сохранения диаграммы по пункту меню "Сохранить".
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!m_hasFile) {
                     saveFileUs();
-                }
-                else {
+                } else {
                     try {
                         canvas.save(m_filename);
                     } catch (ParserConfigurationException ex) {
@@ -375,39 +385,39 @@ public final class BBJ {
                 }
             }
         });
-         
-         saveAsItem = new JMenuItem("Сохранить как...");
-         menuFile.add(saveAsItem);
-         saveAsItem.setFont(menuFont);
-         saveAsItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S,
-                                           java.awt.Event.CTRL_MASK + java.awt.Event.SHIFT_MASK));
-         saveAsItem.addActionListener(new ActionListener() {
 
-             /**
-              * Метод сохранения диаграммы в указанный файл.
-              */
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                   saveFileUs ();
-            }
-        });
-         
-         menuFile.addSeparator();
-         
-         importItem = new JMenuItem("Импорт из XML...");
-         menuFile.add(importItem);
-         importItem.setFont(menuFont);
-         importItem.addActionListener(new ActionListener() {
+        saveAsItem = new JMenuItem("Сохранить как...");
+        menuFile.add(saveAsItem);
+        saveAsItem.setFont(menuFont);
+        saveAsItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S,
+                java.awt.Event.CTRL_MASK + java.awt.Event.SHIFT_MASK));
+        saveAsItem.addActionListener(new ActionListener() {
 
             /**
-              * Метод открытия файла с диаграммой.
-              * Метод импорта диаграммы из xml файла.
-              */
+             * Метод сохранения диаграммы в указанный файл.
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveFileUs();
+            }
+        });
+
+        menuFile.addSeparator();
+
+        importItem = new JMenuItem("Импорт из XML...");
+        menuFile.add(importItem);
+        importItem.setFont(menuFont);
+        importItem.addActionListener(new ActionListener() {
+
+            /**
+             * Метод открытия файла с диаграммой. Метод импорта диаграммы из xml
+             * файла.
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser chooser = new JFileChooser();
                 FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                    "XML files (*.xml)", "xml");
+                        "XML files (*.xml)", "xml");
                 chooser.setFileFilter(filter);
                 int returnVal = chooser.showOpenDialog(mainFrame);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -439,25 +449,25 @@ public final class BBJ {
                 }
             }
         });
-         
-         exportItem = new JMenu("Экспорт");
-         menuFile.add(exportItem);
-         exportItem.setFont(menuFont);
-         
-         inPictItem = new JMenuItem("в картинку...");
-         exportItem.add(inPictItem);
-         inPictItem.setFont(menuFont);
-         inPictItem.addActionListener(new ActionListener() {
+
+        exportItem = new JMenu("Экспорт");
+        menuFile.add(exportItem);
+        exportItem.setFont(menuFont);
+
+        inPictItem = new JMenuItem("в картинку...");
+        exportItem.add(inPictItem);
+        inPictItem.setFont(menuFont);
+        inPictItem.addActionListener(new ActionListener() {
 
             /**
-              * Метод сохранения диаграммы в указанный графический файл.
-              * Диаграмма будет сохранена в виде изображения.
-              */
+             * Метод сохранения диаграммы в указанный графический файл.
+             * Диаграмма будет сохранена в виде изображения.
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser chooser = new JFileChooser();
                 FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                    "Draw images (*.png)", "png");
+                        "Draw images (*.png)", "png");
                 chooser.setFileFilter(filter);
                 int returnVal = chooser.showSaveDialog(mainFrame);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -465,29 +475,29 @@ public final class BBJ {
                 }
             }
         });
-         
-         inXMIItem = new JMenuItem("в XML файл...");
-         exportItem.add(inXMIItem);
-         inXMIItem.setFont(menuFont);
-         inXMIItem.addActionListener(new ActionListener() {
+
+        inXMIItem = new JMenuItem("в XML файл...");
+        exportItem.add(inXMIItem);
+        inXMIItem.setFont(menuFont);
+        inXMIItem.addActionListener(new ActionListener() {
 
             /**
-              * Метод сохранения диаграммы в указанный xml файл.
-              */
+             * Метод сохранения диаграммы в указанный xml файл.
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser chooser = new JFileChooser();
                 FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                    "XML files (*.xml)", "xml");
+                        "XML files (*.xml)", "xml");
                 chooser.setFileFilter(filter);
                 int returnVal = chooser.showSaveDialog(mainFrame);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = chooser.getSelectedFile();
                     String filePath = file.getPath();
                     if (!filePath.matches(".+\\..+")) {
-                        String[] ps = ((FileNameExtensionFilter)chooser.getFileFilter()).getExtensions(); 
+                        String[] ps = ((FileNameExtensionFilter) chooser.getFileFilter()).getExtensions();
                         filePath += ("." + ps[0]);
-                     }
+                    }
                     try {
                         canvas.save(filePath);
                     } catch (ParserConfigurationException ex) {
@@ -504,59 +514,65 @@ public final class BBJ {
                 }
             }
         });
-         
-         
- 
-         
-         
-         /* == Misc Menu ==*/
-         JMenuItem prefersItem = new JMenuItem("Настройки");
-         menuMisc.add(prefersItem);
-         prefersItem.setFont(menuFont);
-         prefersItem.addActionListener(new ActionListener()
-             {public void actionPerformed(ActionEvent e)
-             {prefsWindow = new PreferenceWindow(mainFrame, "Настройки", true);
-             prefsWindow.setLocationRelativeTo(mainFrame.getContentPane());
-             prefsWindow.setVisible(true);} });
-         
-         
-         menuMisc.addSeparator();
-         
-         JMenuItem helpItem = new JMenuItem("Справка");
-         menuMisc.add(helpItem);
-         helpItem.setFont(menuFont);
-         helpItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.Event.ALT_MASK));
-         helpItem.addActionListener(new ActionListener() {
 
-             /**
-              * Метод вызова справки через браузер пользователя.
-              */
+
+
+
+
+        /*
+         * == Misc Menu ==
+         */
+        JMenuItem prefersItem = new JMenuItem("Настройки");
+        menuMisc.add(prefersItem);
+        prefersItem.setFont(menuFont);
+        prefersItem.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                prefsWindow = new PreferenceWindow(mainFrame, "Настройки", true);
+                prefsWindow.setLocationRelativeTo(mainFrame.getContentPane());
+                prefsWindow.setVisible(true);
+            }
+        });
+
+
+        menuMisc.addSeparator();
+
+        JMenuItem helpItem = new JMenuItem("Справка");
+        menuMisc.add(helpItem);
+        helpItem.setFont(menuFont);
+        helpItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.Event.ALT_MASK));
+        helpItem.addActionListener(new ActionListener() {
+
+            /**
+             * Метод вызова справки через браузер пользователя.
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 String url = "help/index.html";
                 String os = System.getProperty("os.name").toLowerCase();
                 Runtime rt = Runtime.getRuntime();
-                
+
                 if (os.indexOf("win") >= 0) {
                     try {
-                        rt.exec( "rundll32 url.dll,FileProtocolHandler " + url);
+                        rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
                     } catch (IOException ex) {
                         Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                } else if (os.indexOf( "mac" ) >= 0) {
+                } else if (os.indexOf("mac") >= 0) {
                     try {
-                        rt.exec( "open " + url);
+                        rt.exec("open " + url);
                     } catch (IOException ex) {
                         Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                } else if (os.indexOf( "nix") >=0 || os.indexOf( "nux") >=0) {
+                } else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0) {
                     String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror",
-	       			             "netscape","opera","links","lynx"};
+                        "netscape", "opera", "links", "lynx"};
                     StringBuffer cmd = new StringBuffer();
-                    for (int i=0; i<browsers.length; i++)
-                        cmd.append( (i==0  ? "" : " || " ) + browsers[i] +" \"" + url + "\" ");
+                    for (int i = 0; i < browsers.length; i++) {
+                        cmd.append((i == 0 ? "" : " || ") + browsers[i] + " \"" + url + "\" ");
+                    }
                     try {
-                        rt.exec(new String[] { "sh", "-c", cmd.toString() });
+                        rt.exec(new String[]{"sh", "-c", cmd.toString()});
                     } catch (IOException ex) {
                         Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -564,85 +580,107 @@ public final class BBJ {
             }
         });
 
-         
-         
-     }
-     
-     
-     public void setupFonts(){
+
+
+    }
+
+    public void setupFonts() {
         int dpi = Toolkit.getDefaultToolkit().getScreenResolution();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-         
-        
-        
-        commonArial = new Font("Arial",
-                  Font.PLAIN, 11); 
-         
-        menuFont = new Font("Arial",
-                  Font.PLAIN, 11); 
-        messageFont = new Font("Arial",
-                  Font.PLAIN, 11); 
-        messageTitleFont = new Font("Arial",
-                  Font.PLAIN, 11); 
-        borderTitleFont = new Font("Georgia",
-                  Font.PLAIN, 13);   
-        tabTitleFont = new Font("Arial",
-                  Font.PLAIN, 12);   
-        messageNameFont = new Font("Georgia",
-                  Font.PLAIN, 14); 
-        UIManager.put("Label.font", BBJ.commonArial);
-       
-             
-     }
-     public void fillToolBar() {
 
-  
-       JToolBar.Separator sep0 = new JToolBar.Separator(new Dimension(120,toolBar.getHeight()));
-       toolBar.add(sep0);
-       
-       JToggleButton select_button = new JToggleButton();
-       select_button.setIcon(new ImageIcon(BBJ.class.getResource("images/select.png")));
-       toolBar.add(select_button);
-       
-       JToggleButton delete_button = new JToggleButton();
-       delete_button.setIcon(new ImageIcon(BBJ.class.getResource("images/delete.png")));
-       toolBar.add(delete_button);
- 
-       JToolBar.Separator sep1 = new JToolBar.Separator(new Dimension(20,toolBar.getHeight()));
-       toolBar.add(sep1);
-       
-     /*  JToggleButton message_button = new JToggleButton();
-       message_button.setIcon(new ImageIcon(BBJ.class.getResource("images/message_arrow.png")));
-       toolBar.add(message_button);
-       
-       JToggleButton lifeline_button = new JToggleButton();
-       lifeline_button.setIcon(new ImageIcon(BBJ.class.getResource("images/lifeline_arrow.png")));
-       toolBar.add(lifeline_button);
-       
-       JToggleButton freecomment_button = new JToggleButton();
-       freecomment_button.setIcon(new ImageIcon(BBJ.class.getResource("images/comment.png")));
-       toolBar.add(freecomment_button);
-       
-       JToolBar.Separator sep2 = new JToolBar.Separator(new Dimension(20,toolBar.getHeight()));
-       toolBar.add(sep2);
-       */
-       JButton undo_button = new JButton();
-       undo_button.setIcon(new ImageIcon(BBJ.class.getResource("images/undo.png")));
-       toolBar.add(undo_button);
-       
-       JButton redo_button = new JButton();
-       redo_button.setIcon(new ImageIcon(BBJ.class.getResource("images/redo.png")));
-       toolBar.add(redo_button);
-   }
-     
-     /**
-      *  Метод вызываемый при выборе меню "Сохранить как..."
-      */
-     private void saveFileUs () {
-         
+
+
+        commonArial = new Font("Arial",
+                Font.PLAIN, 11);
+
+        menuFont = new Font("Arial",
+                Font.PLAIN, 11);
+        messageFont = new Font("Arial",
+                Font.PLAIN, 11);
+        messageTitleFont = new Font("Arial",
+                Font.PLAIN, 11);
+        borderTitleFont = new Font("Georgia",
+                Font.PLAIN, 13);
+        tabTitleFont = new Font("Arial",
+                Font.PLAIN, 12);
+        messageNameFont = new Font("Georgia",
+                Font.PLAIN, 14);
+        UIManager.put("Label.font", BBJ.commonArial);
+
+
+    }
+
+    public void fillToolBar() {
+
+
+        toolBar.add(new JToolBar.Separator(new Dimension(150, toolBar.getHeight())));
+
+        JToggleButton select_button = new JToggleButton();
+        select_button.setIcon(new ImageIcon(BBJ.class.getResource("images/32/cursor.png")));
+        toolBar.add(select_button);
+
+        toolBar.add(new JToolBar.Separator(new Dimension(5, toolBar.getHeight())));
+
+        JButton delete_button = new JButton();
+        delete_button.setIcon(new ImageIcon(BBJ.class.getResource("images/32/bin.png")));
+        toolBar.add(delete_button);
+
+        toolBar.add(new JToolBar.Separator(new Dimension(60, toolBar.getHeight())));
+
+        /*
+         * JToggleButton message_button = new JToggleButton();
+         * message_button.setIcon(new
+         * ImageIcon(BBJ.class.getResource("images/message_arrow.png")));
+         * toolBar.add(message_button);
+         *
+         * JToggleButton lifeline_button = new JToggleButton();
+         * lifeline_button.setIcon(new
+         * ImageIcon(BBJ.class.getResource("images/lifeline_arrow.png")));
+         * toolBar.add(lifeline_button);
+         *
+         * JToggleButton freecomment_button = new JToggleButton();
+         * freecomment_button.setIcon(new
+         * ImageIcon(BBJ.class.getResource("images/comment.png")));
+         * toolBar.add(freecomment_button);
+         *
+         * JToolBar.Separator sep2 = new JToolBar.Separator(new
+         * Dimension(20,toolBar.getHeight())); toolBar.add(sep2);
+         */
+        JButton undo_button = new JButton();
+        undo_button.setIcon(new ImageIcon(BBJ.class.getResource("images/32/undo.png")));
+        undo_button.setEnabled(false);
+        //undo_button.setText("Undo");
+        toolBar.add(undo_button);
+
+        toolBar.add(new JToolBar.Separator(new Dimension(5, toolBar.getHeight())));
+
+        JButton redo_button = new JButton();
+        redo_button.setIcon(new ImageIcon(BBJ.class.getResource("images/32/redo.png")));
+        redo_button.setEnabled(false);
+        toolBar.add(redo_button);
+
+        toolBar.add(new JToolBar.Separator(new Dimension(60, toolBar.getHeight())));
+
+
+        JButton zoomin_button = new JButton();
+        zoomin_button.setIcon(new ImageIcon(BBJ.class.getResource("images/32/zoom_in.png")));
+        toolBar.add(zoomin_button);
+
+        toolBar.add(new JToolBar.Separator(new Dimension(5, toolBar.getHeight())));
+
+        JButton zoomout_button = new JButton();
+        zoomout_button.setIcon(new ImageIcon(BBJ.class.getResource("images/32/zoom_out.png")));
+        toolBar.add(zoomout_button);
+    }
+
+    /**
+     * Метод вызываемый при выборе меню "Сохранить как..."
+     */
+    private void saveFileUs() {
+
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
-            "Smiling Moose Projects files (*.suef)", "suef");
+                "Smiling Moose Projects files (*.suef)", "suef");
         chooser.setFileFilter(filter);
         chooser.addChoosableFileFilter(filter);
         chooser.addChoosableFileFilter(new FileNameExtensionFilter("Smiling Moose Draft Projects files (*.suefd)",
@@ -653,9 +691,9 @@ public final class BBJ {
             String filePath = file.getPath();
             m_hasFile = true;
             if (!filePath.matches(".+\\..+")) {
-                String[] ps = ((FileNameExtensionFilter)chooser.getFileFilter()).getExtensions(); 
+                String[] ps = ((FileNameExtensionFilter) chooser.getFileFilter()).getExtensions();
                 filePath += ("." + ps[0]);
-             }
+            }
             m_filename = filePath;
             try {
                 try {
@@ -673,30 +711,28 @@ public final class BBJ {
                 Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-     }
-    
-    public void bindListeners(){
-  
-    
-        
     }
+
+    public void bindListeners() {
+    }
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         app = new BBJ();
     }
-    
+
     /**
      * Диалог сохранения диаграммы при закрытии программы.
      */
-    private void saveDialog () throws ParserConfigurationException, SAXException, IOException, TransformerConfigurationException, TransformerException {
-        Object[] options = { "Да", "Нет!" };
+    private void saveDialog() throws ParserConfigurationException, SAXException, IOException, TransformerConfigurationException, TransformerException {
+        Object[] options = {"Да", "Нет!"};
 
         int answer = JOptionPane.showOptionDialog(this.mainFrame, "Сохранить изменения в проекте?",
-                                        "Подтверждение", JOptionPane.YES_NO_OPTION,
-                                        JOptionPane.QUESTION_MESSAGE, null, options,
-                                        options[0]);
+                "Подтверждение", JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, options,
+                options[0]);
         if (answer == 0) {
             if (!m_hasFile) {
                 saveFileUs();

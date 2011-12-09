@@ -30,6 +30,7 @@ public class UIActorLifeLine extends UILifeLine {
             
     @Override
     public void specificPaint(Graphics g) {
+        
         m_textCoordX = x+10;
         m_textCoordY = y+47;
         
