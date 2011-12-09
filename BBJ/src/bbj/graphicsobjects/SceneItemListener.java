@@ -113,7 +113,25 @@ public class SceneItemListener implements MouseListener, MouseMotionListener {
             } 
         }
         else if (m_selectedItem.getClass().getSuperclass().getName().equals("bbj.graphicsobjects.UIMessage" )){
-            // Проверять, чтобы не вылезало за границы ЛЖ
+            
+            // ограничиваем передвижение сообщения по оси У
+            UISimpleMessage currentMessage = (UISimpleMessage)m_selectedItem;
+            if (endY >= currentMessage.getSender().getHeight()){
+                endY = currentMessage.getSender().getHeight();
+            }
+
+            if (endY >= currentMessage.getReceiver().getHeight()){
+                endY = currentMessage.getReceiver().getHeight();
+            }
+            
+            if (endY <= currentMessage.getSender().getY()+70){
+                endY = currentMessage.getSender().getY()+70;
+            }
+            
+            if (endY <= currentMessage.getReceiver().getY()+70){
+                endY = currentMessage.getReceiver().getY()+70;
+            }
+            
         }
 
         Rectangle rect = BBJ.app.getScene().getUIPanelsRectangle();

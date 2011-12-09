@@ -21,6 +21,7 @@ abstract public class UIMessage extends SceneItem {
     /** Длина линии жизни. */
     protected int m_length;
     
+    /** Текст сообщения */
     protected int textX;
             
     /**
