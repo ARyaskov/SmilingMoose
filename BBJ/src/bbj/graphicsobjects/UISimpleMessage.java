@@ -26,6 +26,10 @@ public class UISimpleMessage extends UIMessage {
     public UISimpleMessage(UILifeLine sender, UILifeLine receiver, int y){
         m_sender = sender;
         m_receiver = receiver;
+        
+        m_sender.m_inbox.add(this);
+        m_receiver.m_outbox.add(this);
+        
         this.y = y;
         
         setDefaultName();
