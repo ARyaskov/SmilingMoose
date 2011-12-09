@@ -36,6 +36,7 @@ public class UISimpleMessage extends UIMessage {
 
         this.addMouseListener(listener);
         this.addMouseMotionListener(listener);
+//        this.addKeyListener(listener);
         
         this.setToolTipText("Сообщение: " + m_text);
     }

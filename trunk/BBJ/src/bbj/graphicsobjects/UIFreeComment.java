@@ -46,6 +46,7 @@ public class UIFreeComment extends  SceneItem {
                 
         this.addMouseListener(listener);
         this.addMouseMotionListener(listener);
+//        this.addKeyListener(listener);
         this.setToolTipText("Свободный комментарий: " + this.m_text);
     }
     

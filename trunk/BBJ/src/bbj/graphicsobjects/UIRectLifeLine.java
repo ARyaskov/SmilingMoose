@@ -30,6 +30,7 @@ public class UIRectLifeLine extends UILifeLine {
 
         this.addMouseListener(listener);
         this.addMouseMotionListener(listener);
+//        this.addKeyListener(listener);
         
         this.setToolTipText("Линия жизни: " + m_text);
     }

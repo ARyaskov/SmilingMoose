@@ -80,6 +80,7 @@ public final class Scene extends JPanel implements DropTargetListener {
     private int m_scene_width;
     private double m_zoom;
     private AddToSceneEdit m_undoEdit;
+    boolean m_isCTRLPressed;
 
     /**
      * Метод получения объекта сцены по индексу.
@@ -131,6 +132,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         stopSelect_y = 0;
         m_zoom = 1.0;
         m_selectionRect = new Rectangle();
+        m_isCTRLPressed = false;
 
         this.setDoubleBuffered(true);
 
@@ -158,7 +160,6 @@ public final class Scene extends JPanel implements DropTargetListener {
         this.addMouseListener(new MouseSlot());    // Добавляем слушателя мыши на сцену
 
         this.addMouseMotionListener(new MouseSlot());
-
 
 
        // UIFreeComment testCommentChecked = new UIFreeComment(150, 200);
@@ -482,6 +483,9 @@ public final class Scene extends JPanel implements DropTargetListener {
                 m_app.m_redoButton.setEnabled(m_app.getUndoManager().canRedo());
                 m_objects.add(item);
                 this.add(item);
+                for (int i = 0; i < this.m_selectedObjects.size(); i++) { m_selectedObjects.get(i).select(false); }
+                m_selectedObjects.clear();
+                item.select(true);
             }
         } catch (UnsupportedFlavorException ex) {
             Logger.getLogger(Scene.class.getName()).log(Level.SEVERE, null, ex);
