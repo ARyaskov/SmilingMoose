@@ -10,9 +10,12 @@ package bbj.graphicsobjects;
  */
 public class UIDestroyMessage extends UIMessage {
 
+    /** Номер экзампляра данного класса на сцене */
+    public static int m_localNumber = 0;
+    
     @Override
     protected void setDefaultName() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        m_text = "Сообщение " + Integer.toString(m_localNumber++);
     }
     
 }

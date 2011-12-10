@@ -599,11 +599,25 @@ public final class Scene extends JPanel implements DropTargetListener {
     }
 
     /**
+     * Обнуление номеров имен объектов сцены
+     */
+    private void updateLocalnumbers(){
+        UISimpleMessage.m_localNumber = 0;
+        UIReplyMessage.m_localNumber = 0;
+        UIRectLifeLine.m_localNumber = 0;
+        UIFreeComment.m_localNumber = 0;
+        UIDestroyMessage.m_localNumber = 0;
+        UICreateMessage.m_localNumber = 0;
+        UIActorLifeLine.m_localNumber = 0;
+    }
+    
+    /**
      * Метод очистки диаграммы.
      */
     public void clear() {
         this.m_objects.clear();
         this.m_model.clear();
+        this.updateLocalnumbers();
         this.repaint();
     }
 
