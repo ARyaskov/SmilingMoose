@@ -26,6 +26,8 @@ public class UIDestroyMessage extends UIMessage {
         this.y = y;
         m_receiver.h = y+60;
         
+        m_receiver.setEnded(true);
+        
         m_sender.m_inbox.add(this);
         m_receiver.m_outbox.add(this);
         
