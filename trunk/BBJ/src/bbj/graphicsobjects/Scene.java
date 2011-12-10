@@ -77,6 +77,7 @@ public final class Scene extends JPanel implements DropTargetListener {
     private int m_scene_width;
     private double m_zoom;
     private AddToSceneEdit m_undoEdit;
+    private ClearSceneEdit m_clearSceneEdit;
     int globalId = 0;
     protected PopupMenu m_menu;
     protected MenuItem m_clear;
@@ -243,6 +244,13 @@ public final class Scene extends JPanel implements DropTargetListener {
 
     }
 
+    public void setVirtualModel(VirtualModel vm){
+        m_model = vm;
+    }
+    public void setGraphicsObjects(ArrayList<SceneItem> items){
+        m_objects = items;
+    }
+    
     @Override
     protected void paintComponent(Graphics g) {
 
@@ -686,11 +694,18 @@ public final class Scene extends JPanel implements DropTargetListener {
      * Метод очистки диаграммы.
      */
     public void clear() {
+        m_clearSceneEdit = new ClearSceneEdit(this);
+        
+
         this.m_objects.clear();
         this.m_model.clear();
         this.updateLocalnumbers();
+        
         this.repaint();
         BBJ.app.m_hasModifications = true;
+        m_app.getUndoSupport().postEdit(m_clearSceneEdit);
+        m_app.m_undoButton.setEnabled(m_app.getUndoManager().canUndo());
+        m_app.m_redoButton.setEnabled(m_app.getUndoManager().canRedo());
     }
 
     /**
