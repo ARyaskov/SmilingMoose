@@ -195,17 +195,18 @@ public final class Scene extends JPanel implements DropTargetListener {
       //  UIDestroyMessage m2 = new UIDestroyMessage(al, ll, 250);
 
         ll.setEnded(true);
-        
+        this.add(m.m_focusReceiver);
+        this.add(m.m_focusSender);
+        this.add(r);
         this.add(ll);
         this.add(al);
         this.add(m);
-        this.add(r);
+   
         //setComponentZOrder(m.m_focusReceiver, getComponentCount()-1);
      //   setComponentZOrder(m.m_focusSender, getComponentCount()-1);
        // this.add(m1);
        // this.add(m2);
-        this.add(m.m_focusReceiver);
-        this.add(m.m_focusSender);
+        
 
         // Добавляем тестовые объекты в контейнер
 

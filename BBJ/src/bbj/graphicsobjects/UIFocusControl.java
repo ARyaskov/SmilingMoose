@@ -51,8 +51,14 @@ public class UIFocusControl extends SceneItem {
 
         else
             this.x = m_parentMessage.m_receiver.x+50;
-            
+        
         this.y = m_parentMessage.y;
+        
+        if (m_parentMessage.getClass().getName().equals("bbj.graphicsobjects.UICreateMessage" )){
+            this.y = m_parentMessage.y+40;
+        }
+            
+        
         
         //m_isSelected = m_parentMessage.isSelected();
         
