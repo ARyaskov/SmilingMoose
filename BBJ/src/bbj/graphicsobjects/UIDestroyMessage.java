@@ -31,6 +31,9 @@ public class UIDestroyMessage extends UIMessage {
         m_sender.m_inbox.add(this);
         m_receiver.m_outbox.add(this);
         
+        m_focusReceiver = new UIFocusControl(this, false);
+        m_focusSender = new UIFocusControl(this, true);
+        
         setDefaultName();
         
         SceneItemListener listener = new SceneItemListener(this);
@@ -49,18 +52,21 @@ public class UIDestroyMessage extends UIMessage {
     public void paint(Graphics g) {
         
         super.paint(g);
+                
         Graphics2D g2 = (Graphics2D)g;     
         this.x = m_sender.x+60;             // Начальная точка
         int endX = m_receiver.x+60;            // Конечная точка
         this.h = 45;                        // Высота объекта
         this.w = endX - this.x;         // Длина объекта
-        
+                
         if (m_isSelected)
             g.setColor(Color.red);        // Исходный цвет
         else
             g.setColor(Color.black);        // Цвет при выделении         
 
         g2.setStroke(new BasicStroke(2));   // Берем линию потолще   
+        
+        y-=5;
         
         g.drawLine(x, y, endX, y);        // Рисуем линию сообщения
 
@@ -72,6 +78,10 @@ public class UIDestroyMessage extends UIMessage {
             g.drawLine(endX, y, endX+7, y+5);
             g.drawLine(endX, y, endX+7, y-5);
         }
+        y+=5;
+                
+        m_focusReceiver.paint(g);
+        m_focusSender.paint(g);
                 
         // Разбиваем текст на массив символов
         char [] drawedText = m_text.toCharArray();

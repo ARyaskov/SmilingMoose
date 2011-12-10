@@ -140,8 +140,10 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
                 // ограничиваем передвижение сообщения по оси У
                 UIMessage currentMessage = (UIMessage) m_selectedItem;
 
-                if (endY >= currentMessage.getSender().getHeight()) {
-                    endY = currentMessage.getSender().getHeight();
+                if (endY >= currentMessage.getSender().getHeight()-
+                        currentMessage.m_focusSender.h) {
+                    currentMessage.getSender().setLength(endY+
+                            currentMessage.m_focusSender.h);
                 }
 
                 if (endY <= currentMessage.getSender().getY() + 70) {
@@ -149,8 +151,10 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
                 }
 
                 if (!currentMessage.getClass().getName().equals("bbj.graphicsobjects.UICreateMessage")) {
-                    if (endY >= currentMessage.getReceiver().getHeight()) {
-                        endY = currentMessage.getReceiver().getHeight();
+                    if (endY >= currentMessage.getReceiver().getHeight()-
+                            currentMessage.m_focusReceiver.h) {
+                        currentMessage.getReceiver().setLength(endY+
+                            currentMessage.m_focusReceiver.h);
                     }
 
                     if (endY <= currentMessage.getReceiver().getY() + 70) {
@@ -307,11 +311,11 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
                    UIMessage buf = i.next();
                    
                     if (buf.getClass().getName().equals("bbj.graphicsobjects.UIDestroyMessage" )){
-                        if (newY <= buf.getY()+buf.getHeight()-10)
+                        if (newY <= buf.getY()+buf.getHeight()-10+buf.m_focusReceiver.h)
                         isOk = false;
                     }
                     else
-                        if (newY <= buf.getY()+buf.getHeight()-50)
+                        if (newY <= buf.getY()+buf.getHeight()-50+buf.m_focusReceiver.h)
                             isOk = false;
 
                 }
@@ -322,7 +326,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
 
                 while (i.hasNext()) {
                     UIMessage buf = i.next();
-                    if (newY <= buf.getY() + buf.getHeight() - 50) {
+                    if (newY <= buf.getY() + buf.getHeight() - 50+buf.m_focusSender.h) {
                         isOk = false;
                     }
                 }
