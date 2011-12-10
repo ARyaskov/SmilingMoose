@@ -40,7 +40,7 @@ public class UICreateMessage extends UIMessage {
         this.setToolTipText("Сообщение создания: " + m_text);
     }
     
-            /**
+    /**
      * Отрисовка объекта
      * @param g На чем рисовать
      */
