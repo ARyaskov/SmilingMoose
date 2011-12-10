@@ -391,6 +391,7 @@ public final class BBJ {
                         }
                     }
                     try {
+                        canvas.clear();
                         canvas.load(m_filename);
                     } catch (ParserConfigurationException ex) {
                         Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);

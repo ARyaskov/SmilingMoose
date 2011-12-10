@@ -81,6 +81,23 @@ public final class Scene extends JPanel implements DropTargetListener {
     private double m_zoom;
     private AddToSceneEdit m_undoEdit;
     boolean m_isCTRLPressed;
+    int globalId = 0;
+    
+    /**
+     * Метод получения глобального идентификатора.
+     * @return Глобальный идентификатор.
+     */
+    public int takeId () {
+        return globalId;
+    }
+    
+    /**
+     * Метод задания глобального идентификатора.
+     * @param id Новый глобальный идентификатор.
+     */
+    public void setId (int id) {
+        globalId = id;
+    }
 
     /**
      * Метод получения объекта сцены по индексу.
@@ -133,6 +150,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         m_zoom = 1.0;
         m_selectionRect = new Rectangle();
         m_isCTRLPressed = false;
+        m_model.setScene(this);
 
         this.setDoubleBuffered(true);
 
@@ -162,30 +180,30 @@ public final class Scene extends JPanel implements DropTargetListener {
         this.addMouseMotionListener(new MouseSlot());
 
         // Добавляем тестовые объекты в контейнер       
-
-        UIRectLifeLine ll = new UIRectLifeLine(470, 111);
-
-        UIActorLifeLine al = new UIActorLifeLine(400, 333);
-
-        UISimpleMessage m = new UISimpleMessage(ll, al, 215);
-        
-        UICreateMessage m1 = new UICreateMessage(al,ll,150);
-        
-        UIDestroyMessage m2 = new UIDestroyMessage(al, ll, 250);
-
-        ll.setEnded(true);
-       // this.add(m);
-        this.add(ll);
-        this.add(al);
-       // this.add(m1);
-        this.add(m2);
-
-        // Добавляем тестовые объекты в контейнер
-     //   m_objects.add(m);
-        m_objects.add(ll);
-        m_objects.add(al);
-        //m_objects.add(m1);
-        m_objects.add(m2);
+//
+//        UIRectLifeLine ll = new UIRectLifeLine(470, 111);
+//
+//        UIActorLifeLine al = new UIActorLifeLine(400, 333);
+//
+//        UISimpleMessage m = new UISimpleMessage(ll, al, 215);
+//        
+//        UICreateMessage m1 = new UICreateMessage(al,ll,150);
+//        
+//        UIDestroyMessage m2 = new UIDestroyMessage(al, ll, 250);
+//
+//        ll.setEnded(true);
+//       // this.add(m);
+//        this.add(ll);
+//        this.add(al);
+//       // this.add(m1);
+//        this.add(m2);
+//
+//        // Добавляем тестовые объекты в контейнер
+//     //   m_objects.add(m);
+//        m_objects.add(ll);
+//        m_objects.add(al);
+//        //m_objects.add(m1);
+//        m_objects.add(m2);
 
 
         // Создаем сцене особого слушателя
@@ -460,10 +478,28 @@ public final class Scene extends JPanel implements DropTargetListener {
             String data = (String) t.getTransferData(DataFlavor.stringFlavor);
             if ("LifeLine".equals(data)) {
                 item = new UIRectLifeLine(dtde.getLocation().x, dtde.getLocation().y);
+                LifeLine ll = new LifeLine();
+                ll.setCoordinates(item.getCoordinates());
+                ll.setId(globalId++);
+                ll.setName(item.getText());
+                m_model.addObject(ll);
+                item.id = ll.getId();
             } else if ("Actor".equals(data)) {
                 item = new UIActorLifeLine(dtde.getLocation().x, dtde.getLocation().y);
+                LifeLine ll = new LifeLine();
+                ll.setCoordinates(item.getCoordinates());
+                ll.setId(globalId++);
+                ll.setName(item.getText());
+                m_model.addObject(ll);
+                item.id = ll.getId();
             } else if ("Comment".equals(data)) {
                 item = new UIFreeComment(dtde.getLocation().x, dtde.getLocation().y);
+                FreeComment fc = new FreeComment();
+                fc.setCoordinates(item.getCoordinates());
+                fc.setDescription(item.getText());
+                fc.setId(globalId++);
+                item.id = fc.getId();
+                m_model.addObject(fc);
             }
 
 
@@ -641,6 +677,44 @@ public final class Scene extends JPanel implements DropTargetListener {
      */
     public void load(String filename) throws ParserConfigurationException, SAXException, IOException {
         m_model.load(filename);
+        
+        for (int i = 0; i < m_model.size(); i++) {
+            if (m_model.getObject(i).getClass() == LifeLine.class) {
+                UIRectLifeLine ll = new UIRectLifeLine((int)m_model.getObject(i).getCoordinates().getX(),
+                        (int)m_model.getObject(i).getCoordinates().getY());
+                ll.setText(((LifeLine)m_model.getObject(i)).getName());
+                ll.id = m_model.getObject(i).getId();
+                
+                m_objects.add(ll);
+                this.add(ll);
+            } else if (m_model.getObject(i).getClass() == FreeComment.class) {
+                UIFreeComment fc = new UIFreeComment((int)m_model.getObject(i).getCoordinates().getX(),
+                        (int)m_model.getObject(i).getCoordinates().getY());
+                fc.setText(((FreeComment)m_model.getObject(i)).getDescription());
+                fc.id = m_model.getObject(i).getId();
+                
+                m_objects.add(fc);
+                this.add(fc);
+            } else if (m_model.getObject(i).getClass() == SimpleMessage.class) {
+                UILifeLine ll = null, qw = null;
+                for (int j = 0; j < m_objects.size(); j++) {
+                    if (m_objects.get(j).id == ((SimpleMessage)m_model.getObject(i)).ids[0]) {
+                        ll = (UILifeLine)m_objects.get(j);
+                    } else if (m_objects.get(j).id == ((SimpleMessage)m_model.getObject(i)).ids[1]) {
+                        qw = (UILifeLine)m_objects.get(j);
+                    }
+                }
+                UISimpleMessage sm = new UISimpleMessage(ll,qw,m_model.getObject(i).getCoordinates().y);
+                
+                sm.setText(((SimpleMessage)m_model.getObject(i)).getName());
+                sm.id = m_model.getObject(i).getId();
+                
+                m_objects.add(sm);
+                this.add(sm);
+            }
+        }
+        
+        repaint();
     }
     
     /**
@@ -676,6 +750,22 @@ public final class Scene extends JPanel implements DropTargetListener {
         
         UISimpleMessage sm = new UISimpleMessage((UILifeLine)m_selectedObjects.get(0),
                 (UILifeLine)m_selectedObjects.get(1), this.m_selectedObjects.get(0).y + 100);
+        
+        SimpleMessage vsm = new SimpleMessage();
+        vsm.setCoordinates(new Point3D(sm.x,sm.y,0));
+        vsm.setName(sm.getText());
+        vsm.setId(globalId++);
+        
+        for (int i = 0; i < m_model.size(); i++) {
+            if (m_model.getObject(i).getId() == m_selectedObjects.get(0).id) {
+                ((LifeLine)m_model.getObject(i)).addMessage(vsm);
+                vsm.setSender((LifeLine)m_model.getObject(i));
+            } else if (m_model.getObject(i).getId() == m_selectedObjects.get(1).id) {
+                vsm.setReceiver((LifeLine)m_model.getObject(i));
+            }
+        }
+        
+        m_model.addObject(vsm);
         
         this.add(sm);
         m_objects.add(sm);

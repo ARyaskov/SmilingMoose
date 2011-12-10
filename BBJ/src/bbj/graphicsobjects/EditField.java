@@ -64,6 +64,12 @@ public class EditField extends JTextField implements KeyListener{
             String newText = this.getText();
             m_item.setText(newText);
             
+//            for (int i = 0; i < bbj.BBJ.app.getScene().getModel().size(); i++) {
+//                if (bbj.BBJ.app.getScene().getModel().getObject(i).getId() == m_item.id) {
+//                    if 
+//                }
+//            }
+            
             if (m_type==0)
                 m_item.setToolTipText("Свободный комментарий: " + newText);
             else if (m_type == 1)
