@@ -10,9 +10,12 @@ package bbj.graphicsobjects;
  */
 public class UIReplyMessage extends UIMessage {
 
+    /** Номер экзампляра данного класса на сцене */
+    public static int m_localNumber = 0;
+    
     @Override
     protected void setDefaultName() {
-        throw new UnsupportedOperationException("Not supported yet.");
+
     }
     
 }
