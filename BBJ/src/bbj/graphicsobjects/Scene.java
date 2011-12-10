@@ -773,7 +773,7 @@ public final class Scene extends JPanel implements DropTargetListener {
     }
     
     /**
-     * Метод создания простых сообщений.
+     * Метод создания сообщений создания.
      */
     public void createCreateMessage () {
         if (this.m_selectedObjects.size() != 2) {
@@ -801,6 +801,55 @@ public final class Scene extends JPanel implements DropTargetListener {
                 (UILifeLine)m_selectedObjects.get(1), this.m_selectedObjects.get(0).y + 100);
         
         CreateMessage vsm = new CreateMessage();
+        vsm.setCoordinates(new Point3D(sm.x,sm.y,0));
+        vsm.setName(sm.getText());
+        vsm.setId(globalId++);
+        
+        for (int i = 0; i < m_model.size(); i++) {
+            if (m_model.getObject(i).getId() == m_selectedObjects.get(0).id) {
+                ((LifeLine)m_model.getObject(i)).addMessage(vsm);
+                vsm.setSender((LifeLine)m_model.getObject(i));
+            } else if (m_model.getObject(i).getId() == m_selectedObjects.get(1).id) {
+                vsm.setReceiver((LifeLine)m_model.getObject(i));
+            }
+        }
+        
+        m_model.addObject(vsm);
+        
+        this.add(sm);
+        m_objects.add(sm);
+        repaint();
+    }
+    
+    /**
+     * Метод создания сообщений удаления.
+     */
+    public void createDestroyMessage () {
+        if (this.m_selectedObjects.size() != 2) {
+            return;
+        }
+        
+        if (this.m_selectedObjects.get(0).getClass() != UIRectLifeLine.class ||
+            this.m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
+            
+            if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class ||
+                m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
+                
+                if (m_selectedObjects.get(0).getClass() != UIRectLifeLine.class ||
+                    m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
+                    
+                    if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class ||
+                        m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
+                        return;
+                    }
+                }
+            }
+        }
+        
+        UIDestroyMessage sm = new UIDestroyMessage((UILifeLine)m_selectedObjects.get(0),
+                (UILifeLine)m_selectedObjects.get(1), this.m_selectedObjects.get(0).y + 100);
+        
+        DestroyMessage vsm = new DestroyMessage();
         vsm.setCoordinates(new Point3D(sm.x,sm.y,0));
         vsm.setName(sm.getText());
         vsm.setId(globalId++);
