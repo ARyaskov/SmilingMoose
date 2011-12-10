@@ -179,32 +179,32 @@ public final class Scene extends JPanel implements DropTargetListener {
 
         this.addMouseMotionListener(new MouseSlot());
 
-        // Добавляем тестовые объекты в контейнер       
-
-        UIRectLifeLine ll = new UIRectLifeLine(470, 111);
-
-        UIActorLifeLine al = new UIActorLifeLine(400, 333);
+//        // Добавляем тестовые объекты в контейнер       
+//
+//        UIRectLifeLine ll = new UIRectLifeLine(470, 111);
+//
+//        UIActorLifeLine al = new UIActorLifeLine(400, 333);
+//
+//        UIAsynchronousMessage m = new UIAsynchronousMessage(ll, al, 215);
+//        
+//      //  UICreateMessage m1 = new UICreateMessage(al,ll,150);
+//        
+//      //  UIDestroyMessage m2 = new UIDestroyMessage(al, ll, 250);
+//
+//        ll.setEnded(true);
+//        this.add(m);
+//        this.add(ll);
+//        this.add(al);
+//       // this.add(m1);
+//       // this.add(m2);
+//
+//        // Добавляем тестовые объекты в контейнер
+//        m_objects.add(m);
+//        m_objects.add(ll);
+//        m_objects.add(al);
+//        //m_objects.add(m1);
+//        //m_objects.add(m2);
         ll.setLength(ll.getLength()+20);
-        UIAsynchronousMessage m = new UIAsynchronousMessage(ll, al, 215);
-        
-      //  UICreateMessage m1 = new UICreateMessage(al,ll,150);
-        
-      //  UIDestroyMessage m2 = new UIDestroyMessage(al, ll, 250);
-
-        ll.setEnded(true);
-        this.add(m);
-        this.add(ll);
-        this.add(al);
-       // this.add(m1);
-       // this.add(m2);
-
-        // Добавляем тестовые объекты в контейнер
-        m_objects.add(m);
-        m_objects.add(ll);
-        m_objects.add(al);
-        //m_objects.add(m1);
-        //m_objects.add(m2);
-
 
         // Создаем сцене особого слушателя
         SceneItemListener sceneItemListener = new SceneItemListener();
@@ -686,6 +686,7 @@ public final class Scene extends JPanel implements DropTargetListener {
                         (int) m_model.getObject(i).getCoordinates().getY());
                 ll.setText(((LifeLine) m_model.getObject(i)).getName());
                 ll.id = m_model.getObject(i).getId();
+                ll.setToolTipText("Линия жизни: " + ll.getText());
 
                 m_objects.add(ll);
                 this.add(ll);
@@ -694,6 +695,7 @@ public final class Scene extends JPanel implements DropTargetListener {
                         (int) m_model.getObject(i).getCoordinates().getY());
                 fc.setText(((FreeComment) m_model.getObject(i)).getDescription());
                 fc.id = m_model.getObject(i).getId();
+                fc.setToolTipText("Свободный комментарий: " + fc.getText());
 
                 m_objects.add(fc);
                 this.add(fc);
@@ -710,6 +712,7 @@ public final class Scene extends JPanel implements DropTargetListener {
 
                 sm.setText(((SimpleMessage) m_model.getObject(i)).getName());
                 sm.id = m_model.getObject(i).getId();
+                sm.setToolTipText("Сообщение: " + sm.getText());
 
                 m_objects.add(sm);
                 this.add(sm);
@@ -718,6 +721,7 @@ public final class Scene extends JPanel implements DropTargetListener {
                         (int) m_model.getObject(i).getCoordinates().getY());
                 ll.setText(((LifeLine) m_model.getObject(i)).getName());
                 ll.id = m_model.getObject(i).getId();
+                ll.setToolTipText("Исполнитель: " + ll.getText());
 
                 m_objects.add(ll);
                 this.add(ll);
@@ -734,6 +738,7 @@ public final class Scene extends JPanel implements DropTargetListener {
 
                 sm.setText(((CreateMessage) m_model.getObject(i)).getName());
                 sm.id = m_model.getObject(i).getId();
+                sm.setToolTipText("Сообщение создания: " + sm.getText());
 
                 m_objects.add(sm);
                 this.add(sm);
@@ -781,6 +786,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         vsm.setCoordinates(new Point3D(sm.x, sm.y, 0));
         vsm.setName(sm.getText());
         vsm.setId(globalId++);
+        sm.id = vsm.getId();
 
         for (int i = 0; i < m_model.size(); i++) {
             if (m_model.getObject(i).getId() == m_selectedObjects.get(0).id) {
@@ -830,6 +836,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         vsm.setCoordinates(new Point3D(sm.x,sm.y,0));
         vsm.setName(sm.getText());
         vsm.setId(globalId++);
+        sm.id = vsm.getId();
         
         for (int i = 0; i < m_model.size(); i++) {
             if (m_model.getObject(i).getId() == m_selectedObjects.get(0).id) {
@@ -879,6 +886,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         vsm.setCoordinates(new Point3D(sm.x,sm.y,0));
         vsm.setName(sm.getText());
         vsm.setId(globalId++);
+        sm.id = vsm.getId();
         
         for (int i = 0; i < m_model.size(); i++) {
             if (m_model.getObject(i).getId() == m_selectedObjects.get(0).id) {
@@ -928,6 +936,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         vsm.setCoordinates(new Point3D(sm.x,sm.y,0));
         vsm.setName(sm.getText());
         vsm.setId(globalId++);
+        sm.id = vsm.getId();
         
         for (int i = 0; i < m_model.size(); i++) {
             if (m_model.getObject(i).getId() == m_selectedObjects.get(0).id) {

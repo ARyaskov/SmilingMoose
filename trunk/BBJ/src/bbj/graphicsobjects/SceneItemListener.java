@@ -1,6 +1,9 @@
 package bbj.graphicsobjects;
 
 import bbj.*;
+import bbj.virtualobjects.FreeComment;
+import bbj.virtualobjects.LifeLine;
+import bbj.virtualobjects.Message;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -80,6 +83,18 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
             m_selectedItem.edit(true);
             EditField f = new EditField(m_selectedItem);
             m_selectedItem.f = f;
+            
+//            for (int i = 0; i < BBJ.app.getScene().getModel().size(); i++) {
+//                if (BBJ.app.getScene().getModel().getObject(i).getId() == m_selectedItem.id) {
+//                    if (BBJ.app.getScene().getModel().getObject(i).getClass() == FreeComment.class) {
+//                        BBJ.app.getScene().getModel().getObject(i).setDescription(m_selectedItem.getText());
+//                    } else if (BBJ.app.getScene().getModel().getObject(i).getClass() == LifeLine.class) {
+//                        ((LifeLine)BBJ.app.getScene().getModel().getObject(i)).setName(m_selectedItem.getText());
+//                    } else {
+//                        ((Message)BBJ.app.getScene().getModel().getObject(i)).setName(m_selectedItem.getText());
+//                    }
+//                }
+//            }
         }
     }
 

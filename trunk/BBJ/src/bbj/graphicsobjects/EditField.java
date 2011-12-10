@@ -4,6 +4,9 @@
  */
 package bbj.graphicsobjects;
 
+import bbj.virtualobjects.FreeComment;
+import bbj.virtualobjects.LifeLine;
+import bbj.virtualobjects.Message;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JTextField;
@@ -64,11 +67,20 @@ public class EditField extends JTextField implements KeyListener{
             String newText = this.getText();
             m_item.setText(newText);
             
-//            for (int i = 0; i < bbj.BBJ.app.getScene().getModel().size(); i++) {
-//                if (bbj.BBJ.app.getScene().getModel().getObject(i).getId() == m_item.id) {
-//                    if 
-//                }
-//            }
+            for (int i = 0; i < bbj.BBJ.app.getScene().getModel().size(); i++) {
+                if (bbj.BBJ.app.getScene().getModel().getObject(i).getId() == m_item.id) {
+                    if (bbj.BBJ.app.getScene().getModel().getObject(i).getClass() == FreeComment.class) {
+                        bbj.BBJ.app.getScene().getModel().getObject(i).setDescription(m_item.getText());
+                        break;
+                    } else if (bbj.BBJ.app.getScene().getModel().getObject(i).getClass() == LifeLine.class) {
+                        ((LifeLine)bbj.BBJ.app.getScene().getModel().getObject(i)).setName(m_item.getText());
+                        break;
+                    } else {
+                        ((Message)bbj.BBJ.app.getScene().getModel().getObject(i)).setName(m_item.getText());
+                        break;
+                    }
+                }
+            }
             
             if (m_type==0)
                 m_item.setToolTipText("Свободный комментарий: " + newText);
