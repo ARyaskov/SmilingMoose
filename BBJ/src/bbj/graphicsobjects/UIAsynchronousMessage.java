@@ -87,6 +87,11 @@ public class UIAsynchronousMessage extends UIMessage {
         m_focusReceiver.paint(g);
         m_focusSender.paint(g);
         
+        if (m_isSelected)
+            g.setColor(Color.red);        // Исходный цвет
+        else
+            g.setColor(Color.black);        // Цвет при выделении
+        
         // Разбиваем текст на массив символов
         char [] drawedText = m_text.toCharArray();
         char [] dots = {'.','.','.'};

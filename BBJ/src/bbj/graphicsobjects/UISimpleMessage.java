@@ -108,6 +108,7 @@ public class UISimpleMessage extends UIMessage {
         
         if (m_isSelected){
             g2.setStroke(new BasicStroke(1));
+            g.setColor(Color.red);
             g.drawRect(textX-10, y-h+10, 110, h-5);
         }
         

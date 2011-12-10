@@ -54,7 +54,7 @@ public class UIFocusControl extends SceneItem {
             
         this.y = m_parentMessage.y;
         
-        m_isSelected = m_parentMessage.isSelected();
+        //m_isSelected = m_parentMessage.isSelected();
         
         setBounds(x, y, w, h);
         
