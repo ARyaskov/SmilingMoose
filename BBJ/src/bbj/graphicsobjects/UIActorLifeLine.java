@@ -8,8 +8,12 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.MenuItem;
 import java.awt.Polygon;
+import java.awt.PopupMenu;
 import java.awt.Stroke;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -31,6 +35,18 @@ public class UIActorLifeLine extends UILifeLine {
         this.addMouseMotionListener(listener);
 //        this.addKeyListener(listener);
         this.setToolTipText("Исполнитель: " + m_text);
+        m_menu = new PopupMenu("Stop");
+        m_stop = new MenuItem("Остановить");
+        m_menu.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                m_isEnded = !m_isEnded;
+                bbj.BBJ.app.getScene().repaint();
+            }
+        });
+        m_menu.add(m_stop);
+        this.add(m_menu);
     }
             
     @Override
