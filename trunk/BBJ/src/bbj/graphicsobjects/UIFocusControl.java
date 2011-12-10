@@ -64,7 +64,7 @@ public class UIFocusControl extends SceneItem {
         
         setBounds(x, y, w, h);
         
-         g2.setStroke(new BasicStroke());        
+        g2.setStroke(new BasicStroke());
         
         g.setColor(Color.WHITE);
         
