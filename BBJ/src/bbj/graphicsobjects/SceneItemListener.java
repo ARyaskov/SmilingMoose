@@ -76,8 +76,6 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*, 
             m_selectedItem.edit(true);
             EditField f = new EditField(m_selectedItem);           
             m_selectedItem.f = f;
-        } else {
-            //mousePressed(e);
         }
     }
 
@@ -145,13 +143,10 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*, 
                     
                 else
                     endY = currentMessage.m_receiver.dotCoord-currentMessage.m_receiver.y-30;
-                
-
             }
         }
 
         Rectangle rect = BBJ.app.getScene().getUIPanelsRectangle();
-        //m_comment.setLocation(endX, endY);  // Задаем координаты объекту
 
         if (rect.contains(endX, endY)) {
            
