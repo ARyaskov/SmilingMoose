@@ -189,10 +189,12 @@ public class VirtualModel {
         element.setAttribute("count", Integer.toString(count));
         
         // Сохранение комментариев.
-        for (int i = 0; i < m_objects.size(); i++) {
-            if (m_objects.get(i).getClass() == FreeComment.class) {
-                m_objects.get(i).setCoordinates(m_scene.get(i).getCoordinates());
-                element.appendChild(m_objects.get(i).write(doc));
+        if (count != 0) {
+            for (int i = 0; i < m_objects.size(); i++) {
+                if (m_objects.get(i).getClass() == FreeComment.class) {
+                    //m_objects.get(i).setCoordinates(m_scene.get(i).getCoordinates());
+                    element.appendChild(m_objects.get(i).write(doc));
+                }
             }
         }
         
@@ -217,12 +219,14 @@ public class VirtualModel {
         element.setAttribute("count", Integer.toString(count));
         
         // Сохранение линий жизни.
-        for (int i = 0; i < m_objects.size(); i++) {
-            if (m_objects.get(i).getClass() == LifeLine.class) {
-                m_objects.get(i).setCoordinates(m_scene.get(i).getCoordinates());
-                ((LifeLine)m_objects.get(i)).setFileId(id);
-                element.appendChild(m_objects.get(i).write(doc));
-                id++;
+        if (count != 0) {
+            for (int i = 0; i < m_objects.size(); i++) {
+                if (m_objects.get(i).getClass() == LifeLine.class) {
+                    //m_objects.get(i).setCoordinates(m_scene.get(i).getCoordinates());
+                    ((LifeLine)m_objects.get(i)).setFileId(id);
+                    element.appendChild(m_objects.get(i).write(doc));
+                    id++;
+                }
             }
         }
         
@@ -250,15 +254,17 @@ public class VirtualModel {
         element.setAttribute("count", Integer.toString(count));
         
         // Сохранение сообщений.
-        for (int i = 0; i < m_objects.size(); i++) {
-            if (m_objects.get(i).getClass() == Message.class ||
-                m_objects.get(i).getClass() == CreateMessage.class ||
-                m_objects.get(i).getClass() == DestroyMessage.class ||
-                m_objects.get(i).getClass() == SimpleMessage.class ||
-                m_objects.get(i).getClass() == ReplyMessage.class)
-            {
-                m_objects.get(i).setCoordinates(m_scene.get(i).getCoordinates());
-                element.appendChild(m_objects.get(i).write(doc));
+        if (count != 0) {
+            for (int i = 0; i < m_objects.size(); i++) {
+                if (m_objects.get(i).getClass() == Message.class ||
+                    m_objects.get(i).getClass() == CreateMessage.class ||
+                    m_objects.get(i).getClass() == DestroyMessage.class ||
+                    m_objects.get(i).getClass() == SimpleMessage.class ||
+                    m_objects.get(i).getClass() == ReplyMessage.class)
+                {
+                    //m_objects.get(i).setCoordinates(m_scene.get(i).getCoordinates());
+                    element.appendChild(m_objects.get(i).write(doc));
+                }
             }
         }
         
@@ -282,7 +288,7 @@ public class VirtualModel {
         // Сохранение объектов.
         Element element = doc.createElement("diagram");
         
-        element.setAttribute("total_count", Integer.toString(this.m_objects.size()));
+        element.setAttribute("total_count", Integer.toString(this.m_scene.takeId()));
         
         Element comments = getCommentsCount(doc);
         Element lifelines = getLifeLinesCount(doc);
@@ -317,6 +323,14 @@ public class VirtualModel {
         
         NodeList nodes = doc.getChildNodes();
         nodes = nodes.item(0).getChildNodes();
+        Node node = nodes.item(1);
+        
+        String buffer;
+        NamedNodeMap attributes = node.getAttributes();
+        Node attr = attributes.getNamedItem("total_count");
+        buffer = attr.getNodeValue();
+        m_scene.setId(Integer.parseInt(buffer));
+        
         nodes = nodes.item(1).getChildNodes();
         
         for (int i = 0; i < nodes.getLength(); i++) {
@@ -417,7 +431,7 @@ public class VirtualModel {
         for (int i = 0; i < m_objects.size(); i++) {
             if (m_objects.get(i).getId() == message.ids[0]) {
                 ((LifeLine)m_objects.get(i)).addMessage(message);
-                message.setReceiver((LifeLine)m_objects.get(i));
+                message.setSender((LifeLine)m_objects.get(i));
             } else if (m_objects.get(i).getId() == message.ids[1]) {
                 message.setReceiver((LifeLine)m_objects.get(i));
             }
@@ -450,6 +464,14 @@ public class VirtualModel {
      */
     public void clear () {
         m_objects.clear();
+    }
+    
+    /**
+     * Метод получения количества объектов в модели.
+     * @return Количество объектов в модели.
+     */
+    public int size () {
+        return m_objects.size();
     }
     
 }

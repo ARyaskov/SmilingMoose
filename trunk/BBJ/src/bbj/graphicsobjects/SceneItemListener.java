@@ -158,6 +158,13 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*, 
         }
 
         m_selectedItem.updateUI();     // Перерисовываем объект
+        
+        for (int i = 0; i < BBJ.app.getScene().getModel().size(); i++) {
+            if (BBJ.app.getScene().getModel().getObject(i).getId() == m_selectedItem.id) {
+                BBJ.app.getScene().getModel().getObject(i).setCoordinates(new Point3D(m_selectedItem.x,m_selectedItem.y,0));
+                break;
+            }
+        }
 
     }
 

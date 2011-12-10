@@ -30,6 +30,7 @@ abstract public class SceneItem extends JPanel {
     protected Rectangle m_rect;
     protected ArrayList<SelectEventListener> m_listenersList;
     //  protected ArrayList<ISceneSelectionListener> m_listListeners;
+    int id = 0;
 
     public SceneItem() {
         m_listenersList = new ArrayList<SelectEventListener>();

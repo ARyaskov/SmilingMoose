@@ -132,6 +132,7 @@ public class Message extends UMLObject {
         attr = attributes.getNamedItem("x");
         buffer = attr.getNodeValue();
         x = Double.parseDouble(buffer);
+        this.setCoordinates(new Point3D(x,y,z));
         // Считывания идентификатора.
         attr = attributes.getNamedItem("id");
         buffer = attr.getNodeValue();
