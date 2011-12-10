@@ -1,9 +1,12 @@
 package bbj.graphicsobjects;
 
 import bbj.*;
+
+import bbj.undoredo.*;
 import bbj.virtualobjects.FreeComment;
 import bbj.virtualobjects.LifeLine;
 import bbj.virtualobjects.Message;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -11,7 +14,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.util.*;
-
+import javax.swing.undo.*;
 /**
  *
  * @author Alexander
@@ -23,10 +26,17 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
     public static SceneItem m_currentSelectedItem;       // Текущий выделенный объект
     private int m_startX;               // Координата начала перетаскивания
     private int m_startY;               // Координата конца перетаскивания
+    private int m_endX;
+    private int m_endY;
     private SceneItem m_selectedItem;     // Перетаскиваемый коммент
     private int m_startYOnLine;
     private int endLine1;
     private int endLine2;
+    private boolean m_dragHappened;
+    private AbstractUndoableEdit m_moveEdit;
+    private SceneItem m_curItem; // для UndoRedo
+    private Point m_startUndoRedo;
+    private Point m_endUndoRedo;
 
     /**
      * Конструктор с параметрами (используется всеми элементами сцены)
@@ -36,10 +46,16 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
     SceneItemListener(SceneItem item) {
 
         // Зануляем поля
+        m_curItem = null;
         m_selectedItem = null;
-
+        m_dragHappened = false;
+        m_startUndoRedo = null;
+        m_endUndoRedo = null;
+        
         // Определяем тип текущего объекта и запоминаем его 
         if (item.getClass().getName().equals("bbj.graphicsobjects.UIFreeComment")) {
+            item.setLocation((int)(item.getX()/BBJ.zoom),
+                    (int)(item.getY()/BBJ.zoom));
             m_selectedItem = (UIFreeComment) item;
         } else if (item.getClass().getName().equals("bbj.graphicsobjects.UIRectLifeLine")) {
             m_selectedItem = (UIRectLifeLine) item;
@@ -67,7 +83,11 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
      */
     SceneItemListener() {
         // Зануляем поля
+        m_dragHappened = false;
         m_selectedItem = null;
+        m_curItem = null;
+        m_startUndoRedo = null;
+        m_endUndoRedo = null;
         endLine1 = 220;
         endLine2 = 230;
     }
@@ -109,106 +129,129 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
      */
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        
+        Scene scene = BBJ.app.getScene();
+      
+        
+        
         if (true) {// сделать проверку кода клавиши
             // Если объект существует
             if (m_selectedItem == null) {
                 return;
             }
-            int endX, endY;
+            
 
             // Определяем координаты конца движения
-            endX = e.getXOnScreen() - m_startX;
+            m_endX = e.getXOnScreen() - m_startX;
 
             // Проверим, что не вылезли за гграницы окна по Х
-            endX = Math.max(endX, 0);
-            endX = Math.min(endX, m_selectedItem.getParent().getWidth() - m_selectedItem.w);
+            m_endX = Math.max(m_endX, 0);
+            m_endX = Math.min(m_endX, m_selectedItem.getParent().getWidth() - m_selectedItem.w);
 
-            endY = e.getYOnScreen() - m_startY;
+            m_endY = e.getYOnScreen() - m_startY;
 
             // Проверим, что не вылезли за гграницы окна по Y
-            endY = Math.max(endY, 0);
+            m_endY = Math.max(m_endY, 0);
 
-            endY = Math.min(endY, m_selectedItem.getParent().getHeight() - m_selectedItem.h);
+            m_endY = Math.min(m_endY, m_selectedItem.getParent().getHeight() - m_selectedItem.h);
 
+            m_curItem = m_selectedItem;
+             m_startUndoRedo = new Point(m_startX, m_startY);
+             m_endUndoRedo = new Point(m_endX, m_endY);
             if (m_selectedItem.getClass().getSuperclass().getName().equals("bbj.graphicsobjects.UILifeLine")) {
-                endY = m_selectedItem.y;
+                m_endY = m_selectedItem.y;
 
 
                 int asd = e.getY();
                 if (m_startYOnLine >= endLine1 && m_startYOnLine <= endLine2) {
                     changeLifeLineLength((UILifeLine) m_selectedItem, asd);
                 }
+                m_curItem = m_selectedItem;
+                m_startUndoRedo = new Point(m_startX, m_startY);
+                m_endUndoRedo = new Point(m_endX, m_endY);
             } else if (m_selectedItem.getClass().getSuperclass().getName().equals("bbj.graphicsobjects.UIMessage")) {
 
                 // ограничиваем передвижение сообщения по оси У
                 UIMessage currentMessage = (UIMessage) m_selectedItem;
 
-                if (endY >= currentMessage.getSender().getHeight()-
+
+                if (m_endY >= currentMessage.getSender().getHeight()-
                         currentMessage.m_focusSender.h) {
-                    currentMessage.getSender().setLength(endY+
+                    currentMessage.getSender().setLength(m_endY+
                             currentMessage.m_focusSender.h);
+
                 }
 
-                if (endY <= currentMessage.getSender().getY() + 70) {
-                    endY = currentMessage.getSender().getY() + 70;
+                if (m_endY <= currentMessage.getSender().getY() + 70) {
+                    m_endY = currentMessage.getSender().getY() + 70;
                 }
 
                 if (!currentMessage.getClass().getName().equals("bbj.graphicsobjects.UICreateMessage")) {
-                    if (endY >= currentMessage.getReceiver().getHeight()-
+
+                    if (m_endY >= currentMessage.getReceiver().getHeight()-
                             currentMessage.m_focusReceiver.h) {
-                        currentMessage.getReceiver().setLength(endY+
+                        currentMessage.getReceiver().setLength(m_endY+
                             currentMessage.m_focusReceiver.h);
+
                     }
 
-                    if (endY <= currentMessage.getReceiver().getY() + 70) {
-                        endY = currentMessage.getReceiver().getY() + 70;
+                    if (m_endY <= currentMessage.getReceiver().getY() + 70) {
+                        m_endY = currentMessage.getReceiver().getY() + 70;
                     }
                 } else {
-                    if (endY - 25 <= currentMessage.m_receiver.dotCoord - currentMessage.m_receiver.y - 55) {
-                        currentMessage.m_receiver.y = endY - 25;
+                    if (m_endY - 25 <= currentMessage.m_receiver.dotCoord - currentMessage.m_receiver.y - 55) {
+                        currentMessage.m_receiver.y = m_endY - 25;
                     } else {
-                        endY = currentMessage.m_receiver.dotCoord - currentMessage.m_receiver.y - 30;
+                        m_endY = currentMessage.m_receiver.dotCoord - currentMessage.m_receiver.y - 30;
                     }
                 }
+                m_startUndoRedo = new Point(m_startX, m_startY);
+                m_endUndoRedo = new Point(m_endX, m_endY);
+                m_curItem = currentMessage;
             }
         
         if (m_selectedItem.getClass().getName().equals("bbj.graphicsobjects.UIDestroyMessage" )){
             
             UIMessage currentMessage = (UIMessage)m_selectedItem;
-            
+           
             if (currentMessage.m_receiver.h <= currentMessage.y+60)
                 currentMessage.m_receiver.h = currentMessage.y+60;
+            m_curItem = currentMessage;
+            m_startUndoRedo = new Point(m_startX, m_startY);
+            m_endUndoRedo = new Point(m_endX, m_endY);
         }
 
+        
+        // проверка на столкновения с UI-панелями
             Rectangle rect = BBJ.app.getScene().getUIPanelsRectangle();
-
-            if (rect.contains(endX, endY)) {
+            Rectangle rect2 = new Rectangle(0,0,scene.getWidth(),scene.getHeight());
+            if (rect2.contains(m_endX, m_endY)) {
 
                 m_selectedItem.x = rect.x + rect.width + 2;
                 m_selectedItem.y = rect.y + rect.height + 2;
             } else {
+
                 
                 if (m_selectedItem.getClass().getName().equals("bbj.graphicsobjects.UIFocusControl" )){
                     UIFocusControl fc = (UIFocusControl)m_selectedItem;
-                    int res = endY-m_selectedItem.y+40;
+                    int res = m_endY-m_selectedItem.y+40;
                     
                     // Не даем прямоугольникам опуститься ниже линии жиззни
                     // У сендера
-                    if (fc.m_isSender && endY <= fc.m_parentMessage.getSender().getHeight()-40
-                            && endY >= fc.y-20)
+                    if (fc.m_isSender && m_endY <= fc.m_parentMessage.getSender().getHeight()-40
+                            && m_endY >= fc.y-20)
                         m_selectedItem.h = res;
                     
                     // У ресивера
-                    if (!fc.m_isSender && endY <= fc.m_parentMessage.getReceiver().getHeight()-40
-                             && endY >= fc.y-20)
+                    if (!fc.m_isSender && m_endY <= fc.m_parentMessage.getReceiver().getHeight()-40
+                             && m_endY >= fc.y-20)
                         m_selectedItem.h = res;
                 }
                 else{
-                    m_selectedItem.x = endX;
-                    m_selectedItem.y = endY; 
+                    m_selectedItem.x = m_endX;
+                    m_selectedItem.y = m_endY; 
                 }
-                
+
             }
 
             m_selectedItem.updateUI();     // Перерисовываем объект
@@ -219,8 +262,13 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
                     break;
                 }
             }
+            
+
+          m_dragHappened = true;
         }
+
         BBJ.app.m_hasModifications = true;
+
     }
 
     /**
@@ -372,6 +420,17 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        
+        if (m_dragHappened && m_curItem!=null){
+             m_moveEdit = new MoveObjectEdit(BBJ.app.getScene(),
+                m_curItem,
+                m_startUndoRedo,
+                m_endUndoRedo);
+          BBJ.app.getUndoSupport().postEdit(m_moveEdit);
+          BBJ.app.m_undoButton.setEnabled(BBJ.app.getUndoManager().canUndo());
+          BBJ.app.m_redoButton.setEnabled(BBJ.app.getUndoManager().canRedo());
+          m_dragHappened = false;
+        }
     }
 
     @Override

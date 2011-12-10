@@ -2,6 +2,7 @@
 package bbj.graphicsobjects;
 
 import bbj.Commons;
+import bbj.*;
 import java.awt.*;
 import javax.swing.JPanel;
 import java.util.*;
@@ -25,6 +26,8 @@ abstract public class SceneItem extends JPanel {
     protected int w;
     /** Высота */
     protected int h;
+    
+    protected double zoom = BBJ.zoom;
     /** Флаг выбора объекта фокусом. */
     protected boolean m_isSelected;
     protected Rectangle m_rect;
@@ -146,5 +149,7 @@ abstract public class SceneItem extends JPanel {
   
     public void paint(Graphics g) {
         Commons.tuneRendering((Graphics2D)g);
+        
+        
     }
 }

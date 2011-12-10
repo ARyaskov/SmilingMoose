@@ -1,14 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package bbj.graphicsobjects;
 
 import bbj.virtualobjects.*;
 import bbj.graphicsobjects.*;
 import bbj.*;
 
-import bbj.AddToSceneEdit.*;
+import bbj.undoredo.*;
 
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DropTargetDragEvent;

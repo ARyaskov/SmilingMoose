@@ -69,6 +69,8 @@ public final class BBJ {
     public static Object qltRender3 = RenderingHints.VALUE_COLOR_RENDER_SPEED;
     public static Object qltRender4 = RenderingHints.VALUE_STROKE_PURE;
     public static Color m_background_color = new Color(255, 255, 255);
+    
+    public static double zoom; // пришлось дублировать тут
     public Font inputFont;
     public JMenu menuFile;
     public JMenu menuMisc;
@@ -98,7 +100,9 @@ public final class BBJ {
     private UndoableEditSupport m_undoSupport;
     public JButton m_undoButton;
     public JButton m_redoButton;
-    JButton delete_button;
+    public JButton delete_button;
+    public JButton zoomin_button;
+    public JButton zoomout_button;
 
     public Scene getScene() {
         return canvas;
@@ -207,8 +211,8 @@ public final class BBJ {
                 "entity");
 
         canvas = new Scene(this);
-        canvas.setSize(mainFrame.getWidth(), mainFrame.getHeight() - toolBar.getHeight()
-                - menuBar.getHeight());
+        canvas.setSize(mainFrame.getWidth()+100, mainFrame.getHeight() - toolBar.getHeight()
+                - menuBar.getHeight()+100);
 
         mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         ArrayList<Image> listOfIcons = new ArrayList();
@@ -237,6 +241,8 @@ public final class BBJ {
 
         mainFrame.addWindowListener(new mainFrameWindowListener());
 
+       // JScrollPane scroll = new JScrollPane(canvas);
+      //  scroll.setViewportView(canvas);
         mainFrame.setVisible(true);
 
 
@@ -719,13 +725,13 @@ public final class BBJ {
         toolBar.add(new JToolBar.Separator(new Dimension(60, toolBar.getHeight())));
 
 
-        JButton zoomin_button = new JButton();
+        zoomin_button = new JButton();
         zoomin_button.setIcon(new ImageIcon(BBJ.class.getResource("images/32/zoom_in.png")));
         toolBar.add(zoomin_button);
 
         toolBar.add(new JToolBar.Separator(new Dimension(5, toolBar.getHeight())));
 
-        JButton zoomout_button = new JButton();
+        zoomout_button = new JButton();
         zoomout_button.setIcon(new ImageIcon(BBJ.class.getResource("images/32/zoom_out.png")));
         toolBar.add(zoomout_button);
     }
@@ -831,7 +837,26 @@ public final class BBJ {
             }
         };
 
+        ActionListener zoomInKeyListener = new ActionListener() {
 
+            public void actionPerformed(ActionEvent a) {
+                canvas.setZoom(canvas.getZoom()+0.05);
+                canvas.repaint();
+            }
+        };
+        
+        ActionListener zoomOutKeyListener = new ActionListener() {
+
+            public void actionPerformed(ActionEvent a) {
+                canvas.setZoom(canvas.getZoom()-0.05);
+                canvas.repaint();
+            }
+        };
+        
+
+        zoomin_button.addActionListener(zoomInKeyListener);
+        zoomout_button.addActionListener(zoomOutKeyListener);
+        
 
         ((JComponent) m_undoButton).registerKeyboardAction(
                 undoKeyListener,
