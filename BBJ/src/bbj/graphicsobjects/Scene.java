@@ -721,6 +721,22 @@ public final class Scene extends JPanel implements DropTargetListener {
 
                 m_objects.add(ll);
                 this.add(ll);
+            } else if (m_model.getObject(i).getClass() == CreateMessage.class) {
+                UILifeLine ll = null, qw = null;
+                for (int j = 0; j < m_objects.size(); j++) {
+                    if (m_objects.get(j).id == ((CreateMessage) m_model.getObject(i)).ids[0]) {
+                        ll = (UILifeLine) m_objects.get(j);
+                    } else if (m_objects.get(j).id == ((CreateMessage) m_model.getObject(i)).ids[1]) {
+                        qw = (UILifeLine) m_objects.get(j);
+                    }
+                }
+                UICreateMessage sm = new UICreateMessage(ll, qw, m_model.getObject(i).getCoordinates().y);
+
+                sm.setText(((CreateMessage) m_model.getObject(i)).getName());
+                sm.id = m_model.getObject(i).getId();
+
+                m_objects.add(sm);
+                this.add(sm);
             }
         }
 
