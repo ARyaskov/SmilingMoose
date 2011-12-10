@@ -52,6 +52,9 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*, 
         else if (item.getClass().getName().equals("bbj.graphicsobjects.UICreateMessage")){
             m_selectedItem = (UICreateMessage) item;
         }
+        else if (item.getClass().getName().equals("bbj.graphicsobjects.UIDestroyMessage")){
+            m_selectedItem = (UIDestroyMessage) item;
+        }
     }
 
     /**
@@ -144,6 +147,14 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*, 
                 else
                     endY = currentMessage.m_receiver.dotCoord-currentMessage.m_receiver.y-30;
             }
+        }
+        
+        if (m_selectedItem.getClass().getName().equals("bbj.graphicsobjects.UIDestroyMessage" )){
+            
+            UIMessage currentMessage = (UIMessage)m_selectedItem;
+            
+            if (currentMessage.m_receiver.h <= currentMessage.y+60)
+                currentMessage.m_receiver.h = currentMessage.y+60;
         }
 
         Rectangle rect = BBJ.app.getScene().getUIPanelsRectangle();
