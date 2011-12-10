@@ -1331,7 +1331,7 @@ public final class Scene extends JPanel implements DropTargetListener {
        ((UIMessage)m_objects.get(j)).m_focusSender.paint(g2);
         
        if (m_objects.get(j).m_isSelected)
-            g2.setColor(Color.red);        // Исходный цвет
+            g2.setColor(Color.red);
         else
             g2.setColor(Color.black);        // Цвет при выделении
             
