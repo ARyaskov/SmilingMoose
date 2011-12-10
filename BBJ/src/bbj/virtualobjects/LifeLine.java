@@ -29,6 +29,24 @@ public class LifeLine extends UMLObject {
     private int m_index = 0; /** Поле индекса копии. */
     /** Флаг вида отрисовки линии жизни: 1 прямоугольник, 2 человечек. */
     private int m_style;
+    /** Длина линии жизни. */
+    private int m_length;
+    
+    /**
+     * Метод задания длинны линии жизни.
+     * @param length Новая длина линии жизни.
+     */
+    public void setLength (int length) {
+        m_length = length;
+    }
+    
+    /**
+     * Метод получения длины линии жизни.
+     * @return Длина линии жизни.
+     */
+    public int getLength () {
+        return m_length;
+    }
     
     /**
      * Метод задания стиля отрисовки линии жизни.
