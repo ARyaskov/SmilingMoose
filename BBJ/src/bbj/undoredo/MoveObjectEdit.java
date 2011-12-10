@@ -40,7 +40,6 @@ public class MoveObjectEdit extends AbstractUndoableEdit {
 
         super.undo();
         
-  
         int index = m_scene.getGraphicsObjects().indexOf(m_item);
         m_scene.getGraphicsObjects().get(index).setLocation(m_from);
         m_scene.repaint();

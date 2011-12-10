@@ -84,6 +84,7 @@ public final class Scene extends JPanel implements DropTargetListener {
     int globalId = 0;
     protected PopupMenu m_menu;
     protected MenuItem m_clear;
+    private AddToSceneEdit m_undoEdit;
 
     /**
      * Метод получения глобального идентификатора.
@@ -184,24 +185,24 @@ public final class Scene extends JPanel implements DropTargetListener {
 
 //        // Добавляем тестовые объекты в контейнер       
 
-        UIRectLifeLine ll = new UIRectLifeLine(470, 111);
+    //    UIRectLifeLine ll = new UIRectLifeLine(470, 111);
 
-        UIActorLifeLine al = new UIActorLifeLine(400, 333);
+      //  UIActorLifeLine al = new UIActorLifeLine(400, 333);
 
-        UIAsynchronousMessage m = new UIAsynchronousMessage(ll, al, 215);
+       // UIAsynchronousMessage m = new UIAsynchronousMessage(ll, al, 215);
 
-        UIReplyMessage r = new UIReplyMessage(m);
+      //  UIReplyMessage r = new UIReplyMessage(m);
       //  UICreateMessage m1 = new UICreateMessage(al,ll,150);
         
       //  UIDestroyMessage m2 = new UIDestroyMessage(al, ll, 250);
 
-        ll.setEnded(true);
-        this.add(m.m_focusReceiver);
-        this.add(m.m_focusSender);
-        this.add(r);
-        this.add(ll);
-        this.add(al);
-        this.add(m);
+      //  ll.setEnded(true);
+       // this.add(m.m_focusReceiver);
+      //  this.add(m.m_focusSender);
+     //   this.add(r);
+     //   this.add(ll);
+     //   this.add(al);
+    //    this.add(m);
    
         //setComponentZOrder(m.m_focusReceiver, getComponentCount()-1);
      //   setComponentZOrder(m.m_focusSender, getComponentCount()-1);
@@ -212,16 +213,16 @@ public final class Scene extends JPanel implements DropTargetListener {
         // Добавляем тестовые объекты в контейнер
 
         
-        m_objects.add(ll);
-        m_objects.add(al);
-        m_objects.add(m);
-        m_objects.add(r);
-        m_objects.add(m.m_focusReceiver);
-        m_objects.add(m.m_focusSender);
+      //  m_objects.add(ll);
+     // /  m_objects.add(al);
+      //  m_objects.add(m);
+      //  m_objects.add(r);
+     //   m_objects.add(m.m_focusReceiver);
+     //   m_objects.add(m.m_focusSender);
         
         //m_objects.add(m1);
         //m_objects.add(m2);
-        ll.setLength(ll.getLength()+20);
+      //  ll.setLength(ll.getLength()+20);
 
         // Создаем сцене особого слушателя
         SceneItemListener sceneItemListener = new SceneItemListener();
@@ -542,6 +543,9 @@ public final class Scene extends JPanel implements DropTargetListener {
 
 
             if (item != null) {
+                m_undoEdit = new AddToSceneEdit(this, item);
+
+	        m_app.getUndoSupport().postEdit(m_undoEdit);
                 m_app.m_undoButton.setEnabled(m_app.getUndoManager().canUndo());
                 m_app.m_redoButton.setEnabled(m_app.getUndoManager().canRedo());
                 for (int i = 0; i < this.m_selectedObjects.size(); i++) {
@@ -694,18 +698,15 @@ public final class Scene extends JPanel implements DropTargetListener {
      * Метод очистки диаграммы.
      */
     public void clear() {
-        m_clearSceneEdit = new ClearSceneEdit(this);
-        
+       
 
         this.m_objects.clear();
         this.m_model.clear();
         this.updateLocalnumbers();
-        
+              
         this.repaint();
         BBJ.app.m_hasModifications = true;
-        m_app.getUndoSupport().postEdit(m_clearSceneEdit);
-        m_app.m_undoButton.setEnabled(m_app.getUndoManager().canUndo());
-        m_app.m_redoButton.setEnabled(m_app.getUndoManager().canRedo());
+
     }
 
     /**
