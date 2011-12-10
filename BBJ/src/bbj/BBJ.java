@@ -528,6 +528,15 @@ public final class BBJ {
                 int returnVal = chooser.showSaveDialog(mainFrame);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = chooser.getSelectedFile();
+                    try {
+                            canvas.saveasimage(file);
+                        } catch (ParserConfigurationException ex) {
+                            Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (SAXException ex) {
+                            Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (IOException ex) {
+                            Logger.getLogger(BBJ.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                 }
             }
         });
