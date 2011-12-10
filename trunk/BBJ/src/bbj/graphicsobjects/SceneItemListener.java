@@ -56,6 +56,10 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
         else if (item.getClass().getName().equals("bbj.graphicsobjects.UIAsynchronousMessage")){
             m_selectedItem = (UIAsynchronousMessage) item;
         }
+        else if (item.getClass().getName().equals("bbj.graphicsobjects.UIFocusControl")){
+            m_selectedItem = (UIFocusControl) item;
+        }
+        
     }
 
     /**
@@ -184,8 +188,27 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
                 m_selectedItem.x = rect.x + rect.width + 2;
                 m_selectedItem.y = rect.y + rect.height + 2;
             } else {
-                m_selectedItem.x = endX;
-                m_selectedItem.y = endY;
+                
+                if (m_selectedItem.getClass().getName().equals("bbj.graphicsobjects.UIFocusControl" )){
+                    UIFocusControl fc = (UIFocusControl)m_selectedItem;
+                    int res = endY-m_selectedItem.y+40;
+                    
+                    // Не даем прямоугольникам опуститься ниже линии жиззни
+                    // У сендера
+                    if (fc.m_isSender && endY <= fc.m_parentMessage.getSender().getHeight()-40
+                            && endY >= fc.y-20)
+                        m_selectedItem.h = res;
+                    
+                    // У ресивера
+                    if (!fc.m_isSender && endY <= fc.m_parentMessage.getReceiver().getHeight()-40
+                             && endY >= fc.y-20)
+                        m_selectedItem.h = res;
+                }
+                else{
+                    m_selectedItem.x = endX;
+                    m_selectedItem.y = endY; 
+                }
+                
             }
 
             m_selectedItem.updateUI();     // Перерисовываем объект
