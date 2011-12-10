@@ -5,6 +5,8 @@
 package bbj.graphicsobjects;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Класс линии жизни простого процесса
@@ -33,6 +35,18 @@ public class UIRectLifeLine extends UILifeLine {
 //        this.addKeyListener(listener);
         
         this.setToolTipText("Линия жизни: " + m_text);
+        m_menu = new PopupMenu("Stop");
+        m_stop = new MenuItem("Остановить");
+        m_menu.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                m_isEnded = !m_isEnded;
+                bbj.BBJ.app.getScene().repaint();
+            }
+        });
+        m_menu.add(m_stop);
+        this.add(m_menu);
     }
 
     @Override

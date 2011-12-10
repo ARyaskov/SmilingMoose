@@ -311,6 +311,11 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
                 scene.addToSelectedObjects(m_selectedItem);
             }
             scene.repaint();
+        } else  if (e.getButton() == MouseEvent.BUTTON3) { 
+            if (m_selectedItem.getClass() == UIRectLifeLine.class ||
+                m_selectedItem.getClass() == UIActorLifeLine.class) {
+                ((UILifeLine)m_selectedItem).m_menu.show(e.getComponent(), e.getX(), e.getY());
+            }
         }
     }
 

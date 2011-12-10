@@ -34,6 +34,10 @@ abstract public class UILifeLine extends SceneItem{
     /** Длина ЛЖ*/
     private int m_length;
     
+    /** Внутреннее меню. */
+    PopupMenu m_menu;
+    MenuItem m_stop;
+    
 
     protected void fillData(int x, int y) {
         this.x = x;
