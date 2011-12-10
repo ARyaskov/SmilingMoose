@@ -260,7 +260,8 @@ public class VirtualModel {
                     m_objects.get(i).getClass() == CreateMessage.class ||
                     m_objects.get(i).getClass() == DestroyMessage.class ||
                     m_objects.get(i).getClass() == SimpleMessage.class ||
-                    m_objects.get(i).getClass() == ReplyMessage.class)
+                    m_objects.get(i).getClass() == ReplyMessage.class ||
+                    m_objects.get(i).getClass() == AsynchronousMessages.class)
                 {
                     //m_objects.get(i).setCoordinates(m_scene.get(i).getCoordinates());
                     element.appendChild(m_objects.get(i).write(doc));
