@@ -308,8 +308,14 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*, 
 
                 while(i.hasNext()){
                    UIMessage buf = i.next();
-                   if (newY <= buf.getY()+buf.getHeight()-50)
-                       isOk = false;
+                   
+                    if (buf.getClass().getName().equals("bbj.graphicsobjects.UIDestroyMessage" )){
+                        if (newY <= buf.getY()+buf.getHeight()-10)
+                        isOk = false;
+                    }
+                    else
+                        if (newY <= buf.getY()+buf.getHeight()-50)
+                            isOk = false;
                 }
             }
             
