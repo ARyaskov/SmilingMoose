@@ -773,8 +773,26 @@ public final class Scene extends JPanel implements DropTargetListener {
 
                 m_objects.add(sm);
                 this.add(sm);
+            } else if (m_model.getObject(i).getClass() == AsynchronousMessages.class) {
+                UILifeLine ll = null, qw = null;
+                for (int j = 0; j < m_objects.size(); j++) {
+                    if (m_objects.get(j).id == ((AsynchronousMessages) m_model.getObject(i)).ids[0]) {
+                        ll = (UILifeLine) m_objects.get(j);
+                    } else if (m_objects.get(j).id == ((AsynchronousMessages) m_model.getObject(i)).ids[1]) {
+                        qw = (UILifeLine) m_objects.get(j);
+                    }
+                }
+                UIAsynchronousMessage sm = new UIAsynchronousMessage(ll, qw, m_model.getObject(i).getCoordinates().y);
+
+                sm.setText(((AsynchronousMessages) m_model.getObject(i)).getName());
+                sm.id = m_model.getObject(i).getId();
+                sm.setToolTipText("Сообщение: " + sm.getText());
+
+                m_objects.add(sm);
+                this.add(sm);
             }
-        }
+        
+        } 
 
         repaint();
         BBJ.app.m_hasModifications = false;
