@@ -823,6 +823,28 @@ public final class Scene extends JPanel implements DropTargetListener {
 
                 m_objects.add(sm);
                 this.add(sm);
+            } else if (m_model.getObject(i).getClass() == ReplyMessage.class) {
+                UILifeLine ll = null, qw = null;
+                UIMessage m = null;
+                for (int j = 0; j < m_objects.size(); j++) {
+                    if (m_objects.get(j).id == ((ReplyMessage) m_model.getObject(i)).ids[0]) {
+                        ll = (UILifeLine) m_objects.get(j);
+                    } else if (m_objects.get(j).id == ((ReplyMessage) m_model.getObject(i)).ids[1]) {
+                        qw = (UILifeLine) m_objects.get(j);
+                    } else if (m_objects.get(j).id == ((ReplyMessage)m_model.getObject(i)).getParent().getId()) {
+                        m = (UIMessage)m_objects.get(j);
+                    }
+                }
+                UIReplyMessage sm = new UIReplyMessage(m);
+                sm.m_sender = ll;
+                sm.m_receiver = qw;
+
+                sm.setText(((ReplyMessage) m_model.getObject(i)).getName());
+                sm.id = m_model.getObject(i).getId();
+                sm.setToolTipText("Сообщение: " + sm.getText());
+
+                m_objects.add(sm);
+                this.add(sm);
             }
         
         } 
@@ -1036,6 +1058,52 @@ public final class Scene extends JPanel implements DropTargetListener {
         
         m_model.addObject(vsm);
         
+        this.add(sm);
+        m_objects.add(sm);
+        repaint();
+        BBJ.app.m_hasModifications = true;
+    }
+    
+    /**
+     * Метод создания простых сообщений.
+     */
+    public void createReplyMessage() {
+        if (this.m_selectedObjects.size() != 1) {
+            return;
+        }
+
+        if (this.m_selectedObjects.get(0).getClass() != UISimpleMessage.class) {
+
+            if (m_selectedObjects.get(0).getClass() != UICreateMessage.class) {
+
+                if (m_selectedObjects.get(0).getClass() != UIDestroyMessage.class) {
+
+//                    if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class
+//                            || m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
+                        return;
+//                    }
+                }
+            }
+        }
+
+        UIReplyMessage sm = new UIReplyMessage((UIMessage) m_selectedObjects.get(0));
+
+        ReplyMessage vsm = new ReplyMessage();
+        vsm.setCoordinates(new Point3D(sm.x, sm.y, 0));
+        vsm.setName(sm.getText());
+        vsm.setId(globalId++);
+        sm.id = vsm.getId();
+
+        for (int i = 0; i < m_model.size(); i++) {
+            if (m_model.getObject(i).getId() == m_selectedObjects.get(0).id) {
+                vsm.setParent((Message)m_model.getObject(i));
+                vsm.setReceiver(((Message)m_model.getObject(i)).getReceiver());
+                vsm.setSender(((Message)m_model.getObject(i)).getSender());
+            }
+        }
+
+        m_model.addObject(vsm);
+
         this.add(sm);
         m_objects.add(sm);
         repaint();
@@ -1576,4 +1644,5 @@ public final class Scene extends JPanel implements DropTargetListener {
         
          //} catch (IOException e) {}
     }
+
 }

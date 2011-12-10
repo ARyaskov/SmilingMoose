@@ -400,6 +400,8 @@ public class UISelector extends SceneItem implements DragGestureListener, DragSo
                         BBJ.app.getScene().createDestroyMessage();
                     } else if (m_orderOfTypes.get(m_pointer).equals("Async")) {
                         BBJ.app.getScene().createAsynchronousMessage();
+                    } else if (m_orderOfTypes.get(m_pointer).equals("Reply")) {
+                        BBJ.app.getScene().createReplyMessage();
                     }
                     repaint();
                 }
