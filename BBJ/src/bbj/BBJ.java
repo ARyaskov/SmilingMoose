@@ -877,7 +877,29 @@ public final class BBJ {
                 KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
                 JComponent.WHEN_IN_FOCUSED_WINDOW);
 
+        
+        MouseAdapter deleteButtonListener = new MouseAdapter() {
 
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1 && delete_button.isEnabled()) {
+                    
+                    String qwe = SceneItemListener.m_currentSelectedItem.getParent().getClass().getName();
+                    if (SceneItemListener.m_currentSelectedItem.getClass().getSuperclass().getName().equals("bbj.graphicsobjects.UILifeLine")){
+                        UILifeLine buf = (UILifeLine)SceneItemListener.m_currentSelectedItem;
+                        buf.removeMessages();
+                    }
+                    canvas.remove(SceneItemListener.m_currentSelectedItem);
+                    canvas.getGraphicsObjects().remove(SceneItemListener.m_currentSelectedItem);
+                    
+                    SceneItemListener.m_currentSelectedItem = null;
+                    canvas.updateUI();
+                    
+                }
+            }
+
+        };
+        
+        delete_button.addMouseListener(deleteButtonListener);
 
 
         // Тут цепляем слушателей к кнопкам

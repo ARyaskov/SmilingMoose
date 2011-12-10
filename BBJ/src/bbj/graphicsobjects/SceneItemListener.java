@@ -22,7 +22,7 @@ import javax.swing.undo.*;
 public class SceneItemListener implements MouseListener, MouseMotionListener/*
  * , KeyListener
  */ {
-
+    
     public static SceneItem m_currentSelectedItem;       // Текущий выделенный объект
     private int m_startX;               // Координата начала перетаскивания
     private int m_startY;               // Координата конца перетаскивания
@@ -140,7 +140,10 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
                 return;
             }
             
-
+            m_currentSelectedItem = m_selectedItem;
+            
+            
+            
             // Определяем координаты конца движения
             m_endX = e.getXOnScreen() - m_startX;
 

@@ -6,6 +6,7 @@ import bbj.virtualobjects.*;
 import bbj.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.*;
 
 /**
@@ -38,6 +39,20 @@ abstract public class UILifeLine extends SceneItem{
     PopupMenu m_menu;
     MenuItem m_stop;
     
+    public void removeMessages(){
+        Iterator<UIMessage> i = m_inbox.iterator();
+        
+        while(i.hasNext()){
+            
+            UIMessage buf = i.next();
+            
+            bbj.BBJ.app.getScene().remove(buf);
+            bbj.BBJ.app.getScene().getGraphicsObjects().remove(buf);
+            buf = null;
+        }
+        
+        m_outbox.clear();
+    }
 
     protected void fillData(int x, int y) {
         this.x = x;
