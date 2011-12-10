@@ -81,6 +81,8 @@ public final class Scene extends JPanel implements DropTargetListener {
     private double m_zoom;
     private AddToSceneEdit m_undoEdit;
     int globalId = 0;
+    protected PopupMenu m_menu;
+    protected MenuItem m_clear;
 
     /**
      * Метод получения глобального идентификатора.
@@ -179,31 +181,31 @@ public final class Scene extends JPanel implements DropTargetListener {
 
         this.addMouseMotionListener(new MouseSlot());
 
-//        // Добавляем тестовые объекты в контейнер       
-//
-//        UIRectLifeLine ll = new UIRectLifeLine(470, 111);
-//
-//        UIActorLifeLine al = new UIActorLifeLine(400, 333);
-//
-//        UIAsynchronousMessage m = new UIAsynchronousMessage(ll, al, 215);
-//        
-//      //  UICreateMessage m1 = new UICreateMessage(al,ll,150);
-//        
-//      //  UIDestroyMessage m2 = new UIDestroyMessage(al, ll, 250);
-//
-//        ll.setEnded(true);
-//        this.add(m);
-//        this.add(ll);
-//        this.add(al);
-//       // this.add(m1);
-//       // this.add(m2);
-//
-//        // Добавляем тестовые объекты в контейнер
-//        m_objects.add(m);
-//        m_objects.add(ll);
-//        m_objects.add(al);
-//        //m_objects.add(m1);
-//        //m_objects.add(m2);
+        // Добавляем тестовые объекты в контейнер       
+
+        UIRectLifeLine ll = new UIRectLifeLine(470, 111);
+
+        UIActorLifeLine al = new UIActorLifeLine(400, 333);
+
+        UIAsynchronousMessage m = new UIAsynchronousMessage(ll, al, 215);
+        
+      //  UICreateMessage m1 = new UICreateMessage(al,ll,150);
+        
+      //  UIDestroyMessage m2 = new UIDestroyMessage(al, ll, 250);
+
+        ll.setEnded(true);
+        this.add(m);
+        this.add(ll);
+        this.add(al);
+       // this.add(m1);
+       // this.add(m2);
+
+        // Добавляем тестовые объекты в контейнер
+        m_objects.add(m);
+        m_objects.add(ll);
+        m_objects.add(al);
+        //m_objects.add(m1);
+        //m_objects.add(m2);
         ll.setLength(ll.getLength()+20);
 
         // Создаем сцене особого слушателя
@@ -215,6 +217,18 @@ public final class Scene extends JPanel implements DropTargetListener {
         DropTarget dropTarget = new DropTarget(m_app.m_entitySelector, this);
         this.setDropTarget(dropTarget);
 
+        this.m_menu = new PopupMenu("Сцена");
+        this.m_clear = new MenuItem("Очистить");
+        m_clear.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clear();
+            }
+        });
+        m_menu.add(m_clear);
+        this.add(m_menu);
+        
 
     }
 
@@ -573,6 +587,9 @@ public final class Scene extends JPanel implements DropTargetListener {
                 //  repaint();
             }
             //  System.out.println("Pressed");
+            if (e.getButton() == MouseEvent.BUTTON3) {
+                m_menu.show(e.getComponent(), e.getX(), e.getY());
+            }
         }
 
         public void mouseReleased(MouseEvent e) {
