@@ -80,22 +80,23 @@ public final class Scene extends JPanel implements DropTargetListener {
     private int m_scene_width;
     private double m_zoom;
     private AddToSceneEdit m_undoEdit;
-    boolean m_isCTRLPressed;
     int globalId = 0;
-    
+
     /**
      * Метод получения глобального идентификатора.
+     *
      * @return Глобальный идентификатор.
      */
-    public int takeId () {
+    public int takeId() {
         return globalId;
     }
-    
+
     /**
      * Метод задания глобального идентификатора.
+     *
      * @param id Новый глобальный идентификатор.
      */
-    public void setId (int id) {
+    public void setId(int id) {
         globalId = id;
     }
 
@@ -149,7 +150,6 @@ public final class Scene extends JPanel implements DropTargetListener {
         stopSelect_y = 0;
         m_zoom = 1.0;
         m_selectionRect = new Rectangle();
-        m_isCTRLPressed = false;
         m_model.setScene(this);
 
         this.setDoubleBuffered(true);
@@ -641,7 +641,7 @@ public final class Scene extends JPanel implements DropTargetListener {
     /**
      * Обнуление номеров имен объектов сцены
      */
-    private void updateLocalnumbers(){
+    private void updateLocalnumbers() {
         UISimpleMessage.m_localNumber = 0;
         UIReplyMessage.m_localNumber = 0;
         UIRectLifeLine.m_localNumber = 0;
@@ -650,7 +650,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         UICreateMessage.m_localNumber = 0;
         UIActorLifeLine.m_localNumber = 0;
     }
-    
+
     /**
      * Метод очистки диаграммы.
      */
@@ -677,96 +677,96 @@ public final class Scene extends JPanel implements DropTargetListener {
      */
     public void load(String filename) throws ParserConfigurationException, SAXException, IOException {
         m_model.load(filename);
-        
+
         for (int i = 0; i < m_model.size(); i++) {
             if (m_model.getObject(i).getClass() == LifeLine.class) {
-                UIRectLifeLine ll = new UIRectLifeLine((int)m_model.getObject(i).getCoordinates().getX(),
-                        (int)m_model.getObject(i).getCoordinates().getY());
-                ll.setText(((LifeLine)m_model.getObject(i)).getName());
+                UIRectLifeLine ll = new UIRectLifeLine((int) m_model.getObject(i).getCoordinates().getX(),
+                        (int) m_model.getObject(i).getCoordinates().getY());
+                ll.setText(((LifeLine) m_model.getObject(i)).getName());
                 ll.id = m_model.getObject(i).getId();
-                
+
                 m_objects.add(ll);
                 this.add(ll);
             } else if (m_model.getObject(i).getClass() == FreeComment.class) {
-                UIFreeComment fc = new UIFreeComment((int)m_model.getObject(i).getCoordinates().getX(),
-                        (int)m_model.getObject(i).getCoordinates().getY());
-                fc.setText(((FreeComment)m_model.getObject(i)).getDescription());
+                UIFreeComment fc = new UIFreeComment((int) m_model.getObject(i).getCoordinates().getX(),
+                        (int) m_model.getObject(i).getCoordinates().getY());
+                fc.setText(((FreeComment) m_model.getObject(i)).getDescription());
                 fc.id = m_model.getObject(i).getId();
-                
+
                 m_objects.add(fc);
                 this.add(fc);
             } else if (m_model.getObject(i).getClass() == SimpleMessage.class) {
                 UILifeLine ll = null, qw = null;
                 for (int j = 0; j < m_objects.size(); j++) {
-                    if (m_objects.get(j).id == ((SimpleMessage)m_model.getObject(i)).ids[0]) {
-                        ll = (UILifeLine)m_objects.get(j);
-                    } else if (m_objects.get(j).id == ((SimpleMessage)m_model.getObject(i)).ids[1]) {
-                        qw = (UILifeLine)m_objects.get(j);
+                    if (m_objects.get(j).id == ((SimpleMessage) m_model.getObject(i)).ids[0]) {
+                        ll = (UILifeLine) m_objects.get(j);
+                    } else if (m_objects.get(j).id == ((SimpleMessage) m_model.getObject(i)).ids[1]) {
+                        qw = (UILifeLine) m_objects.get(j);
                     }
                 }
-                UISimpleMessage sm = new UISimpleMessage(ll,qw,m_model.getObject(i).getCoordinates().y);
-                
-                sm.setText(((SimpleMessage)m_model.getObject(i)).getName());
+                UISimpleMessage sm = new UISimpleMessage(ll, qw, m_model.getObject(i).getCoordinates().y);
+
+                sm.setText(((SimpleMessage) m_model.getObject(i)).getName());
                 sm.id = m_model.getObject(i).getId();
-                
+
                 m_objects.add(sm);
                 this.add(sm);
             }
         }
-        
+
         repaint();
     }
-    
+
     /**
      * Метод удаления выделенных объектов.
      */
-    public void removeSelectedItems () {
+    public void removeSelectedItems() {
     }
-    
+
     /**
      * Метод создания простых сообщений.
      */
-    public void createSimpleMessage () {
+    public void createSimpleMessage() {
         if (this.m_selectedObjects.size() != 2) {
             return;
         }
-        
-        if (this.m_selectedObjects.get(0).getClass() != UIRectLifeLine.class ||
-            this.m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
-            
-            if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class ||
-                m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
-                
-                if (m_selectedObjects.get(0).getClass() != UIRectLifeLine.class ||
-                    m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
-                    
-                    if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class ||
-                        m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
+
+        if (this.m_selectedObjects.get(0).getClass() != UIRectLifeLine.class
+                || this.m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
+
+            if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class
+                    || m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
+
+                if (m_selectedObjects.get(0).getClass() != UIRectLifeLine.class
+                        || m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
+
+                    if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class
+                            || m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
                         return;
                     }
                 }
             }
         }
-        
-        UISimpleMessage sm = new UISimpleMessage((UILifeLine)m_selectedObjects.get(0),
-                (UILifeLine)m_selectedObjects.get(1), this.m_selectedObjects.get(0).y + 100);
-        
+
+        UISimpleMessage sm = new UISimpleMessage((UILifeLine) m_selectedObjects.get(0),
+                (UILifeLine) m_selectedObjects.get(1), this.m_selectedObjects.get(0).y + 100);
+
         SimpleMessage vsm = new SimpleMessage();
-        vsm.setCoordinates(new Point3D(sm.x,sm.y,0));
+        vsm.setCoordinates(new Point3D(sm.x, sm.y, 0));
         vsm.setName(sm.getText());
         vsm.setId(globalId++);
-        
+
         for (int i = 0; i < m_model.size(); i++) {
             if (m_model.getObject(i).getId() == m_selectedObjects.get(0).id) {
-                ((LifeLine)m_model.getObject(i)).addMessage(vsm);
-                vsm.setSender((LifeLine)m_model.getObject(i));
+                ((LifeLine) m_model.getObject(i)).addMessage(vsm);
+                vsm.setSender((LifeLine) m_model.getObject(i));
             } else if (m_model.getObject(i).getId() == m_selectedObjects.get(1).id) {
-                vsm.setReceiver((LifeLine)m_model.getObject(i));
+                vsm.setReceiver((LifeLine) m_model.getObject(i));
             }
         }
-        
+
         m_model.addObject(vsm);
-        
+
         this.add(sm);
         m_objects.add(sm);
         repaint();
