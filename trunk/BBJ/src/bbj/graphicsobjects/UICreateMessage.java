@@ -28,6 +28,9 @@ public class UICreateMessage extends UIMessage {
         m_sender.m_inbox.add(this);
         m_receiver.m_outbox.add(this);
         
+        m_focusReceiver = new UIFocusControl(this, false);
+        m_focusSender = new UIFocusControl(this, true);
+        
         this.y = y+25;
         
         setDefaultName();
@@ -48,6 +51,7 @@ public class UICreateMessage extends UIMessage {
     public void paint(Graphics g) {
         
         super.paint(g);
+                
         Graphics2D g2 = (Graphics2D)g;
         this.x = m_sender.x+60;             // Начальная точка
         int endX = m_receiver.x;            // Конечная точка
@@ -75,6 +79,10 @@ public class UICreateMessage extends UIMessage {
             g.drawLine(endX, y, endX+7, y-5);
             
         }
+        
+         m_focusReceiver.paint(g);
+        m_focusSender.paint(g);
+        
             
         // Разбиваем текст на массив символов
         char [] drawedText = m_text.toCharArray();

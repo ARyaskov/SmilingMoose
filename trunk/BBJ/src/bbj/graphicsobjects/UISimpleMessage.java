@@ -28,6 +28,9 @@ public class UISimpleMessage extends UIMessage {
         m_sender.m_inbox.add(this);
         m_receiver.m_outbox.add(this);
         
+        m_focusReceiver = new UIFocusControl(this, false);
+        m_focusSender = new UIFocusControl(this, true);
+        
         this.y = y;
         
         setDefaultName();
@@ -49,14 +52,12 @@ public class UISimpleMessage extends UIMessage {
     public void paint(Graphics g) {
         
         super.paint(g);
-        
+                
         Graphics2D g2 = (Graphics2D)g;
         int endX = m_receiver.x+60;         // Конечная точка
         this.x = m_sender.x+60;             // Начальная точка
         this.h =45;                        // Высота объекта
         this.w = endX - m_sender.x;         // Длина объекта
-
-        
         
         if (m_isSelected)
             g.setColor(Color.red);        // Исходный цвет
@@ -64,6 +65,8 @@ public class UISimpleMessage extends UIMessage {
             g.setColor(Color.black);        // Цвет при выделении
         
         g2.setStroke(new BasicStroke(2));   // Берем линию потолще
+        
+        y-=5;
         
         g.drawLine(x, y, x+w-60, y);        // Рисуем линию сообщения
         
@@ -77,6 +80,9 @@ public class UISimpleMessage extends UIMessage {
             g.drawLine(endX, y, endX+7, y+5);
             g.drawLine(endX, y, endX+7, y-5);
         }
+        y+=5;
+        m_focusReceiver.paint(g);
+        m_focusSender.paint(g);
         
         // Разбиваем текст на массив символов
         char [] drawedText = m_text.toCharArray();

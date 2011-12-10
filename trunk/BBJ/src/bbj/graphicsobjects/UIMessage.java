@@ -24,6 +24,12 @@ abstract public class UIMessage extends SceneItem {
     
     /** Текст сообщения */
     protected int textX;
+    
+    /** Фокус у отправителя */
+    public UIFocusControl m_focusSender;
+    
+    /** Фокус у получателя */
+    public UIFocusControl m_focusReceiver;
             
     /**
      * Запросить отправителя.
