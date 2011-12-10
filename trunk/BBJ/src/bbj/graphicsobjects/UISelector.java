@@ -73,7 +73,7 @@ public class UISelector extends SceneItem implements DragGestureListener, DragSo
 
     @Override
     public void dragExit(DragSourceEvent dse) {
-        
+        repaint();
     }
 
     @Override
@@ -398,6 +398,8 @@ public class UISelector extends SceneItem implements DragGestureListener, DragSo
                         BBJ.app.getScene().createCreateMessage();
                     } else if (m_orderOfTypes.get(m_pointer).equals("Delete")) {
                         BBJ.app.getScene().createDestroyMessage();
+                    } else if (m_orderOfTypes.get(m_pointer).equals("Async")) {
+                        BBJ.app.getScene().createAsynchronousMessage();
                     }
                     repaint();
                 }
