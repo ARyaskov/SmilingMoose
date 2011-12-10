@@ -182,42 +182,44 @@ public final class Scene extends JPanel implements DropTargetListener {
         this.addMouseMotionListener(new MouseSlot());
 
 //        // Добавляем тестовые объекты в контейнер       
-//
-//        UIRectLifeLine ll = new UIRectLifeLine(470, 111);
-//
-//        UIActorLifeLine al = new UIActorLifeLine(400, 333);
-//
-//        UIAsynchronousMessage m = new UIAsynchronousMessage(ll, al, 215);
-//
-//        
-//      //  UICreateMessage m1 = new UICreateMessage(al,ll,150);
-//        
-//      //  UIDestroyMessage m2 = new UIDestroyMessage(al, ll, 250);
-//
-//        ll.setEnded(true);
-//        
-//        this.add(ll);
-//        this.add(al);
-//        this.add(m);
-//        //setComponentZOrder(m.m_focusReceiver, getComponentCount()-1);
-//     //   setComponentZOrder(m.m_focusSender, getComponentCount()-1);
-//       // this.add(m1);
-//       // this.add(m2);
-//       // this.add(m.m_focusReceiver);
-//       // this.add(m.m_focusSender);
-//
-//        // Добавляем тестовые объекты в контейнер
-//
-//        
-//        m_objects.add(ll);
-//        m_objects.add(al);
-//        m_objects.add(m);
-//        m_objects.add(m.m_focusReceiver);
-//        m_objects.add(m.m_focusSender);
-//        
-//        //m_objects.add(m1);
-//        //m_objects.add(m2);
-//        ll.setLength(ll.getLength()+20);
+
+        UIRectLifeLine ll = new UIRectLifeLine(470, 111);
+
+        UIActorLifeLine al = new UIActorLifeLine(400, 333);
+
+        UIAsynchronousMessage m = new UIAsynchronousMessage(ll, al, 215);
+
+        UIReplyMessage r = new UIReplyMessage(m);
+      //  UICreateMessage m1 = new UICreateMessage(al,ll,150);
+        
+      //  UIDestroyMessage m2 = new UIDestroyMessage(al, ll, 250);
+
+        ll.setEnded(true);
+        
+        this.add(ll);
+        this.add(al);
+        this.add(m);
+        this.add(r);
+        //setComponentZOrder(m.m_focusReceiver, getComponentCount()-1);
+     //   setComponentZOrder(m.m_focusSender, getComponentCount()-1);
+       // this.add(m1);
+       // this.add(m2);
+        this.add(m.m_focusReceiver);
+        this.add(m.m_focusSender);
+
+        // Добавляем тестовые объекты в контейнер
+
+        
+        m_objects.add(ll);
+        m_objects.add(al);
+        m_objects.add(m);
+        m_objects.add(r);
+        m_objects.add(m.m_focusReceiver);
+        m_objects.add(m.m_focusSender);
+        
+        //m_objects.add(m1);
+        //m_objects.add(m2);
+        ll.setLength(ll.getLength()+20);
 
         // Создаем сцене особого слушателя
         SceneItemListener sceneItemListener = new SceneItemListener();
