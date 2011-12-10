@@ -96,20 +96,7 @@ public class UISimpleMessage extends UIMessage {
         g.drawChars(drawedText, 0, java.lang.Math.min(13, m_text.length()), textX, y-10);
         
         String buf;
-        
-        if (this.getClass().getName().equals("bbj.graphicsobjects.UICreateMessage")){
-            buf = "<<create>>";
-            drawedText = buf.toCharArray();
-            
-            g.drawChars(drawedText, 0, buf.length(), textX, y-22);
-        }
-        else if (this.getClass().getName().equals("bbj.graphicsobjects.UIDestroyMessage")){
-            buf = "<<destroy>>";
-            drawedText = buf.toCharArray();
-            
-            g.drawChars(drawedText, 0, buf.length(), textX, y-22);
-        }
-            
+                    
         if (m_text.length() >= 14)
             g.drawChars(dots, 0, 3, textX+85, y-10);
         

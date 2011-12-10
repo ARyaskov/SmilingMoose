@@ -50,6 +50,9 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
         else if (item.getClass().getName().equals("bbj.graphicsobjects.UIDestroyMessage")){
             m_selectedItem = (UIDestroyMessage) item;
         }
+        else if (item.getClass().getName().equals("bbj.graphicsobjects.UIAsynchronousMessage")){
+            m_selectedItem = (UIAsynchronousMessage) item;
+        }
     }
 
     /**
