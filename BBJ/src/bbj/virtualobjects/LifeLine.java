@@ -27,6 +27,24 @@ public class LifeLine extends UMLObject {
     private boolean m_isDestroyed; /** Флаг, была ли линия жизни уничтожена другой линией жизни. */
     private ArrayList<Message> m_messages; /** Массив сообщений, связанных с этой линией жизни. */
     private int m_index = 0; /** Поле индекса копии. */
+    /** Флаг вида отрисовки линии жизни: 1 прямоугольник, 2 человечек. */
+    private int m_style;
+    
+    /**
+     * Метод задания стиля отрисовки линии жизни.
+     * @param style Новый стиль отрисовки.
+     */
+    public void setDrawStyle (int style) {
+        m_style = style;
+    }
+    
+    /**
+     * Метод получения стиля отрисовки линии жизни.
+     * @return Индекс стиля отрисовки.
+     */
+    public int getDrawStyle () {
+        return m_style;
+    }
     
     /**
      * Метод смена индекса для копии.
