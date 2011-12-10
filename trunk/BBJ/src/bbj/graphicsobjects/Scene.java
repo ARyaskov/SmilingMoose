@@ -26,7 +26,11 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.geom.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
 import java.util.*;
+import javax.imageio.ImageIO;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -76,7 +80,6 @@ public final class Scene extends JPanel implements DropTargetListener {
     private int m_scene_height;
     private int m_scene_width;
     private double m_zoom;
-    private AddToSceneEdit m_undoEdit;
     private ClearSceneEdit m_clearSceneEdit;
     int globalId = 0;
     protected PopupMenu m_menu;
@@ -539,9 +542,6 @@ public final class Scene extends JPanel implements DropTargetListener {
 
 
             if (item != null) {
-                m_undoEdit = new AddToSceneEdit(this, item);
-
-                m_app.getUndoSupport().postEdit(m_undoEdit);
                 m_app.m_undoButton.setEnabled(m_app.getUndoManager().canUndo());
                 m_app.m_redoButton.setEnabled(m_app.getUndoManager().canRedo());
                 for (int i = 0; i < this.m_selectedObjects.size(); i++) {
@@ -938,6 +938,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         BBJ.app.m_hasModifications = true;
     }
     
+
     /**
      * Метод создания сообщений удаления.
      */
@@ -1038,5 +1039,540 @@ public final class Scene extends JPanel implements DropTargetListener {
         m_objects.add(sm);
         repaint();
         BBJ.app.m_hasModifications = true;
+    }
+
+     public RenderedImage myCreateImage() {
+        int rem;
+        String buf;
+        int i;
+        int endX;
+        int textX;
+        int width = m_app.mainFrame.getWidth();
+        int height = m_app.mainFrame.getHeight();
+
+    // Create a buffered image in which to draw
+    BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    // Create a graphics contents on the buffered image
+    Graphics2D g2 = bufferedImage.createGraphics();
+    g2.setColor(Color.white);  
+    g2.fillRect(0,0,width,height);
+    for (int j = 0; j < m_objects.size(); j++)
+    {
+        
+        if (m_objects.get(j).getClass() == UIFreeComment.class)
+        {
+            Polygon dark = new Polygon();   // Полигон тени
+            // Смещаем координаты     
+            m_objects.get(j).x+=10;
+            m_objects.get(j).y+=10;
+            // Рисуем полигон
+            dark.addPoint(m_objects.get(j).x, m_objects.get(j).y);
+            dark.addPoint(m_objects.get(j).x + m_objects.get(j).w-20, m_objects.get(j).y);
+            dark.addPoint(m_objects.get(j).x + m_objects.get(j).w, m_objects.get(j).y + 20);
+            dark.addPoint(m_objects.get(j).x + m_objects.get(j).w, m_objects.get(j).y + m_objects.get(j).h);
+            dark.addPoint(m_objects.get(j).x, m_objects.get(j).y + m_objects.get(j).h);
+            // Возвращаем координаты обратно
+            m_objects.get(j).x-=10;
+            m_objects.get(j).y-=10;  
+            Color c = new Color(0, 0, 0,125);   // Цвет черный и прозрачный
+            Stroke stroke = new BasicStroke(1);
+            g2.setStroke(stroke);
+            g2.setColor(c);                      // Задаем цвет
+            g2.fillPolygon(dark);                // Заполняем полигон
+            Polygon p = new Polygon();          // Полигон комментария
+            // Рисуем прямоугольник со скошенным уголком
+            p.addPoint(m_objects.get(j).x, m_objects.get(j).y);
+            p.addPoint(m_objects.get(j).x + m_objects.get(j).w-20, m_objects.get(j).y);
+            p.addPoint(m_objects.get(j).x + m_objects.get(j).w, m_objects.get(j).y + 20);
+            p.addPoint(m_objects.get(j).x + m_objects.get(j).w, m_objects.get(j).y + m_objects.get(j).h);
+            p.addPoint(m_objects.get(j).x, m_objects.get(j).y + m_objects.get(j).h);
+            if (m_objects.get(j).m_isSelected)   // Если выбрали - заливаем желтым   
+                g2.setColor(Color.getHSBColor(105, 215, 245));
+            else                // Иначе, заливаем полигон голубоватым цветом
+                g2.setColor(new Color(255,210,210));
+            g2.fillPolygon(p);        
+            if (m_objects.get(j).m_isSelected)   // Рисуем границы полигона красным цветом
+                g2.setColor(Color.red);
+            else                // Рисуем границы полигона черным цветом
+                g2.setColor(Color.black);
+            g2.drawPolygon(p);   
+            g2.setColor(Color.black);    // Цвет текста
+            // Разбиваем текст на массив символов
+            char [] drawedText = m_objects.get(j).m_text.toCharArray();
+            // Рисуем текст по 15 символов в строке
+            for(i=0; i< drawedText.length / 15 && i < 4; i++){
+                g2.drawChars(drawedText, 0 + i * 15, 
+                            15, m_objects.get(j).x + 5, 15 + i * 12 + m_objects.get(j).y);
+            }   
+            char [] dots = {'.','.','.'};
+            if (i >= 4)
+                g2.drawChars(dots, 0, 3, 
+                            m_objects.get(j).x + 5, 15 + i * 12 + m_objects.get(j).y);
+            i++;
+            rem = drawedText.length % 15;   // Вычисляем остаток      
+            // Если остаток есть, дорисовываем символы, которые остались
+            if (rem != 0 )
+                g2.drawChars(drawedText, drawedText.length - rem, rem, 
+                            m_objects.get(j).x + 5, 15 + i * 12 + m_objects.get(j).y);
+
+        }
+        //////////////////
+        if (m_objects.get(j).getClass() == UIActorLifeLine.class || m_objects.get(j).getClass() == UIRectLifeLine.class)
+        {         
+                   
+        
+        //////////////
+            if (m_objects.get(j).getClass() == UIActorLifeLine.class)
+            {      
+                      
+                if (m_objects.get(j).m_isSelected)   // Рисуем границы полигона красным цветом
+                    g2.setColor(Color.red);
+                else                // Рисуем границы полигона черным цветом
+                    g2.setColor(Color.black);
+
+                if (m_objects.get(j).m_isSelected){
+                g2.setStroke(new BasicStroke(1));
+                Polygon p = new Polygon();          // Полигон комментария
+
+                p.addPoint(m_objects.get(j).x, m_objects.get(j).y);
+                p.addPoint(m_objects.get(j).x + 120, m_objects.get(j).y);
+                p.addPoint(m_objects.get(j).x + 120, m_objects.get(j).y + 50);
+                p.addPoint(m_objects.get(j).x, m_objects.get(j).y + 50);
+
+                g2.drawPolygon(p);     
+                }
+
+                if (m_objects.get(j).m_isSelected)   // Рисуем границы полигона красным цветом
+                    g2.setColor(Color.red);
+                else                // Рисуем границы полигона черным цветом
+                    g2.setColor(Color.black);
+
+                // Рисуем человечка
+                g2.setStroke(new BasicStroke(3));
+                g2.drawOval(m_objects.get(j).x +55, m_objects.get(j).y, 10, 10);
+                g2.drawLine(m_objects.get(j).x +60, m_objects.get(j).y + 10, m_objects.get(j).x +60, m_objects.get(j).y + 20);
+                g2.drawLine(m_objects.get(j).x +52, m_objects.get(j).y + 13, m_objects.get(j).x +68, m_objects.get(j).y + 13);
+                g2.drawLine(m_objects.get(j).x +60, m_objects.get(j).y + 20, m_objects.get(j).x +65, m_objects.get(j).y + 32);
+                g2.drawLine(m_objects.get(j).x +60, m_objects.get(j).y + 20, m_objects.get(j).x +55, m_objects.get(j).y + 32);
+            }
+                if (m_objects.get(j).getClass() == UIRectLifeLine.class)
+                {
+                    
+        
+                    Polygon dark = new Polygon();   // Полигон тени     
+                    // Смещаем координаты
+                    m_objects.get(j).x+=10;
+                    m_objects.get(j).y+=10;
+                    // Рисуем полигон
+                    dark.addPoint(m_objects.get(j).x, m_objects.get(j).y);
+                    dark.addPoint(m_objects.get(j).x + 120, m_objects.get(j).y);
+                    dark.addPoint(m_objects.get(j).x + 120, m_objects.get(j).y + 50);
+                    dark.addPoint(m_objects.get(j).x, m_objects.get(j).y + 50);
+                    // Возвращаем координаты обратно
+                    m_objects.get(j).x-=10;
+                    m_objects.get(j).y-=10;
+                    Color c = new Color(0, 0, 0,125);   // Цвет черный и прозрачный
+                    Stroke stroke = new BasicStroke(1);
+                    g2.setStroke(stroke);
+                    g2.setColor(c);                      // Задаем цвет
+                    g2.fillPolygon(dark);                // Заполняем полигон      
+                    Polygon p = new Polygon();          // Полигон комментария
+                    // Рисуем прямоугольник
+                    p.addPoint(m_objects.get(j).x, m_objects.get(j).y);
+                    p.addPoint(m_objects.get(j).x + 120, m_objects.get(j).y);
+                    p.addPoint(m_objects.get(j).x + 120, m_objects.get(j).y + 50);
+                    p.addPoint(m_objects.get(j).x, m_objects.get(j).y + 50);
+                    if (m_objects.get(j).m_isSelected)   // Если выбрали - заливаем желтым
+                        g2.setColor(Color.getHSBColor(105, 215, 245));
+                    else                // Иначе, заливаем полигон голубоватым цветом
+                        g2.setColor(Color.getHSBColor(205, 235, 245));
+                    g2.fillPolygon(p);
+                    if (m_objects.get(j).m_isSelected)   // Рисуем границы полигона красным цветом
+                        g2.setColor(Color.red);
+                    else                // Рисуем границы полигона черным цветом
+                        g2.setColor(Color.black);
+                    g2.drawPolygon(p);
+                }
+                g2.setStroke(new BasicStroke(1));
+       
+        if (((UILifeLine)m_objects.get(j)).m_isEnded){
+            g2.drawLine(m_objects.get(j).x+40, m_objects.get(j).h-40, m_objects.get(j).x+80, m_objects.get(j).h);
+            g2.drawLine(m_objects.get(j).x+40, m_objects.get(j).h, m_objects.get(j).x+80, m_objects.get(j).h-40);
+        }
+                 
+        g2.setStroke(new BasicStroke(1.0f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,
+                1.0f,new float[]{8.0f,4.0f},0.0f));
+        
+        if (m_objects.get(j).m_isSelected)   // Рисуем границы полигона красным цветом
+            g2.setColor(Color.red);
+        else                // Рисуем границы полигона черным цветом
+            g2.setColor(Color.black);
+                
+        g2.drawLine(m_objects.get(j).x+60, m_objects.get(j).y+50, m_objects.get(j).x+60, m_objects.get(j).h-20);
+        
+        ((UILifeLine)m_objects.get(j)).getLength();
+        // Разбиваем текст на массив символов
+        char [] drawedText = m_objects.get(j).m_text.toCharArray();
+        char [] dots = {'.','.','.'};
+        
+        g2.drawChars(drawedText, 0, java.lang.Math.min(13, m_objects.get(j).m_text.length()),
+                ((UILifeLine)m_objects.get(j)).m_textCoordX, ((UILifeLine)m_objects.get(j)).m_textCoordY);
+        
+        if (m_objects.get(j).m_text.length() >= 14)
+            g2.drawChars(dots, 0, 3, ((UILifeLine)m_objects.get(j)).m_textCoordX+90,
+                    ((UILifeLine)m_objects.get(j)).m_textCoordY);
+
+        // Рисуем кружок для изменения размера
+        if (m_objects.get(j).m_isSelected){
+            g2.setStroke(new BasicStroke(1));
+            g2.drawOval(m_objects.get(j).x +57, m_objects.get(j).h-23, 6, 6);
+        }
+        }
+        ////////////
+        if (m_objects.get(j).getClass() == UICreateMessage.class)
+        {
+           m_objects.get(j).x = ((UIMessage)m_objects.get(j)).m_sender.x+60;             // Начальная точка
+        endX = ((UIMessage)m_objects.get(j)).m_receiver.x;            // Конечная точка
+        m_objects.get(j).h = 45;                        // Высота объекта
+        m_objects.get(j).w = endX - m_objects.get(j).x;         // Длина объекта
+        
+        if (m_objects.get(j).m_isSelected)
+            g2.setColor(Color.red);        // Исходный цвет
+        else
+            g2.setColor(Color.black);        // Цвет при выделении       
+        
+        g2.setStroke(new BasicStroke(2));   // Берем линию потолще      
+
+        if (((UIMessage)m_objects.get(j)).m_sender.x+60 < ((UIMessage)m_objects.get(j)).m_receiver.x){
+            endX = ((UIMessage)m_objects.get(j)).m_receiver.x;
+            g2.drawLine(m_objects.get(j).x, m_objects.get(j).y, endX, m_objects.get(j).y);        // Рисуем линию сообщения
+            
+            g2.drawLine(endX, m_objects.get(j).y, endX-7, m_objects.get(j).y+5);
+            g2.drawLine(endX, m_objects.get(j).y, endX-7, m_objects.get(j).y-5);
+        } 
+        else if (((UIMessage)m_objects.get(j)).m_sender.x+60 >  ((UIMessage)m_objects.get(j)).m_receiver.x + 120){
+            endX = ((UIMessage)m_objects.get(j)).m_receiver.x+120;
+            g2.drawLine(m_objects.get(j).x, m_objects.get(j).y, endX, m_objects.get(j).y);        // Рисуем линию сообщения
+            g2.drawLine(endX, m_objects.get(j).y, endX+7, m_objects.get(j).y+5);
+            g2.drawLine(endX, m_objects.get(j).y, endX+7, m_objects.get(j).y-5);
+            
+        }
+        
+         ((UIMessage)m_objects.get(j)).m_focusReceiver.paint(g2);
+       ((UIMessage)m_objects.get(j)).m_focusSender.paint(g2);
+        
+       if (m_objects.get(j).m_isSelected)
+            g2.setColor(Color.red);        // Исходный цвет
+        else
+            g2.setColor(Color.black);        // Цвет при выделении
+            
+        // Разбиваем текст на массив символов
+        char [] drawedText = ((UIMessage)m_objects.get(j)).m_text.toCharArray();
+        char [] dots = {'.','.','.'};
+        
+        if (((UIMessage)m_objects.get(j)).m_sender.x <= ((UIMessage)m_objects.get(j)).m_receiver.x){
+            setBounds(((UIMessage)m_objects.get(j)).m_sender.x+60,
+                    m_objects.get(j).y-m_objects.get(j).h,
+                    ((UIMessage)m_objects.get(j)).m_receiver.x-((UIMessage)m_objects.get(j)).m_sender.x, m_objects.get(j).h); // Задаем границы
+            
+            textX= m_objects.get(j).x + (endX - ((UIMessage)m_objects.get(j)).m_sender.x)/2 - 60;
+        }
+        else{
+            setBounds(((UIMessage)m_objects.get(j)).m_receiver.x+60,
+                    m_objects.get(j).y-m_objects.get(j).h,
+                    ((UIMessage)m_objects.get(j)).m_sender.x-((UIMessage)m_objects.get(j)).m_receiver.x, m_objects.get(j).h); // Задаем границы
+            
+            textX= ((UIMessage)m_objects.get(j)).m_receiver.x + (((UIMessage)m_objects.get(j)).m_sender.x - ((UIMessage)m_objects.get(j)).m_receiver.x)/2+50;
+        }
+        
+        g2.drawChars(drawedText, 0, java.lang.Math.min(13,
+                ((UIMessage)m_objects.get(j)).m_text.length()), textX, m_objects.get(j).y-10);
+        
+        
+        
+        buf = "<<create>>";
+        drawedText = buf.toCharArray();
+
+        g2.drawChars(drawedText, 0, buf.length(), textX, m_objects.get(j).y-22);
+  
+        if (((UIMessage)m_objects.get(j)).m_text.length() >= 14)
+            g2.drawChars(dots, 0, 3, textX+85, m_objects.get(j).y-10);
+        
+        if (m_objects.get(j).m_isSelected){
+            g2.setStroke(new BasicStroke(1));
+            g2.drawRect(textX-10, m_objects.get(j).y-m_objects.get(j).h+10, 110, m_objects.get(j).h-5);
+        }
+        }
+        
+        //////////////
+        if (m_objects.get(j).getClass() == UISimpleMessage.class)
+        {
+        endX = ((UIMessage)m_objects.get(j)).m_receiver.x+60;         // Конечная точка
+        m_objects.get(j).x = ((UIMessage)m_objects.get(j)).m_sender.x+60;             // Начальная точка
+        m_objects.get(j).h =45;                        // Высота объекта
+        m_objects.get(j).w = endX - ((UIMessage)m_objects.get(j)).m_sender.x;         // Длина объекта
+        
+        if (m_objects.get(j).m_isSelected)
+            g2.setColor(Color.red);        // Исходный цвет
+        else
+            g2.setColor(Color.black);        // Цвет при выделении
+        
+        g2.setStroke(new BasicStroke(2));   // Берем линию потолще
+        
+        m_objects.get(j).y-=5;
+        
+        g2.drawLine(m_objects.get(j).x, m_objects.get(j).y, m_objects.get(j).x+m_objects.get(j).w-60, m_objects.get(j).y);        // Рисуем линию сообщения
+        
+        // Рисуем стрелку в зависимости от расположения линии жизни
+        if (m_objects.get(j).x < endX){
+            endX = ((UIMessage)m_objects.get(j)).m_receiver.x+60;
+            g2.drawLine(endX, m_objects.get(j).y, endX-7, m_objects.get(j).y+5);
+            g2.drawLine(endX, m_objects.get(j).y, endX-7, m_objects.get(j).y-5);
+        }
+        else{
+            g2.drawLine(endX, m_objects.get(j).y, endX+7, m_objects.get(j).y+5);
+            g2.drawLine(endX, m_objects.get(j).y, endX+7, m_objects.get(j).y-5);
+        }
+        m_objects.get(j).y+=5;
+        ((UIMessage)m_objects.get(j)).m_focusReceiver.paint(g2);
+        ((UIMessage)m_objects.get(j)).m_focusSender.paint(g2);
+        
+        // Разбиваем текст на массив символов
+        char [] drawedText = ((UIMessage)m_objects.get(j)).m_text.toCharArray();
+        char [] dots = {'.','.','.'};
+        
+        if (((UIMessage)m_objects.get(j)).m_sender.x <= ((UIMessage)m_objects.get(j)).m_receiver.x){
+            setBounds(((UIMessage)m_objects.get(j)).m_sender.x+60, 
+                    m_objects.get(j).y-m_objects.get(j).h,
+                    ((UIMessage)m_objects.get(j)).m_receiver.x
+                    -((UIMessage)m_objects.get(j)).m_sender.x, m_objects.get(j).h); // Задаем границы
+            
+            textX= m_objects.get(j).x + (endX - ((UIMessage)m_objects.get(j)).m_sender.x)/2 - 60;
+        }
+        else{
+            setBounds(((UIMessage)m_objects.get(j)).m_receiver.x+60,
+                    m_objects.get(j).y-m_objects.get(j).h,
+                    ((UIMessage)m_objects.get(j)).m_sender.x-
+                    ((UIMessage)m_objects.get(j)).m_receiver.x, m_objects.get(j).h); // Задаем границы
+            
+            textX= ((UIMessage)m_objects.get(j)).m_receiver.x + (((UIMessage)m_objects.get(j)).m_sender.x - ((UIMessage)m_objects.get(j)).m_receiver.x)/2;
+        }
+        
+        g2.drawChars(drawedText, 0, java.lang.Math.min(13, ((UIMessage)m_objects.get(j)).m_text.length()), textX, m_objects.get(j).y-10);
+        
+        
+                    
+        if (((UIMessage)m_objects.get(j)).m_text.length() >= 14)
+            g2.drawChars(dots, 0, 3, textX+85, m_objects.get(j).y-10);
+        
+        if (m_objects.get(j).m_isSelected){
+            g2.setStroke(new BasicStroke(1));
+            g2.setColor(Color.red);
+            g2.drawRect(textX-10, m_objects.get(j).y-m_objects.get(j).h+10, 110, m_objects.get(j).h-5);
+        }
+               
+        }
+        
+        /////////////////////
+         if (m_objects.get(j).getClass() == UIAsynchronousMessage.class)
+         {
+             endX = ((UIAsynchronousMessage)m_objects.get(j)).m_receiver.x+60;         // Конечная точка
+        m_objects.get(j).x = ((UIAsynchronousMessage)m_objects.get(j)).m_sender.x+60;             // Начальная точка
+        m_objects.get(j).h =45;                        // Высота объекта
+        m_objects.get(j).w = endX - ((UIAsynchronousMessage)m_objects.get(j)).m_sender.x;         // Длина объекта
+
+        
+        if (m_objects.get(j).m_isSelected)
+            g2.setColor(Color.red);        // Исходный цвет
+        else
+            g2.setColor(Color.black);        // Цвет при выделении
+        
+        g2.setStroke(new BasicStroke(2));   // Берем линию потолще
+        
+        m_objects.get(j).y-=5;
+         
+        g2.drawLine(m_objects.get(j).x, m_objects.get(j).y, m_objects.get(j).x+m_objects.get(j).w-60, m_objects.get(j).y);        // Рисуем линию сообщения
+        
+       
+        // Рисуем стрелку в зависимости от расположения линии жизни
+        if (m_objects.get(j).x < endX){
+            endX = ((UIAsynchronousMessage)m_objects.get(j)).m_receiver.x+60;
+            g2.drawLine(endX, m_objects.get(j).y, endX-7, m_objects.get(j).y+5);
+            g2.drawLine(endX, m_objects.get(j).y, endX-7, m_objects.get(j).y-5);
+        }
+        else{
+            g2.drawLine(endX, m_objects.get(j).y, endX+7, m_objects.get(j).y+5);
+            g2.drawLine(endX, m_objects.get(j).y, endX+7, m_objects.get(j).y-5);
+        }
+        m_objects.get(j).y+=5;
+        ((UIAsynchronousMessage)m_objects.get(j)).m_focusReceiver.paint(g2);
+        ((UIAsynchronousMessage)m_objects.get(j)).m_focusSender.paint(g2);
+        
+        if (m_objects.get(j).m_isSelected)
+            g2.setColor(Color.red);        // Исходный цвет
+        else
+            g2.setColor(Color.black);        // Цвет при выделении
+        
+        // Разбиваем текст на массив символов
+        char [] drawedText = ((UIAsynchronousMessage)m_objects.get(j)).m_text.toCharArray();
+        char [] dots = {'.','.','.'};
+        
+        if (((UIAsynchronousMessage)m_objects.get(j)).m_sender.x <= ((UIAsynchronousMessage)m_objects.get(j)).m_receiver.x){
+            setBounds(((UIAsynchronousMessage)m_objects.get(j)).m_sender.x+60,
+                    m_objects.get(j).y-m_objects.get(j).h,
+                    ((UIAsynchronousMessage)m_objects.get(j)).m_receiver.x-((UIAsynchronousMessage)m_objects.get(j)).m_sender.x, m_objects.get(j).h); // Задаем границы
+            
+            textX= m_objects.get(j).x + (endX - ((UIAsynchronousMessage)m_objects.get(j)).m_sender.x)/2 - 60;
+        }
+        else{
+            setBounds(((UIAsynchronousMessage)m_objects.get(j)).m_receiver.x+60,
+                    m_objects.get(j).y-m_objects.get(j).h,
+                    ((UIAsynchronousMessage)m_objects.get(j)).m_sender.x-((UIAsynchronousMessage)m_objects.get(j)).m_receiver.x, m_objects.get(j).h); // Задаем границы
+            
+            textX= ((UIAsynchronousMessage)m_objects.get(j)).m_receiver.x
+                    + (((UIAsynchronousMessage)m_objects.get(j)).m_sender.x - ((UIAsynchronousMessage)m_objects.get(j)).m_receiver.x)/2;
+        }
+        
+        g2.drawChars(drawedText, 0, java.lang.Math.min(13, ((UIAsynchronousMessage)m_objects.get(j)).m_text.length()), textX, m_objects.get(j).y-10);
+        
+        
+               
+        buf = "<<asyncronous>>";
+        drawedText = buf.toCharArray();
+
+        g2.drawChars(drawedText, 0, buf.length(), textX, m_objects.get(j).y-22);
+        
+        if (((UIAsynchronousMessage)m_objects.get(j)).m_text.length() >= 14)
+            g2.drawChars(dots, 0, 3, textX+85, m_objects.get(j).y-10);
+        
+        if (m_objects.get(j).m_isSelected){
+            g2.setStroke(new BasicStroke(1));
+            g2.drawRect(textX-10, m_objects.get(j).y-m_objects.get(j).h+10, 110, m_objects.get(j).h-5);
+        }
+         }
+         
+         //////////////////////
+          if (m_objects.get(j).getClass() == UIDestroyMessage.class)
+          {
+              m_objects.get(j).x = ((UIDestroyMessage)m_objects.get(j)).m_sender.x+60;             // Начальная точка
+        endX = ((UIDestroyMessage)m_objects.get(j)).m_receiver.x+60;            // Конечная точка
+        m_objects.get(j).h = 45;                        // Высота объекта
+        m_objects.get(j).w = endX - m_objects.get(j).x;         // Длина объекта
+                
+        if (m_objects.get(j).m_isSelected)
+            g2.setColor(Color.red);        // Исходный цвет
+        else
+            g2.setColor(Color.black);        // Цвет при выделении         
+
+        g2.setStroke(new BasicStroke(2));   // Берем линию потолще   
+        
+        m_objects.get(j).y-=5;
+        
+        g2.drawLine(m_objects.get(j).x, m_objects.get(j).y, endX, m_objects.get(j).y);        // Рисуем линию сообщения
+
+        if (m_objects.get(j).x < endX){
+            g2.drawLine(endX, m_objects.get(j).y, endX-7, m_objects.get(j).y+5);
+            g2.drawLine(endX, m_objects.get(j).y, endX-7, m_objects.get(j).y-5);
+        }
+        else{
+            g2.drawLine(endX, m_objects.get(j).y, endX+7, m_objects.get(j).y+5);
+            g2.drawLine(endX, m_objects.get(j).y, endX+7, m_objects.get(j).y-5);
+        }
+        m_objects.get(j).y+=5;
+                
+        ((UIDestroyMessage)m_objects.get(j)).m_focusReceiver.paint(g2);
+        ((UIDestroyMessage)m_objects.get(j)).m_focusSender.paint(g2);
+                
+        
+        if (m_objects.get(j).m_isSelected)
+            g2.setColor(Color.red);        // Исходный цвет
+        else
+            g2.setColor(Color.black);        // Цвет при выделении
+        
+        // Разбиваем текст на массив символов
+        char [] drawedText = ((UIDestroyMessage)m_objects.get(j)).m_text.toCharArray();
+        char [] dots = {'.','.','.'};
+        
+        if (((UIDestroyMessage)m_objects.get(j)).m_sender.x <= ((UIDestroyMessage)m_objects.get(j)).m_receiver.x){
+            setBounds(((UIDestroyMessage)m_objects.get(j)).m_sender.x+60,
+                    m_objects.get(j).y-m_objects.get(j).h,
+                    ((UIDestroyMessage)m_objects.get(j)).m_receiver.x-((UIDestroyMessage)m_objects.get(j)).m_sender.x, m_objects.get(j).h); // Задаем границы
+            
+            textX= m_objects.get(j).x + (endX - ((UIDestroyMessage)m_objects.get(j)).m_sender.x)/2 - 60;
+        }
+        else{
+            setBounds(((UIDestroyMessage)m_objects.get(j)).m_receiver.x+60,
+                    m_objects.get(j).y-m_objects.get(j).h,
+                    ((UIDestroyMessage)m_objects.get(j)).m_sender.x-((UIDestroyMessage)m_objects.get(j)).m_receiver.x, m_objects.get(j).h); // Задаем границы
+            
+            textX= ((UIDestroyMessage)m_objects.get(j)).m_receiver.x + (((UIDestroyMessage)m_objects.get(j)).m_sender.x - ((UIDestroyMessage)m_objects.get(j)).m_receiver.x)/2+50;
+        }
+        
+        g2.drawChars(drawedText, 0, java.lang.Math.min(13, ((UIDestroyMessage)m_objects.get(j)).m_text.length()), textX, m_objects.get(j).y-10);
+        
+       
+        
+        buf = "<<destroy>>";
+        drawedText = buf.toCharArray();
+
+        g2.drawChars(drawedText, 0, buf.length(), textX, m_objects.get(j).y-22);
+  
+        if (((UIDestroyMessage)m_objects.get(j)).m_text.length() >= 14)
+            g2.drawChars(dots, 0, 3, textX+85, m_objects.get(j).y-10);
+        
+        if (m_objects.get(j).m_isSelected){
+            g2.setStroke(new BasicStroke(1));
+            g2.drawRect(textX-10, m_objects.get(j).y-m_objects.get(j).h+10, 110, m_objects.get(j).h-5);
+        }
+        
+          }
+          
+          //////////////////////
+           if (m_objects.get(j).getClass() == UIReplyMessage.class)
+           {
+               endX = ((UIReplyMessage)m_objects.get(j)).parentMessage.m_receiver.x+60;         // Конечная точка
+        m_objects.get(j).x = ((UIReplyMessage)m_objects.get(j)).parentMessage.m_sender.x+60;             // Начальная точка
+        m_objects.get(j).h =45;                        // Высота объекта
+        m_objects.get(j).y = ((UIReplyMessage)m_objects.get(j)).parentMessage.m_focusReceiver.y+((UIReplyMessage)m_objects.get(j)).parentMessage.m_focusReceiver.h;
+        m_objects.get(j).w = endX - ((UIReplyMessage)m_objects.get(j)).parentMessage.m_sender.x;         // Длина объекта
+        
+        if (m_objects.get(j).m_isSelected)
+            g2.setColor(Color.red);        // Исходный цвет
+        else
+            g2.setColor(Color.black);        // Цвет при выделении
+        
+        g2.setStroke(new BasicStroke(2.0f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,
+                1.0f,new float[]{8.0f,4.0f},0.0f));
+            
+        m_objects.get(j).y+=5;
+        
+        g2.drawLine(m_objects.get(j).x, m_objects.get(j).y, m_objects.get(j).x+m_objects.get(j).w-60, m_objects.get(j).y);        // Рисуем линию сообщения
+        
+        // Рисуем стрелку в зависимости от расположения линии жизни
+        if (m_objects.get(j).x > endX){
+            g2.drawLine(m_objects.get(j).x, m_objects.get(j).y, m_objects.get(j).x-7, m_objects.get(j).y+5);
+            g2.drawLine(m_objects.get(j).x, m_objects.get(j).y, m_objects.get(j).x-7, m_objects.get(j).y-5);
+        }
+        else{
+            g2.drawLine(m_objects.get(j).x, m_objects.get(j).y, m_objects.get(j).x+7, m_objects.get(j).y+5);
+            g2.drawLine(m_objects.get(j).x, m_objects.get(j).y, m_objects.get(j).x+7, m_objects.get(j).y-5);
+        }
+        
+        m_objects.get(j).y-=5;
+           }
+    }
+    
+    g2.dispose();
+    return bufferedImage;
+    }
+    
+    public void saveasimage (File file) throws ParserConfigurationException, SAXException, IOException {
+        RenderedImage rendImage= myCreateImage();
+        
+        //try {
+        // Save as PNG   
+        ImageIO.write(rendImage, "png", file);
+        
+         //} catch (IOException e) {}
     }
 }
