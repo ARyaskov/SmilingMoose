@@ -46,7 +46,7 @@ public final class BBJ {
     /**
      * Имя файла, в который ведется сохранение.
      */
-    private boolean m_hasModifications;
+    public boolean m_hasModifications;
     /**
      * Флаг появления изменений с момента последнего сохранения.
      */

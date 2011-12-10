@@ -552,6 +552,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         }
         dtde.dropComplete(true);
         repaint();
+        BBJ.app.m_hasModifications = true;
     }
 
     class MouseSlot implements MouseListener, MouseMotionListener {
@@ -689,6 +690,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         this.m_model.clear();
         this.updateLocalnumbers();
         this.repaint();
+        BBJ.app.m_hasModifications = true;
     }
 
     /**
@@ -698,6 +700,7 @@ public final class Scene extends JPanel implements DropTargetListener {
      */
     public void save(String filename) throws ParserConfigurationException, SAXException, IOException, TransformerConfigurationException, TransformerException {
         m_model.save(filename);
+        BBJ.app.m_hasModifications = false;
     }
 
     /**
@@ -774,6 +777,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         }
 
         repaint();
+        BBJ.app.m_hasModifications = false;
     }
 
     /**
@@ -830,6 +834,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         this.add(sm);
         m_objects.add(sm);
         repaint();
+        BBJ.app.m_hasModifications = true;
     }
     
     /**
@@ -880,6 +885,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         this.add(sm);
         m_objects.add(sm);
         repaint();
+        BBJ.app.m_hasModifications = true;
     }
     
     /**
@@ -930,6 +936,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         this.add(sm);
         m_objects.add(sm);
         repaint();
+        BBJ.app.m_hasModifications = true;
     }
     
     /**
@@ -980,5 +987,6 @@ public final class Scene extends JPanel implements DropTargetListener {
         this.add(sm);
         m_objects.add(sm);
         repaint();
+        BBJ.app.m_hasModifications = true;
     }
 }

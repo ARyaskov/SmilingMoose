@@ -197,6 +197,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
                 }
             }
         }
+        BBJ.app.m_hasModifications = true;
     }
 
     /**
@@ -338,6 +339,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
                 line.setBounds(line.x, line.y, line.w, line.h);
             }
         }
+        BBJ.app.m_hasModifications = true;
     }
 
     @Override
