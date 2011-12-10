@@ -235,6 +235,7 @@ public class LifeLine extends UMLObject {
         element.setAttribute("is-created", Boolean.toString(m_isCreated));
         element.setAttribute("is-destroyed", Boolean.toString(m_isDestroyed));
         element.setAttribute("index", Integer.toString(m_index));
+        element.setAttribute("draw", Integer.toString(m_style));
         
         return element;
     }
@@ -285,6 +286,10 @@ public class LifeLine extends UMLObject {
         attr = attributes.getNamedItem("name");
         buffer = attr.getNodeValue();
         m_name = buffer;
+        // Считывание стиля отрисовки лж.
+        attr = attributes.getNamedItem("draw");
+        buffer = attr.getNodeValue();
+        m_style = Integer.parseInt(buffer);
     }
     
     /**

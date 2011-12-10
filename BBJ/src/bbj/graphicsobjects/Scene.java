@@ -482,6 +482,7 @@ public final class Scene extends JPanel implements DropTargetListener {
                 ll.setCoordinates(item.getCoordinates());
                 ll.setId(globalId++);
                 ll.setName(item.getText());
+                ll.setDrawStyle(1);
                 m_model.addObject(ll);
                 item.id = ll.getId();
             } else if ("Actor".equals(data)) {
@@ -490,6 +491,7 @@ public final class Scene extends JPanel implements DropTargetListener {
                 ll.setCoordinates(item.getCoordinates());
                 ll.setId(globalId++);
                 ll.setName(item.getText());
+                ll.setDrawStyle(2);
                 m_model.addObject(ll);
                 item.id = ll.getId();
             } else if ("Comment".equals(data)) {
@@ -679,7 +681,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         m_model.load(filename);
 
         for (int i = 0; i < m_model.size(); i++) {
-            if (m_model.getObject(i).getClass() == LifeLine.class) {
+            if (m_model.getObject(i).getClass() == LifeLine.class && ((LifeLine)m_model.getObject(i)).getDrawStyle() == 1) {
                 UIRectLifeLine ll = new UIRectLifeLine((int) m_model.getObject(i).getCoordinates().getX(),
                         (int) m_model.getObject(i).getCoordinates().getY());
                 ll.setText(((LifeLine) m_model.getObject(i)).getName());
@@ -711,6 +713,14 @@ public final class Scene extends JPanel implements DropTargetListener {
 
                 m_objects.add(sm);
                 this.add(sm);
+            } else if (m_model.getObject(i).getClass() == LifeLine.class && ((LifeLine)m_model.getObject(i)).getDrawStyle() == 2) {
+                UIActorLifeLine ll = new UIActorLifeLine((int) m_model.getObject(i).getCoordinates().getX(),
+                        (int) m_model.getObject(i).getCoordinates().getY());
+                ll.setText(((LifeLine) m_model.getObject(i)).getName());
+                ll.id = m_model.getObject(i).getId();
+
+                m_objects.add(ll);
+                this.add(ll);
             }
         }
 
