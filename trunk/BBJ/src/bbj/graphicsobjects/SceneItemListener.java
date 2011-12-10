@@ -421,7 +421,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
     @Override
     public void mouseReleased(MouseEvent e) {
         
-        if (m_dragHappened && m_curItem!=null){
+        if (false){//fail
              m_moveEdit = new MoveObjectEdit(BBJ.app.getScene(),
                 m_curItem,
                 m_startUndoRedo,
