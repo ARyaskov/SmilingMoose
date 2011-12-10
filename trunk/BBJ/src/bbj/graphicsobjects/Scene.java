@@ -161,13 +161,7 @@ public final class Scene extends JPanel implements DropTargetListener {
 
         this.addMouseMotionListener(new MouseSlot());
 
-
-       // UIFreeComment testCommentChecked = new UIFreeComment(150, 200);
-
         // Добавляем тестовые объекты в контейнер       
-
-        //UIFreeComment testCommentChecked1 = new UIFreeComment(333, 333);
-
 
         UIRectLifeLine ll = new UIRectLifeLine(470, 111);
 
@@ -181,7 +175,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         this.add(m);
         this.add(ll);
         this.add(al);
-         this.add(m1);
+        this.add(m1);
 
         // Добавляем тестовые объекты в контейнер
         m_objects.add(m);
