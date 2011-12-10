@@ -224,8 +224,8 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
         
         // проверка на столкновения с UI-панелями
             Rectangle rect = BBJ.app.getScene().getUIPanelsRectangle();
-            Rectangle rect2 = new Rectangle(0,0,scene.getWidth(),scene.getHeight());
-            if (rect2.contains(m_endX, m_endY)) {
+            //Rectangle rect2 = new Rectangle(0,0,scene.getWidth(),scene.getHeight());
+            if (rect.contains(m_endX, m_endY)) {
 
                 m_selectedItem.x = rect.x + rect.width + 2;
                 m_selectedItem.y = rect.y + rect.height + 2;
