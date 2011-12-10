@@ -171,29 +171,23 @@ public final class Scene extends JPanel implements DropTargetListener {
 
         UIRectLifeLine ll = new UIRectLifeLine(470, 111);
 
-
-
-
         UIActorLifeLine al = new UIActorLifeLine(400, 333);
 
         UISimpleMessage m = new UISimpleMessage(ll, al, 215);
-
-
-
+        
+        UICreateMessage m1 = new UICreateMessage(al,ll,150);
 
         ll.setEnded(true);
         this.add(m);
         this.add(ll);
-       // this.add(testCommentChecked1);
-        //this.add(testCommentChecked);
         this.add(al);
+         this.add(m1);
 
         // Добавляем тестовые объекты в контейнер
         m_objects.add(m);
         m_objects.add(ll);
-       // m_objects.add(testCommentChecked);
-       // m_objects.add(testCommentChecked1);
         m_objects.add(al);
+        m_objects.add(m1);
 
 
         // Создаем сцене особого слушателя

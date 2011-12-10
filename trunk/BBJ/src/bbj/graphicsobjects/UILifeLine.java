@@ -30,12 +30,18 @@ abstract public class UILifeLine extends SceneItem{
     public ArrayList<UIMessage>m_outbox;
     
     public int dotCoord;
+    
+    /** Длина ЛЖ*/
+    private int m_length;
+    
 
     protected void fillData(int x, int y) {
         this.x = x;
         this.y = 50;
         this.w = 120;
         this.h = 300;
+        
+        m_length = this.h-20 - this.y+50;
         
         setBounds(x, y, w, h);
         this.m_isEdit = false;
@@ -45,6 +51,22 @@ abstract public class UILifeLine extends SceneItem{
         
         m_outbox = new ArrayList<UIMessage>();
         
+    }
+    
+    /**
+     * Получить длину ЛЖ
+     * @return Длина ЛЖ
+     */
+    public int getLength(){
+        return m_length;
+    }
+    
+    /**
+     * Задать длину ЛЖ
+     * @param length Новая длина
+     */
+    public void setLength(int length){
+        m_length = length;
     }
     
     /**
@@ -100,6 +122,8 @@ abstract public class UILifeLine extends SceneItem{
             g2.setColor(Color.black);
                 
         g2.drawLine(x+60, y+50, x+60, this.h-20);
+        
+        m_length = this.h-20 - this.y+50;
         
         // Разбиваем текст на массив символов
         char [] drawedText = m_text.toCharArray();
