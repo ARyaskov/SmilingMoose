@@ -910,8 +910,7 @@ public final class BBJ {
                 
                 if (scaleCoef+0.1 <=2){
                     scaleCoef += 0.1;
-                    canvas.scaleScene(scaleCoef);
-                    canvas.updateUI();    
+                    canvas.scaleScene(scaleCoef);  
                 }
             }
             
@@ -925,10 +924,9 @@ public final class BBJ {
 
             public void mouseClicked(MouseEvent e) {
                 
-                if (scaleCoef-0.1 > 0){
+                if (scaleCoef-0.1 > 0.5){
                     scaleCoef -= 0.1;
-                    canvas.scaleScene(scaleCoef);
-                    canvas.updateUI();    
+                    canvas.scaleScene(scaleCoef);  
                 }
             }
             

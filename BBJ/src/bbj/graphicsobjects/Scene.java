@@ -257,6 +257,8 @@ public final class Scene extends JPanel implements DropTargetListener {
     
     public void scaleScene(float coef){
         SceneItem.setScaleCoef(coef);
+        setGridFactor((int)(20 * coef));
+        updateUI();  
     }
     
     @Override
@@ -264,6 +266,7 @@ public final class Scene extends JPanel implements DropTargetListener {
 
         super.setBackground(BBJ.app.m_background_color);
         Graphics2D g2 = (Graphics2D) g;
+
 
         g.setColor(Color.WHITE);
         
@@ -310,9 +313,8 @@ public final class Scene extends JPanel implements DropTargetListener {
         Iterator<SceneItem> i = m_objects.iterator();
 
         while (i.hasNext()) {
-            SceneItem qwe = i.next();
-            qwe.applyScale();
-            qwe.paint(g);
+            SceneItem buf = i.next();
+            buf.paint(g);
         }
 
         m_app.repaintSelectors();
@@ -562,9 +564,10 @@ public final class Scene extends JPanel implements DropTargetListener {
                 }
                 m_selectedObjects.clear();
                 m_objects.add(item);
-                this.add(item);
-                item.select(true);
-                m_selectedObjects.add(item);
+                
+                this.add(item,0);
+               // item.select(true);
+              //  m_selectedObjects.add(item);
             }
         } catch (UnsupportedFlavorException ex) {
             Logger.getLogger(Scene.class.getName()).log(Level.SEVERE, null, ex);
@@ -913,8 +916,13 @@ public final class Scene extends JPanel implements DropTargetListener {
 
         m_model.addObject(vsm);
 
-        this.add(sm);
+        this.add(sm,0);
+        this.add(sm.m_focusReceiver,0);
+        this.add(sm.m_focusSender,0);
+        
         m_objects.add(sm);
+        m_objects.add(sm.m_focusReceiver);
+        m_objects.add(sm.m_focusSender);
         repaint();
         BBJ.app.m_hasModifications = true;
     }

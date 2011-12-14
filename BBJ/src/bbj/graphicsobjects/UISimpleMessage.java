@@ -31,7 +31,10 @@ public class UISimpleMessage extends UIMessage {
         m_focusReceiver = new UIFocusControl(this, false);
         m_focusSender = new UIFocusControl(this, true);
         
-        this.y = y;
+        this.defY = y;
+        this.defH =45;                        // Высота объекта
+        
+        applyScale(getGraphics());
         
         setDefaultName();
         
@@ -55,8 +58,10 @@ public class UISimpleMessage extends UIMessage {
                 
         Graphics2D g2 = (Graphics2D)g;
         int endX = m_receiver.x+60;         // Конечная точка
+          
+        applyScale(getGraphics());
+        
         this.x = m_sender.x+60;             // Начальная точка
-        this.h =45;                        // Высота объекта
         this.w = endX - m_sender.x;         // Длина объекта
         
         if (m_isSelected)

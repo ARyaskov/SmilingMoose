@@ -32,10 +32,12 @@ public class UIFreeComment extends  SceneItem {
          
         setDefaultName();
         
-        this.x=x;
-        this.y=y;
-        w=120;
-        h=80;
+        this.defX=x;
+        this.defY=y;
+        defW=120;
+        defH=80;
+        
+        applyScale(getGraphics());
         
         // Задаем координаты и размеры
         this.setBounds(this.x,this.y,w,h);
@@ -58,6 +60,8 @@ public class UIFreeComment extends  SceneItem {
     public void paint(Graphics g) {
       
         super.paint(g);
+        
+        applyScale(g);
          
         Graphics2D g2 = (Graphics2D)g;
 
@@ -123,25 +127,25 @@ public class UIFreeComment extends  SceneItem {
         char [] drawedText = m_text.toCharArray();
         
         // Рисуем текст по 15 символов в строке
-        for(i=0; i< drawedText.length / 15 && i < 4; i++){
-            g.drawChars(drawedText, 0 + i * 15, 
-                        15, x + 5, 15 + i * 12 + y);
+        for(i=0; i< drawedText.length / 14 && i < 4; i++){
+            g.drawChars(drawedText, 0 + i * 14, 
+                        14, x + 5, 25 + i * (int)(12*m_SR) + y);
         }
         
         char [] dots = {'.','.','.'};
         
         if (i >= 4)
             g.drawChars(dots, 0, 3, 
-                        x + 5, 15 + i * 12 + y);
+                        x + 5, 18 + i * (int)(12*m_SR) + y);
         
         i++;
 
-        rem = drawedText.length % 15;   // Вычисляем остаток
+        rem = drawedText.length % 14;   // Вычисляем остаток
         
         // Если остаток есть, дорисовываем символы, которые остались
         if (rem != 0 )
             g.drawChars(drawedText, drawedText.length - rem, rem, 
-                        x + 5, 15 + i * 12 + y);
+                        x + 5, 18 + i * (int)(12*m_SR) + y);
         
         if (m_isEdit)
             f.repaint();
