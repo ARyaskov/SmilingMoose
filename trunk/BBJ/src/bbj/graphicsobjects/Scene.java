@@ -541,8 +541,11 @@ public final class Scene extends JPanel implements DropTargetListener {
                 m_model.addObject(fc);
             }
 
-
-            if (item != null) {
+            // Полуим область, где находятся менюхи
+            Rectangle rect = BBJ.app.getScene().getUIPanelsRectangle();
+            
+            // Проверим, что объекты не добавляются в область менюх
+            if (item != null && !rect.contains(item.x, item.y)) {
                 m_undoEdit = new AddToSceneEdit(this, item);
 
 	        m_app.getUndoSupport().postEdit(m_undoEdit);
