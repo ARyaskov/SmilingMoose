@@ -52,8 +52,8 @@ public class UIRectLifeLine extends UILifeLine {
     @Override
     public void specificPaint(Graphics g) {
         
-        m_textCoordX = x+10;
-        m_textCoordY = y+30;
+        m_textCoordX = x+zoom(10);
+        m_textCoordY = y+zoom(30);
         
         Polygon dark = new Polygon();   // Полигон тени
         
