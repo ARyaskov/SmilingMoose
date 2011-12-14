@@ -173,7 +173,7 @@ abstract public class UILifeLine extends SceneItem{
         g.drawChars(drawedText, 0, java.lang.Math.min(13, m_text.length()), m_textCoordX, m_textCoordY);
         
         if (m_text.length() >= 14)
-            g.drawChars(dots, 0, 3, m_textCoordX+90, m_textCoordY);
+            g.drawChars(dots, 0, 3, m_textCoordX+zoom(90), m_textCoordY);
 
         // Рисуем кружок для изменения размера
         if (m_isSelected){
