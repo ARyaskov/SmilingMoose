@@ -63,9 +63,9 @@ public class UIRectLifeLine extends UILifeLine {
 
         // Рисуем полигон
         dark.addPoint(x, y);
-        dark.addPoint(x + 120, y);
-        dark.addPoint(x + 120, y + 50);
-        dark.addPoint(x, y + 50);
+        dark.addPoint(x + zoom(120), y);
+        dark.addPoint(x + zoom(120), y + zoom(50));
+        dark.addPoint(x, y + zoom(50));
 
         // Возвращаем координаты обратно
         x-=10;
@@ -82,9 +82,9 @@ public class UIRectLifeLine extends UILifeLine {
 
         // Рисуем прямоугольник
         p.addPoint(x, y);
-        p.addPoint(x + 120, y);
-        p.addPoint(x + 120, y + 50);
-        p.addPoint(x, y + 50);
+        p.addPoint(x + zoom(120), y);
+        p.addPoint(x + zoom(120), y + zoom(50));
+        p.addPoint(x, y + zoom(50));
 
         if (m_isSelected)   // Если выбрали - заливаем желтым
             g.setColor(Color.getHSBColor(105, 215, 245));

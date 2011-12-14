@@ -67,9 +67,9 @@ public class UIActorLifeLine extends UILifeLine {
             Polygon p = new Polygon();          // Полигон комментария
 
             p.addPoint(x, y);
-            p.addPoint(x + 120, y);
-            p.addPoint(x + 120, y + 50);
-            p.addPoint(x, y + 50);
+            p.addPoint(x + (int)(120*SceneItem.m_SR), y);
+            p.addPoint(x + (int)(120*SceneItem.m_SR), y + (int)(50*SceneItem.m_SR));
+            p.addPoint(x, y + (int)(50*SceneItem.m_SR));
 
             g.drawPolygon(p);     
         }

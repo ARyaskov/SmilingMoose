@@ -149,7 +149,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
 
             // Проверим, что не вылезли за гграницы окна по Х
             m_endX = Math.max(m_endX, 0);
-            m_endX = Math.min(m_endX, m_selectedItem.getParent().getWidth() - m_selectedItem.w);
+            m_endX = Math.min(m_endX, m_selectedItem.getParent().getWidth() -m_selectedItem.w);
 
             m_endY = e.getYOnScreen() - m_startY;
 
@@ -159,7 +159,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
             m_endY = Math.min(m_endY, m_selectedItem.getParent().getHeight() - m_selectedItem.h);
 
             m_curItem = m_selectedItem;
-             m_startUndoRedo = new Point(m_startX, m_startY);
+              m_startUndoRedo = new Point(m_startX, m_startY);
              m_endUndoRedo = new Point(m_endX, m_endY);
             if (m_selectedItem.getClass().getSuperclass().getName().equals("bbj.graphicsobjects.UILifeLine")) {
                 m_endY = m_selectedItem.y;
@@ -256,8 +256,13 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
                         m_selectedItem.h = res;
                 }
                 else{
-                    m_selectedItem.x = m_endX;
-                    m_selectedItem.y = m_endY; 
+     
+                    m_selectedItem.defX = (int)(m_endX/SceneItem.m_SR);
+                    
+                    if (!m_selectedItem.getClass().getSuperclass().getName().equals("bbj.graphicsobjects.UILifeLine"))   
+                        m_selectedItem.defY = (int)(m_endY/SceneItem.m_SR); 
+                    else
+                        m_selectedItem.defY = m_endY;
                 }
 
             }
@@ -418,9 +423,9 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
             }
 
             if (isOk) {
-                line.h = newY + 70;
-                line.dotCoord = line.h;
-                line.setBounds(line.x, line.y, line.w, line.h);
+                line.defH = newY + 70;
+                line.dotCoord = line.defH;
+                //line.setBounds(line.x, line.y, line.w, line.h);
             }
         }
         BBJ.app.m_hasModifications = true;

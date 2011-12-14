@@ -17,6 +17,18 @@ abstract public class SceneItem extends JPanel {
     /** Коэфициент увеличения Scale Rate*/
     protected static float m_SR = 1;
     
+    // Обычная ширина объекта
+    protected int defW;
+    
+    // Обычная высота объекта
+    protected int defH;
+    
+    // Обычная ширина объекта
+    protected int defX;
+    
+    // Обычная высота объекта
+    protected int defY;
+    
     /* Поля класса. */
     EditField f;
             
@@ -31,19 +43,35 @@ abstract public class SceneItem extends JPanel {
     
     /** Задать коэфициент увеличения */
     public static void setScaleCoef(float coef){
-        if (coef>0 && coef <=2){
+        if (coef>0.5 && coef <=2){
             m_SR = coef;
         }
     }
 
+    public int zoom(int buf){
+        return (int)(buf*SceneItem.m_SR);
+    }
+    
     /** Получить коэфициент увеличения */
     public static float getScale(){
         return m_SR;
     }
       
-    protected void applyScale(){
-        h *= m_SR;
-        w *= m_SR;
+    protected void applyScale(Graphics g){
+        
+        x = (int)(defX*m_SR);
+        
+        if (!this.getClass().getSuperclass().getName().equals("bbj.graphicsobjects.UILifeLine"))
+            y = (int)(defY*m_SR);
+        else
+            y = defY;
+        
+        h = (int)(defH*m_SR);
+        w = (int)(defW*m_SR);
+        
+        
+        if (g!=null)
+            g.setFont(new Font("monospaced", Font.PLAIN, (int)(14*m_SR)));
     }
             
     protected double zoom = BBJ.zoom;

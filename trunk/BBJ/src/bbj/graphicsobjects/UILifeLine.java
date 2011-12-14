@@ -35,6 +35,7 @@ abstract public class UILifeLine extends SceneItem{
     /** Длина ЛЖ*/
     private int m_length;
     
+    
     /** Внутреннее меню. */
     PopupMenu m_menu;
     MenuItem m_stop;
@@ -68,11 +69,16 @@ abstract public class UILifeLine extends SceneItem{
     }
 
     protected void fillData(int x, int y) {
-        this.x = x;
-        this.y = 50;
-        this.w = 120;
-        this.h = 300;
+        this.defX = x;
+        this.defY = 50;
+        //this.w = 120;
+        //this.h = 300;
+
+        defW=120;
+        defH=300;
         
+        applyScale(getGraphics());
+               
         m_length = this.h-20 - this.y+50;
         
         setBounds(x, y, w, h);
@@ -99,7 +105,7 @@ abstract public class UILifeLine extends SceneItem{
      */
     public void setLength(int length){
         m_length = length;
-        this.h = m_length +20 - this.y+50;
+        this.defH = m_length +20 - this.y+50;
     }
     
     /**
@@ -126,6 +132,8 @@ abstract public class UILifeLine extends SceneItem{
     public void paint(Graphics g){
           
         super.paint(g);
+        
+        applyScale(g);
         
         Graphics2D g2 = (Graphics2D)g;
     
@@ -154,7 +162,7 @@ abstract public class UILifeLine extends SceneItem{
         else                // Рисуем границы полигона черным цветом
             g2.setColor(Color.black);
                 
-        g2.drawLine(x+60, y+50, x+60, this.h-20);
+        g2.drawLine(x+zoom(60), y+zoom(50), x+zoom(60), this.h-20);
         
         m_length = this.h-20 - this.y+50;
         
@@ -170,7 +178,7 @@ abstract public class UILifeLine extends SceneItem{
         // Рисуем кружок для изменения размера
         if (m_isSelected){
             g2.setStroke(new BasicStroke(1));
-            g2.drawOval(x +57, this.h-23, 6, 6);
+            g2.drawOval(x +zoom(57), this.h-zoom(23), zoom(6), zoom(6));
         }
         
         if (m_isEdit) 
