@@ -255,15 +255,19 @@ public final class Scene extends JPanel implements DropTargetListener {
         m_objects = items;
     }
     
+    public void scaleScene(float coef){
+        SceneItem.setScaleCoef(coef);
+    }
+    
     @Override
     protected void paintComponent(Graphics g) {
 
         super.setBackground(BBJ.app.m_background_color);
         Graphics2D g2 = (Graphics2D) g;
 
-
-
         g.setColor(Color.WHITE);
+        
+      //  SceneItem.setScaleCoef(1.1f);
 
         m_scene_width = m_app.mainFrame.getWidth();
         m_scene_height = m_app.mainFrame.getHeight();
@@ -306,7 +310,9 @@ public final class Scene extends JPanel implements DropTargetListener {
         Iterator<SceneItem> i = m_objects.iterator();
 
         while (i.hasNext()) {
-            i.next().paint(g);
+            SceneItem qwe = i.next();
+            qwe.applyScale();
+            qwe.paint(g);
         }
 
         m_app.repaintSelectors();

@@ -103,6 +103,8 @@ public final class BBJ {
     public JButton delete_button;
     public JButton zoomin_button;
     public JButton zoomout_button;
+    
+    public float scaleCoef;
 
     public Scene getScene() {
         return canvas;
@@ -119,6 +121,7 @@ public final class BBJ {
         bindListeners();
         m_hasFile = false;
         m_hasModifications = false;
+        scaleCoef = 1;
 
     }
 
@@ -901,7 +904,39 @@ public final class BBJ {
         
         delete_button.addMouseListener(deleteButtonListener);
 
+        MouseAdapter zoomInButtonListener = new MouseAdapter() {
 
+            public void mouseClicked(MouseEvent e) {
+                
+                if (scaleCoef+0.1 <=2){
+                    scaleCoef += 0.1;
+                    canvas.scaleScene(scaleCoef);
+                    canvas.updateUI();    
+                }
+            }
+            
+
+        };
+    
+        zoomin_button.addMouseListener(zoomInButtonListener);
+        
+        
+        MouseAdapter zoomOutButtonListener = new MouseAdapter() {
+
+            public void mouseClicked(MouseEvent e) {
+                
+                if (scaleCoef-0.1 > 0){
+                    scaleCoef -= 0.1;
+                    canvas.scaleScene(scaleCoef);
+                    canvas.updateUI();    
+                }
+            }
+            
+
+        };
+    
+        zoomout_button.addMouseListener(zoomOutButtonListener);
+        
         // Тут цепляем слушателей к кнопкам
 
 
