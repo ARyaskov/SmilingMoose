@@ -14,8 +14,10 @@ import java.util.*;
  */
 abstract public class SceneItem extends JPanel {
 
-    /* Поля класса. */
+    /** Коэфициент увеличения Scale Rate*/
+    protected static float m_SR = 1;
     
+    /* Поля класса. */
     EditField f;
             
     /** Координата Х */
@@ -27,6 +29,23 @@ abstract public class SceneItem extends JPanel {
     /** Высота */
     protected int h;
     
+    /** Задать коэфициент увеличения */
+    public static void setScaleCoef(float coef){
+        if (coef>0 && coef <=2){
+            m_SR = coef;
+        }
+    }
+
+    /** Получить коэфициент увеличения */
+    public static float getScale(){
+        return m_SR;
+    }
+      
+    protected void applyScale(){
+        h *= m_SR;
+        w *= m_SR;
+    }
+            
     protected double zoom = BBJ.zoom;
     /** Флаг выбора объекта фокусом. */
     protected boolean m_isSelected;
