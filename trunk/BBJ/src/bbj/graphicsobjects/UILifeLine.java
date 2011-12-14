@@ -141,7 +141,7 @@ abstract public class UILifeLine extends SceneItem{
         
         this.setBounds(this.x,this.y,w+10,h-20);
         
-        dotCoord = this.y + h-20;
+        dotCoord = this.y + h-zoom(20);
         
 //        g2.setStroke(new BasicStroke(3.0f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,
 //                1.0f,new float[]{8.0f,6.0f},0.0f));
@@ -150,8 +150,8 @@ abstract public class UILifeLine extends SceneItem{
         g2.setStroke(new BasicStroke(1));
        
         if (m_isEnded){
-            g.drawLine(x+40, this.h-40, x+80, this.h);
-            g.drawLine(x+40, this.h, x+80, this.h-40);
+            g.drawLine(x+zoom(40), this.h-zoom(40), x+zoom(80), this.h);
+            g.drawLine(x+zoom(40), this.h, x+zoom(80), this.h-zoom(40));
         }
                  
         g2.setStroke(new BasicStroke(1.0f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,
@@ -164,7 +164,7 @@ abstract public class UILifeLine extends SceneItem{
                 
         g2.drawLine(x+zoom(60), y+zoom(50), x+zoom(60), this.h-20);
         
-        m_length = this.h-20 - this.y+50;
+        m_length = this.h-zoom(20) - this.y+zoom(50);
         
         // Разбиваем текст на массив символов
         char [] drawedText = m_text.toCharArray();
