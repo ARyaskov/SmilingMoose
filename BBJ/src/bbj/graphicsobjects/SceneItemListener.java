@@ -323,8 +323,8 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
 
                 }
 
-                endLine1 = m_selectedItem.h - 75;
-                endLine2 = m_selectedItem.h - 65;
+                endLine1 = m_selectedItem.h - m_selectedItem.zoom(75);
+                endLine2 = m_selectedItem.h - m_selectedItem.zoom(65);
 
                 m_selectedItem.select(true);  // Выделяем объект
 
@@ -342,8 +342,8 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
                 this.m_startX = x - m_selectedItem.x;
                 this.m_startY = y - m_selectedItem.y;
                 //SceneItemListener.currentSelectedItem.repaint();    // Перерисовываем
-                endLine1 = m_selectedItem.h - 25 - m_selectedItem.y;
-                endLine2 = m_selectedItem.h - 15 - m_selectedItem.y;
+                endLine1 = m_selectedItem.h - m_selectedItem.zoom(25) - m_selectedItem.y;
+                endLine2 = m_selectedItem.h - m_selectedItem.zoom(15) - m_selectedItem.y;
 
                 m_selectedItem.select(true);  // Выделяем объект
             } else {
@@ -423,7 +423,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
             }
 
             if (isOk) {
-                line.defH = newY + 70;
+                line.defH = newY + line.zoom(70);
                 line.dotCoord = line.defH;
                 //line.setBounds(line.x, line.y, line.w, line.h);
             }
