@@ -51,6 +51,19 @@ abstract public class UILifeLine extends SceneItem{
             buf = null;
         }
         
+        m_inbox.clear();
+        
+        i = m_outbox.iterator();
+        
+        while(i.hasNext()){
+            
+            UIMessage buf = i.next();
+            
+            bbj.BBJ.app.getScene().remove(buf);
+            bbj.BBJ.app.getScene().getGraphicsObjects().remove(buf);
+            buf = null;
+        }
+        
         m_outbox.clear();
     }
 

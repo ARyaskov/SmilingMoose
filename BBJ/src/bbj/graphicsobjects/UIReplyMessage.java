@@ -21,6 +21,10 @@ public class UIReplyMessage extends UIMessage {
     UIReplyMessage(UIMessage message){
             
        parentMessage = message;
+       m_receiver = parentMessage.m_receiver;
+       m_sender = parentMessage.m_sender;
+       m_receiver.m_outbox.add(this);
+              
        
     
         SceneItemListener listener = new SceneItemListener(this);
