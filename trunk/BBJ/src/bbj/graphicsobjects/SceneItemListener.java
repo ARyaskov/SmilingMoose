@@ -227,12 +227,17 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
         
         // проверка на столкновения с UI-панелями
             Rectangle rect = BBJ.app.getScene().getUIPanelsRectangle();
-            //Rectangle rect2 = new Rectangle(0,0,scene.getWidth(),scene.getHeight());
-            if (rect.contains(m_endX, m_endY)) {
 
-                m_selectedItem.x = rect.x + rect.width + 2;
-                m_selectedItem.y = rect.y + rect.height + 2;
-            } else {
+            // Проверяем, что объект не залез на менюшки и не даем ему залезть
+            if (rect.contains(m_endX, m_endY)){
+                if (m_endX <rect.x + rect.width + 5){
+                    m_endX = rect.x + rect.width + 5;
+                } 
+                if (m_endY < rect.y + rect.height + 5){
+                    m_endY = rect.y + rect.height + 5;
+                }
+            }
+            else {
 
                 
                 if (m_selectedItem.getClass().getName().equals("bbj.graphicsobjects.UIFocusControl" )){
