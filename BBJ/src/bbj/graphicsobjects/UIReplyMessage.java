@@ -24,9 +24,7 @@ public class UIReplyMessage extends UIMessage {
        m_receiver = parentMessage.m_receiver;
        m_sender = parentMessage.m_sender;
        m_receiver.m_outbox.add(this);
-              
-       
-    
+
         SceneItemListener listener = new SceneItemListener(this);
 
         this.addMouseListener(listener);
