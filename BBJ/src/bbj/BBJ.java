@@ -228,7 +228,7 @@ public final class BBJ {
 
 
         mainFrame.setTitle("Smiling Moose");
-        mainFrame.setSize(800, 600);
+        mainFrame.setSize(800, 800);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setMinimumSize(new Dimension(400, 400));
         mainFrame.setMaximumSize(new Dimension(2560, 1600));
@@ -240,15 +240,37 @@ public final class BBJ {
         m_messageSelector.setLocation(5, 55);
         m_entitySelector.setLocation(5, m_messageSelector.getY() + m_messageSelector.getHeight() + 10);
 
-        mainFrame.add(canvas);
+        //mainFrame.add(canvas);
 
         mainFrame.addWindowListener(new mainFrameWindowListener());
 
-       // JScrollPane scroll = new JScrollPane(canvas);
-      //  scroll.setViewportView(canvas);
+       
+        canvas.setPreferredSize(new Dimension(canvas.sideSize, canvas.sideSize));
+        
+        JScrollPane scrollBar=new JScrollPane(canvas,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+       
+        scrollBar.getHorizontalScrollBar().addAdjustmentListener(new ScrollingListener(canvas));
+        scrollBar.getVerticalScrollBar().addAdjustmentListener(new ScrollingListener(canvas));
+        mainFrame.add(scrollBar);
+        
         mainFrame.setVisible(true);
 
 
+    }
+    
+    class ScrollingListener implements AdjustmentListener{
+
+        private Scene m_Scene;
+        
+        ScrollingListener(Scene s){
+            m_Scene = s;
+        }
+        @Override
+        public void adjustmentValueChanged(AdjustmentEvent e) {
+            m_Scene.updateUI();
+        }
+        
     }
 
     class mainFrameWindowListener implements ComponentListener, WindowListener {

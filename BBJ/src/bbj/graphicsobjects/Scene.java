@@ -85,6 +85,7 @@ public final class Scene extends JPanel implements DropTargetListener {
     protected PopupMenu m_menu;
     protected MenuItem m_clear;
     private AddToSceneEdit m_undoEdit;
+    public int sideSize;    // Сторона квадрата сцены
 
     /**
      * Метод получения глобального идентификатора.
@@ -155,6 +156,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         m_zoom = 1.0;
         m_selectionRect = new Rectangle();
         m_model.setScene(this);
+        sideSize = 800;
 
         this.setDoubleBuffered(true);
 
@@ -257,6 +259,8 @@ public final class Scene extends JPanel implements DropTargetListener {
     
     public void scaleScene(float coef){
         SceneItem.setScaleCoef(coef);
+        sideSize = ((int)(800 * coef));
+        this.setPreferredSize(new Dimension(sideSize, sideSize));
         setGridFactor((int)(20 * coef));
         updateUI();  
     }
@@ -447,12 +451,14 @@ public final class Scene extends JPanel implements DropTargetListener {
 
                 g.drawLine(m_entitySelector_x + m_entitySelector_width,
                         m_gridFactor * i,
-                        m_scene_width,
+                        //m_scene_width,
+                        java.lang.Math.max(sideSize,m_scene_width),
                         m_gridFactor * i); // Горизонтальные
             } else {//Рисуем на всю ширину
                 g.drawLine(0,
                         m_gridFactor * i,
-                        m_scene_width,
+                        //m_scene_width,
+                        java.lang.Math.max(sideSize,m_scene_width),
                         m_gridFactor * i); // Горизонтальные
             }
 
@@ -460,13 +466,15 @@ public final class Scene extends JPanel implements DropTargetListener {
                 g.drawLine(m_gridFactor * i,
                         m_entitySelector_y + m_entitySelector_height,
                         m_gridFactor * i,
-                        m_scene_height); // Вертикальные
+                        //m_scene_height); // Вертикальные
+                        java.lang.Math.max(sideSize,m_scene_height));
             } else {
                 g.drawLine(
                         m_gridFactor * i,
                         0,
                         m_gridFactor * i,
-                        m_scene_height); // Вертикальные 
+                        //m_scene_height); // Вертикальные 
+                         java.lang.Math.max(sideSize,m_scene_height));
             }
 
             //   if (getUIPanelsRectangle().getBounds().contains(i, m_gridFactor * i))
