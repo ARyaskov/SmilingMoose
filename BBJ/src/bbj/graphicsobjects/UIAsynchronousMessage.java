@@ -52,9 +52,7 @@ public class UIAsynchronousMessage extends UIMessage {
     public void paint(Graphics g) {
         
         super.paint(g);
-        
-        
-        
+
         Graphics2D g2 = (Graphics2D)g;
         int endX = m_receiver.x+60;         // Конечная точка
         this.defX = m_sender.x+60;             // Начальная точка
