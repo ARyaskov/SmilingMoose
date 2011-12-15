@@ -24,7 +24,7 @@ public class UIReplyMessage extends UIMessage {
        m_receiver = parentMessage.m_receiver;
        m_sender = parentMessage.m_sender;
        m_receiver.m_outbox.add(this);
-
+       
         SceneItemListener listener = new SceneItemListener(this);
 
         this.addMouseListener(listener);
@@ -39,10 +39,12 @@ public class UIReplyMessage extends UIMessage {
         
         Graphics2D g2 = (Graphics2D)g;
         int endX = parentMessage.m_receiver.x+60;         // Конечная точка
-        this.x = parentMessage.m_sender.x+60;             // Начальная точка
-        this.h =45;                        // Высота объекта
-        this.y = parentMessage.m_focusReceiver.y+parentMessage.m_focusReceiver.h;
-        this.w = endX - parentMessage.m_sender.x;         // Длина объекта
+        this.defX = parentMessage.m_sender.x+60;             // Начальная точка
+        this.defH =45;                        // Высота объекта
+        this.defY = parentMessage.m_focusReceiver.y+parentMessage.m_focusReceiver.h;
+        this.defW = endX - parentMessage.m_sender.x;         // Длина объекта
+        
+        applyScale(g);
         
         if (m_isSelected)
             g.setColor(Color.red);        // Исходный цвет
@@ -54,7 +56,7 @@ public class UIReplyMessage extends UIMessage {
             
         y+=5;
         
-        g.drawLine(x, y, x+w-60, y);        // Рисуем линию сообщения
+        g.drawLine(x, y, x+w-zoom(60), y);        // Рисуем линию сообщения
         
         // Рисуем стрелку в зависимости от расположения линии жизни
         if (x > endX){

@@ -401,11 +401,13 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
                    UIMessage buf = i.next();
                    
                     if (buf.getClass().getName().equals("bbj.graphicsobjects.UIDestroyMessage" )){
-                        if (newY <= buf.getY()+buf.getHeight()-10+buf.m_focusReceiver.h)
+                        if (buf.m_focusSender != null && (newY <= buf.getY()+buf.getHeight()-10+buf.m_focusSender.h
+                                || newY <= buf.getY()+buf.getHeight()-20+buf.m_focusReceiver.h))
                         isOk = false;
                     }
                     else
-                        if (newY <= buf.getY()+buf.getHeight()-50+buf.m_focusReceiver.h)
+                        if (buf.m_focusSender != null && (newY <= buf.getY()+buf.getHeight()-50+buf.m_focusSender.h 
+                                || newY <= buf.getY()+buf.getHeight()-20+buf.m_focusReceiver.h))
                             isOk = false;
 
                 }
@@ -416,7 +418,8 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
 
                 while (i.hasNext()) {
                     UIMessage buf = i.next();
-                    if (newY <= buf.getY() + buf.getHeight() - 50+buf.m_focusSender.h) {
+                    if (buf.m_focusReceiver != null && (newY <= buf.getY() + buf.getHeight() - 50+buf.m_focusReceiver.h
+                            || newY <= buf.getY()+buf.getHeight()-20+buf.m_focusSender.h)){
                         isOk = false;
                     }
                 }
