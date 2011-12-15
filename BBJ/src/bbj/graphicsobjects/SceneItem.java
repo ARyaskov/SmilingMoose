@@ -15,7 +15,7 @@ import java.util.*;
 abstract public class SceneItem extends JPanel {
 
     /** Коэфициент увеличения Scale Rate*/
-    protected static float m_SR = 1;
+    public static float m_SR = 1;
     
     // Обычная ширина объекта
     protected int defW;
@@ -48,7 +48,7 @@ abstract public class SceneItem extends JPanel {
         }
     }
 
-    public int zoom(int buf){
+    public static int zoom(int buf){
         return (int)(buf*SceneItem.m_SR);
     }
     

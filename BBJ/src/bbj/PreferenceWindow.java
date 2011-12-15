@@ -117,8 +117,8 @@ public final class PreferenceWindow extends JDialog
 
         // Добавим Spinner для величины ячеек в сетке
         SpinnerModel model =
-                new SpinnerNumberModel(scene.getGridFactor(), //initial value
-                5, //min
+                new SpinnerNumberModel((int)(scene.getGridFactor()/SceneItem.m_SR), //initial value
+                10, //min
                 30, //max
                 1);
         gridFactorSpinner = new JSpinner(model);
@@ -129,7 +129,7 @@ public final class PreferenceWindow extends JDialog
             public void stateChanged(ChangeEvent e) {
                 int curVal = Integer.parseInt(
                         gridFactorSpinner.getModel().getValue().toString());
-                scene.setGridFactor(curVal);
+                scene.setGridFactor((int)(curVal*SceneItem.m_SR));
             }
         };
         gridFactorSpinner.addChangeListener(gridFactorListener);
