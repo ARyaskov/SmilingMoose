@@ -42,13 +42,23 @@ abstract public class UILifeLine extends SceneItem{
     
     public void removeMessages(){
         Iterator<UIMessage> i = m_inbox.iterator();
-        
+        Scene s =  bbj.BBJ.app.getScene();
         while(i.hasNext()){
             
             UIMessage buf = i.next();
             
-            bbj.BBJ.app.getScene().remove(buf);
-            bbj.BBJ.app.getScene().getGraphicsObjects().remove(buf);
+            if (buf.m_focusReceiver!=null){
+                s.remove(buf.m_focusReceiver);
+                s.getGraphicsObjects().remove(buf.m_focusReceiver);
+            }
+                       
+            if (buf.m_focusSender!=null){
+               s.remove(buf.m_focusSender);
+               s.getGraphicsObjects().remove(buf.m_focusSender);
+            }
+                
+            s.remove(buf);
+            s.getGraphicsObjects().remove(buf);
             buf = null;
         }
         
@@ -60,8 +70,18 @@ abstract public class UILifeLine extends SceneItem{
             
             UIMessage buf = i.next();
             
-            bbj.BBJ.app.getScene().remove(buf);
-            bbj.BBJ.app.getScene().getGraphicsObjects().remove(buf);
+            if (buf.m_focusReceiver!=null){
+                s.remove(buf.m_focusReceiver);
+                s.getGraphicsObjects().remove(buf.m_focusReceiver);
+            }
+                       
+            if (buf.m_focusSender!=null){
+               s.remove(buf.m_focusSender);
+               s.getGraphicsObjects().remove(buf.m_focusSender);
+            }
+            
+            s.remove(buf);
+            s.getGraphicsObjects().remove(buf);
             buf = null;
         }
         

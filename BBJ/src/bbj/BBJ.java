@@ -906,19 +906,34 @@ public final class BBJ {
         MouseAdapter deleteButtonListener = new MouseAdapter() {
 
             public void mouseClicked(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1 && delete_button.isEnabled()) {
+                if (e.getButton() == MouseEvent.BUTTON1 && delete_button.isEnabled() && 
+                        SceneItemListener.m_currentSelectedItem != null) {
                     
                     String qwe = SceneItemListener.m_currentSelectedItem.getParent().getClass().getName();
                     if (SceneItemListener.m_currentSelectedItem.getClass().getSuperclass().getName().equals("bbj.graphicsobjects.UILifeLine")){
                         UILifeLine buf = (UILifeLine)SceneItemListener.m_currentSelectedItem;
                         buf.removeMessages();
                     }
-                    canvas.remove(SceneItemListener.m_currentSelectedItem);
-                    canvas.getGraphicsObjects().remove(SceneItemListener.m_currentSelectedItem);
+                    if (SceneItemListener.m_currentSelectedItem.getClass().getSuperclass().getName().equals("bbj.graphicsobjects.UIMessage")){
+                        UIMessage m = (UIMessage)SceneItemListener.m_currentSelectedItem;
+                        if (m.m_focusReceiver != null){
+                            canvas.remove(m.m_focusReceiver);
+                            canvas.getGraphicsObjects().remove(m.m_focusReceiver);
+                        }
+                        
+                        if (m.m_focusSender != null){
+                            canvas.remove(m.m_focusSender);
+                            canvas.getGraphicsObjects().remove(m.m_focusSender);
+                        }
+                    }
                     
-                    SceneItemListener.m_currentSelectedItem = null;
-                    canvas.updateUI();
+                    if (!SceneItemListener.m_currentSelectedItem.getClass().getName().equals("bbj.graphicsobjects.UIFocusControl")){
+                        canvas.remove(SceneItemListener.m_currentSelectedItem);
+                        canvas.getGraphicsObjects().remove(SceneItemListener.m_currentSelectedItem);
                     
+                        SceneItemListener.m_currentSelectedItem = null;
+                        canvas.updateUI();
+                    }
                 }
             }
 
