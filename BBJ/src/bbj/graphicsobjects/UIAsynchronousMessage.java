@@ -31,9 +31,10 @@ public class UIAsynchronousMessage extends UIMessage {
         m_focusSender = new UIFocusControl(this, true);
 
         
-        this.y = y;
+        this.defY = y;
         
         setDefaultName();
+        applyScale(getGraphics());
         
         SceneItemListener listener = new SceneItemListener(this);
 
@@ -56,10 +57,11 @@ public class UIAsynchronousMessage extends UIMessage {
         
         Graphics2D g2 = (Graphics2D)g;
         int endX = m_receiver.x+60;         // Конечная точка
-        this.x = m_sender.x+60;             // Начальная точка
-        this.h =45;                        // Высота объекта
-        this.w = endX - m_sender.x;         // Длина объекта
+        this.defX = m_sender.x+60;             // Начальная точка
+        this.defH =45;                        // Высота объекта
+        this.defW = endX - m_sender.defX;         // Длина объекта
 
+        applyScale(g);
         
         if (m_isSelected)
             g.setColor(Color.red);        // Исходный цвет
