@@ -23,8 +23,8 @@ public class UIDestroyMessage extends UIMessage {
     UIDestroyMessage(UILifeLine sender, UILifeLine receiver, int y){
         m_sender = sender;
         m_receiver = receiver;
-        this.y = y;
-        m_receiver.h = y+60;
+        this.defY = y;
+        m_receiver.defH = y+60;
         
         m_receiver.setEnded(true);
         
@@ -35,6 +35,7 @@ public class UIDestroyMessage extends UIMessage {
         m_focusSender = new UIFocusControl(this, true);
         
         setDefaultName();
+        applyScale(getGraphics());
         
         SceneItemListener listener = new SceneItemListener(this);
 
@@ -54,11 +55,13 @@ public class UIDestroyMessage extends UIMessage {
         super.paint(g);
                 
         Graphics2D g2 = (Graphics2D)g;     
-        this.x = m_sender.x+60;             // Начальная точка
+        this.defX = m_sender.x+60;             // Начальная точка
         int endX = m_receiver.x+60;            // Конечная точка
-        this.h = 45;                        // Высота объекта
-        this.w = endX - this.x;         // Длина объекта
+        this.defH = 45;                        // Высота объекта
+        this.defW = endX - this.defX;         // Длина объекта
                 
+        applyScale(g);
+        
         if (m_isSelected)
             g.setColor(Color.red);        // Исходный цвет
         else
