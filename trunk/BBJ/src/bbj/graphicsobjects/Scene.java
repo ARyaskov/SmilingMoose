@@ -276,8 +276,8 @@ public final class Scene extends JPanel implements DropTargetListener {
         
       //  SceneItem.setScaleCoef(1.1f);
 
-        m_scene_width = m_app.mainFrame.getWidth();
-        m_scene_height = m_app.mainFrame.getHeight();
+       // m_scene_width = m_app.mainFrame.getWidth();
+        //m_scene_height = m_app.mainFrame.getHeight();
 
         // далее непутёвый алгоритм закраски областей, в связи
         // с известными трудностями при перерисовке пришлось создать
