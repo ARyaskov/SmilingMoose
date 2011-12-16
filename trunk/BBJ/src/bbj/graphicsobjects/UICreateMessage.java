@@ -31,10 +31,10 @@ public class UICreateMessage extends UIMessage {
         m_focusReceiver = new UIFocusControl(this, false);
         m_focusSender = new UIFocusControl(this, true);
         
-        this.defY = y+25;
+        this.defY = y+zoom(25);
         
         setDefaultName();
-        applyScale(getGraphics());
+       // applyScale(getGraphics());
         
         SceneItemListener listener = new SceneItemListener(this);
 
@@ -54,12 +54,13 @@ public class UICreateMessage extends UIMessage {
         super.paint(g);
                 
         Graphics2D g2 = (Graphics2D)g;
-        this.defX = m_sender.x+60;             // Начальная точка
+        this.x = m_sender.x+zoom(60);             // Начальная точка
         int endX = m_receiver.x;            // Конечная точка
-        this.defH = 45;                        // Высота объекта
-        this.defW = endX - this.defX;         // Длина объекта
+        this.h = 45;                        // Высота объекта
+        this.y = this.defY;
+        this.w = endX - this.x;         // Длина объекта
         
-        applyScale(g);
+       // applyScale(g);
         
         if (m_isSelected)
             g.setColor(Color.red);        // Исходный цвет
@@ -68,15 +69,15 @@ public class UICreateMessage extends UIMessage {
         
         g2.setStroke(new BasicStroke(2));   // Берем линию потолще      
 
-        if (m_sender.x+60 < m_receiver.x){
+        if (m_sender.x+zoom(60) < m_receiver.x){
             endX = m_receiver.x;
             g.drawLine(x, y, endX, y);        // Рисуем линию сообщения
             
             g.drawLine(endX, y, endX-7, y+5);
             g.drawLine(endX, y, endX-7, y-5);
         } 
-        else if (m_sender.x+60 >  m_receiver.x + 120){
-            endX = m_receiver.x+120;
+        else if (m_sender.x+zoom(60) >  m_receiver.x + zoom(120)){
+            endX = m_receiver.x+zoom(120);
             g.drawLine(x, y, endX, y);        // Рисуем линию сообщения
             g.drawLine(endX, y, endX+7, y+5);
             g.drawLine(endX, y, endX+7, y-5);

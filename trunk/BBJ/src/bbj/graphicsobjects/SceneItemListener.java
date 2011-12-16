@@ -202,10 +202,10 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
                         m_endY = currentMessage.getReceiver().getY() + SceneItem.zoom(70);
                     }
                 } else {
-                    if (m_endY - 25 <= currentMessage.m_receiver.dotCoord - currentMessage.m_receiver.y - 55) {
-                        currentMessage.m_receiver.y = m_endY - 25;
+                    if (m_endY - SceneItem.zoom(25) <= currentMessage.m_receiver.dotCoord - currentMessage.m_receiver.y - SceneItem.zoom(55)) {
+                        currentMessage.m_receiver.defY = m_endY - SceneItem.zoom(25);
                     } else {
-                        m_endY = currentMessage.m_receiver.dotCoord - currentMessage.m_receiver.y - 30;
+                        m_endY = currentMessage.m_receiver.dotCoord - currentMessage.m_receiver.y - SceneItem.zoom(30);
                     }
                 }
                 m_startUndoRedo = new Point(m_startX, m_startY);
@@ -217,8 +217,8 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
             
             UIMessage currentMessage = (UIMessage)m_selectedItem;
            
-            if (currentMessage.m_receiver.h <= currentMessage.y+60)
-                currentMessage.m_receiver.h = currentMessage.y+60;
+            if (currentMessage.m_receiver.h <= currentMessage.y+SceneItem.zoom(60))
+                currentMessage.m_receiver.h = currentMessage.y+SceneItem.zoom(60);
             m_curItem = currentMessage;
             m_startUndoRedo = new Point(m_startX, m_startY);
             m_endUndoRedo = new Point(m_endX, m_endY);
