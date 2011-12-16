@@ -64,6 +64,9 @@ public class UISimpleMessage extends UIMessage {
         this.y = this.defY;
       // applyScale(getGraphics());
         
+        m_focusReceiver.paint(g);
+        m_focusSender.paint(g);
+                
         if (m_isSelected)
             g.setColor(Color.red);        // Исходный цвет
         else
@@ -85,8 +88,7 @@ public class UISimpleMessage extends UIMessage {
             g.drawLine(endX, y, endX+7, y-5);
         }
         y+=5;
-        m_focusReceiver.paint(g);
-        m_focusSender.paint(g);
+;
         
         // Разбиваем текст на массив символов
         char [] drawedText = m_text.toCharArray();

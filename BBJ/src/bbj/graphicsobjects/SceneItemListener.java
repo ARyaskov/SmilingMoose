@@ -242,18 +242,18 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
                 
                 if (m_selectedItem.getClass().getName().equals("bbj.graphicsobjects.UIFocusControl" )){
                     UIFocusControl fc = (UIFocusControl)m_selectedItem;
-                    int res = m_endY-m_selectedItem.y+40;
+                    int res = m_endY-m_selectedItem.y+SceneItem.zoom(40);
                     
                     // Не даем прямоугольникам опуститься ниже линии жиззни
                     // У сендера
                     if (fc.m_isSender && m_endY <= fc.m_parentMessage.getSender().getHeight()-40
                             && m_endY >= fc.y-20)
-                        m_selectedItem.h = res;
+                        m_selectedItem.defH = res;
                     
                     // У ресивера
                     if (!fc.m_isSender && m_endY <= fc.m_parentMessage.getReceiver().getHeight()-40
                              && m_endY >= fc.y-20)
-                        m_selectedItem.h = res;
+                        m_selectedItem.defH = res;
                 }
                 else{
      
@@ -399,7 +399,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
 
                 while(i.hasNext()){
                    UIMessage buf = i.next();
-                   
+
                     if (buf.getClass().getName().equals("bbj.graphicsobjects.UIDestroyMessage" )){
                         if (buf.m_focusSender != null && (newY <= buf.getY()+buf.getHeight()
                                 -SceneItem.zoom(10)+buf.m_focusSender.h
