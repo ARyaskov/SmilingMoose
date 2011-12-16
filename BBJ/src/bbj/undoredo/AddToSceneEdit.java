@@ -33,9 +33,17 @@ public class AddToSceneEdit extends AbstractUndoableEdit {
 
         super.undo();
 
+        if (m_oldValue.getClass().getSuperclass().getName().equals("UIMessage")){
+            m_scene.remove(((UIMessage)m_oldValue).m_focusReceiver);
+            m_scene.remove(((UIMessage)m_oldValue).m_focusSender);
+            m_scene.getGraphicsObjects().remove(((UIMessage)m_oldValue).m_focusSender);
+            m_scene.getGraphicsObjects().remove(((UIMessage)m_oldValue).m_focusReceiver);
+        }
+        
         m_scene.getGraphicsObjects().remove(m_oldValue);
         m_scene.remove(m_oldValue);
-
+      //  m_scene.getModel().removeObject(m_oldValue
+  
         m_scene.repaint();
 
     }
@@ -44,7 +52,13 @@ public class AddToSceneEdit extends AbstractUndoableEdit {
     public void redo() throws CannotUndoException {
 
         super.redo();
-
+        if (m_oldValue.getClass().getSuperclass().getName().equals("UIMessage")){
+           m_scene.add(((UIMessage)m_oldValue).m_focusSender);
+           m_scene.add(((UIMessage)m_oldValue).m_focusReceiver);
+           m_scene.getGraphicsObjects().add(((UIMessage)m_oldValue).m_focusSender);
+           m_scene.getGraphicsObjects().add(((UIMessage)m_oldValue).m_focusReceiver);
+        }
+        
         m_scene.getGraphicsObjects().add(m_oldValue);
         m_scene.add(m_oldValue);
         m_scene.repaint();

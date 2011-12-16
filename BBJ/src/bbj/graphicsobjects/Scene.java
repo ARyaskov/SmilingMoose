@@ -1,4 +1,3 @@
-
 package bbj.graphicsobjects;
 
 import bbj.virtualobjects.*;
@@ -194,9 +193,8 @@ public final class Scene extends JPanel implements DropTargetListener {
        // UIAsynchronousMessage m = new UIAsynchronousMessage(ll, al, 215);
 
       //  UIReplyMessage r = new UIReplyMessage(m);
-      //  UICreateMessage m1 = new UICreateMessage(al,ll,150);
-        
-      //  UIDestroyMessage m2 = new UIDestroyMessage(al, ll, 250);
+        //  UICreateMessage m1 = new UICreateMessage(al,ll,150);
+
 
       //  ll.setEnded(true);
        // this.add(m.m_focusReceiver);
@@ -205,26 +203,29 @@ public final class Scene extends JPanel implements DropTargetListener {
      //   this.add(ll);
      //   this.add(al);
     //    this.add(m);
-   
+
+
         //setComponentZOrder(m.m_focusReceiver, getComponentCount()-1);
-     //   setComponentZOrder(m.m_focusSender, getComponentCount()-1);
-       // this.add(m1);
-       // this.add(m2);
-        
+        //   setComponentZOrder(m.m_focusSender, getComponentCount()-1);
+        // this.add(m1);
+        // this.add(m2);
+
 
         // Добавляем тестовые объекты в контейнер
 
-        
+
       //  m_objects.add(ll);
      // /  m_objects.add(al);
       //  m_objects.add(m);
       //  m_objects.add(r);
      //   m_objects.add(m.m_focusReceiver);
      //   m_objects.add(m.m_focusSender);
-        
+
         //m_objects.add(m1);
         //m_objects.add(m2);
+
       //  ll.setLength(ll.getLength()+20);
+
 
         // Создаем сцене особого слушателя
         SceneItemListener sceneItemListener = new SceneItemListener();
@@ -246,17 +247,18 @@ public final class Scene extends JPanel implements DropTargetListener {
         });
         m_menu.add(m_clear);
         this.add(m_menu);
-        
+
 
     }
 
-    public void setVirtualModel(VirtualModel vm){
+    public void setVirtualModel(VirtualModel vm) {
         m_model = vm;
     }
-    public void setGraphicsObjects(ArrayList<SceneItem> items){
+
+    public void setGraphicsObjects(ArrayList<SceneItem> items) {
         m_objects = items;
     }
-    
+
     public void scaleScene(float coef){
         SceneItem.setScaleCoef(coef);
         sideSize = ((int)(800 * coef));
@@ -718,12 +720,16 @@ public final class Scene extends JPanel implements DropTargetListener {
      * Метод очистки диаграммы.
      */
     public void clear() {
+
        
+
+
 
         this.m_objects.clear();
         this.m_model.clear();
         this.updateLocalnumbers();
-              
+
+
         this.repaint();
         BBJ.app.m_hasModifications = true;
 
@@ -748,7 +754,7 @@ public final class Scene extends JPanel implements DropTargetListener {
         m_model.load(filename);
 
         for (int i = 0; i < m_model.size(); i++) {
-            if (m_model.getObject(i).getClass() == LifeLine.class && ((LifeLine)m_model.getObject(i)).getDrawStyle() == 1) {
+            if (m_model.getObject(i).getClass() == LifeLine.class && ((LifeLine) m_model.getObject(i)).getDrawStyle() == 1) {
                 UIRectLifeLine ll = new UIRectLifeLine((int) m_model.getObject(i).getCoordinates().getX(),
                         (int) m_model.getObject(i).getCoordinates().getY());
                 ll.setText(((LifeLine) m_model.getObject(i)).getName());
@@ -783,7 +789,7 @@ public final class Scene extends JPanel implements DropTargetListener {
 
                 m_objects.add(sm);
                 this.add(sm);
-            } else if (m_model.getObject(i).getClass() == LifeLine.class && ((LifeLine)m_model.getObject(i)).getDrawStyle() == 2) {
+            } else if (m_model.getObject(i).getClass() == LifeLine.class && ((LifeLine) m_model.getObject(i)).getDrawStyle() == 2) {
                 UIActorLifeLine ll = new UIActorLifeLine((int) m_model.getObject(i).getCoordinates().getX(),
                         (int) m_model.getObject(i).getCoordinates().getY());
                 ll.setText(((LifeLine) m_model.getObject(i)).getName());
@@ -866,8 +872,8 @@ public final class Scene extends JPanel implements DropTargetListener {
                 m_objects.add(sm);
                 this.add(sm);
             }
-        
-        } 
+
+        }
 
         repaint();
         BBJ.app.m_hasModifications = false;
@@ -904,9 +910,15 @@ public final class Scene extends JPanel implements DropTargetListener {
             }
         }
 
+    
+        
         UISimpleMessage sm = new UISimpleMessage((UILifeLine) m_selectedObjects.get(0),
                 (UILifeLine) m_selectedObjects.get(1), this.m_selectedObjects.get(0).y + 100);
 
+        AddToSceneEdit m_undoEditMessage = new AddToSceneEdit(this, sm);
+
+        
+        
         SimpleMessage vsm = new SimpleMessage();
         vsm.setCoordinates(new Point3D(sm.x, sm.y, 0));
         vsm.setName(sm.getText());
@@ -931,158 +943,165 @@ public final class Scene extends JPanel implements DropTargetListener {
         m_objects.add(sm);
         m_objects.add(sm.m_focusReceiver);
         m_objects.add(sm.m_focusSender);
-        repaint();
+        
         BBJ.app.m_hasModifications = true;
+        
+        m_app.getUndoSupport().postEdit(m_undoEditMessage);
+                m_app.m_undoButton.setEnabled(m_app.getUndoManager().canUndo());
+                m_app.m_redoButton.setEnabled(m_app.getUndoManager().canRedo());
+               
+                
+                repaint();
     }
-    
+
     /**
      * Метод создания сообщений создания.
      */
-    public void createCreateMessage () {
+    public void createCreateMessage() {
         if (this.m_selectedObjects.size() != 2) {
             return;
         }
-        
-        if (this.m_selectedObjects.get(0).getClass() != UIRectLifeLine.class ||
-            this.m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
-            
-            if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class ||
-                m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
-                
-                if (m_selectedObjects.get(0).getClass() != UIRectLifeLine.class ||
-                    m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
-                    
-                    if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class ||
-                        m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
+
+        if (this.m_selectedObjects.get(0).getClass() != UIRectLifeLine.class
+                || this.m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
+
+            if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class
+                    || m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
+
+                if (m_selectedObjects.get(0).getClass() != UIRectLifeLine.class
+                        || m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
+
+                    if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class
+                            || m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
                         return;
                     }
                 }
             }
         }
-        
-        UICreateMessage sm = new UICreateMessage((UILifeLine)m_selectedObjects.get(0),
-                (UILifeLine)m_selectedObjects.get(1), this.m_selectedObjects.get(0).y + 100);
-        
+
+        UICreateMessage sm = new UICreateMessage((UILifeLine) m_selectedObjects.get(0),
+                (UILifeLine) m_selectedObjects.get(1), this.m_selectedObjects.get(0).y + 100);
+
         CreateMessage vsm = new CreateMessage();
-        vsm.setCoordinates(new Point3D(sm.x,sm.y,0));
+        vsm.setCoordinates(new Point3D(sm.x, sm.y, 0));
         vsm.setName(sm.getText());
         vsm.setId(globalId++);
         sm.id = vsm.getId();
-        
+
         for (int i = 0; i < m_model.size(); i++) {
             if (m_model.getObject(i).getId() == m_selectedObjects.get(0).id) {
-                ((LifeLine)m_model.getObject(i)).addMessage(vsm);
-                vsm.setSender((LifeLine)m_model.getObject(i));
+                ((LifeLine) m_model.getObject(i)).addMessage(vsm);
+                vsm.setSender((LifeLine) m_model.getObject(i));
             } else if (m_model.getObject(i).getId() == m_selectedObjects.get(1).id) {
-                vsm.setReceiver((LifeLine)m_model.getObject(i));
+                vsm.setReceiver((LifeLine) m_model.getObject(i));
             }
         }
-        
+
         m_model.addObject(vsm);
-        
+
         this.add(sm);
         m_objects.add(sm);
         repaint();
         BBJ.app.m_hasModifications = true;
     }
-    
+
 
     /**
      * Метод создания сообщений удаления.
      */
-    public void createDestroyMessage () {
+    public void createDestroyMessage() {
         if (this.m_selectedObjects.size() != 2) {
             return;
         }
-        
-        if (this.m_selectedObjects.get(0).getClass() != UIRectLifeLine.class ||
-            this.m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
-            
-            if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class ||
-                m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
-                
-                if (m_selectedObjects.get(0).getClass() != UIRectLifeLine.class ||
-                    m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
-                    
-                    if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class ||
-                        m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
+
+        if (this.m_selectedObjects.get(0).getClass() != UIRectLifeLine.class
+                || this.m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
+
+            if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class
+                    || m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
+
+                if (m_selectedObjects.get(0).getClass() != UIRectLifeLine.class
+                        || m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
+
+                    if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class
+                            || m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
                         return;
                     }
                 }
             }
         }
-        
-        UIDestroyMessage sm = new UIDestroyMessage((UILifeLine)m_selectedObjects.get(0),
-                (UILifeLine)m_selectedObjects.get(1), this.m_selectedObjects.get(0).y + 100);
-        
+
+        UIDestroyMessage sm = new UIDestroyMessage((UILifeLine) m_selectedObjects.get(0),
+                (UILifeLine) m_selectedObjects.get(1), this.m_selectedObjects.get(0).y + 100);
+
         DestroyMessage vsm = new DestroyMessage();
-        vsm.setCoordinates(new Point3D(sm.x,sm.y,0));
+        vsm.setCoordinates(new Point3D(sm.x, sm.y, 0));
         vsm.setName(sm.getText());
         vsm.setId(globalId++);
         sm.id = vsm.getId();
-        
+
         for (int i = 0; i < m_model.size(); i++) {
             if (m_model.getObject(i).getId() == m_selectedObjects.get(0).id) {
-                ((LifeLine)m_model.getObject(i)).addMessage(vsm);
-                vsm.setSender((LifeLine)m_model.getObject(i));
+                ((LifeLine) m_model.getObject(i)).addMessage(vsm);
+                vsm.setSender((LifeLine) m_model.getObject(i));
             } else if (m_model.getObject(i).getId() == m_selectedObjects.get(1).id) {
-                vsm.setReceiver((LifeLine)m_model.getObject(i));
+                vsm.setReceiver((LifeLine) m_model.getObject(i));
             }
         }
-        
+
         m_model.addObject(vsm);
-        
+
         this.add(sm);
         m_objects.add(sm);
         repaint();
         BBJ.app.m_hasModifications = true;
     }
-    
+
     /**
      * Метод создания асинхронные сообщений.
      */
-    public void createAsynchronousMessage () {
+    public void createAsynchronousMessage() {
         if (this.m_selectedObjects.size() != 2) {
             return;
         }
-        
-        if (this.m_selectedObjects.get(0).getClass() != UIRectLifeLine.class ||
-            this.m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
-            
-            if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class ||
-                m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
-                
-                if (m_selectedObjects.get(0).getClass() != UIRectLifeLine.class ||
-                    m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
-                    
-                    if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class ||
-                        m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
+
+        if (this.m_selectedObjects.get(0).getClass() != UIRectLifeLine.class
+                || this.m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
+
+            if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class
+                    || m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
+
+                if (m_selectedObjects.get(0).getClass() != UIRectLifeLine.class
+                        || m_selectedObjects.get(1).getClass() != UIActorLifeLine.class) {
+
+                    if (m_selectedObjects.get(0).getClass() != UIActorLifeLine.class
+                            || m_selectedObjects.get(1).getClass() != UIRectLifeLine.class) {
                         return;
                     }
                 }
             }
         }
-        
-        UIAsynchronousMessage sm = new UIAsynchronousMessage((UILifeLine)m_selectedObjects.get(0),
-                (UILifeLine)m_selectedObjects.get(1), this.m_selectedObjects.get(0).y + 100);
-        
+
+        UIAsynchronousMessage sm = new UIAsynchronousMessage((UILifeLine) m_selectedObjects.get(0),
+                (UILifeLine) m_selectedObjects.get(1), this.m_selectedObjects.get(0).y + 100);
+
         AsynchronousMessages vsm = new AsynchronousMessages();
-        vsm.setCoordinates(new Point3D(sm.x,sm.y,0));
+        vsm.setCoordinates(new Point3D(sm.x, sm.y, 0));
         vsm.setName(sm.getText());
         vsm.setId(globalId++);
         sm.id = vsm.getId();
-        
+
         for (int i = 0; i < m_model.size(); i++) {
             if (m_model.getObject(i).getId() == m_selectedObjects.get(0).id) {
-                ((LifeLine)m_model.getObject(i)).addMessage(vsm);
-                vsm.setSender((LifeLine)m_model.getObject(i));
+                ((LifeLine) m_model.getObject(i)).addMessage(vsm);
+                vsm.setSender((LifeLine) m_model.getObject(i));
             } else if (m_model.getObject(i).getId() == m_selectedObjects.get(1).id) {
-                vsm.setReceiver((LifeLine)m_model.getObject(i));
+                vsm.setReceiver((LifeLine) m_model.getObject(i));
             }
         }
-        
+
         m_model.addObject(vsm);
-        
+
         this.add(sm);
         m_objects.add(sm);
         repaint();

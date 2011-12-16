@@ -332,7 +332,7 @@ public final class BBJ {
             windowHeight = e.getComponent().getHeight();
             windowWidth = e.getComponent().getWidth();
             //Убрать когда скролл сделаем
-            BBJ.app.getScene().setSize(windowWidth, windowHeight);
+            //BBJ.app.getScene().setSize(windowWidth, windowHeight);
             BBJ.app.getScene().repaint();
         }
 
