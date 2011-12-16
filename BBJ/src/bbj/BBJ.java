@@ -916,6 +916,10 @@ public final class BBJ {
                     }
                     if (SceneItemListener.m_currentSelectedItem.getClass().getSuperclass().getName().equals("bbj.graphicsobjects.UIMessage")){
                         UIMessage m = (UIMessage)SceneItemListener.m_currentSelectedItem;
+                        
+                        if (m instanceof UIDestroyMessage)
+                            m.getReceiver().setEnded(false);
+                        
                         if (m.m_focusReceiver != null){
                             canvas.remove(m.m_focusReceiver);
                             canvas.getGraphicsObjects().remove(m.m_focusReceiver);

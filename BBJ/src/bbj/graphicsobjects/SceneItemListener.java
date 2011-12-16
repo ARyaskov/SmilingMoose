@@ -185,8 +185,8 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
 
                 }
 
-                if (m_endY <= currentMessage.getSender().getY() + SceneItem.zoom(70)) {
-                    m_endY = currentMessage.getSender().getY() + SceneItem.zoom(70);
+                if (m_endY <= currentMessage.getSender().y + SceneItem.zoom(80)) {
+                    m_endY = currentMessage.getSender().y + SceneItem.zoom(80);
                 }
 
                 if (!currentMessage.getClass().getName().equals("bbj.graphicsobjects.UICreateMessage")) {
@@ -198,8 +198,8 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
 
                     }
 
-                    if (m_endY <= currentMessage.getReceiver().getY() + SceneItem.zoom(70)) {
-                        m_endY = currentMessage.getReceiver().getY() + SceneItem.zoom(70);
+                    if (m_endY <= currentMessage.getReceiver().y + SceneItem.zoom(80)) {
+                        m_endY = currentMessage.getReceiver().y + SceneItem.zoom(80);
                     }
                 } else {
                     if (m_endY - SceneItem.zoom(25) <= currentMessage.m_receiver.dotCoord - currentMessage.m_receiver.y - SceneItem.zoom(55)) {
@@ -246,13 +246,13 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
                     
                     // Не даем прямоугольникам опуститься ниже линии жиззни
                     // У сендера
-                    if (fc.m_isSender && m_endY <= fc.m_parentMessage.getSender().getHeight()-40
-                            && m_endY >= fc.y-20)
+                    if (fc.m_isSender && m_endY <= fc.m_parentMessage.getSender().getHeight()- SceneItem.zoom(40)
+                            && m_endY >= fc.y - SceneItem.zoom(20))
                         m_selectedItem.defH = res;
                     
                     // У ресивера
-                    if (!fc.m_isSender && m_endY <= fc.m_parentMessage.getReceiver().getHeight()-40
-                             && m_endY >= fc.y-20)
+                    if (!fc.m_isSender && m_endY <= fc.m_parentMessage.getReceiver().getHeight()-SceneItem.zoom(40)
+                             && m_endY >= fc.y-SceneItem.zoom(20))
                         m_selectedItem.defH = res;
                 }
                 else{
