@@ -27,8 +27,10 @@ public class UIFocusControl extends SceneItem {
     UIFocusControl(UIMessage parent, boolean isSender){
         m_parentMessage = parent;
         m_isSender = isSender;
-        this.h = 40;
-        this.w = 20;
+        this.defH = 40;
+        this.defW = 20;
+        
+        applyScale(getGraphics());
         
         SceneItemListener listener = new SceneItemListener(this);
 
@@ -42,20 +44,20 @@ public class UIFocusControl extends SceneItem {
     public void paint(Graphics g) {
         super.paint(g);
         
-        
+        applyScale(g);
         
         Graphics2D g2 = (Graphics2D)g;
         
         if (m_isSender)
-            this.x = m_parentMessage.x-10;
+            this.x = m_parentMessage.x-zoom(10);
 
         else
-            this.x = m_parentMessage.m_receiver.x+50;
+            this.x = m_parentMessage.m_receiver.x+zoom(50);
         
         this.y = m_parentMessage.y;
         
         if (m_parentMessage.getClass().getName().equals("bbj.graphicsobjects.UICreateMessage" )){
-            this.y = m_parentMessage.y+40;
+            this.y = m_parentMessage.y+zoom(40);
         }
             
         

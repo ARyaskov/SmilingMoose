@@ -185,8 +185,8 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
 
                 }
 
-                if (m_endY <= currentMessage.getSender().getY() + 70) {
-                    m_endY = currentMessage.getSender().getY() + 70;
+                if (m_endY <= currentMessage.getSender().getY() + SceneItem.zoom(70)) {
+                    m_endY = currentMessage.getSender().getY() + SceneItem.zoom(70);
                 }
 
                 if (!currentMessage.getClass().getName().equals("bbj.graphicsobjects.UICreateMessage")) {
@@ -198,8 +198,8 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
 
                     }
 
-                    if (m_endY <= currentMessage.getReceiver().getY() + 70) {
-                        m_endY = currentMessage.getReceiver().getY() + 70;
+                    if (m_endY <= currentMessage.getReceiver().getY() + SceneItem.zoom(70)) {
+                        m_endY = currentMessage.getReceiver().getY() + SceneItem.zoom(70);
                     }
                 } else {
                     if (m_endY - 25 <= currentMessage.m_receiver.dotCoord - currentMessage.m_receiver.y - 55) {
