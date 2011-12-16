@@ -999,8 +999,13 @@ public final class Scene extends JPanel implements DropTargetListener {
 
         m_model.addObject(vsm);
 
-        this.add(sm);
+        this.add(sm,0);
+        this.add(sm.m_focusReceiver,0);
+        this.add(sm.m_focusSender,0);
+        
         m_objects.add(sm);
+        m_objects.add(sm.m_focusReceiver);
+        m_objects.add(sm.m_focusSender);
         repaint();
         BBJ.app.m_hasModifications = true;
     }
@@ -1051,8 +1056,13 @@ public final class Scene extends JPanel implements DropTargetListener {
 
         m_model.addObject(vsm);
 
-        this.add(sm);
+        this.add(sm,0);
+        this.add(sm.m_focusReceiver,0);
+        this.add(sm.m_focusSender,0);
+        
         m_objects.add(sm);
+        m_objects.add(sm.m_focusReceiver);
+        m_objects.add(sm.m_focusSender);
         repaint();
         BBJ.app.m_hasModifications = true;
     }
@@ -1102,8 +1112,13 @@ public final class Scene extends JPanel implements DropTargetListener {
 
         m_model.addObject(vsm);
 
-        this.add(sm);
+        this.add(sm,0);
+        this.add(sm.m_focusReceiver,0);
+        this.add(sm.m_focusSender,0);
+        
         m_objects.add(sm);
+        m_objects.add(sm.m_focusReceiver);
+        m_objects.add(sm.m_focusSender);
         repaint();
         BBJ.app.m_hasModifications = true;
     }
