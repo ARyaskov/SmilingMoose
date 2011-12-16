@@ -387,11 +387,11 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
      * @param newY Новая координата конца линии
      */
     public void changeLifeLineLength(UILifeLine line, int newY) {
-        if (newY >= 70) {
+        if (newY >= SceneItem.zoom(70)) {
             boolean isOk = true;
 
-            if (line.y > 50) {
-                newY += line.y - 50;
+            if (line.y > SceneItem.zoom(50)) {
+                newY += line.y - SceneItem.zoom(50);
             }
 
 
@@ -401,12 +401,14 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
                    UIMessage buf = i.next();
                    
                     if (buf.getClass().getName().equals("bbj.graphicsobjects.UIDestroyMessage" )){
-                        if (buf.m_focusSender != null && (newY <= buf.getY()+buf.getHeight()-10+buf.m_focusSender.h
+                        if (buf.m_focusSender != null && (newY <= buf.getY()+buf.getHeight()
+                                -SceneItem.zoom(10)+buf.m_focusSender.h
                                 || newY <= buf.getY()+buf.getHeight()-20+buf.m_focusReceiver.h))
                         isOk = false;
                     }
                     else
-                        if (buf.m_focusSender != null && (newY <= buf.getY()+buf.getHeight()-50+buf.m_focusSender.h 
+                        if (buf.m_focusSender != null && (newY <= buf.getY()+buf.getHeight()
+                                -SceneItem.zoom(50)+buf.m_focusSender.h 
                                 || newY <= buf.getY()+buf.getHeight()-20+buf.m_focusReceiver.h))
                             isOk = false;
 
@@ -418,7 +420,8 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
 
                 while (i.hasNext()) {
                     UIMessage buf = i.next();
-                    if (buf.m_focusReceiver != null && (newY <= buf.getY() + buf.getHeight() - 50+buf.m_focusReceiver.h
+                    if (buf.m_focusReceiver != null && (newY <= buf.getY() + buf.getHeight() 
+                            - SceneItem.zoom(50)+buf.m_focusReceiver.h
                             || newY <= buf.getY()+buf.getHeight()-20+buf.m_focusSender.h)){
                         isOk = false;
                     }
@@ -426,7 +429,7 @@ public class SceneItemListener implements MouseListener, MouseMotionListener/*
             }
 
             if (isOk) {
-                line.defH = newY + line.zoom(70);
+                line.defH = (int)(newY/SceneItem.m_SR) + 70;
                 line.dotCoord = line.defH;
                 //line.setBounds(line.x, line.y, line.w, line.h);
             }
