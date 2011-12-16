@@ -125,7 +125,7 @@ abstract public class UILifeLine extends SceneItem{
      */
     public void setLength(int length){
         m_length = length;
-        this.defH = m_length +20 - this.y+50;
+        this.defH = m_length + zoom(20) - this.y+zoom(50);
     }
     
     /**
