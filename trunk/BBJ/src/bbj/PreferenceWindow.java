@@ -47,7 +47,7 @@ public final class PreferenceWindow extends JDialog
         super(f, title, isModal);
         this.setResizable(false);
         scene = BBJ.app.getScene();
-        setSize(new Dimension(500, 500));
+        setSize(new Dimension(500, 200));
         gridColors = new Vector();
         gridColors.add(new Color(128, 128, 128, 64));
         gridColors.add(new Color(204, 255, 243));
